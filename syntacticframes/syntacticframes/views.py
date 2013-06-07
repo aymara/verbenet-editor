@@ -2,13 +2,13 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import redirect
 
-from distutils.version import StrictVersion
+from distutils.version import LooseVersion
 
 from .models import LevinClass
 
 def classe(request, class_number):
     levin_classes = list(LevinClass.objects.all())
-    levin_classes.sort(key = StrictVersion)
+    levin_classes.sort(key = lambda l: LooseVersion(l.number))
 
 
     template = loader.get_template('index.html')
