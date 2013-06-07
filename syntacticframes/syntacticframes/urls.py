@@ -5,8 +5,12 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
+from syntacticframes import views
+
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name='base.html')),
+    #url(r'^$', TemplateView.as_view(template_name='base.html')),
+    url(r'^$', views.index, name='index'),
+    url(r'^class/(?P<class_number>\d+)/$', views.classe, name='index'),
 
     # Examples:
     # url(r'^$', 'syntacticframes.views.home', name='home'),
