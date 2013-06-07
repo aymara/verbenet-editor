@@ -33,7 +33,7 @@ TEMPLATE_DEBUG = DEBUG
 ########## MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ('Your Name', 'your_email@example.com'),
+    ('Quentin Pradet', 'quentin.pradet@gmail.com'),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -45,7 +45,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': '',
         'USER': '',
         'PASSWORD': '',
