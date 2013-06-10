@@ -56,7 +56,10 @@ CACHES = {
 #INTERNAL_IPS = ('127.0.0.1',)
 
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation
-#MIDDLEWARE_CLASSES += (
+MIDDLEWARE_CLASSES += (
 #    'debug_toolbar.middleware.DebugToolbarMiddleware',
-#)
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
+
+)
 ########## END TOOLBAR CONFIGURATION
