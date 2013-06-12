@@ -44,6 +44,7 @@ function toggleHighlightCandidates() {
 
 $(document).ready(function() {
     // "Evaluate" a word: set it as valid or not
+    /*
     $('.evaluate li').click(function() {
         // Retrieve the word, its status, and the other list
         var word = $(this);
@@ -61,6 +62,7 @@ $(document).ready(function() {
 
         word.fadeIn('slow');
     });
+    */
 
     // Show relation between verbs and origin
     $('.evaluate li').hover(toggleHighlightMembers, toggleHighlightMembers);
