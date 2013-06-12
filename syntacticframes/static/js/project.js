@@ -34,13 +34,20 @@ function toggleHighlightMembers() {
 
 function toggleHighlightCandidates() {
     var origin = $(this).text();
-    console.log(origin);
     $(this).parent().parent().find('.evaluate li').each(function() {
         if ($(this).data('origin').split(',').indexOf(origin) != -1) {
             $(this).toggleClass('hover');
         }
     });
 }
+
+function toggleHideShow(e) {
+    e.preventDefault();
+    $(this).parent().find('li[class="unknown"]').toggle();
+    $(this).parent().find('li[class="dicovalence"]').toggle();
+    $(this).text($(this).text() == '[+]' ? '[-]' : '[+]');
+}
+
 
 $(document).ready(function() {
     // "Evaluate" a word: set it as valid or not
@@ -68,7 +75,8 @@ $(document).ready(function() {
     $('.evaluate li').hover(toggleHighlightMembers, toggleHighlightMembers);
     $('.verbnet_members li').hover(toggleHighlightCandidates, toggleHighlightCandidates);
 
-    $('.verb-classes').css('height', 0.9 * $(window).height() + 'px')
+    var showLink = $('<a/>').text('[+]').prop('href', '#').click(toggleHideShow);
+    $('.evaluate').append(showLink);
 });
 
 

@@ -20,7 +20,7 @@
         .evaluate li.both { color: purple }
         .evaluate li.ladl, h2 .ladl { color: green }
         .evaluate li.lvf, h2 .lvf { color: red }
-        .evaluate li.unknown{ color: gray }
+        .evaluate li.unknown { color: gray }
         .evaluate li.hover, .verbnet_members li.hover { background-color: black !important; color: white !important }
         h2 a { text-decoration: underline }
     </style>
@@ -106,12 +106,18 @@
                     <li>Traductions</li>
                         <ul class="evaluate invalid">
                         {% spaceless %}
-                          {% for name, translations in all_translations.items %}
-                             {% if name == classe.name %}{% for word in translations %}
-                              <li class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</li>
-                              <span class="comma_hack">, </span>
-                            {% endfor %}{% endif %}
-                          {% endfor %}
+                        {% for name, translations in all_translations.items %}
+                           {% if name == classe.name %}{% for word in translations %}
+                            <li
+                                {% if word.category == 'unknown' or word.category = 'dicovalence' %}
+                                    style="display:none"
+                                {% endif %}
+                                class="{{word.category}}"
+                                data-origin="{{word.origin}}">
+                                {{word.verb}},
+                            </li>
+                          {% endfor %}{% endif %}
+                        {% endfor %}
                         {% endspaceless %}
                         </ul>
                 </ul>
