@@ -15,6 +15,14 @@
       }
 
       .sidebar-nav { padding: 9px 0 }
+
+        .evaluate li, .verbnet_members li { display: inline }
+        .evaluate li.both { color: purple }
+        .evaluate li.ladl, h2 .ladl { color: green }
+        .evaluate li.lvf, h2 .lvf { color: red }
+        .evaluate li.unknown{ color: gray }
+        .evaluate li.hover, .verbnet_members li.hover { background-color: black !important; color: white !important }
+        h2 a { text-decoration: underline }
     </style>
     <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
 
@@ -60,7 +68,7 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
             {% for class in levin_classes %}
-              {% if class.number == active_class %}
+              {% if class.number == active_class.number %}
                 <li class="active"><a href="#">{{ class.number }}: {{ class.name }}</a></li>
               {% else %}
                 <li><a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
@@ -72,10 +80,46 @@
 
         <div class="span9">
 
-          <h1>{% block page_title %}Example Base Template{% endblock page_title %}</h1>
+          <h1>{% block page_title %}{{ active_class.number }}: {{ active_class.name }}{% endblock page_title %}</h1>
      
           {% block content %}
-            <p>Use this document as a way to quick start any new project.</p>
+            {% for classe in verbnet_classes %}
+            <article>
+                <h2 id="{{classe.name}}">
+                    <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
+                    <a class="lvf" href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html">{{classe.lvf_string}}</a>
+                    <a class="ladl" href="verbes-html/V_{{classe.ladl_string}}.lgt.html">{{classe.ladl_string}}</a>
+                </h2>
+                <p>{{classe.paragon}}{%if classe.comment %} | {{classe.comment}}{% endif %}</p>
+                <ul>
+                    <li>Membres VerbNet :</li>
+                        <ul class="verbnet_members">
+                        {% spaceless %}
+                          {% for name, origins in all_origins.items %}
+                             {% if name == classe.name %}{% for word in origins %}
+                              <li>{{word.lemma}}</li>
+                              <span class="comma_hack">, </span>
+                            {% endfor %}{% endif %}
+                          {% endfor %}
+                        {% endspaceless %}
+                        </ul>
+                    <li>Valides</li>
+                        <ul class="evaluate valid">
+                        </ul>
+                    <li>Invalides</li>
+                        <ul class="evaluate invalid">
+                        {% spaceless %}
+                          {% for name, translations in all_translations.items %}
+                             {% if name == classe.name %}{% for word in translations %}
+                              <li class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</li>
+                              <span class="comma_hack">, </span>
+                            {% endfor %}{% endif %}
+                          {% endfor %}
+                        {% endspaceless %}
+                        </ul>
+                </ul>
+            </article>
+            {% endfor %}
           {% endblock content %}
         </div>
       </div>
