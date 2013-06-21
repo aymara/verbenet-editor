@@ -1,12 +1,11 @@
-{% load staticfiles %}
-<!DOCTYPE html>
+{% load staticfiles %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}syntacticframes{% endblock title %}</title>
+    <title>{% block title %}VerbeNet{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Annotate VerbeNet syntactic frames">
+    <meta name="author" content="Quentin Pradet">
 
     <!-- Le styles -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -14,6 +13,16 @@
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
+
+      .sidebar-nav { padding: 9px 0 }
+
+      .evaluate li, .verbnet_members li { display: inline }
+      .evaluate li.both { color: purple }
+      .evaluate li.ladl, h2 .ladl { color: green }
+      .evaluate li.lvf, h2 .lvf { color: red }
+      .evaluate li.unknown { color: gray }
+      .evaluate li.hover, .verbnet_members li.hover { background-color: black !important; color: white !important }
+      h2 a { text-decoration: underline }
     </style>
     <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
 
@@ -40,7 +49,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">syntacticframes</a>
+          <a class="brand" href="#">VerbeNet</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
@@ -52,6 +61,7 @@
       </div>
     </div>
 
+    {% block all %}
     <div class="container">
 
       <h1>{% block page_title %}Example Base Template{% endblock page_title %}</h1>
@@ -61,6 +71,7 @@
       {% endblock content %}
 
     </div> <!-- /container -->
+    {% endblock %}
 
     <!-- Le javascript
     ================================================== -->
