@@ -214,7 +214,7 @@ def read_csv(filename):
             paragon, commentaire = row[3], row[4]
             final, verbnet_members = translations_for_class(vn, ladl, lvf)
             lines.append({'classe': vn, 'candidates':  final, 'paragon': paragon,
-                'lvf': lvf, 'lvf_orig': row[2], 'ladl': ladl, 'ladl_orig': row[3],
+                'lvf': lvf, 'lvf_orig': row[2], 'ladl': ladl, 'ladl_orig': row[1],
                 'verbnet_members': verbnet_members, 'commentaire': commentaire })
 
     return lines
