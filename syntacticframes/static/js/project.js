@@ -1,5 +1,7 @@
 /* Project specific Javascript goes here. */
 
+/* Validating/refusing translations */
+/*
 function getColorId(color) {
     if (color == 'both') { return 0; }
     else if (color == 'ladl') { return 1; }
@@ -22,7 +24,9 @@ function sortUL(list) {
     span = $('<span />').addClass('comma_hack').text(', ');
     list.find('li').after(span);
 }
+*/
 
+/* Highlight translations */
 function toggleHighlightMembers() {
     var origins = $(this).data('origin').split(',');
     $('.verbnet_members li').each(function() {
@@ -32,6 +36,7 @@ function toggleHighlightMembers() {
     });
 }
 
+/* Highlight origins */
 function toggleHighlightCandidates() {
     var origin = $(this).text();
     $(this).parent().parent().find('.evaluate li').each(function() {
@@ -41,6 +46,7 @@ function toggleHighlightCandidates() {
     });
 }
 
+/* Hide dark/gray translations */
 function toggleHideShow(e) {
     e.preventDefault();
     $(this).parent().find('li[class="unknown"]').toggle();
@@ -75,8 +81,13 @@ $(document).ready(function() {
     $('.evaluate li').hover(toggleHighlightMembers, toggleHighlightMembers);
     $('.verbnet_members li').hover(toggleHighlightCandidates, toggleHighlightCandidates);
 
+    // Show/hide verbs that are not interesting
     var showLink = $('<a/>').text('[+]').prop('href', '#').click(toggleHideShow);
     $('.evaluate').append(showLink);
-});
 
+    $('.edit').each(function() {
+        $(this).editable('edit/ladl/', {"edited": $(this).prev("a")[0]});
+    });
+
+});
 
