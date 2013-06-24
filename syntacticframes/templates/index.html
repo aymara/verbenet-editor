@@ -10,12 +10,12 @@
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
         {% for class in levin_classes %}
-          {% if class.number == active_class.number %}
-            <li class="active"><a href="#">{{ class.number }}: {{ class.name }}</a></li>
-          {% else %}
-            <li><a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
-          {% endif %}
-        {% endfor %}
+          {% spaceless %}{% if class.number == active_class.number %}
+              <li class="active"><a href="#">{{ class.number }}: {{ class.name }}</a></li>
+            {% else %}
+              <li><a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
+            {% endif %}
+           {% endspaceless %}{% endfor %}
         </ul>
       </div>
     </div>
@@ -29,8 +29,8 @@
         <article>
             <h2 id="{{classe.name}}">
                 <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
-                <a class="lvf" href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html">{{classe.lvf_string}}</a>
-                <a class="ladl" href="verbes-html/V_{{classe.ladl_string}}.lgt.html">{{classe.ladl_string}}</a>
+                {% if classe.lvf_string %}<a class="lvf editable" href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html">{{classe.lvf_string}}</a><a class="edit" href="#"><i class="icon-pencil"></i></a>{% endif %}
+                {% if classe.ladl_string %}<a class="ladl editable" href="verbes-html/V_{{classe.ladl_string}}.lgt.html">{{classe.ladl_string}}</a><a class="edit" href="#"><i class="icon-pencil"></i></a>{% endif %}
             </h2>
             <p>{{classe.paragon}}{%if classe.comment %} | {{classe.comment}}{% endif %}</p>
             <ul>
@@ -47,20 +47,10 @@
                     </ul>
                 <li>Traductions</li>
                     <ul class="evaluate invalid">
-                    {% spaceless %}
                     {% for name, translations in all_translations.items %}
                        {% if name == classe.name %}{% for word in translations %}
-                        <li
-                            {% if word.category == 'unknown' or word.category = 'dicovalence' %}
-                                style="display:none"
-                            {% endif %}
-                            class="{{word.category}}"
-                            data-origin="{{word.origin}}">
-                            {{word.verb}},
-                        </li>
-                      {% endfor %}{% endif %}
+                        <li {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li> {% endfor %}{% endif %}
                     {% endfor %}
-                    {% endspaceless %}
                     </ul>
             </ul>
         </article>
