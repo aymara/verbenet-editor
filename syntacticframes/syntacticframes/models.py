@@ -20,6 +20,13 @@ class VerbNetMember(models.Model):
     verbnet_class = models.ForeignKey(VerbNetClass)
     lemma = models.CharField(max_length=1000)
 
+class VerbNetFrame(models.Model):
+    verbnet_class = models.ForeignKey(VerbNetClass)
+    syntax = models.CharField(max_length=100) 
+    roles = models.CharField(max_length=100)
+    semantics = models.CharField(max_length=100)
+    
+
 @total_ordering
 class VerbTranslation(models.Model):
     TRANSLATION_CATEGORY = (
