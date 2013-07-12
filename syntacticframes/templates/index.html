@@ -29,8 +29,8 @@
         <article>
             <h2 id="{{classe.name}}">
                 <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
-                {% if classe.lvf_string %}<a class="lvf editable" href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html">{{classe.lvf_string}}</a><a class="edit" href="#"><i class="icon-pencil"></i></a>{% endif %}
-                {% if classe.ladl_string %}<a class="ladl editable" href="verbes-html/V_{{classe.ladl_string}}.lgt.html">{{classe.ladl_string}}</a><a class="edit" href="#"><i class="icon-pencil"></i></a>{% endif %}
+                {% if classe.lvf_string %}<span class="lvf editable">{{classe.lvf_string}}</span><a href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html" class="external" href="#"><i class="icon-share-alt"></i></a>{% endif %}
+            {% if classe.ladl_string %}<span class="ladl editable">{{classe.ladl_string}}</span><a href="http://verbenet.pradet.me/verbes-html/V_{{classe.ladl_string}}.lgt.html" class="external" href="#"><i class="icon-share-alt"></i></a>{% endif %}
             </h2>
             <p>{{classe.paragon}}{%if classe.comment %} | {{classe.comment}}{% endif %}</p>
             <ul>
