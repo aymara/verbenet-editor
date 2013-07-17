@@ -1,17 +1,21 @@
 from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import redirect
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from distutils.version import LooseVersion
 
 from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation
 
+@ensure_csrf_cookie
 def classe(request, class_number):
     levin_classes = list(LevinClass.objects.all())
     levin_classes.sort(key = lambda l: LooseVersion(l.number))
 
     active_class = LevinClass.objects.get(number = class_number)
-    verbnet_classes = VerbNetClass.objects.filter(levin_class__exact = active_class)
+    verbnet_classes = list(VerbNetClass.objects.filter(levin_class__exact = active_class))
+    verbnet_classes.sort(key = lambda v: LooseVersion(v.name.split('-')[1]))
+
     translations, origins = {}, {}
 
     for verbnet_class in verbnet_classes:
@@ -32,3 +36,16 @@ def classe(request, class_number):
 def index(request):
     # Hardcoding that the first class is 9
     return redirect('class/9/')
+
+def update(request):
+    if request.method == 'POST':
+        post = request.POST
+        vn_class, field, label = post["vn_class"], post["field"], post["label"]
+        print("Update {}/{} to {}".format(vn_class, field, label))
+        verbnet_class = VerbNetClass.objects.filter(name__exact = vn_class)[0]
+        if field == 'ladl':
+            verbnet_class.ladl_string = label
+        elif field == 'lvf':
+            verbnet_class.lvf_string = label
+        verbnet_class.save()
+    return HttpResponse("ok")

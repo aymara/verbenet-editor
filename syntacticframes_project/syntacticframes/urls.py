@@ -12,6 +12,9 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^class/(?P<class_number>\d+)/$', views.classe, name='index'),
 
+    # JS API
+    url(r'^update/$', views.update),
+
     # Examples:
     # url(r'^$', 'syntacticframes.views.home', name='home'),
     # url(r'^syntacticframes/', include('syntacticframes.foo.urls')),
