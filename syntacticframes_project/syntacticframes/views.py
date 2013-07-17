@@ -4,8 +4,11 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from distutils.version import LooseVersion
+import logging
 
 from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation
+
+logger = logging.getLogger('database')
 
 @ensure_csrf_cookie
 def classe(request, class_number):
@@ -41,7 +44,7 @@ def update(request):
     if request.method == 'POST':
         post = request.POST
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
-        print("Update {}/{} to {}".format(vn_class, field, label))
+        logger.info("Update {}/{} to {}".format(vn_class, field, label))
         verbnet_class = VerbNetClass.objects.filter(name__exact = vn_class)[0]
         if field == 'ladl':
             verbnet_class.ladl_string = label

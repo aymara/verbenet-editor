@@ -235,8 +235,14 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+        # Log to a text file that can be rotated by logrotate
+        'logfile': {
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': normpath(join(SITE_ROOT, 'log/app.log'))
+        },
     },
     'loggers': {
         'django.request': {
@@ -244,6 +250,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'database': {
+            'handlers': ['logfile'],
+            'level': 'INFO',
+            'propagate': 'FALSE'
+        }
     }
 }
 ########## END LOGGING CONFIGURATION
