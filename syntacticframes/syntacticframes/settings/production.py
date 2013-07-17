@@ -61,11 +61,6 @@ STATIC_ROOT = normpath(join(SITE_ROOT, 'public/static'))
 STATIC_URL = '/static/'
 
 
-########## CACHE CONFIGURATION
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
-CACHES = {}
-########## END CACHE CONFIGURATION
-
 
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
