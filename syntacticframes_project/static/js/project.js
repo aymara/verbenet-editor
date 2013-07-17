@@ -54,6 +54,19 @@ function toggleHideShow(e) {
     $(this).text($(this).text() == '[+]' ? '[-]' : '[+]');
 }
 
+/* Send change to server after edited in place */
+function edited_field(input, label) {
+    var new_val = input.val();
+    var field = $(label)
+    var vn_class = field.parent().attr("id");
+
+    $.ajax({
+        url: '/update/',
+        type: 'POST',
+        data: {vn_class: vn_class, field: field.val(), label: new_val}
+    });
+}
+
 
 $(document).ready(function() {
     // "Evaluate" a word: set it as valid or not
@@ -85,8 +98,9 @@ $(document).ready(function() {
     var showLink = $('<a/>').text('[+]').prop('href', '#').click(toggleHideShow);
     $('.evaluate').append(showLink);
 
-    $('.edit').each(function() {
-        $(this).editable('edit/ladl/', {"edited": $(this).prev("a")[0]});
+    // Edit all editable fields
+    $('.editable').each(function() {
+        $(this).inedit({'onEnd': edited_field});
     });
 
 });
