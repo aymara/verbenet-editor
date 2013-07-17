@@ -1,3 +1,5 @@
+#!/home/pradet/apps/python3ve/bin/python3
+
 """
 WSGI config for syntacticframes project.
 
