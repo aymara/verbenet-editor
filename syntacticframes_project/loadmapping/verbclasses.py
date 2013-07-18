@@ -104,10 +104,9 @@ verb_classes = {
     "107": "Involve",
     "108": "Multiply",
     "109": "Seem and Become",
-}  
- 
+}
+
 from syntacticframes.models import LevinClass
 
-for number in verb_classes: 
-    LevinClass(number = number, name = verb_classes[number]).save()
-
+for number in verb_classes:
+    LevinClass(number=number, name=verb_classes[number]).save()
