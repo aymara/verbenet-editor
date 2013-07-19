@@ -6,7 +6,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from distutils.version import LooseVersion
 import logging
 
-from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation
+from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet
 
 logger = logging.getLogger('database')
 
@@ -21,10 +21,10 @@ def classe(request, class_number):
 
     translations, origins = {}, {}
 
-    for verbnet_class in verbnet_classes:
-        translations[verbnet_class.name] = sorted(
-            VerbTranslation.objects.filter(verbnet_class=verbnet_class))
-        origins[verbnet_class.name] = VerbNetMember.objects.filter(verbnet_class=verbnet_class)
+    #for verbnet_class in verbnet_classes:
+    #    translations[verbnet_class.name] = sorted(
+    #        VerbTranslation.objects.filter(verbnet_class=verbnet_class))
+    #    origins[verbnet_class.name] = VerbNetMember.objects.filter(verbnet_class=verbnet_class)
 
     template = loader.get_template('index.html')
     context = Context({

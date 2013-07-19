@@ -1,4 +1,5 @@
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
 from functools import total_ordering
 
 class LevinClass(models.Model):
@@ -9,6 +10,7 @@ class LevinClass(models.Model):
         return "{}: {}".format(self.number, self.name)
 
 class VerbNetClass(models.Model):
+    """A high-level VerbNet class (eg. put-9.1)"""
     levin_class = models.ForeignKey(LevinClass)
     name = models.CharField(max_length=100)
     paragon = models.CharField(max_length=100)
@@ -16,16 +18,40 @@ class VerbNetClass(models.Model):
     ladl_string = models.CharField(max_length=100)
     lvf_string = models.CharField(max_length=100)
 
-class VerbNetMember(models.Model):
+class VerbNetFrameSet(MPTTModel):
+    """
+    FrameSet which will contain sub-classes.
+
+    A given subclass contains members, roles, and frames.
+    """
     verbnet_class = models.ForeignKey(VerbNetClass)
+    name = models.CharField(max_length=100)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+
+class VerbNetMember(models.Model):
+    """An english member"""
+    frameset = models.ForeignKey(VerbNetFrameSet)
     lemma = models.CharField(max_length=1000)
 
+    def __str__(self):
+        return self.lemma
+
+class VerbNetRole(models.Model):
+    """One role for a specific VerbNetFrameSet"""
+    frameset = models.ForeignKey(VerbNetFrameSet)
+    # name + restrictions
+    name = models.CharField(max_length=1000)
+
 class VerbNetFrame(models.Model):
-    verbnet_class = models.ForeignKey(VerbNetClass)
-    syntax = models.CharField(max_length=100) 
-    roles = models.CharField(max_length=100)
-    semantics = models.CharField(max_length=100)
-    
+    frameset = models.ForeignKey(VerbNetFrameSet)
+    # NP V NP
+    syntax = models.CharField(max_length=1000) 
+    # John confesses it
+    example = models.CharField(max_length=1000) 
+    # Agent V Topic
+    roles_syntax = models.CharField(max_length=1000) 
+    # transfer_info(during(E), Agent, ?Recipient, Topic) cause(Agent, E)
+    semantics = models.CharField(max_length=1000)
 
 @total_ordering
 class VerbTranslation(models.Model):
@@ -37,7 +63,7 @@ class VerbTranslation(models.Model):
         ('unknown', 'No category'),
     )
 
-    verbnet_class = models.ForeignKey(VerbNetClass)
+    frameset = models.ForeignKey(VerbNetFrameSet)
     verb = models.CharField(max_length=100)
     category = models.CharField(max_length=20, choices=TRANSLATION_CATEGORY)
     origin = models.CharField(max_length=500) # english comma-separated verbs
