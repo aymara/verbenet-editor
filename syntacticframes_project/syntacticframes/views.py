@@ -45,6 +45,7 @@ def update(request):
         post = request.POST
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
         logger.info("Update {}/{} to {}".format(vn_class, field, label))
+        refresh_class = False
         if field == 'syntax':
             frame = VerbNetFrame.objects.get(id=int(vn_class))
             frame.roles_syntax = label
@@ -54,11 +55,25 @@ def update(request):
             frame.syntax = label
             frame.save()
         elif field == 'ladl':
+            refresh_class = True
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
             verbnet_class.ladl_string = label
             verbnet_class.save()
         elif field == 'lvf':
+            refresh_class = True
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
             verbnet_class.lvf_string = label
             verbnet_class.save()
+
+        if refresh_class:
+            import verbnet.verbnetreader
+            from syntacticframes.management.commands.loadverbnet import save_class
+            verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
+            verbnet_class.verbnetframeset_set.all().delete()
+
+            r = verbnet.verbnetreader.VerbnetReader('verbnet/verbnet-3.2/', False)
+            c = r.files[verbnet_class.name]
+            save_class(c, verbnet_class)
+            
+            
     return HttpResponse("ok")

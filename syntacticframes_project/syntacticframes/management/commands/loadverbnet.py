@@ -10,8 +10,6 @@ from loadmapping import mapping
 
 from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
 
-import itertools
-
 def iprint(indent, stuff):
     print(" " * indent, stuff)
 
