@@ -172,10 +172,10 @@ def get_verbs_for_class_list(operation_and_list, resource):
     return verbs
 
 
-def translations_for_class(verbnet_class, ladl_classes, lvf_classes):
-    tree = ElementTree(file=join(FVN_PATH,
-                       "resources/verbnet-3.2/{}.xml".format(verbnet_class)))
-    verbs = get_members(tree)
+def translations_for_class(verbs, ladl, lvf):
+    ladl_classes = parse_ladl(ladl)
+    lvf_classes = parse_ladl(lvf)
+
     candidates = defaultdict(set)
     lvf, ladl = set(), set()
 
@@ -211,7 +211,7 @@ def translations_for_class(verbnet_class, ladl_classes, lvf_classes):
     final = sorted(final, key=lambda c: locale.strxfrm(c[0]))
     final.sort(key=itemgetter(2))
 
-    return final, verbs
+    return final
 
 
 def read_csv(filename):
@@ -229,12 +229,12 @@ def read_csv(filename):
             if (row[1] in FORGET_LIST and row[2] in FORGET_LIST) or (row[1] == '-' or row[2] == '-'):
                 lines.append({'classe': vn, 'candidates': [], 'paragon': paragon, 'lvf': row[2], 'lvf_orig': row[2], 'ladl': row[1], 'ladl_orig': row[1], 'verbnet_members': [], 'commentaire': commentaire})
             else:
-                ladl = parse_ladl(row[1])
-                lvf = parse_lvf(row[2])
-                final, verbnet_members = translations_for_class(vn, ladl, lvf)
+                tree = ElementTree(file=join(FVN_PATH,
+                                   "resources/verbnet-3.2/{}.xml".format(vn)))
+                verbnet_members = get_members(tree)
+                final = translations_for_class(verbnet_members, row[1], row[2])
                 lines.append({'classe': vn, 'candidates':  final,
-                             'paragon': paragon, 'lvf': lvf, 'lvf_orig': row[2],
-                             'ladl': ladl, 'ladl_orig': row[1],
+                             'paragon': paragon, 'lvf_orig': row[2], 'ladl_orig': row[1],
                              'verbnet_members': verbnet_members,
                              'commentaire': commentaire})
 

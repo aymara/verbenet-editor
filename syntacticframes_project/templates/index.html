@@ -42,7 +42,12 @@
                 {% recursetree classe.verbnetframeset_set.all %}
                 <li>{{node.name}}</li>
                 <li>Membres : {% for word in node.verbnetmember_set.all %}{{ word }} {% endfor %}</li>
-                <li>Traductions : {% for word in node.verbnettranslation_set.all %}{{ word }} {% endfor %}</li>
+                <li>Traductions :
+                    <ul class="evaluate invalid">
+                        {% for word in node.verbtranslation_set.all %}
+                        <li  {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li>
+                        {% endfor %}
+                    </ul>
                 <ul>
                     {% for frame in node.verbnetframe_set.all %}
                     <div class="frame">

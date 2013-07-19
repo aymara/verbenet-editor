@@ -15,7 +15,7 @@ import itertools
 def iprint(indent, stuff):
     print(" " * indent, stuff)
 
-def save_class(c, vn_class, candidates, parent=None, indent=0):
+def save_class(c, vn_class, parent=None, indent=0):
     iprint(indent, c['name'])
     db_frameset = VerbNetFrameSet(name=c['name'], verbnet_class=vn_class, parent=parent)
     db_frameset.save()
@@ -36,6 +36,7 @@ def save_class(c, vn_class, candidates, parent=None, indent=0):
             example=f.example)
         db_f.save()
 
+        candidates = mapping.translations_for_class(c['members'], vn_class.ladl_string, vn_class.lvf_string)
         for french, categoryname, categoryid, originlist in candidates:
             originset = set(originlist.split(','))
             if set(c['members']) & originset:
@@ -50,7 +51,7 @@ def save_class(c, vn_class, candidates, parent=None, indent=0):
     print()
 
     for c in c['children']:
-        save_class(c, vn_class, candidates, db_frameset, indent+4)
+        save_class(c, vn_class, db_frameset, indent+4)
 
 
 class Command(BaseCommand):
@@ -65,7 +66,7 @@ class Command(BaseCommand):
             print("Imported Levin classes!")
 
         # import vn classes and mapping
-        candidates, verb_dict = mapping.import_mapping()
+        mapping.import_mapping()
 
         with transaction.commit_on_success():
 
@@ -79,4 +80,4 @@ class Command(BaseCommand):
                 print("Using {}".format(filename))
                 vn_class = VerbNetClass.objects.get(name=filename, levin_class=lc)
                 #vn_class.save()
-                save_class(c, vn_class, candidates[filename])
+                save_class(c, vn_class)
