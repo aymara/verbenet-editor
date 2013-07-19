@@ -96,12 +96,6 @@ class VerbnetReader:
         if element[0].isupper and element.split(".")[0].upper() != element.split(".")[0]:
             base_structure[0] = element.lower()
 
-        syntax_data = xml_frame.find("SYNTAX")
-
-        roles, structures = self._build_structure(
-            base_structure, syntax_data, vnclass, role_list)
-
-        return [VerbnetFrame(y, x, vnclass) for x, y in zip(roles, structures)]
 
     def _build_structure(self, base_structure, syntax_data, vnclass, role_list):
         """ Build the final structure from base_structure

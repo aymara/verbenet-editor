@@ -18,22 +18,21 @@ from collections import defaultdict
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-FVN_PATH = 'syntacticframes/loadmapping'
+FVN_PATH = 'loadmapping'
 FORGET_LIST = ['?', '*', '']
 
 
 def get_members(tree):
     return [member.get('name') for member in tree.findall(".//MEMBER")]
 
-if __name__ == '__main__':
-    with open(join(FVN_PATH, 'data/LADL_to_verbes'), 'rb') as f:
-        ladl_dict = pickle.load(f)
-    with open(join(FVN_PATH, 'data/LVF+1_to_verbs'), 'rb') as f:
-        lvf_dict = pickle.load(f)
-    with open(join(FVN_PATH, 'data/DICOVALENCE_VERBS'), 'rb') as f:
-        dicovalence_verbs = pickle.load(f)
-    with open(join(FVN_PATH, 'data/verb_dictionary.pickle'), 'rb') as f:
-        verb_dict = pickle.load(f)
+with open(join(FVN_PATH, 'data/LADL_to_verbes'), 'rb') as f:
+    ladl_dict = pickle.load(f)
+with open(join(FVN_PATH, 'data/LVF+1_to_verbs'), 'rb') as f:
+    lvf_dict = pickle.load(f)
+with open(join(FVN_PATH, 'data/DICOVALENCE_VERBS'), 'rb') as f:
+    dicovalence_verbs = pickle.load(f)
+with open(join(FVN_PATH, 'data/verb_dictionary.pickle'), 'rb') as f:
+    verb_dict = pickle.load(f)
 
 
 # We want to allow multiple classes and various writings that make sense for
@@ -222,25 +221,22 @@ def read_csv(filename):
         # Forget header
         next(corresreader)
         for row in corresreader:
-            # Two empty lines, nothing to do
-            if row[1] in FORGET_LIST and row[2] in FORGET_LIST:
-                continue
-            # Impossible to translate, continue
-            if row[1] == '-' or row[2] == '-':
-                continue
-
             print(row)
-
             vn = row[0].split()[1]
-            ladl = parse_ladl(row[1])
-            lvf = parse_lvf(row[2])
             paragon, commentaire = row[3], row[4]
-            final, verbnet_members = translations_for_class(vn, ladl, lvf)
-            lines.append({'classe': vn, 'candidates':  final,
-                         'paragon': paragon, 'lvf': lvf, 'lvf_orig': row[2],
-                         'ladl': ladl, 'ladl_orig': row[1],
-                         'verbnet_members': verbnet_members,
-                         'commentaire': commentaire})
+            # Two empty lines, nothing to do
+            # or Impossible to translate, continue
+            if (row[1] in FORGET_LIST and row[2] in FORGET_LIST) or (row[1] == '-' or row[2] == '-'):
+                lines.append({'classe': vn, 'candidates': [], 'paragon': paragon, 'lvf': row[2], 'lvf_orig': row[2], 'ladl': row[1], 'ladl_orig': row[1], 'verbnet_members': [], 'commentaire': commentaire})
+            else:
+                ladl = parse_ladl(row[1])
+                lvf = parse_lvf(row[2])
+                final, verbnet_members = translations_for_class(vn, ladl, lvf)
+                lines.append({'classe': vn, 'candidates':  final,
+                             'paragon': paragon, 'lvf': lvf, 'lvf_orig': row[2],
+                             'ladl': ladl, 'ladl_orig': row[1],
+                             'verbnet_members': verbnet_members,
+                             'commentaire': commentaire})
 
     return lines
 
@@ -254,13 +250,14 @@ def get_levin(c):
 
 from django.db import transaction
 
-if __name__ == '__main__':
-    verbnet = read_csv(os.path.join(FVN_PATH, 'resources/Correspondances.csv'))
+def import_mapping():
+    verbnet = read_csv('loadmapping/resources/Correspondances.csv')
 
     with transaction.commit_on_success():
+        candidates = {}
 
         for classe in verbnet:
-            print(classe["classe"])
+            print("Saving {}".format(classe["classe"]))
             v = VerbNetClass(
                 levin_class=LevinClass.objects.get(
                     number=get_levin(classe["classe"])),
@@ -271,10 +268,17 @@ if __name__ == '__main__':
                 ladl_string=classe["ladl_orig"])
             v.save()
 
-            for word in classe["verbnet_members"]:
-                VerbNetMember(verbnet_class=v, lemma=word).save()
+            #for word in classe["verbnet_members"]:
+            #    VerbNetMember(verbnet_class=v, lemma=word).save()
 
-            for word in classe["candidates"]:
-                VerbTranslation(
-                    verb=word[0], verbnet_class=v,
-                    category=word[1], origin=word[3]).save()
+            #for word in classe["candidates"]:
+            #    VerbTranslation(
+            #        verb=word[0], verbnet_class=v,
+            #        category=word[1], origin=word[3]).save()
+            candidates[classe['classe']] = classe['candidates']
+
+        return candidates, verb_dict
+
+
+if __name__ == '__main__':
+    import_mapping()
