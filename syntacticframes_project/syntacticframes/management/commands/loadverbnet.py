@@ -40,11 +40,14 @@ def save_class(c, vn_class, parent=None, indent=0):
         for french, categoryname, categoryid, originlist in candidates:
             originset = set(originlist.split(','))
             if set(c['members']) & originset:
-                VerbTranslation(
-                    frameset=db_frameset,
-                    verb=french,
-                    category=categoryname,
-                    origin=originlist).save()
+                try:
+                    VerbTranslation.objects.get(frameset=db_frameset, verb=french)
+                except:
+                    VerbTranslation(
+                        frameset=db_frameset,
+                        verb=french,
+                        category=categoryname,
+                        origin=originlist).save()
         #iprint(indent, f)
         #iprint(indent, f.example)
         #iprint(indent, f.semantics)
