@@ -152,5 +152,33 @@ $(document).ready(function() {
         $(this).inedit({'onEnd': edited_field});
     });
 
+    $('.realsyntaxeditable').each(function() {
+        $(this).inedit({'onEnd': function(input_field, span) {
+            var new_val = $(input_field).val();
+            // oui oui oui oui
+            var vn_class = $(span).parent().parent().parent().parent().parent().find("h2").attr("id");
+
+            $.ajax({
+                url: '/update/',
+                type: 'POST',
+                data: {vn_class: $(span).data("field"), field: "realsyntax", label: new_val}
+            });
+        }});
+    });
+
+    $('.syntaxeditable').each(function() {
+        $(this).inedit({'onEnd': function(input_field, span) {
+            var new_val = $(input_field).val();
+            // oui oui oui oui
+            var vn_class = $(span).parent().parent().parent().parent().parent().parent().parent().parent().parent().find("h2").attr("id");
+
+            $.ajax({
+                url: '/update/',
+                type: 'POST',
+                data: {vn_class: $(span).data("field"), field: "syntax", label: new_val}
+            });
+        }});
+    });
+
 });
 

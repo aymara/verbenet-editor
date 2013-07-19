@@ -6,7 +6,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from distutils.version import LooseVersion
 import logging
 
-from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet
+from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame
 
 logger = logging.getLogger('database')
 
@@ -45,10 +45,20 @@ def update(request):
         post = request.POST
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
         logger.info("Update {}/{} to {}".format(vn_class, field, label))
-        verbnet_class = VerbNetClass.objects.filter(name__exact = vn_class)[0]
-        if field == 'ladl':
+        if field == 'syntax':
+            frame = VerbNetFrame.objects.get(id=int(vn_class))
+            frame.roles_syntax = label
+            frame.save()
+        elif field == 'realsyntax':
+            frame = VerbNetFrame.objects.get(id=int(vn_class))
+            frame.syntax = label
+            frame.save()
+        elif field == 'ladl':
+            verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
             verbnet_class.ladl_string = label
+            verbnet_class.save()
         elif field == 'lvf':
+            verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
             verbnet_class.lvf_string = label
-        verbnet_class.save()
+            verbnet_class.save()
     return HttpResponse("ok")

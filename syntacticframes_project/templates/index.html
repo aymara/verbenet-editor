@@ -51,10 +51,10 @@
                 <ul>
                     {% for frame in node.verbnetframe_set.all %}
                     <div class="frame">
-                    <p>{{ frame.syntax }}</p>
+                    <p><span class="realsyntaxeditable" data-field="{{frame.id}}">{{ frame.syntax }}<span></p>
                     <table class="table">
                         <tr><td>Exemple</td><td>{{ frame.example }}</td></tr>
-                        <tr><td>Syntaxe</td><td>{{ frame.roles_syntax }}</td></tr>
+                        <tr><td>Syntaxe</td><td><span class="syntaxeditable" data-field="{{frame.id}}">{{ frame.roles_syntax }}<span></td></tr>
                         <tr><td>Sémantique</td><td>{{ frame.semantics }}</td></tr>
                     </table>
                     </div>
