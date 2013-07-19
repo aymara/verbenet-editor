@@ -40,7 +40,7 @@ class VerbnetReader:
         for filename in os.listdir(path):
             if not filename[-4:] == ".xml": continue
 
-            print(self.normalize)
+            #print(self.normalize)
 
             self.filename = filename
             root = ET.ElementTree(file=path+self.filename)
@@ -60,7 +60,7 @@ class VerbnetReader:
 
         # Use the format of the vn/fn mapping
         vnclass = "-".join(xml_class.attrib["ID"].split('-')[1:])
-        print("Class: {}".format(vnclass))
+        #print("Class: {}".format(vnclass))
 
         whole_class = {"children": [], "roles": set(), "members": [], "frames": [], "name": vnclass}
         
@@ -100,7 +100,7 @@ class VerbnetReader:
         syntax_data = xml_frame.find("SYNTAX")
         # Extract the structure
         base_structure = xml_frame.find("DESCRIPTION").attrib["primary"]
-        print(base_structure)
+        #print(base_structure)
         syntax = ""
         
         # Transform it into a list
@@ -151,7 +151,7 @@ class VerbnetReader:
                 ", ".join([arg.get("value") for arg in pred.findall("ARGS/ARG")])
             ))
 
-        print(pred_strings)
+        #print(pred_strings)
         return " ".join(pred_strings)
 
 

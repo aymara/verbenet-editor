@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#s!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
@@ -11,10 +11,11 @@ from loadmapping import mapping
 from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
 
 def iprint(indent, stuff):
-    print(" " * indent, stuff)
+    pass
+    #print(" " * indent, stuff)
 
 def save_class(c, vn_class, parent=None, indent=0):
-    iprint(indent, c['name'])
+    #iprint(indent, c['name'])
     db_frameset = VerbNetFrameSet(name=c['name'], verbnet_class=vn_class, parent=parent)
     db_frameset.save()
 
@@ -49,7 +50,7 @@ def save_class(c, vn_class, parent=None, indent=0):
         #iprint(indent, f)
         #iprint(indent, f.example)
         #iprint(indent, f.semantics)
-    print()
+    #print()
 
     for c in c['children']:
         save_class(c, vn_class, db_frameset, indent+4)
