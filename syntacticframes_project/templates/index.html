@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load mptt_tags %}
 
 {% block all %}
 
@@ -33,8 +34,36 @@
             {% if classe.ladl_string %}<span class="editable" data-field="ladl">{{classe.ladl_string}}</span><a href="http://verbenet.pradet.me/verbes-html/V_{{classe.ladl_string}}.lgt.html" class="external" href="#"><i class="icon-share-alt"></i></a>{% endif %}
             </h2>
             <p>{{classe.paragon}}{%if classe.comment %} | {{classe.comment}}{% endif %}</p>
+            {% for name, frameset in framesets.items %}
+                {{ name }}
+               {% if name == classe.name %}{{ frameset.verbnet_class.name }}{% endif %}
+            {% endfor %}
             <ul>
-                <li>Membres VerbNet :</li>
+                {% recursetree classe.verbnetframeset_set.all %}
+                <li>{{node.name}}</li>
+                <li>Membres : {% for word in node.verbnetmember_set.all %}{{ word }} {% endfor %}</li>
+                <li>Traductions : {% for word in node.verbnettranslation_set.all %}{{ word }} {% endfor %}</li>
+                <ul>
+                    {% for frame in node.verbnetframe_set.all %}
+                    <div class="frame">
+                    <p>{{ frame.syntax }}</p>
+                    <table class="table">
+                        <tr><td>Exemple</td><td>{{ frame.example }}</td></tr>
+                        <tr><td>Syntaxe</td><td>{{ frame.roles_syntax }}</td></tr>
+                        <tr><td>Sémantique</td><td>{{ frame.semantics }}</td></tr>
+                    </table>
+                    </div>
+                    {% endfor %}
+                </ul>
+                {% if not node.is_leaf_node %}
+                <ul>
+                    {{ children }}
+                </ul>
+                {% endif %}
+
+                {% endrecursetree %}
+            </ul>
+            <ul>
                     <ul class="verbnet_members">
                     {% spaceless %}
                       {% for name, origins in all_origins.items %}
@@ -45,13 +74,11 @@
                       {% endfor %}
                     {% endspaceless %}
                     </ul>
-                <li>Traductions</li>
                     <ul class="evaluate invalid">
                     {% for name, translations in all_translations.items %}
                        {% if name == classe.name %}{% for word in translations %}
                         <li {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li> {% endfor %}{% endif %}
                     {% endfor %}
-                    </ul>
             </ul>
         </article>
         {% endfor %}
