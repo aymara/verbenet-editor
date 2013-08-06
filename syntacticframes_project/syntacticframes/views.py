@@ -5,6 +5,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from distutils.version import LooseVersion
 import logging
+from time import gmtime, strftime
 
 from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame
 
@@ -44,26 +45,41 @@ def update(request):
     if request.method == 'POST':
         post = request.POST
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
-        logger.info("Update {}/{} to {}".format(vn_class, field, label))
+        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
         refresh_class = False
+
         if field == 'syntax':
-            frame = VerbNetFrame.objects.get(id=int(vn_class))
+            frame_id = int(post["frame_id"])
+            frame = VerbNetFrame.objects.get(id=frame_id)
+            old_label = frame.roles_syntax
             frame.roles_syntax = label
             frame.save()
+            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
+                    .format(when, field, frame_id, vn_class, old_label, label))
         elif field == 'realsyntax':
-            frame = VerbNetFrame.objects.get(id=int(vn_class))
+            frame_id = int(post["frame_id"])
+            frame = VerbNetFrame.objects.get(id=frame_id)
+            old_label = frame.syntax
             frame.syntax = label
             frame.save()
+            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
+                    .format(when, field, frame_id, vn_class, old_label, label))
         elif field == 'ladl':
             refresh_class = True
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
+            old_label = verbnet_class.ladl_string
             verbnet_class.ladl_string = label
             verbnet_class.save()
+            logger.info("{}: Updated {} in {} from '{}' to '{}'"
+                    .format(when, field, vn_class, old_label, label))
         elif field == 'lvf':
             refresh_class = True
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
+            old_label = verbnet_class.lvf_string
             verbnet_class.lvf_string = label
             verbnet_class.save()
+            logger.info("{}: Updated {} in {} from '{}' to '{}'"
+                    .format(when, field, vn_class, old_label, label))
 
         if refresh_class:
             import verbnet.verbnetreader

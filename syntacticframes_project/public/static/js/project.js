@@ -155,11 +155,18 @@ $(document).ready(function() {
     $('.realsyntaxeditable').each(function() {
         $(this).inedit({'onEnd': function(input_field, span) {
             var new_val = $(input_field).val();
+            var article = $(span).closest("article")[0];
+            var vn_class = $(article).find("h2").attr("id");
 
             $.ajax({
                 url: '/update/',
                 type: 'POST',
-                data: {vn_class: $(span).data("field"), field: "realsyntax", label: new_val}
+                data: {
+                    field: "realsyntax",
+                    vn_class: vn_class,
+                    frame_id: $(span).data("field"),
+                    label: new_val,
+                }
             });
         }});
     });
@@ -167,11 +174,18 @@ $(document).ready(function() {
     $('.syntaxeditable').each(function() {
         $(this).inedit({'onEnd': function(input_field, span) {
             var new_val = $(input_field).val();
+            var article = $(span).closest("article")[0];
+            var vn_class = $(article).find("h2").attr("id");
 
             $.ajax({
                 url: '/update/',
                 type: 'POST',
-                data: {vn_class: $(span).data("field"), field: "syntax", label: new_val}
+                data: {
+                    field: "syntax",
+                    vn_class: vn_class,
+                    frame_id: $(span).data("field"),
+                    label: new_val,
+                }
             });
         }});
     });
