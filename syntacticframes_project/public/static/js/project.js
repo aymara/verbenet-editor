@@ -155,8 +155,6 @@ $(document).ready(function() {
     $('.realsyntaxeditable').each(function() {
         $(this).inedit({'onEnd': function(input_field, span) {
             var new_val = $(input_field).val();
-            // oui oui oui oui
-            var vn_class = $(span).parent().parent().parent().parent().parent().find("h2").attr("id");
 
             $.ajax({
                 url: '/update/',
@@ -169,8 +167,6 @@ $(document).ready(function() {
     $('.syntaxeditable').each(function() {
         $(this).inedit({'onEnd': function(input_field, span) {
             var new_val = $(input_field).val();
-            // oui oui oui oui
-            var vn_class = $(span).parent().parent().parent().parent().parent().parent().parent().parent().parent().find("h2").attr("id");
 
             $.ajax({
                 url: '/update/',
