@@ -69,23 +69,6 @@
 
             </ul>
             {% endrecursetree %}
-            <ul>
-                    <ul class="verbnet_members">
-                    {% spaceless %}
-                      {% for name, origins in all_origins.items %}
-                         {% if name == classe.name %}{% for word in origins %}
-                          <li>{{word.lemma}}</li>
-                          <span class="comma_hack">, </span>
-                        {% endfor %}{% endif %}
-                      {% endfor %}
-                    {% endspaceless %}
-                    </ul>
-                    <ul class="evaluate invalid">
-                    {% for name, translations in all_translations.items %}
-                       {% if name == classe.name %}{% for word in translations %}
-                        <li {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li> {% endfor %}{% endif %}
-                    {% endfor %}
-            </ul>
         </article>
         {% endfor %}
       {% endblock content %}
