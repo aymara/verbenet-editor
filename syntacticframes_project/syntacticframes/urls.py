@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
     # JS API
     url(r'^update/$', views.update),
+    url(r'^remove/$', views.remove),
 
     # Examples:
     # url(r'^$', 'syntacticframes.views.home', name='home'),

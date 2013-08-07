@@ -45,6 +45,7 @@ class VerbNetRole(models.Model):
 class VerbNetFrame(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
     position = models.PositiveSmallIntegerField(null=True)
+    removed = models.BooleanField(default=False)
     # NP V NP
     syntax = models.CharField(max_length=1000) 
     # John confesses it

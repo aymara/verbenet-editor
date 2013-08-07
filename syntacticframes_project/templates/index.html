@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load mptt_tags %}
+{% load syntacticframes_extras %}
 
 {% block all %}
 
@@ -49,9 +50,9 @@
                         {% endfor %}
                     </ul>
                 <li>Frames :</li>
-                    {% for frame in node.verbnetframe_set.all %}
+                    {% for frame in node.verbnetframe_set.all|is_removed:False %}
                     <div class="frame" data-frameid="{{frame.id}}">
-                    <a class="remove_frame"><i class="right icon-remove"></i></a>
+                    <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
                     <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}<span></p>
                     <table class="table">
                         <tr><td>Exemple</td><td>{{ frame.example }}</td></tr>
@@ -60,6 +61,15 @@
                     </table>
                     </div>
                     {% endfor %}
+                {% if node.verbnetframe_set.all|is_removed:True %}
+                <li>Frames supprimées :</li>
+                    <ul>
+                    {% for frame in node.verbnetframe_set.all|is_removed:True %}
+                        <li>{{ frame.syntax }} ({{ frame.example }})</li>
+                    {% endfor %}
+                    </ul>
+                </li>
+                {% endif %}
                 </ul>
                 {% if not node.is_leaf_node %}
                 <ul>

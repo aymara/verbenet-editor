@@ -176,5 +176,27 @@ $(document).ready(function() {
         $(this).inedit({'onEnd': edited_frame_field});
     });
 
+    // Operations on frames/framesets
+    $('.remove_frame').click(function() {
+        var vn_class_article = $(this).closest("article")[0];
+        var vn_class_id = $(vn_class_article).find("h2").attr("id");
+
+        var frame_div = $(this).closest(".frame")[0];
+        var frame_id = $(frame_div).data("frameid");
+
+        $.ajax({
+            url: '/remove/',
+            type: 'POST',
+            data: {
+                model: 'VerbNetFrame',
+                vn_class: vn_class_id,
+                frame_id: frame_id,
+                syntax: $(frame_div).find("span[data-field='syntax']").text()
+            }
+        });
+
+        return false;
+    });
+
 });
 

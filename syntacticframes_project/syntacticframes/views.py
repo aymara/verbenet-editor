@@ -92,4 +92,22 @@ def update(request):
             save_class(c, verbnet_class)
             
             
-    return HttpResponse("ok")
+        return HttpResponse("ok")
+
+def remove(request):
+    if request.method == 'POST':
+        post = request.POST
+        model = post['model']
+        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+
+        if model == 'VerbNetFrame':
+            frame_id = int(request.POST['frame_id'])
+            vn_class = request.POST['vn_class']
+            syntax = request.POST['syntax']    
+            db_frame = VerbNetFrame.objects.get(id=frame_id)
+            db_frame.removed = True
+            db_frame.save()
+            logger.info("{}: Marked frame {}/{} as removed in class {}"
+                        .format(when, frame_id, syntax, vn_class))
+
+        return HttpResponse("ok")
