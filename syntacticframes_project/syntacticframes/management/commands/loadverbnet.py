@@ -1,4 +1,4 @@
-#s!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
