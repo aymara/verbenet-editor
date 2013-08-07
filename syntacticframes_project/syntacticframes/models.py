@@ -44,6 +44,7 @@ class VerbNetRole(models.Model):
 
 class VerbNetFrame(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
+    position = models.PositiveSmallIntegerField(null=True)
     # NP V NP
     syntax = models.CharField(max_length=1000) 
     # John confesses it
@@ -52,6 +53,9 @@ class VerbNetFrame(models.Model):
     roles_syntax = models.CharField(max_length=1000) 
     # transfer_info(during(E), Agent, ?Recipient, Topic) cause(Agent, E)
     semantics = models.CharField(max_length=1000)
+
+    class Meta:
+        ordering = ['position']
 
 @total_ordering
 class VerbTranslation(models.Model):
