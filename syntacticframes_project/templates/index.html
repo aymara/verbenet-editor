@@ -5,11 +5,11 @@
 {% block all %}
 
 <div class="container">
-  <div class="row-fluid">
+<div class="row-fluid">
 
-    <div class="span3">
-      <div class="well sidebar-nav">
-        <ul class="nav nav-list">
+<div class="span3">
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
         {% for class in levin_classes %}
           {% spaceless %}{% if class.number == active_class.number %}
               <li class="active"><a href="#">{{ class.number }}: {{ class.name }}</a></li>
@@ -38,17 +38,17 @@
                 {{ name }}
                {% if name == classe.name %}{{ frameset.verbnet_class.name }}{% endif %}
             {% endfor %}
+            {% recursetree classe.verbnetframeset_set.all %}
+            <p>Sous-classe {{node.name}} :</p>
             <ul>
-                {% recursetree classe.verbnetframeset_set.all %}
-                <li>{{node.name}}</li>
                 <li>Membres : {% for word in node.verbnetmember_set.all %}{{ word }} {% endfor %}</li>
-                <li>Traductions :
+                <li>Traductions :</li>
                     <ul class="evaluate invalid">
                         {% for word in node.verbtranslation_set.all %}
                         <li  {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li>
                         {% endfor %}
                     </ul>
-                <ul>
+                <li>Frames :</li>
                     {% for frame in node.verbnetframe_set.all %}
                     <div class="frame" data-frameid="{{frame.id}}">
                     <a class="remove_frame"><i class="right icon-remove"></i></a>
@@ -67,8 +67,8 @@
                 </ul>
                 {% endif %}
 
-                {% endrecursetree %}
             </ul>
+            {% endrecursetree %}
             <ul>
                     <ul class="verbnet_members">
                     {% spaceless %}

@@ -1,1 +1,4 @@
 /*! project specific CSS goes here. */
+
+.left { float: left }
+.right { float: right }
