@@ -146,12 +146,15 @@ class VerbnetReader:
     def _build_semantics(self, xml_semantics):
         pred_strings = []
         for pred in xml_semantics.findall("PRED"):
-            pred_strings.append("({}({})".format(
+            pred_string = "{}({})".format(
                 pred.get("value"),
                 ", ".join([arg.get("value") for arg in pred.findall("ARGS/ARG")])
-            ))
+            )
+            if pred.get("bool") == "!":
+                pred_string = "not({})".format(pred_string)
 
-        #print(pred_strings)
+            pred_strings.append(pred_string)
+
         return " ".join(pred_strings)
 
 
