@@ -91,15 +91,35 @@ function sameOrigin(url) {
 }
 
 /* Send change to server after edited in place */
-function edited_field(input_field, span) {
+function edited_class_field(input_field, span) {
     var new_val = $(input_field).val();
     var vn_class = $(span).parent().attr("id");
-
 
     $.ajax({
         url: '/update/',
         type: 'POST',
         data: {vn_class: vn_class, field: $(span).data("field"), label: new_val}
+    });
+}
+
+function edited_frame_field(input_field, span) {
+    var new_val = $(input_field).val();
+
+    var vn_class_article = $(span).closest("article")[0];
+    var vn_class_id = $(vn_class_article).find("h2").attr("id");
+
+    var frame_div = $(span).closest(".frame")[0];
+    var frame_id = $(frame_div).data("frameid");
+
+    $.ajax({
+        url: '/update/',
+        type: 'POST',
+        data: {
+            field: $(span).data("field"),
+            vn_class: vn_class_id,
+            frame_id: frame_id,
+            label: new_val,
+        }
     });
 }
 
@@ -148,46 +168,12 @@ $(document).ready(function() {
     });
 
     // Edit all editable fields
-    $('.editable').each(function() {
-        $(this).inedit({'onEnd': edited_field});
+    $('.vnclass_editable').each(function() {
+        $(this).inedit({'onEnd': edited_class_field});
     });
 
-    $('.realsyntaxeditable').each(function() {
-        $(this).inedit({'onEnd': function(input_field, span) {
-            var new_val = $(input_field).val();
-            var article = $(span).closest("article")[0];
-            var vn_class = $(article).find("h2").attr("id");
-
-            $.ajax({
-                url: '/update/',
-                type: 'POST',
-                data: {
-                    field: "realsyntax",
-                    vn_class: vn_class,
-                    frame_id: $(span).data("field"),
-                    label: new_val,
-                }
-            });
-        }});
-    });
-
-    $('.syntaxeditable').each(function() {
-        $(this).inedit({'onEnd': function(input_field, span) {
-            var new_val = $(input_field).val();
-            var article = $(span).closest("article")[0];
-            var vn_class = $(article).find("h2").attr("id");
-
-            $.ajax({
-                url: '/update/',
-                type: 'POST',
-                data: {
-                    field: "syntax",
-                    vn_class: vn_class,
-                    frame_id: $(span).data("field"),
-                    label: new_val,
-                }
-            });
-        }});
+    $('.frame_editable').each(function() {
+        $(this).inedit({'onEnd': edited_frame_field});
     });
 
 });

@@ -48,7 +48,7 @@ def update(request):
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
         refresh_class = False
 
-        if field == 'syntax':
+        if field == 'roles_syntax':
             frame_id = int(post["frame_id"])
             frame = VerbNetFrame.objects.get(id=frame_id)
             old_label = frame.roles_syntax
@@ -56,7 +56,7 @@ def update(request):
             frame.save()
             logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
                     .format(when, field, frame_id, vn_class, old_label, label))
-        elif field == 'realsyntax':
+        elif field == 'syntax':
             frame_id = int(post["frame_id"])
             frame = VerbNetFrame.objects.get(id=frame_id)
             old_label = frame.syntax
