@@ -16,9 +16,11 @@ import itertools
 from operator import itemgetter
 from collections import defaultdict
 
+from django.conf import settings
+
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-FVN_PATH = 'loadmapping'
+FVN_PATH = settings.FVN_PATH
 FORGET_LIST = ['?', '*', '', '∅']
 
 
@@ -235,7 +237,8 @@ def get_levin(c):
 from django.db import transaction
 
 def import_mapping():
-    verbnet = read_csv('loadmapping/resources/Correspondances.csv')
+    verbnet = read_csv(join(FVN_PATH, 'resources/Correspondances.csv'))
+
 
     with transaction.commit_on_success():
         candidates = {}
