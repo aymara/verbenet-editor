@@ -29,11 +29,36 @@
       {% block content %}
         {% for classe in verbnet_classes %}
         <article>
+            {# Title: class name and LVF/LADL #}
             <h2 id="{{classe.name}}">
+
+                {# LVF class: inline editing and links #}
                 <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
-                {% if classe.lvf_string %}<span class="vnclass_editable" data-field="lvf">{{classe.lvf_string}}</span><a href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html" class="external" href="#"><i class="icon-share-alt"></i></a>{% endif %}
-            {% if classe.ladl_string %}<span class="vnclass_editable" data-field="ladl">{{classe.ladl_string}}</span><a href="http://verbenet.pradet.me/verbes-html/V_{{classe.ladl_string}}.lgt.html" class="external" href="#"><i class="icon-share-alt"></i></a>{% endif %}
+                <span class="vnclass_editable" data-field="lvf">{% spaceless %}
+                    {% if classe.lvf_string %}
+                        {{ classe.lvf_string }}
+                    {% else %}
+                        ∅
+                    {% endif %}
+                {% endspaceless %}</span>
+                {% if classe.lvf_string and classe.lvf_string != '∅' %}
+                    <a href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html" class="external" href="#"><i class="icon-share-alt"></i></a>
+                {% endif %}
+
+                {# LADL table: inline editing and links #}
+                <span class="vnclass_editable" data-field="ladl">{% spaceless %}
+                    {% if class.ladl_string %}
+                         {{ classe.ladl_string }}
+                    {% else %}
+                        ∅
+                    {% endif %}
+                {% endspaceless %}</span>
+                {% if classe.ladl_string and classe.ladl_string != '∅' %}
+                    <a href="http://verbenet.pradet.me/verbes-html/V_{{classe.ladl_string}}.lgt.html" class="external" href="#"><i class="icon-share-alt"></i></a>
+                {% endif %}
+
             </h2>
+
             <p>{{classe.paragon}}{%if classe.comment %} | {{classe.comment}}{% endif %}</p>
             {% for name, frameset in framesets.items %}
                 {{ name }}

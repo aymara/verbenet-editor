@@ -19,7 +19,7 @@ from collections import defaultdict
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 FVN_PATH = 'loadmapping'
-FORGET_LIST = ['?', '*', '']
+FORGET_LIST = ['?', '*', '', '∅']
 
 
 def get_members(tree):
