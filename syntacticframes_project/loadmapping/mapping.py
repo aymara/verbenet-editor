@@ -37,7 +37,7 @@ with open(join(FVN_PATH, 'data/verb_dictionary.pickle'), 'rb') as f:
 
 # We want to allow multiple classes and various writings that make sense for
 # humans
-def parse_ladl(raw):
+def parse_complex_lvfladl(raw):
     ladl = raw.replace("-", "")
 
     if " ou " in ladl:
@@ -55,22 +55,6 @@ def parse_ladl(raw):
             ladl[i] = ladl_class.split()[0]
 
     return operation, ladl
-
-
-def parse_lvf(raw):
-    lvf = raw
-
-    if " ou " in lvf:
-        operation = "ou"
-        lvf = lvf.split(" ou ")
-    elif " et " in lvf:
-        operation = "et"
-        lvf = lvf.split(" et ")
-    else:
-        operation = None
-        lvf = [lvf]
-
-    return operation, lvf
 
 
 def parse_path(specific_class):
@@ -173,8 +157,8 @@ def get_verbs_for_class_list(operation_and_list, resource):
 
 
 def translations_for_class(verbs, ladl, lvf):
-    ladl_classes = parse_ladl(ladl)
-    lvf_classes = parse_ladl(lvf)
+    ladl_classes = parse_complex_lvfladl(ladl)
+    lvf_classes = parse_complex_lvfladl(lvf)
 
     candidates = defaultdict(set)
     lvf, ladl = set(), set()
