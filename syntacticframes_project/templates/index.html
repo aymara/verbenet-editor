@@ -60,7 +60,19 @@
             </h2>
 
             {# Paragon and comment #}
-            <p>{{classe.paragon}}{%if classe.comment %} | {{classe.comment}}{% endif %}</p>
+            <p>{% spaceless %}
+                {% if classe.paragon %}
+                    {{ classe.paragon }}
+                {% else %}
+                    ∅
+                {% endif %}
+                |
+                {% if classe.comment %}
+                    {{ classe.comment }}
+                {% else %}
+                    ∅
+                {% endif %}
+            {% endspaceless %}</p>
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
