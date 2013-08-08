@@ -58,6 +58,7 @@ class VerbNetFrame(models.Model):
     class Meta:
         ordering = ['position']
 
+@total_ordering
 class VerbTranslation(models.Model):
     TRANSLATION_CATEGORY = (
         ('both', 'Both'),
@@ -71,6 +72,10 @@ class VerbTranslation(models.Model):
     verb = models.CharField(max_length=100)
     category = models.CharField(max_length=20, choices=TRANSLATION_CATEGORY)
     origin = models.CharField(max_length=500) # english comma-separated verbs
-    
-    
-    
+
+    def __str__(self):
+        return "{} ({})".format(self.verb, self.category)
+
+    def __gt__(self, other):
+        order = [x[0] for x in VerbTranslation.TRANSLATION_CATEGORY]
+        return order.index(self.category) < order.index(other.category) and self.verb < other.verb

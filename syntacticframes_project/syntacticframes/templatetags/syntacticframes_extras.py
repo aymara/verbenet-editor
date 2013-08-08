@@ -11,4 +11,4 @@ def is_removed(value, arg):
 
 @register.filter
 def sort_translations(value):
-    return value.order_by('category', 'verb')    
+    return sorted(list(value))
