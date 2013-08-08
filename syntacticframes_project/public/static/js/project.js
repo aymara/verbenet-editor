@@ -29,7 +29,7 @@ function sortUL(list) {
 /* Highlight translations */
 function toggleHighlightMembers() {
     var origins = $(this).data('origin').split(',');
-    $('.verbnet_members li').each(function() {
+    $('.members span').each(function() {
         if (origins.indexOf($(this).text()) != -1) {
             $(this).toggleClass('hover');
         }
@@ -39,7 +39,7 @@ function toggleHighlightMembers() {
 /* Highlight origins */
 function toggleHighlightCandidates() {
     var origin = $(this).text();
-    $(this).parent().parent().find('.evaluate li').each(function() {
+    $(this).parent().parent().find('.translations span').each(function() {
         if ($(this).data('origin').split(',').indexOf(origin) != -1) {
             $(this).toggleClass('hover');
         }
@@ -49,8 +49,8 @@ function toggleHighlightCandidates() {
 /* Hide dark/gray translations */
 function toggleHideShow(e) {
     e.preventDefault();
-    $(this).parent().find('li[class="unknown"]').toggle();
-    $(this).parent().find('li[class="dicovalence"]').toggle();
+    $(this).parent().find('span.unknown').toggle();
+    $(this).parent().find('span.dicovalence').toggle();
     $(this).text($(this).text() == '[+]' ? '[-]' : '[+]');
 }
 
@@ -147,12 +147,12 @@ $(document).ready(function() {
     */
 
     // Show relation between verbs and origin
-    $('.evaluate li').hover(toggleHighlightMembers, toggleHighlightMembers);
-    $('.verbnet_members li').hover(toggleHighlightCandidates, toggleHighlightCandidates);
+    $('.translations span').hover(toggleHighlightMembers, toggleHighlightMembers);
+    $('.members span').hover(toggleHighlightCandidates, toggleHighlightCandidates);
 
     // Show/hide verbs that are not interesting
     var showLink = $('<a/>').text('[+]').prop('href', '#').click(toggleHideShow);
-    $('.evaluate').append(showLink);
+    $('.translations').append(showLink);
 
 
     var csrftoken = getCookie('csrftoken');

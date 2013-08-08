@@ -16,20 +16,23 @@
 
       .sidebar-nav { padding: 9px 0 }
 
-      .evaluate li, .verbnet_members li { display: inline }
-      .evaluate li.both { color: purple }
-      .evaluate li.ladl, h2 [data-field="ladl"] { color: green }
-      .evaluate li.lvf, h2 [data-field="lvf"] { color: red }
-      .evaluate li.unknown { color: gray }
-      .evaluate li.hover, .verbnet_members li.hover { background-color: black !important; color: white !important }
+      .both { color: purple }
+      .ladl, h2 [data-field="ladl"] { color: green }
+      .lvf, h2 [data-field="lvf"] { color: red }
+      .unknown { color: gray }
+      .hover { background-color: black; color: white }
       h2 a { text-decoration: underline }
 
       h2 form { display: inline }
       h2 form input { width: 5em; font-size: 31.5px }
 
+      .subclass {
+        margin-left: 4em;
+      }
+
       .frame {
         border: 1px solid black;
-        margin: 5px 0 0 25px;
+        margin: 5px 0 0 0;
         padding: 9px;
         list-style-type: none;
       }

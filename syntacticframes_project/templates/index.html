@@ -76,46 +76,59 @@
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
-            <p>Sous-classe {{node.name}} :</p>
-            <ul>
-                <li>Membres : {% for word in node.verbnetmember_set.all %}{{ word }} {% endfor %}</li>
-                <li>Traductions :
-                    <ul class="evaluate invalid">
-                        {% for word in node.verbtranslation_set.all|sort_translations %}
-                            <li  {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li>Frames :
-                    {% for frame in node.verbnetframe_set.all|is_removed:False %}
-                        <div class="frame" data-frameid="{{frame.id}}">
-                            <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
-                            <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
-                            <table class="table">
-                                <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{{ frame.example }}</span></td></tr>
-                                <tr><td>Syntaxe</td><td><span class="frame_editable" data-field="roles_syntax">{{ frame.roles_syntax }}</span></td></tr>
-                                <tr><td>Sémantique</td><td>{{ frame.semantics }}</td></tr>
-                            </table>
-                        </div>
-                    {% endfor %}
-                </li>
-                {% if node.verbnetframe_set.all|is_removed:True %}
-                    <li>Frames supprimées :
-                        <ul>
-                        {% for frame in node.verbnetframe_set.all|is_removed:True %}
-                            <li>{{ frame.syntax }} ({{ frame.example }})</li>
-                        {% endfor %}
-                        </ul>
-                    </li>
-                {% endif %}
+            <h3>Classe {{node.name}}</h3>
 
-                {# Rinse and repeat with children #}
-                {% if not node.is_leaf_node %}
-                    <li><ul>
-                        {{ children }}
-                    </ul></li>
+            {# Members #}
+            <p class="members">Membres :
+                {% if not node.verbnetmember_set.all %}
+                    ∅
+                {% else %}
+                    {% for word in node.verbnetmember_set.all %}<span>{{ word }}</span> {% endfor %}
                 {% endif %}
-            </ul>
+            </p>
+
+            {# Translations #}
+            <p class="translations">Traductions :
+                {% if not node.verbtranslation_set.all %}
+                    ∅
+                {% else %}
+                    {% for word in node.verbtranslation_set.all|sort_translations %}
+                        <span {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</span>
+                    {% endfor %}
+                {% endif %}
+            </p>
+
+            {# Frames #}
+            {% if node.verbnetframe_set.all|is_removed:False %}
+                {% for frame in node.verbnetframe_set.all|is_removed:False %}
+                    <div class="frame" data-frameid="{{frame.id}}">
+                        <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
+                        <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
+                        <table class="table">
+                            <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{{ frame.example }}</span></td></tr>
+                            <tr><td>Syntaxe</td><td><span class="frame_editable" data-field="roles_syntax">{{ frame.roles_syntax }}</span></td></tr>
+                            <tr><td>Sémantique</td><td>{{ frame.semantics }}</td></tr>
+                        </table>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {# Deleted frames #}
+            {% if node.verbnetframe_set.all|is_removed:True %}
+                <p>Frames supprimées :</p>
+                <ul>
+                {% for frame in node.verbnetframe_set.all|is_removed:True %}
+                    <li>{{ frame.syntax }} ({{ frame.example }})</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+
+            {# Rinse and repeat with children #}
+            {% if not node.is_leaf_node %}
+                <div class="subclass">
+                    {{ children }}
+                </div>
+            {% endif %}
             {% endrecursetree %}
         </article>
         {% endfor %}
