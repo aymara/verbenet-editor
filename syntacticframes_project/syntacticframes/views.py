@@ -64,6 +64,14 @@ def update(request):
             frame.save()
             logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
                     .format(when, field, frame_id, vn_class, old_label, label))
+        elif field == 'example':
+            frame_id = int(post["frame_id"])
+            frame = VerbNetFrame.objects.get(id=frame_id)
+            old_label = frame.example
+            frame.example = label
+            frame.save()
+            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
+                    .format(when, field, frame_id, vn_class, old_label, label))
         elif field == 'ladl':
             refresh_class = True
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
