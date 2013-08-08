@@ -45,7 +45,7 @@
                 <li>Membres : {% for word in node.verbnetmember_set.all %}{{ word }} {% endfor %}</li>
                 <li>Traductions :</li>
                     <ul class="evaluate invalid">
-                        {% for word in node.verbtranslation_set.all %}
+                        {% for word in node.verbtranslation_set.all|sort_translations %}
                         <li  {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}, </li>
                         {% endfor %}
                     </ul>
