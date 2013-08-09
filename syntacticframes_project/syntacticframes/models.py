@@ -78,4 +78,7 @@ class VerbTranslation(models.Model):
 
     def __gt__(self, other):
         order = [x[0] for x in VerbTranslation.TRANSLATION_CATEGORY]
-        return order.index(self.category) < order.index(other.category) and self.verb < other.verb
+        if self.category == other.category:
+            return self.verb > other.verb
+        else:
+            return order.index(self.category) > order.index(other.category)
