@@ -1,5 +1,37 @@
 /* Project specific Javascript goes here. */
 
+function show_plus() {
+    // Show/hide verbs that are not interesting
+    var showLink = $('<a/>').text('[+]').prop('href', '#').live('click', toggleHideShow);
+    $('.translations a').remove();
+    $('.translations').append(showLink);
+}
+
+function editable_class_fields() {
+    // Edit all editable fields
+    $('.vnclass_editable').each(function() {
+        $(this).inedit({'onEnd': edited_class_field});
+    });
+
+    $('.frame_editable').each(function() {
+        $(this).inedit({'onEnd': edited_frame_field});
+    });
+}
+
+
+function update_class(here) {
+    var vn_class_article = $(here).closest("article")[0];
+    var vn_class_id = $(vn_class_article).find("h2").attr("id");
+
+    request = $.ajax({url: '/vn_class/' + vn_class_id + '/'});
+    request.done(function(response, textStatus, jqXHR) {
+        $(vn_class_article).replaceWith(response);
+        show_plus();
+        editable_class_fields();
+    });
+
+}
+
 /* Validating/refusing translations */
 /*
 function getColorId(color) {
@@ -95,11 +127,13 @@ function edited_class_field(input_field, span) {
     var new_val = $(input_field).val();
     var vn_class = $(span).parent().attr("id");
 
-    $.ajax({
+    var request = $.ajax({
         url: '/update/',
         type: 'POST',
         data: {vn_class: vn_class, field: $(span).data("field"), label: new_val}
     });
+
+    request.done(function() { update_class(span); });
 }
 
 function edited_frame_field(input_field, span) {
@@ -111,7 +145,7 @@ function edited_frame_field(input_field, span) {
     var frame_div = $(span).closest(".frame")[0];
     var frame_id = $(frame_div).data("frameid");
 
-    $.ajax({
+    var request = $.ajax({
         url: '/update/',
         type: 'POST',
         data: {
@@ -121,8 +155,9 @@ function edited_frame_field(input_field, span) {
             label: new_val,
         }
     });
-}
 
+    request.done(function() { update_class(span); });
+}
 
 $(document).ready(function() {
     // "Evaluate" a word: set it as valid or not
@@ -150,10 +185,7 @@ $(document).ready(function() {
     $('.translations span').hover(toggleHighlightMembers, toggleHighlightMembers);
     $('.members span').hover(toggleHighlightCandidates, toggleHighlightCandidates);
 
-    // Show/hide verbs that are not interesting
-    var showLink = $('<a/>').text('[+]').prop('href', '#').click(toggleHideShow);
-    $('.translations').append(showLink);
-
+    show_plus();
 
     var csrftoken = getCookie('csrftoken');
     $.ajaxSetup({
@@ -167,24 +199,18 @@ $(document).ready(function() {
         }
     });
 
-    // Edit all editable fields
-    $('.vnclass_editable').each(function() {
-        $(this).inedit({'onEnd': edited_class_field});
-    });
-
-    $('.frame_editable').each(function() {
-        $(this).inedit({'onEnd': edited_frame_field});
-    });
+    editable_class_fields();
 
     // Operations on frames/framesets
-    $('.remove_frame').click(function() {
+    $('.remove_frame').live('click', function() {
+        var that = this;
         var vn_class_article = $(this).closest("article")[0];
         var vn_class_id = $(vn_class_article).find("h2").attr("id");
 
         var frame_div = $(this).closest(".frame")[0];
         var frame_id = $(frame_div).data("frameid");
 
-        $.ajax({
+        var request = $.ajax({
             url: '/remove/',
             type: 'POST',
             data: {
@@ -195,18 +221,24 @@ $(document).ready(function() {
             }
         });
 
+        request.done(function() { update_class(that); });
+
         return false;
     });
 
-    $('.new_frame button').click(function() {
+    $('.new_frame > button').live('click', function() {
         $(this).hide();
         var form = $(this).parent().next(".frame");
         form.slideDown();
     });
 
-    $('form.new_frame').submit(function() {
+    $('form.new_frame').live('submit', function() {
+        var that = this;
         var data = $(this).serialize();
-        $.post($(this).attr('action'), data);
+        var request = $.post($(this).attr('action'), data);
+
+        request.done(function() { update_class(that); });
+
         return false;
     });
 

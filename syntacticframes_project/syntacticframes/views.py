@@ -24,20 +24,21 @@ def classe(request, class_number):
     verbnet_classes = list(VerbNetClass.objects.filter(levin_class__exact = active_class))
     verbnet_classes.sort(key = lambda v: LooseVersion(v.name.split('-')[1]))
 
-    translations, origins = {}, {}
-
-    #for verbnet_class in verbnet_classes:
-    #    translations[verbnet_class.name] = sorted(
-    #        VerbTranslation.objects.filter(verbnet_class=verbnet_class))
-    #    origins[verbnet_class.name] = VerbNetMember.objects.filter(verbnet_class=verbnet_class)
-
     template = loader.get_template('index.html')
     context = Context({
         'levin_classes': levin_classes,
         'active_class': active_class,
         'verbnet_classes': verbnet_classes,
-        'all_translations': translations,
-        'all_origins': origins,
+    })
+    context.update(csrf(request))
+    return HttpResponse(template.render(context))
+
+@ensure_csrf_cookie
+def vn_class(request, class_name):
+    verbnet_class = VerbNetClass.objects.get(name=class_name)
+    template = loader.get_template('classe.html')
+    context = Context({
+        'classe': verbnet_class,
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
@@ -128,12 +129,15 @@ def remove(request):
 def add(request):
     if request.method == 'POST':
         post = request.POST
-        form = VerbNetFrameForm(request.POST)
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
         if post['type'] == 'frame':
             parent_frameset = VerbNetFrameSet.objects.get(id=int(post['frameset_id']))
             vn_class = VerbNetClass.objects.get(id=int(post['vn_class_id']))
-            max_position = max([f.position for f in parent_frameset.verbnetframe_set.all()])
+            try:
+                max_position = max([f.position for f in parent_frameset.verbnetframe_set.all()])
+            except:
+                max_position = 0
+
             f = VerbNetFrame(
                 frameset=parent_frameset,
                 position=max_position+1,
