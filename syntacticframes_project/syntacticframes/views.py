@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.core.context_processors import csrf
 from django.conf import settings
+from django import forms
 
 from distutils.version import LooseVersion
 import logging
@@ -37,6 +39,7 @@ def classe(request, class_number):
         'all_translations': translations,
         'all_origins': origins,
     })
+    context.update(csrf(request))
     return HttpResponse(template.render(context))
 
 def index(request):
@@ -119,5 +122,29 @@ def remove(request):
             db_frame.save()
             logger.info("{}: Marked frame {}/{} as removed in class {}"
                         .format(when, frame_id, syntax, vn_class))
+
+        return HttpResponse("ok")
+
+def add(request):
+    if request.method == 'POST':
+        post = request.POST
+        form = VerbNetFrameForm(request.POST)
+        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+        if post['type'] == 'frame':
+            parent_frameset = VerbNetFrameSet.objects.get(id=int(post['frameset_id']))
+            vn_class = VerbNetClass.objects.get(id=int(post['vn_class_id']))
+            max_position = max([f.position for f in parent_frameset.verbnetframe_set.all()])
+            f = VerbNetFrame(
+                frameset=parent_frameset,
+                position=max_position+1,
+                syntax = post['syntax'],
+                example = post['example'],
+                roles_syntax = post['roles_syntax'],
+                semantics = post['semantics']
+            )
+            f.save()
+            logger.info("{}: Added frame {} ({},{},{}) in frameset {} from class {}".format(
+                when, f.syntax, f.example, f.roles_syntax, f.semantics,
+                parent_frameset.name, vn_class.name))
 
         return HttpResponse("ok")

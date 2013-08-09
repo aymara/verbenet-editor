@@ -198,5 +198,17 @@ $(document).ready(function() {
         return false;
     });
 
+    $('.new_frame button').click(function() {
+        $(this).hide();
+        var form = $(this).parent().parent().find(".frame").last();
+        form.slideDown();
+    });
+
+    $('form.new_frame').submit(function() {
+        var data = $(this).serialize();
+        $.post($(this).attr('action'), data);
+        return false;
+    });
+
 });
 
