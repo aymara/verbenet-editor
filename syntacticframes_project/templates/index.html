@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load mptt_tags %}
-{% load syntacticframes_extras %}
 
 {% block all %}
 
@@ -28,126 +26,7 @@
  
       {% block content %}
         {% for classe in verbnet_classes %}
-        <article>
-            {# Title: class name and LVF/LADL #}
-            <h2 id="{{classe.name}}">
-
-                {# LVF class: inline editing and links #}
-                <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
-                <span class="vnclass_editable" data-field="lvf">{% spaceless %}
-                    {% if classe.lvf_string %}
-                        {{ classe.lvf_string }}
-                    {% else %}
-                        ∅
-                    {% endif %}
-                {% endspaceless %}</span>
-                {% if classe.lvf_string and classe.lvf_string != '∅' %}
-                    <a href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html" class="external"><i class="icon-share-alt"></i></a>
-                {% endif %}
-
-                {# LADL table: inline editing and links #}
-                <span class="vnclass_editable" data-field="ladl">{% spaceless %}
-                    {% if classe.ladl_string %}
-                         {{ classe.ladl_string }}
-                    {% else %}
-                        ∅
-                    {% endif %}
-                {% endspaceless %}</span>
-                {% if classe.ladl_string and classe.ladl_string != '∅' %}
-                    <a href="http://verbenet.pradet.me/verbes-html/V_{{classe.ladl_string}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
-                {% endif %}
-
-            </h2>
-
-            {# Paragon and comment #}
-            <p>{% spaceless %}
-                {% if classe.paragon %}
-                    {{ classe.paragon }}
-                {% else %}
-                    ∅
-                {% endif %}
-                |
-                {% if classe.comment %}
-                    {{ classe.comment }}
-                {% else %}
-                    ∅
-                {% endif %}
-            {% endspaceless %}</p>
-
-            {# Recursive display of frame sets #}
-            {% recursetree classe.verbnetframeset_set.all %}
-            <h3>Classe {{node.name}}</h3>
-
-            {# Members #}
-            <p class="members">Membres :
-                {% if not node.verbnetmember_set.all %}
-                    ∅
-                {% else %}
-                    {% for word in node.verbnetmember_set.all %}<span>{{ word }}</span> {% endfor %}
-                {% endif %}
-            </p>
-
-            {# Translations #}
-            <p class="translations">Traductions :
-                {% if not node.verbtranslation_set.all %}
-                    ∅
-                {% else %}
-                    {% for word in node.verbtranslation_set.all|sort_translations %}
-                        <span {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</span>
-                    {% endfor %}
-                {% endif %}
-            </p>
-
-            {# Frames #}
-            {% if node.verbnetframe_set.all|is_removed:False %}
-                {% for frame in node.verbnetframe_set.all|is_removed:False %}
-                    <div class="frame" data-frameid="{{frame.id}}">
-                        <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
-                        <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
-                        <table class="table">
-                            <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{{ frame.example }}</span></td></tr>
-                            <tr><td>Syntaxe</td><td><span class="frame_editable" data-field="roles_syntax">{{ frame.roles_syntax }}</span></td></tr>
-                            <tr><td>Sémantique</td><td>{{ frame.semantics }}</td></tr>
-                        </table>
-                    </div>
-                {% endfor %}
-            {% endif %}
-                <p class="new_frame"><button class="btn">Ajouter une frame</button></p>
-                <div class="frame" style="display:none">
-                    <form action="/add/" class="new_frame" method="POST">{% csrf_token %}
-                        <p>
-                            <input type="text" name="syntax" placeholder="NP V NP" />
-                            <input type="hidden" name="type" value="frame" />
-                            <input type="hidden" name="frameset_id" value="{{node.id}}" />
-                            <input type="hidden" name="vn_class_id" value="{{classe.id}}" />
-                        </p>
-                        <table class="table">
-                            <tr><td>Exemple</td><td><input type="text" name="example" /></td></tr>
-                            <tr><td>Syntaxe</td><td><input type="text" name="roles_syntax" /></td></tr>
-                            <tr><td>Sémantique</td><td><input type="text" name="semantics" /></td></tr>
-                        </table>
-                        <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
-                    </form>
-                </div>
-
-            {# Deleted frames #}
-            {% if node.verbnetframe_set.all|is_removed:True %}
-                <p>Frames supprimées :</p>
-                <ul>
-                {% for frame in node.verbnetframe_set.all|is_removed:True %}
-                    <li>{{ frame.syntax }} ({{ frame.example }})</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-
-            {# Rinse and repeat with children #}
-            {% if not node.is_leaf_node %}
-                <div class="subclass">
-                    {{ children }}
-                </div>
-            {% endif %}
-            {% endrecursetree %}
-        </article>
+            {% include "classe.html" %}
         {% endfor %}
       {% endblock content %}
     </div>
