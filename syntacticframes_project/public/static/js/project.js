@@ -200,7 +200,7 @@ $(document).ready(function() {
 
     $('.new_frame button').click(function() {
         $(this).hide();
-        var form = $(this).parent().parent().find(".frame").last();
+        var form = $(this).parent().next(".frame");
         form.slideDown();
     });
 
