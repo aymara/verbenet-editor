@@ -70,6 +70,14 @@ def update(request):
             frame.save()
             logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
                     .format(when, field, frame_id, vn_class, old_label, label))
+        elif field == 'semantics':
+            frame_id = int(post["frame_id"])
+            frame = VerbNetFrame.objects.get(id=frame_id)
+            old_label = frame.semantics
+            frame.semantics = label
+            frame.save()
+            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
+                    .format(when, field, frame_id, vn_class, old_label, label))
         elif field == 'example':
             frame_id = int(post["frame_id"])
             frame = VerbNetFrame.objects.get(id=frame_id)

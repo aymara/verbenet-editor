@@ -78,9 +78,9 @@
                         <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
                         <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
                         <table class="table">
-                            <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{{ frame.example }}</span></td></tr>
-                            <tr><td>Syntaxe</td><td><span class="frame_editable" data-field="roles_syntax">{{ frame.roles_syntax }}</span></td></tr>
-                            <tr><td>Sémantique</td><td>{{ frame.semantics }}</td></tr>
+                            <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{% if frame.example %}{{ frame.example }}{% else %}∅{% endif %}</span></td></tr>
+                            <tr><td>Syntaxe</td><td><span class="frame_editable" data-field="roles_syntax">{% if frame.roles_syntax %}{{ frame.roles_syntax }}{% else %}∅{% endif %}</span></td></tr>
+                            <tr><td>Sémantique</td><td><span class="frame_editable" data-field="semantics">{% if frame.semantics %}{{ frame.semantics }}{% else %}∅{% endif %}</span></td></tr>
                         </table>
                     </div>
                 {% endfor %}
