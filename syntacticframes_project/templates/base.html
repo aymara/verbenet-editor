@@ -23,6 +23,9 @@
   </head>
 
   <body>
+    <div class="ajax-status" id="ajax-ok" style="display:none; position: absolute; right: 10px; top: 10px; z-index: 10000"><p><i class="icon-ok icon-white"></i></p></div>
+    <div class="ajax-status" id="ajax-loading" style="display: none; z-index: 10000; position: absolute; right: 10px; top: 10px"><p><img src="{% static 'img/loading.gif' %}" /></p></div>
+    <div class="ajax-status" id="ajax-error" style="display: none; z-index: 10000; position: absolute; right: 10px; top: 10px"><p><i class="icon-remove icon-white"></i></p></div>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">

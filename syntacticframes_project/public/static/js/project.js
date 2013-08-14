@@ -199,6 +199,24 @@ $(document).ready(function() {
         }
     });
 
+    $(document).ajaxStart(function(e, request, settings) {
+        console.log("loading...");
+        $(".ajax-status").hide();
+        $("#ajax-loading").show();
+    });
+    $(document).ajaxSuccess(function(e, request, settings) {
+        if(settings.url.indexOf("vn_class") >= 0) {
+            console.log("success");
+            $(".ajax-status").hide();
+            $("#ajax-ok").show();
+        }
+    });
+    $(document).ajaxError(function(e, request, settings) {
+        console.log("error");
+        $(".ajax-status").hide();
+        $("#ajax-error").show();
+    });
+
     editable_class_fields();
 
     // Operations on frames/framesets
