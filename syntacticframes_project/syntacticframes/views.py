@@ -146,6 +146,9 @@ def add(request):
             except:
                 max_position = 0
 
+            if max_position is None:
+                max_position = 1
+
             f = VerbNetFrame(
                 frameset=parent_frameset,
                 position=max_position+1,
