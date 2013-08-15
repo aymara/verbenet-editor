@@ -21,13 +21,14 @@ rx = re.compile(r"^(.*)\.(.*?)$")
 @register.simple_tag
 def version(path):
     full_path = os.path.join(settings.STATIC_ROOT, path)
-    try:
-        # Get file modification time.
-        os.stat_float_times(False)
-        mtime = os.path.getmtime(full_path)
-        changed = rx.sub(r"\1.%d.\2" % mtime, path)
-    except OSError:
-        # Returns normal url if this file was not found in filesystem.
-        changed = '%s%s' % (settings.STATIC_URL, path)
+    if not settings.DEBUG:
+        try:
+            # Get file modification time.
+            os.stat_float_times(False)
+            mtime = os.path.getmtime(full_path)
+            path = rx.sub(r"\1.%d.\2" % mtime, path)
+        except OSError:
+            # Returns normal url if this file was not found in filesystem.
+            path = '%s%s' % (settings.STATIC_URL, path)
     # Cheats, but adding "static" is just what the static tag does anyway...
-    return os.path.join('/static', changed)
+    return os.path.join('/static', path)
