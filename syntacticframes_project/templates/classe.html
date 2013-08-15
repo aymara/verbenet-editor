@@ -108,7 +108,7 @@
                 <p>Frames supprimées :</p>
                 <ul>
                 {% for frame in node.verbnetframe_set.all|is_removed:True %}
-                    <li>{{ frame.syntax }} ({{ frame.example }})</li>
+                    <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }})</li>
                 {% endfor %}
                 </ul>
             {% endif %}
