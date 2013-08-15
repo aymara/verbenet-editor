@@ -2,7 +2,8 @@
 
 function show_plus() {
     // Show/hide verbs that are not interesting
-    var showLink = $('<a/>').text('[+]').prop('href', '#').live('click', toggleHideShow);
+    var showLink = $('<a/>').attr('class', 'plus_link').text('[+]').prop('href', '#');
+    $(document).on("click", ".plus_link", toggleHideShow);
     $('.translations a').remove();
     $('.translations').append(showLink);
 }
