@@ -109,7 +109,7 @@ def update(request):
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
             verbnet_class.verbnetframeset_set.all().delete()
 
-            r = verbnet.verbnetreader.VerbnetReader(os.path.join(settings.FVN_PATH, 'resources/verbnet-3.2/'), False)
+            r = verbnet.verbnetreader.VerbnetReader(os.path.join(settings.SITE_ROOT, 'verbnet/verbnet-3.2/'), False)
             c = r.files[verbnet_class.name]
             save_class(c, verbnet_class)
             

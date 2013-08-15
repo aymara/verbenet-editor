@@ -20,20 +20,19 @@ from django.conf import settings
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-FVN_PATH = settings.FVN_PATH
 FORGET_LIST = ['?', '*', '', '∅']
 
 
 def get_members(tree):
     return [member.get('name') for member in tree.findall(".//MEMBER")]
 
-with open(join(FVN_PATH, 'data/LADL_to_verbes'), 'rb') as f:
+with open(join(settings.SITE_ROOT, 'loadmapping/data/LADL_to_verbes'), 'rb') as f:
     ladl_dict = pickle.load(f)
-with open(join(FVN_PATH, 'data/LVF+1_to_verbs'), 'rb') as f:
+with open(join(settings.SITE_ROOT, 'loadmapping/data/LVF+1_to_verbs'), 'rb') as f:
     lvf_dict = pickle.load(f)
-with open(join(FVN_PATH, 'data/DICOVALENCE_VERBS'), 'rb') as f:
+with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') as f:
     dicovalence_verbs = pickle.load(f)
-with open(join(FVN_PATH, 'data/verb_dictionary.pickle'), 'rb') as f:
+with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
     verb_dict = pickle.load(f)
 
 
@@ -215,8 +214,8 @@ def read_csv(filename):
             if (row[1] in FORGET_LIST and row[2] in FORGET_LIST) or (row[1] == '-' or row[2] == '-'):
                 lines.append({'classe': vn, 'candidates': [], 'paragon': paragon, 'lvf': row[2], 'lvf_orig': row[2], 'ladl': row[1], 'ladl_orig': row[1], 'verbnet_members': [], 'commentaire': commentaire})
             else:
-                tree = ElementTree(file=join(FVN_PATH,
-                                   "resources/verbnet-3.2/{}.xml".format(vn)))
+                tree = ElementTree(file=join(settings.SITE_ROOT,
+                                   "verbnet/verbnet-3.2/{}.xml".format(vn)))
                 verbnet_members = get_members(tree)
                 final = translations_for_class(verbnet_members, row[1], row[2])
                 lines.append({'classe': vn, 'candidates':  final,
@@ -237,7 +236,7 @@ def get_levin(c):
 from django.db import transaction
 
 def import_mapping():
-    verbnet = read_csv(join(FVN_PATH, 'resources/Correspondances.csv'))
+    verbnet = read_csv(join(settings.SITE_ROOT, 'loadmapping/resources/Correspondances.csv'))
 
 
     with transaction.commit_on_success():

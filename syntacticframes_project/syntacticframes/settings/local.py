@@ -5,10 +5,6 @@ from os.path import join, normpath
 
 from .base import *
 
-########## PATHS
-FVN_PATH = 'loadmapping'
-
-
 ########## DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
