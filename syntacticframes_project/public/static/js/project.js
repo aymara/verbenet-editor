@@ -201,19 +201,17 @@ $(document).ready(function() {
     });
 
     $(document).ajaxStart(function(e, request, settings) {
-        console.log("loading...");
         $(".ajax-status").hide();
         $("#ajax-loading").show();
     });
     $(document).ajaxSuccess(function(e, request, settings) {
         if(settings.url.indexOf("vn_class") >= 0) {
-            console.log("success");
             $(".ajax-status").hide();
             $("#ajax-ok").show();
         }
     });
     $(document).ajaxError(function(e, request, settings) {
-        console.log("error");
+        alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe. Merci de rafraichir la page.");
         $(".ajax-status").hide();
         $("#ajax-error").show();
     });
