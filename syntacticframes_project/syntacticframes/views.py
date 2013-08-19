@@ -52,58 +52,32 @@ def update(request):
         post = request.POST
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-        refresh_class = False
 
-        if field == 'roles_syntax':
+        frame_fields = ['roles_syntax', 'syntax', 'semantics', 'example']
+        class_fields = ['ladl_string', 'lvf_string']
+        refresh_fields = ['ladl_string', 'lvf_string']
+
+        if field in frame_fields:
             frame_id = int(post["frame_id"])
             frame = VerbNetFrame.objects.get(id=frame_id)
-            old_label = frame.roles_syntax
-            frame.roles_syntax = label
+            old_label = getattr(frame, field)
+            setattr(frame, field, label)
             frame.save()
             logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
                     .format(when, field, frame_id, vn_class, old_label, label))
-        elif field == 'syntax':
-            frame_id = int(post["frame_id"])
-            frame = VerbNetFrame.objects.get(id=frame_id)
-            old_label = frame.syntax
-            frame.syntax = label
-            frame.save()
-            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(when, field, frame_id, vn_class, old_label, label))
-        elif field == 'semantics':
-            frame_id = int(post["frame_id"])
-            frame = VerbNetFrame.objects.get(id=frame_id)
-            old_label = frame.semantics
-            frame.semantics = label
-            frame.save()
-            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(when, field, frame_id, vn_class, old_label, label))
-        elif field == 'example':
-            frame_id = int(post["frame_id"])
-            frame = VerbNetFrame.objects.get(id=frame_id)
-            old_label = frame.example
-            frame.example = label
-            frame.save()
-            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(when, field, frame_id, vn_class, old_label, label))
-        elif field == 'ladl':
+        elif field in class_fields:
             refresh_class = True
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
-            old_label = verbnet_class.ladl_string
-            verbnet_class.ladl_string = label
+            old_label = getattr(verbnet_class, field)
+            setattr(verbnet_class, field, label)
             verbnet_class.save()
             logger.info("{}: Updated {} in {} from '{}' to '{}'"
                     .format(when, field, vn_class, old_label, label))
-        elif field == 'lvf':
-            refresh_class = True
-            verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
-            old_label = verbnet_class.lvf_string
-            verbnet_class.lvf_string = label
-            verbnet_class.save()
-            logger.info("{}: Updated {} in {} from '{}' to '{}'"
-                    .format(when, field, vn_class, old_label, label))
+        else:
+            raise Exception("Unknown field {}".format(field))
 
-        if refresh_class:
+
+        if field in refresh_fields:
             import verbnet.verbnetreader
             from syntacticframes.management.commands.loadverbnet import save_class
             verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
@@ -112,6 +86,7 @@ def update(request):
             r = verbnet.verbnetreader.VerbnetReader(os.path.join(settings.SITE_ROOT, 'verbnet/verbnet-3.2/'), False)
             c = r.files[verbnet_class.name]
             save_class(c, verbnet_class)
+
             
             
         return HttpResponse("ok")

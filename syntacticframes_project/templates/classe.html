@@ -7,7 +7,7 @@
 
                 {# LVF class: inline editing and links #}
                 <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
-                <span class="vnclass_editable" data-field="lvf">{% spaceless %}
+                <span class="vnclass_editable" data-field="lvf_string">{% spaceless %}
                     {% if classe.lvf_string %}
                         {{ classe.lvf_string }}
                     {% else %}
@@ -19,7 +19,7 @@
                 {% endif %}
 
                 {# LADL table: inline editing and links #}
-                <span class="vnclass_editable" data-field="ladl">{% spaceless %}
+                <span class="vnclass_editable" data-field="ladl_string">{% spaceless %}
                     {% if classe.ladl_string %}
                          {{ classe.ladl_string }}
                     {% else %}
