@@ -73,9 +73,13 @@
 
             {# Roles #}
             <p>Roles : 
-            {% for role in node.verbnetrole_set.all %} 
-            {{ role.name }}{% if not forloop.last %},{% endif %}
-            {% endfor %}
+                {% if not node.verbnetrole_set.all %}
+                    ∅
+                {% else %}
+                    {% for role in node.verbnetrole_set.all %}
+                        {{ role.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                {% endif %}
             </p>
 
             {# Frames #}
