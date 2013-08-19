@@ -26,14 +26,17 @@ def save_class(c, vn_class, parent=None, indent=0):
     for m in c['members']:
         VerbNetMember(frameset=db_frameset, lemma=m).save()
 
+    position = 1
     for f in c['frames']:
         db_f = VerbNetFrame(
             frameset=db_frameset,
             syntax=f.structure,
             roles_syntax=f.roles,
             semantics=f.semantics,
-            example=f.example)
+            example=f.example,
+            position=position+1)
         db_f.save()
+        position += 1
 
         candidates = mapping.translations_for_class(c['members'], vn_class.ladl_string, vn_class.lvf_string)
         for french, categoryname, categoryid, originlist in candidates:
