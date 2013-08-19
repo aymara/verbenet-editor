@@ -71,6 +71,13 @@
                 {% endif %}
             </p>
 
+            {# Roles #}
+            <p>Roles : 
+            {% for role in node.verbnetrole_set.all %} 
+            {{ role.name }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            </p>
+
             {# Frames #}
             {% if node.verbnetframe_set.all|is_removed:False %}
                 {% for frame in node.verbnetframe_set.all|is_removed:False %}
