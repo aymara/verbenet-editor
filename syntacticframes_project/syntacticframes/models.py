@@ -36,12 +36,6 @@ class VerbNetMember(models.Model):
     def __str__(self):
         return self.lemma
 
-class VerbNetRole(models.Model):
-    """One role for a specific VerbNetFrameSet"""
-    frameset = models.ForeignKey(VerbNetFrameSet)
-    # name + restrictions
-    name = models.CharField(max_length=1000)
-
 class VerbNetFrame(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
     position = models.PositiveSmallIntegerField(null=True)
@@ -57,6 +51,12 @@ class VerbNetFrame(models.Model):
 
     class Meta:
         ordering = ['position']
+
+class VerbNetRole(models.Model):
+    """One role for a specific VerbNetFrameSet"""
+    frameset = models.ForeignKey(VerbNetFrameSet)
+    # name + restrictions
+    name = models.CharField(max_length=1000)
 
 @total_ordering
 class VerbTranslation(models.Model):
