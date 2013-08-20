@@ -5,7 +5,9 @@ function show_plus() {
     var showLink = $('<a/>').attr('class', 'plus_link').text('[+]').prop('href', '#');
     $(document).on("click", ".plus_link", toggleHideShow);
     $('.translations a').remove();
-    $('.translations').append(showLink);
+    if ($('.translations span').size() > 0) {
+        $('.translations').append(showLink);
+    }
 }
 
 function editable_class_fields() {
