@@ -49,7 +49,8 @@
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
-            <h3>Classe {{node.name}}</h3>
+            <h3 id="{{node.name}}">Classe {{node.name}}</h3>
+            <p><button class="btn new_subclass"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
 
             {# Members #}
             <p class="members">Membres :
@@ -96,23 +97,6 @@
                     </div>
                 {% endfor %}
             {% endif %}
-                <p class="new_frame"><button class="btn">Ajouter une frame</button></p>
-                <div class="frame" style="display:none">
-                    <form action="/add/" class="new_frame" method="POST">{% csrf_token %}
-                        <p>
-                            <input type="text" name="syntax" placeholder="NP V NP" />
-                            <input type="hidden" name="type" value="frame" />
-                            <input type="hidden" name="frameset_id" value="{{node.id}}" />
-                            <input type="hidden" name="vn_class_id" value="{{classe.id}}" />
-                        </p>
-                        <table class="table">
-                            <tr><td>Exemple</td><td><input type="text" name="example" /></td></tr>
-                            <tr><td>Syntaxe</td><td><input type="text" name="roles_syntax" /></td></tr>
-                            <tr><td>Sémantique</td><td><input type="text" name="semantics" /></td></tr>
-                        </table>
-                        <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
-                    </form>
-                </div>
 
             {# Deleted frames #}
             {% if node.verbnetframe_set.all|is_removed:True %}
@@ -123,6 +107,26 @@
                 {% endfor %}
                 </ul>
             {% endif %}
+
+            <p>
+              <button class="btn new_frame"><i class="icon-plus"></i> Ajouter une frame</button>
+            </p>
+            <div class="frame" style="display:none">
+                <form action="/add/" class="new_frame" method="POST">{% csrf_token %}
+                    <p>
+                        <input type="text" name="syntax" placeholder="NP V NP" />
+                        <input type="hidden" name="type" value="frame" />
+                        <input type="hidden" name="frameset_id" value="{{node.id}}" />
+                        <input type="hidden" name="vn_class_id" value="{{classe.id}}" />
+                    </p>
+                    <table class="table">
+                        <tr><td>Exemple</td><td><input type="text" name="example" /></td></tr>
+                        <tr><td>Syntaxe</td><td><input type="text" name="roles_syntax" /></td></tr>
+                        <tr><td>Sémantique</td><td><input type="text" name="semantics" /></td></tr>
+                    </table>
+                    <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
+                </form>
+            </div>
 
             {# Rinse and repeat with children #}
             {% if not node.is_leaf_node %}

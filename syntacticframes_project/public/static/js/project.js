@@ -243,7 +243,7 @@ $(document).ready(function() {
         return false;
     });
 
-    $(document).on('click', '.new_frame > button', function() {
+    $(document).on('click', 'button.new_frame', function() {
         $(this).hide();
         var form = $(this).parent().next(".frame");
         form.slideDown();
@@ -256,6 +256,22 @@ $(document).ready(function() {
 
         request.done(function() { update_class(that); });
 
+        return false;
+    });
+
+    $(document).on('click', 'button.new_subclass', function() {
+        var that = this;
+
+        var request = $.ajax({
+            url: '/add/',
+            type: 'POST',
+            data: {
+               type: 'subclass',
+               frameset_id: $(this).parent().siblings("h3").attr("id"),
+            }
+        });
+
+        request.done(function() { update_class(that); });
         return false;
     });
 

@@ -110,6 +110,16 @@ def remove(request):
         return HttpResponse("ok")
 
 def add(request):
+
+    def child_of_subclass(parent_class):
+        children = VerbNetFrameSet.objects.filter(parent=parent_class)
+        if not children:
+            return "{}-1".format(parent_class.name)
+        else:
+            last_version = sorted(children, key=lambda c: LooseVersion(c.name))[-1].name
+            last_number = int(last_version[-1])
+            return "{}{}".format(last_version[:-1], last_number+1)
+
     if request.method == 'POST':
         post = request.POST
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
@@ -137,4 +147,19 @@ def add(request):
                 when, f.syntax, f.example, f.roles_syntax, f.semantics,
                 parent_frameset.name, vn_class.name))
 
+        elif post['type'] == 'subclass':
+            parent_subclass_id = post['frameset_id']
+            parent_subclass = VerbNetFrameSet.objects.get(name=parent_subclass_id)
+            subclass_id = child_of_subclass(parent_subclass)
+
+            subclass = VerbNetFrameSet(
+                verbnet_class=parent_subclass.verbnet_class,
+                name=subclass_id,
+                parent=parent_subclass)
+            subclass.save()
+            logger.info("{}: Added frameset {} in frameset {} from class {}".format(
+                when, subclass_id, parent_subclass.name, parent_subclass.verbnet_class))
+            
+
         return HttpResponse("ok")
+
