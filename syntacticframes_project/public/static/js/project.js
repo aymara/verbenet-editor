@@ -219,7 +219,7 @@ $(document).ready(function() {
     editable_class_fields();
 
     // Operations on frames/framesets
-    $('.remove_frame').live('click', function() {
+    $(document).on('click', '.remove_frame', function() {
         var that = this;
         var vn_class_article = $(this).closest("article")[0];
         var vn_class_id = $(vn_class_article).find("h2").attr("id");
