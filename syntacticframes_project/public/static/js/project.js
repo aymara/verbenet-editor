@@ -269,7 +269,7 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                type: 'subclass',
-               frameset_id: $(this).parent().siblings("h3").attr("id"),
+               frameset_id: $(this).data("frameset_id"),
             }
         });
 
