@@ -243,13 +243,13 @@ $(document).ready(function() {
         return false;
     });
 
-    $('.new_frame > button').live('click', function() {
+    $(document).on('click', '.new_frame > button', function() {
         $(this).hide();
         var form = $(this).parent().next(".frame");
         form.slideDown();
     });
 
-    $('form.new_frame').live('submit', function() {
+    $(document).on('submit', 'form.new_frame', function() {
         var that = this;
         var data = $(this).serialize();
         var request = $.post($(this).attr('action'), data);
