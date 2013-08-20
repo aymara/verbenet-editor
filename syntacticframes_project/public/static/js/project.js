@@ -25,6 +25,9 @@ function editable_class_fields() {
 
 
 function update_class(here) {
+
+    location.reload(true);
+/*
     var vn_class_article = $(here).closest("article")[0];
     var vn_class_id = $(vn_class_article).find("h2").attr("id");
 
@@ -34,7 +37,7 @@ function update_class(here) {
         show_plus();
         editable_class_fields();
     });
-
+*/
 }
 
 /* Validating/refusing translations */
