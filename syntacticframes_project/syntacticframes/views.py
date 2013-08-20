@@ -98,14 +98,23 @@ def remove(request):
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         if model == 'VerbNetFrame':
-            frame_id = int(request.POST['frame_id'])
-            vn_class = request.POST['vn_class']
-            syntax = request.POST['syntax']    
+            frame_id = int(post['frame_id'])
+            vn_class = post['vn_class']
+            syntax = post['syntax']    
             db_frame = VerbNetFrame.objects.get(id=frame_id)
+            assert db_frame.removed == False
             db_frame.removed = True
             db_frame.save()
             logger.info("{}: Marked frame {}/{} as removed in class {}"
                         .format(when, frame_id, syntax, vn_class))
+        elif model == 'VerbNetFrameSet':
+            frameset_id = post['frameset_id']
+            db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
+            assert db_frameset.removed == False
+            db_frameset.removed = True
+            db_frameset.save()
+            logger.info("{}: Marked frameset {}/{} as removed in class {}"
+                        .format(when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
 
         return HttpResponse("ok")
 

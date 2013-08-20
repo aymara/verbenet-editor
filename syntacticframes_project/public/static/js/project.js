@@ -243,6 +243,7 @@ $(document).ready(function() {
         return false;
     });
 
+    // new frame
     $(document).on('click', 'button.new_frame', function() {
         $(this).hide();
         var form = $(this).parent().next(".frame");
@@ -259,6 +260,7 @@ $(document).ready(function() {
         return false;
     });
 
+    // new subclass
     $(document).on('click', 'button.new_subclass', function() {
         var that = this;
 
@@ -268,6 +270,23 @@ $(document).ready(function() {
             data: {
                type: 'subclass',
                frameset_id: $(this).parent().siblings("h3").attr("id"),
+            }
+        });
+
+        request.done(function() { update_class(that); });
+        return false;
+    });
+
+    // remove subclass
+    $(document).on('click', 'button.remove_subclass', function() {
+        var that = this;
+
+        var request = $.ajax({
+            url: '/remove/',
+            type: 'POST',
+            data: {
+                model: 'VerbNetFrameSet',
+                frameset_id: $(this).data("frameset_id"),
             }
         });
 

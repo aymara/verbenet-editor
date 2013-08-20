@@ -27,6 +27,7 @@ class VerbNetFrameSet(MPTTModel):
     verbnet_class = models.ForeignKey(VerbNetClass)
     name = models.CharField(max_length=100)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    removed = models.BooleanField(default=False)
 
 class VerbNetMember(models.Model):
     """An english member"""
