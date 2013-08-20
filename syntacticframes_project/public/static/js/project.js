@@ -133,7 +133,7 @@ function sameOrigin(url) {
 /* Send change to server after edited in place */
 function edited_class_field(input_field, span) {
     var new_val = $(input_field).val();
-    var vn_class = $(span).parent().attr("id");
+    var vn_class = $(span).closest("article").data("name");
 
     var request = $.ajax({
         url: '/update/',

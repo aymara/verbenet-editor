@@ -54,7 +54,7 @@ def update(request):
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         frame_fields = ['roles_syntax', 'syntax', 'semantics', 'example']
-        class_fields = ['ladl_string', 'lvf_string']
+        class_fields = ['ladl_string', 'lvf_string', 'paragon', 'comment']
         refresh_fields = ['ladl_string', 'lvf_string']
 
         if field in frame_fields:

@@ -1,9 +1,9 @@
 {% load mptt_tags %}
 {% load syntacticframes_extras %}
 
-        <article>
+        <article data-name="{{classe.name}}">
             {# Title: class name and LVF/LADL #}
-            <h2 id="{{classe.name}}">
+            <h2>
 
                 {# LVF class: inline editing and links #}
                 <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
@@ -33,19 +33,23 @@
             </h2>
 
             {# Paragon and comment #}
-            <p>{% spaceless %}
+            <p>
+                <span class="vnclass_editable" data-field="paragon">{% spaceless %}
                 {% if classe.paragon %}
                     {{ classe.paragon }}
                 {% else %}
                     ∅
                 {% endif %}
+                {% endspaceless %}</span>
                 |
+                <span class="vnclass_editable" data-field="comment">{% spaceless %}
                 {% if classe.comment %}
                     {{ classe.comment }}
                 {% else %}
                     ∅
                 {% endif %}
-            {% endspaceless %}</p>
+                {% endspaceless %}</span>
+            </p>
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
