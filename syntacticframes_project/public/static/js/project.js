@@ -7,7 +7,7 @@ function show_plus() {
     $('.translations a').remove();
     $('.translations').each(function() {
         if ($(this).find('span').size() > 0) {
-            $(this).append(showLink);
+            $(this).append(showLink.clone());
         }
     });
 }
