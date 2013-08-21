@@ -28,8 +28,7 @@ function update_class(here) {
 
     location.reload(true);
 /*
-    var vn_class_article = $(here).closest("article")[0];
-    var vn_class_id = $(vn_class_article).find("h2").attr("id");
+    var vn_class_id = $(here).closest("article").data("name");
 
     request = $.ajax({url: '/vn_class/' + vn_class_id + '/'});
     request.done(function(response, textStatus, jqXHR) {
@@ -147,8 +146,7 @@ function edited_class_field(input_field, span) {
 function edited_frame_field(input_field, span) {
     var new_val = $(input_field).val();
 
-    var vn_class_article = $(span).closest("article")[0];
-    var vn_class_id = $(vn_class_article).find("h2").attr("id");
+    var vn_class_id = $(span).closest("article").data("name");
 
     var frame_div = $(span).closest(".frame")[0];
     var frame_id = $(frame_div).data("frameid");
@@ -225,11 +223,10 @@ $(document).ready(function() {
 
     editable_class_fields();
 
-    // Operations on frames/framesets
+    // remove frame
     $(document).on('click', '.remove_frame', function() {
         var that = this;
-        var vn_class_article = $(this).closest("article")[0];
-        var vn_class_id = $(vn_class_article).find("h2").attr("id");
+        var vn_class_id = $(this).closest("article").data("name");
 
         var frame_div = $(this).closest(".frame")[0];
         var frame_id = $(frame_div).data("frameid");
