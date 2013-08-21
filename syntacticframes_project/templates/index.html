@@ -11,7 +11,7 @@
     <ul class="nav nav-list">
         {% for class in levin_classes %}
           {% spaceless %}{% if class.number == active_class.number %}
-              <li class="active"><a href="#">{{ class.number }}: {{ class.name }}</a></li>
+              <li class="active"><a href="/class/{{class.number}}">{{ class.number }}: {{ class.name }}</a></li>
             {% else %}
               <li><a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
             {% endif %}
