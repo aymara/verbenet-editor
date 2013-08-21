@@ -75,8 +75,9 @@
                         ∅
                     {% else %}
                         {% for word in node.verbtranslation_set.all|sort_translations %}
+                        {% spaceless %}
                             <span {% if word.category == 'unknown' or word.category = 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</span>
-                        {% endfor %}
+                        {% endspaceless %}{% endfor %}
                     {% endif %}
                 </p>
 
