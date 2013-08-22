@@ -24,6 +24,9 @@ class VerbNetClass(models.Model):
     ladl_string = models.CharField(max_length=100)
     lvf_string = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 class VerbNetClassAdmin(reversion.VersionAdmin):
     pass
 
@@ -40,6 +43,9 @@ class VerbNetFrameSet(MPTTModel):
     name = models.CharField(max_length=100)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     removed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
 class VerbNetFrameSetAdmin(reversion.VersionAdmin):
     pass
@@ -74,6 +80,9 @@ class VerbNetFrame(models.Model):
     # transfer_info(during(E), Agent, ?Recipient, Topic) cause(Agent, E)
     semantics = models.CharField(max_length=1000)
 
+    def __str__(self):
+        return "{} ({})".format(self.syntax, self.example)
+
     class Meta:
         ordering = ['position']
 
@@ -88,6 +97,9 @@ class VerbNetRole(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
     # name + restrictions
     name = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name
 
 class VerbNetRoleAdmin(reversion.VersionAdmin):
     pass
