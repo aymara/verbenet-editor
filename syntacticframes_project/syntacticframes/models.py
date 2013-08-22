@@ -1,7 +1,12 @@
-from django.db import models
-from mptt.models import MPTTModel, TreeForeignKey
 from functools import total_ordering
 
+from django.db import models
+from django.contrib import admin
+
+from mptt.models import MPTTModel, TreeForeignKey
+import reversion
+
+# Levin class 9..104
 class LevinClass(models.Model):
     number = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
@@ -9,6 +14,7 @@ class LevinClass(models.Model):
     def __str__(self):
         return "{}: {}".format(self.number, self.name)
 
+# Class (9.3, 13.4.2, 107, etc.)
 class VerbNetClass(models.Model):
     """A high-level VerbNet class (eg. put-9.1)"""
     levin_class = models.ForeignKey(LevinClass)
@@ -18,6 +24,12 @@ class VerbNetClass(models.Model):
     ladl_string = models.CharField(max_length=100)
     lvf_string = models.CharField(max_length=100)
 
+class VerbNetClassAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(VerbNetClass, VerbNetClassAdmin)
+
+# Subclass (9.1-2) 
 class VerbNetFrameSet(MPTTModel):
     """
     FrameSet which will contain sub-classes.
@@ -29,6 +41,12 @@ class VerbNetFrameSet(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     removed = models.BooleanField(default=False)
 
+class VerbNetFrameSetAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(VerbNetFrameSet, VerbNetFrameSetAdmin)
+
+# English member
 class VerbNetMember(models.Model):
     """An english member"""
     frameset = models.ForeignKey(VerbNetFrameSet)
@@ -37,6 +55,12 @@ class VerbNetMember(models.Model):
     def __str__(self):
         return self.lemma
 
+class VerbNetMemberAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(VerbNetMember, VerbNetMemberAdmin)
+
+# Frame: NP V, Agent V, Pred(Agent, E)
 class VerbNetFrame(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
     position = models.PositiveSmallIntegerField(null=True)
@@ -53,12 +77,24 @@ class VerbNetFrame(models.Model):
     class Meta:
         ordering = ['position']
 
+class VerbNetFrameAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(VerbNetFrame, VerbNetFrameAdmin)
+
+# Role (Agent[+animate])
 class VerbNetRole(models.Model):
     """One role for a specific VerbNetFrameSet"""
     frameset = models.ForeignKey(VerbNetFrameSet)
     # name + restrictions
     name = models.CharField(max_length=1000)
 
+class VerbNetRoleAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(VerbNetRole, VerbNetRoleAdmin)
+
+# Translation
 @total_ordering
 class VerbTranslation(models.Model):
     TRANSLATION_CATEGORY = (
@@ -83,3 +119,8 @@ class VerbTranslation(models.Model):
             return self.verb > other.verb
         else:
             return order.index(self.category) > order.index(other.category)
+
+class VerbTranslationAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(VerbTranslation, VerbTranslationAdmin)

@@ -177,6 +177,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
+    'reversion.middleware.RevisionMiddleware',
 #    'django.middleware.common.BrokenLinkEmailsMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
@@ -211,6 +213,8 @@ THIRD_PARTY_APPS = (
     'south',
     # Hierarchy (nested sets)
     'mptt',
+    # version control for models
+    'reversion',
 )
 
 # Apps specific for this project go here.
