@@ -3,7 +3,6 @@ from functools import total_ordering
 from django.db import models
 
 from mptt.models import MPTTModel, TreeForeignKey
-import reversion
 
 
 # Levin class 9..104
@@ -24,6 +23,13 @@ class VerbNetClass(models.Model):
     comment = models.CharField(max_length=1000)
     ladl_string = models.CharField(max_length=100)
     lvf_string = models.CharField(max_length=100)
+
+    def number(self):
+        class_number = self.name.split('-')[1]
+        if '.' in class_number:
+            class_number = class_number.split('.')[0]
+
+        return class_number
 
     def __str__(self):
         return self.name

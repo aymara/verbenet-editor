@@ -10,8 +10,8 @@ from syntacticframes import views
 urlpatterns = patterns('',
     #url(r'^$', TemplateView.as_view(template_name='base.html')),
     url(r'^$', views.index, name='index'),
-    url(r'^class/(?P<class_number>\d+)/$', views.classe, name='index'),
-    url(r'^vn_class/(?P<class_name>\w+-[\d\.]+)/$', views.vn_class, name='index'),
+    url(r'^class/(?P<class_number>\d+)/$', views.classe),
+    url(r'^vn_class/(?P<class_name>\w+-[\d\.]+)/$', views.vn_class),
 
     # JS API
     url(r'^update/$', views.update),

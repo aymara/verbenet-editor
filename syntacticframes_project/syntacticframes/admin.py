@@ -1,13 +1,26 @@
 from django.contrib import admin
+from django.core.urlresolvers import reverse
 
-from .models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember \
+import reversion
+
+from .models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, \
     VerbNetFrame, VerbNetRole, VerbTranslation
 
 admin.site.register(LevinClass)
 
 
 class VerbNetClassAdmin(reversion.VersionAdmin):
-    pass
+    readonly_fields = ("levin_class", "name", "show_url",)
+
+    def show_url(self, instance):
+        url = "{}#{}".format(
+            reverse("syntacticframes.views.classe", kwargs={"class_number": instance.number()}),
+            instance.name)
+        return """<a href="{0}">{0}</a>""".format(url)
+
+    show_url.short_description = "URL"
+    show_url.allow_tags = True
+
 admin.site.register(VerbNetClass, VerbNetClassAdmin)
 
 

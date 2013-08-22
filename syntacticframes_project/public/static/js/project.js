@@ -28,7 +28,7 @@ function update_class(here) {
 
     location.reload(true);
 /*
-    var vn_class_id = $(here).closest("article").data("name");
+    var vn_class_id = $(here).closest("article").attr('id');
 
     request = $.ajax({url: '/vn_class/' + vn_class_id + '/'});
     request.done(function(response, textStatus, jqXHR) {
@@ -132,7 +132,7 @@ function sameOrigin(url) {
 /* Send change to server after edited in place */
 function edited_class_field(input_field, span) {
     var new_val = $(input_field).val();
-    var vn_class = $(span).closest("article").data("name");
+    var vn_class = $(span).closest("article").attr('id');
 
     var request = $.ajax({
         url: '/update/',
@@ -146,7 +146,7 @@ function edited_class_field(input_field, span) {
 function edited_frame_field(input_field, span) {
     var new_val = $(input_field).val();
 
-    var vn_class_id = $(span).closest("article").data("name");
+    var vn_class_id = $(span).closest("article").attr('id');
 
     var frame_div = $(span).closest(".frame")[0];
     var frame_id = $(frame_div).data("frameid");
@@ -226,7 +226,7 @@ $(document).ready(function() {
     // remove frame
     $(document).on('click', '.remove_frame', function() {
         var that = this;
-        var vn_class_id = $(this).closest("article").data("name");
+        var vn_class_id = $(this).closest("article").attr('id');
 
         var frame_div = $(this).closest(".frame")[0];
         var frame_id = $(frame_div).data("frameid");
