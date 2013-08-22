@@ -216,7 +216,9 @@ $(document).ready(function() {
         }
     });
     $(document).ajaxError(function(e, request, settings) {
-        alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe. Merci de rafraichir la page.");
+        alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe.");
+        location.reload(true);
+
         $(".ajax-status").hide();
         $("#ajax-error").show();
     });
