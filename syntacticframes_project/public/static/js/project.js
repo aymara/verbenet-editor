@@ -21,6 +21,10 @@ function editable_class_fields() {
     $('.frame_editable').each(function() {
         $(this).inedit({'onEnd': edited_frame_field});
     });
+
+    $('.frameset_editable').each(function() {
+        $(this).inedit({'onEnd': edited_frameset_field});
+    });
 }
 
 
@@ -158,6 +162,26 @@ function edited_frame_field(input_field, span) {
             field: $(span).data("field"),
             vn_class: vn_class_id,
             frame_id: frame_id,
+            label: new_val,
+        }
+    });
+
+    request.done(function() { update_class(span); });
+}
+
+function edited_frameset_field(input_field, span) {
+    var new_val = $(input_field).val();
+
+    var vn_class_id = $(span).closest("article").attr('id');
+    var frameset_id = $(span).closest(".subclass").attr('id');
+
+    var request = $.ajax({
+        url: '/update/',
+        type: 'POST',
+        data: {
+            field: $(span).data("field"),
+            vn_class: vn_class_id,
+            frameset_id: frameset_id,
             label: new_val,
         }
     });

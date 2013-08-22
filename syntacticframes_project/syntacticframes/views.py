@@ -53,8 +53,9 @@ def update(request):
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
+        class_fields = ['ladl_string', 'lvf_string']
+        frameset_fields = ['paragon', 'comment']
         frame_fields = ['roles_syntax', 'syntax', 'semantics', 'example']
-        class_fields = ['ladl_string', 'lvf_string', 'paragon', 'comment']
         refresh_fields = ['ladl_string', 'lvf_string']
 
         if field in frame_fields:
@@ -73,6 +74,13 @@ def update(request):
             verbnet_class.save()
             logger.info("{}: Updated {} in {} from '{}' to '{}'"
                     .format(when, field, vn_class, old_label, label))
+        elif field in frameset_fields:
+            db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
+            old_label = getattr(db_frameset, field)
+            setattr(db_frameset, field, label)
+            db_frameset.save()
+            logger.info("{}: Updated {} in {}/{} from '{}' to '{}'"
+                    .format(when, field, vn_class, db_frameset.name, old_label, label))
         else:
             raise Exception("Unknown field {}".format(field))
 

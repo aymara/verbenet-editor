@@ -23,6 +23,10 @@ h2 form input { width: 5em; font-size: 31.5px }
   margin-left: 4em;
 }
 
+article > .subclass {
+  margin-left: 0;
+}
+
 .frame {
   border: 1px solid black;
   margin: 10px 0;

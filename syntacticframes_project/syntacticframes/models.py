@@ -19,8 +19,6 @@ class VerbNetClass(models.Model):
     """A high-level VerbNet class (eg. put-9.1)"""
     levin_class = models.ForeignKey(LevinClass)
     name = models.CharField(max_length=100)
-    paragon = models.CharField(max_length=100)
-    comment = models.CharField(max_length=1000)
     ladl_string = models.CharField(max_length=100)
     lvf_string = models.CharField(max_length=100)
 
@@ -47,6 +45,8 @@ class VerbNetFrameSet(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True,
                             related_name='children')
     removed = models.BooleanField(default=False)
+    paragon = models.CharField(max_length=100, blank=True)
+    comment = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
         return self.name
