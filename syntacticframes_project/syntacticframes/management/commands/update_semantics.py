@@ -11,17 +11,31 @@ from verbnet.verbnetreader import VerbnetReader
 
 
 def iprint(indent, stuff):
-    print(" " * indent, stuff)
+    if indent > 0:
+        print(" " * indent, stuff)
+    else:
+        print(stuff)
 
 
 def update_class(xml_frameset, db_frameset, parent=None, indent=0):
     iprint(indent, db_frameset.name)
 
     for xml_f, db_f in zip(xml_frameset['frames'],
-                           reversed(db_frameset.verbnetframe_set.all())):
-        db_f.semantics = xml_f.semantics
-        db_f.save()
-        iprint(indent, "{} -> {}".format(db_f.semantics, xml_f.semantics))
+                           db_frameset.verbnetframe_set.all()):
+
+        if db_f.semantics != xml_f.semantics:
+            iprint(indent, "INCONSISTENCY")
+            db_f.semantics = xml_f.semantics
+            db_f.save()
+        else:
+            iprint(indent, "FINE!")
+
+        iprint(indent, db_f.id)
+        iprint(indent, db_f.syntax)
+        iprint(indent, xml_f.structure)
+        iprint(indent, "DB:  {}".format(db_f.semantics))
+        iprint(indent, "XML: {}".format(xml_f.semantics))
+        print()
 
     for xml_children, db_children in zip(xml_frameset['children'],
                                          db_frameset.get_children()):
