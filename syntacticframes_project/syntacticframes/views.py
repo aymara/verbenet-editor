@@ -108,13 +108,12 @@ def remove(request):
         if model == 'VerbNetFrame':
             frame_id = int(post['frame_id'])
             vn_class = post['vn_class']
-            syntax = post['syntax']    
             db_frame = VerbNetFrame.objects.get(id=frame_id)
             assert db_frame.removed == False
             db_frame.removed = True
             db_frame.save()
             logger.info("{}: Marked frame {}/{} as removed in class {}"
-                        .format(when, frame_id, syntax, vn_class))
+                        .format(when, frame_id, db_frame.syntax, vn_class))
         elif model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)

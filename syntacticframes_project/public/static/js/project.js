@@ -27,12 +27,10 @@ function editable_class_fields() {
     });
 }
 
-
+/* Replace edited class */
 function update_class(here) {
-
-    location.reload(true);
-/*
-    var vn_class_id = $(here).closest("article").attr('id');
+    var vn_class_article = $(here).closest("article");
+    var vn_class_id = vn_class_article.attr('id');
 
     request = $.ajax({url: '/vn_class/' + vn_class_id + '/'});
     request.done(function(response, textStatus, jqXHR) {
@@ -40,7 +38,6 @@ function update_class(here) {
         show_plus();
         editable_class_fields();
     });
-*/
 }
 
 /* Highlight translations */
@@ -137,8 +134,6 @@ function edited_frame_field(input_field, span) {
             label: new_val,
         }
     });
-
-    request.done(function() { update_class(span); });
 }
 
 function edited_frameset_field(input_field, span) {
@@ -157,8 +152,6 @@ function edited_frameset_field(input_field, span) {
             label: new_val,
         }
     });
-
-    request.done(function() { update_class(span); });
 }
 
 $(document).ready(function() {
@@ -214,7 +207,6 @@ $(document).ready(function() {
                 model: 'VerbNetFrame',
                 vn_class: vn_class_id,
                 frame_id: frame_id,
-                syntax: $(frame_div).find("span[data-field='syntax']").text()
             }
         });
 
