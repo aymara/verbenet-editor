@@ -174,6 +174,8 @@ $(document).ready(function() {
         }
     });
 
+    var previous_timeout = -1;
+
     $(document).ajaxStart(function(e, request, settings) {
         $("#ajax-ok").hide();
         $("#ajax-loading").show();
@@ -185,6 +187,10 @@ $(document).ready(function() {
         if(is_vn_class || (is_update && !is_lvf_or_ladl)) {
             $("#ajax-loading").hide();
             $("#ajax-ok").show();
+            clearTimeout(previous_timeout);
+            previous_timeout = setTimeout(function() {
+                $("#ajax-ok").fadeOut('slow');
+            }, 10000);
         }
     });
     $(document).ajaxError(function(e, request, settings) {
