@@ -175,21 +175,21 @@ $(document).ready(function() {
     });
 
     $(document).ajaxStart(function(e, request, settings) {
-        $(".ajax-status").hide();
+        $("#ajax-ok").hide();
         $("#ajax-loading").show();
     });
     $(document).ajaxSuccess(function(e, request, settings) {
-        if(settings.url.indexOf("vn_class") >= 0) {
-            $(".ajax-status").hide();
+        var is_vn_class = settings.url.indexOf("/vn_class/") == 0;
+        var is_update = settings.url.indexOf("update") >= 0;
+        var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
+        if(is_vn_class || (is_update && !is_lvf_or_ladl)) {
+            $("#ajax-loading").hide();
             $("#ajax-ok").show();
         }
     });
     $(document).ajaxError(function(e, request, settings) {
         alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe.");
         location.reload(true);
-
-        $(".ajax-status").hide();
-        $("#ajax-error").show();
     });
 
     editable_class_fields();
