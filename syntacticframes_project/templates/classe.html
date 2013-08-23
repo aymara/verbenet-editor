@@ -37,6 +37,7 @@
             <div class="subclass" id="{{node.id}}">
                 {% if node.removed %}
                     <h3 id="{{node.name}}">Classe {{node.name}} cachée</h3>
+                    <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
                 {% else %}
                     <h3 id="{{node.name}}">Classe {{node.name}}</h3>
                     <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>

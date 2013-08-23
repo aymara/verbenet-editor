@@ -8,7 +8,11 @@ body {
 .right { float: right }
 
 .sidebar-nav { padding: 9px 0 }
+.navbar [class^="icon-"] {
+    vertical-align: baseline;
+}
 
+/* Verbs display */
 .both { color: purple }
 .ladl, h2 [data-field="ladl_string"] { color: green }
 .lvf, h2 [data-field="lvf_string"] { color: red }
@@ -16,9 +20,11 @@ body {
 .hover { background-color: black; color: white }
 h2 a { text-decoration: underline }
 
+/* Subclass title */
 h2 form { display: inline }
 h2 form input { width: 5em; font-size: 31.5px }
 
+/* Subclass indentation */
 .subclass {
   margin-left: 4em;
 }
@@ -27,6 +33,7 @@ article > .subclass {
   margin-left: 0;
 }
 
+/* Frame display */
 .frame {
   border: 1px solid black;
   margin: 10px 0;
