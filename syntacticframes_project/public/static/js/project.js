@@ -43,32 +43,6 @@ function update_class(here) {
 */
 }
 
-/* Validating/refusing translations */
-/*
-function getColorId(color) {
-    if (color == 'both') { return 0; }
-    else if (color == 'ladl') { return 1; }
-    else if (color == 'lvf') { return 2; }
-    else if (color == 'dicovalence') { return 3; }
-    else { return 4; }
-}
-
-function sortUL(list) {
-    list.children(".comma_hack").remove();
-    list.children("li").sort(function(a, b) {
-        var idA = getColorId($(a).attr('class'));
-        var idB = getColorId($(b).attr('class'));
-
-        var upA = $(a).text();
-        var upB = $(b).text();
-        var cmpText = (upA < upB) ? -1 : (upA > upB) ? 1 : 0;
-        return (idA < idB) ? -1 : (idA > idB) ? 1 : cmpText;
-    }).appendTo(list);
-    span = $('<span />').addClass('comma_hack').text(', ');
-    list.find('li').after(span);
-}
-*/
-
 /* Highlight translations */
 function toggleHighlightMembers() {
     var origins = $(this).data('origin').split(',');
@@ -136,12 +110,12 @@ function sameOrigin(url) {
 /* Send change to server after edited in place */
 function edited_class_field(input_field, span) {
     var new_val = $(input_field).val();
-    var vn_class = $(span).closest("article").attr('id');
+    var vn_class_id = $(span).closest("article").attr('id');
 
     var request = $.ajax({
         url: '/update/',
         type: 'POST',
-        data: {vn_class: vn_class, field: $(span).data("field"), label: new_val}
+        data: {vn_class: vn_class_id, field: $(span).data("field"), label: new_val}
     });
 
     request.done(function() { update_class(span); });
@@ -151,9 +125,7 @@ function edited_frame_field(input_field, span) {
     var new_val = $(input_field).val();
 
     var vn_class_id = $(span).closest("article").attr('id');
-
-    var frame_div = $(span).closest(".frame")[0];
-    var frame_id = $(frame_div).data("frameid");
+    var frame_id = $(span).closest(".frame").data("frameid");
 
     var request = $.ajax({
         url: '/update/',
@@ -190,31 +162,11 @@ function edited_frameset_field(input_field, span) {
 }
 
 $(document).ready(function() {
-    // "Evaluate" a word: set it as valid or not
-    /*
-    $('.evaluate li').click(function() {
-        // Retrieve the word, its status, and the other list
-        var word = $(this);
-        var wanted = word.parent().hasClass('valid') ? 'invalid': 'valid';
-        var other_list = $(this).parent().parent().find('.'+wanted);
-
-        // Move the word to the other list and append a space
-        word.hide()
-        sortUL(word.parent());
-
-        other_list.append(word);
-        span = $('<span />').addClass('comma_hack').text(', ');
-        other_list.append(span);
-        sortUL(other_list);
-
-        word.fadeIn('slow');
-    });
-    */
-
     // Show relation between verbs and origin
     $('.translations span').hover(toggleHighlightMembers, toggleHighlightMembers);
     $('.members span').hover(toggleHighlightCandidates, toggleHighlightCandidates);
 
+    // Show dark/gray verbs
     show_plus();
 
     var csrftoken = getCookie('csrftoken');
@@ -253,9 +205,7 @@ $(document).ready(function() {
     $(document).on('click', '.remove_frame', function() {
         var that = this;
         var vn_class_id = $(this).closest("article").attr('id');
-
-        var frame_div = $(this).closest(".frame")[0];
-        var frame_id = $(frame_div).data("frameid");
+        var frame_id = $(this).closest(".frame").data("frameid");
 
         var request = $.ajax({
             url: '/remove/',
