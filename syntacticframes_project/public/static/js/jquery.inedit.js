@@ -99,11 +99,23 @@
 						break;
 				}
 
-				// add unfocus on 'enter' key
+				// save data on Enter
 				jQuery(input).bind(event.keypress, function(e) {
 					var code = (e.keyCode ? e.keyCode : e.which);
 					if(code == 13) { 
-						$(this).blur();   
+                        // enable on click event
+                        options.clickStarted = false;
+                        
+                        // execute on blur method
+                        var result = options.onEnd(input, selected);
+                        if((typeof result === 'undefined') || (result == true)) {
+
+                            // update label and remove the input field
+                            var newText = jQuery(input).val();
+                            jQuery(selected).text(newText);
+                            jQuery(selected).show();
+                            jQuery(input).remove();
+                        }
 					}
 				});
 				
@@ -119,24 +131,6 @@
 						jQuery(input).css(s, styleObject[s]);
 					}
 				}
-
-				// @ blur do this
-				jQuery(input).bind(event.blur, function() {
-
-					// enable on click event
-					options.clickStarted = false;
-					
-					// execute on blur method
-					var result = options.onEnd(input, selected);
-					if((typeof result === 'undefined') || (result == true)) {
-
-						// update label and remove the input field
-						var newText = jQuery(input).val();
-						jQuery(selected).text(newText);
-						jQuery(selected).show();
-						jQuery(input).remove();
-					}
-				});
 
 				jQuery(input).val(text);
 				jQuery(input).show();	
