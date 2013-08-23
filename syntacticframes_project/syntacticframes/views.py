@@ -180,3 +180,20 @@ def add(request):
 
         return HttpResponse("ok")
 
+def show(request):
+    if request.method == 'POST':
+        post = request.POST
+        model = post['model']
+        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+
+        if model == 'VerbNetFrameSet':
+            frameset_id = post['frameset_id']
+            db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
+            assert db_frameset.removed == True
+            db_frameset.removed = False
+            db_frameset.save()
+            logger.info("{}: Marked frameset {}/{} as shown in class {}"
+                        .format(when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+            
+
+        return HttpResponse("ok")

@@ -274,5 +274,22 @@ $(document).ready(function() {
         return false;
     });
 
+    // show subclass
+    $(document).on('click', 'button.show_subclass', function() {
+        var that = this;
+
+        var request = $.ajax({
+            url: '/show/',
+            type: 'POST',
+            data: {
+                model: 'VerbNetFrameSet',
+                frameset_id: $(this).data("frameset_id"),
+            }
+        });
+        request.done(function() { update_class(that); });
+        return false;
+    });
+              
+
 });
 
