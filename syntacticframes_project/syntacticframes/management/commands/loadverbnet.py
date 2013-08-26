@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import logging
+from time import gmtime, strftime
+
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
@@ -8,11 +11,47 @@ import verbnet.verbnetreader
 from loadmapping.verbclasses import verb_classes
 from loadmapping import mapping
 
-from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
+from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, \
+    VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
+
+verb_logger = logging.getLogger('verbs')
+
 
 def iprint(indent, stuff):
     pass
     #print(" " * indent, stuff)
+
+
+def update_verbs(xml_class, db_frameset, vn_class):
+    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+    verb_logger.info("{}: Removed verbs in class/subclass {}/{}: {}".format(
+        when, vn_class.name, db_frameset.name,
+        ", ".join([t.verb for t in
+                  VerbTranslation.objects.filter(frameset=db_frameset)])))
+    VerbTranslation.objects.filter(frameset=db_frameset).delete()
+
+    candidates = mapping.translations_for_class(
+        xml_class['members'], vn_class.ladl_string, vn_class.lvf_string)
+
+    for french, categoryname, categoryid, originlist in candidates:
+        originset = set(originlist.split(','))
+        if set(xml_class['members']) & originset:
+            VerbTranslation(
+                frameset=db_frameset,
+                verb=french,
+                category=categoryname,
+                origin=originlist).save()
+    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+
+    verb_logger.info("{}: Added verbs in class/subclass {}/{}: {}".format(
+        when, vn_class.name, db_frameset.name,
+        ", ".join([t.verb for t in
+                  VerbTranslation.objects.filter(frameset=db_frameset)])))
+
+    for c in xml_class['children']:
+        db_frameset = VerbNetFrameSet.objects.get(name=c['name'])
+        update_verbs(c, db_frameset, vn_class)
+
 
 def save_class(c, vn_class, parent=None, indent=0):
     #iprint(indent, c['name'])

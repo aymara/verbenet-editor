@@ -87,13 +87,11 @@ def update(request):
 
         if field in refresh_fields:
             import verbnet.verbnetreader
-            from syntacticframes.management.commands.loadverbnet import save_class
-            verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
-            verbnet_class.verbnetframeset_set.all().delete()
-
-            r = verbnet.verbnetreader.VerbnetReader(os.path.join(settings.SITE_ROOT, 'verbnet/verbnet-3.2/'), False)
-            c = r.files[verbnet_class.name]
-            save_class(c, verbnet_class)
+            from syntacticframes.management.commands.loadverbnet import update_verbs
+            db_vnclass = VerbNetClass.objects.get(name__exact = vn_class)
+            reader = verbnet.verbnetreader.VerbnetReader(os.path.join(settings.SITE_ROOT, 'verbnet/verbnet-3.2/'), False)
+            xml_vnclass = reader.files[db_vnclass.name]
+            update_verbs(xml_vnclass, db_vnclass.verbnetframeset_set.get(parent=None), db_vnclass)
 
             
             
