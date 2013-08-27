@@ -191,6 +191,16 @@ def show(request):
             db_frameset.save()
             logger.info("{}: Marked frameset {}/{} as shown in class {}"
                         .format(when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+        elif model == 'VerbNetFrame':
+            frame_id = post['frame_id']
+            db_frame = VerbNetFrame.objects.get(id=frame_id)
+            assert db_frame.removed == True
+            db_frame.removed = False
+            db_frame.save()
+
+            logger.info("{}: Marked frame {} ({}/{}) as shown in class {}"
+                        .format(when, frame_id, db_frame.syntax, db_frame.example,
+                                db_frame.frameset.name))
             
 
         return HttpResponse("ok")

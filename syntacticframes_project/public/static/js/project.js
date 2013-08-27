@@ -287,6 +287,23 @@ $(document).ready(function() {
         request.done(function() { update_class(that); });
         return false;
     });
+
+    // show frame
+    $(document).on('click', 'button.show_frame', function() {
+        var that = this;
+
+        var request = $.ajax({
+            url: '/show/',
+            type: 'POST',
+            data: {
+                model: 'VerbNetFrame',
+                frame_id: $(this).data("frame_id")
+            }
+        });
+
+        request.done(function() { update_class(that); });
+        return false;
+    });
               
 
 });

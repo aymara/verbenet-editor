@@ -114,7 +114,7 @@
                         <p>Frames supprimées :</p>
                         <ul>
                         {% for frame in node.verbnetframe_set.all|is_removed:True %}
-                            <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }})</li>
+                            <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }}) <button class="btn show_frame" data-frame_id="{{ frame.id }}"><i class="icon-repeat"></i> Réintégrer</button></li>
                         {% endfor %}
                         </ul>
                     {% endif %}
