@@ -48,7 +48,7 @@ def update_verbs(xml_class, db_frameset, current_ladl, current_lvf):
         ", ".join([t.verb for t in
                   VerbTranslation.objects.filter(frameset=db_frameset)])))
 
-    for c in xml_class['children']:
+    for c in db_frameset.children.all():
         db_frameset = VerbNetFrameSet.objects.get(name=c['name'])
         new_ladl = current_ladl if not db_frameset.ladl_string else db_frameset.ladl_string
         new_lvf = current_lvf if not db_frameset.lvf_string else db_frameset.lvf_string
