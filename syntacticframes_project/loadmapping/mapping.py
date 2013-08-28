@@ -18,6 +18,8 @@ from collections import defaultdict
 
 from django.conf import settings
 
+from parsecorrespondance import parse
+
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 FORGET_LIST = ['?', '-', '', '∅', '*']
@@ -34,31 +36,6 @@ with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') 
     dicovalence_verbs = pickle.load(f)
 with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
     verb_dict = pickle.load(f)
-
-
-# We want to allow multiple classes and various writings that make sense for
-# humans
-def parse_complex_lvfladl(raw):
-    if raw in FORGET_LIST:
-        return None, []
-
-    ladl = raw.replace("-", "")
-
-    if " ou " in ladl:
-        operation = 'or'
-        ladl = ladl.split(" ou ")
-    elif " et " in ladl:
-        operation = 'and'
-        ladl = ladl.split(" et ")
-    else:
-        operation = None
-        ladl = [ladl]
-
-    for i, ladl_class in enumerate(ladl):
-        if ladl_class.endswith("source") or ladl_class.endswith("dest"):
-            ladl[i] = ladl_class.split()[0]
-
-    return operation, ladl
 
 
 def parse_path(specific_class):
@@ -161,8 +138,8 @@ def get_verbs_for_class_list(operation_and_list, resource):
 
 
 def translations_for_class(verbs, ladl, lvf):
-    ladl_classes = parse_complex_lvfladl(ladl)
-    lvf_classes = parse_complex_lvfladl(lvf)
+    ladl_classes = parse.get_ladl_list(ladl)
+    lvf_classes = parse.get_lvf_list(lvf)
 
     candidates = defaultdict(set)
     lvf, ladl = set(), set()
