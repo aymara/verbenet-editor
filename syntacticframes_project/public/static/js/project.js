@@ -14,10 +14,6 @@ function show_plus() {
 
 function editable_class_fields() {
     // Edit all editable fields
-    $('.vnclass_editable').each(function() {
-        $(this).inedit({'onEnd': edited_class_field});
-    });
-
     $('.frame_editable').each(function() {
         $(this).inedit({'onEnd': edited_frame_field});
     });
@@ -102,20 +98,6 @@ function sameOrigin(url) {
         (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
         // or any other URL that isn't scheme relative or absolute i.e relative.
         !(/^(\/\/|http:|https:).*/.test(url));
-}
-
-/* Send change to server after edited in place */
-function edited_class_field(input_field, span) {
-    var new_val = $(input_field).val();
-    var vn_class_id = $(span).closest("article").attr('id');
-
-    var request = $.ajax({
-        url: '/update/',
-        type: 'POST',
-        data: {vn_class: vn_class_id, field: $(span).data("field"), label: new_val}
-    });
-
-    request.done(function() { update_class(span); });
 }
 
 function edited_frame_field(input_field, span) {

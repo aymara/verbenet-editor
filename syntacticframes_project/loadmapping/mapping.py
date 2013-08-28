@@ -222,29 +222,21 @@ def import_mapping():
         candidates = {}
 
         for classe in verbnet:
-            print("Saving {}".format(classe["classe"]))
+            print("Saving root class {}".format(classe["classe"]))
             v = VerbNetClass(
                 levin_class=LevinClass.objects.get(
                     number=get_levin(classe["classe"])),
-                name=classe["classe"],
-                lvf_string=classe["lvf_orig"],
-                ladl_string=classe["ladl_orig"])
+                name=classe["classe"])
             v.save()
-
 
             fs = VerbNetFrameSet(
                 verbnet_class=v,
                 name=classe["classe"],
                 paragon=classe["paragon"],
-                comment=classe["commentaire"])
+                comment=classe["commentaire"],
+                lvf_string=classe["lvf_orig"],
+                ladl_string=classe["ladl_orig"]).save()
 
-            #for word in classe["verbnet_members"]:
-            #    VerbNetMember(verbnet_class=v, lemma=word).save()
-
-            #for word in classe["candidates"]:
-            #    VerbTranslation(
-            #        verb=word[0], verbnet_class=v,
-            #        category=word[1], origin=word[3]).save()
             candidates[classe['classe']] = classe['candidates']
 
         return candidates, verb_dict

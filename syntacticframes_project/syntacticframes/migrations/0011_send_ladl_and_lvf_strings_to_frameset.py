@@ -3,38 +3,24 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from django.db.models.base import ObjectDoesNotExist
-
-from syntacticframes.models import VerbNetClass, VerbNetRole
-from verbnet.verbnetreader import VerbnetReader
 
 class Migration(DataMigration):
 
-    def add_roles(self, xml_class, db_frameset):
-        for position, role in enumerate(xml_class['roles']):
-            # Also makes sure nested selectional restrictions are handled
-            VerbNetRole(frameset=db_frameset, name=role, position=position).save()
-
-        for xml_child, db_child in zip(xml_class['children'], db_frameset.children.all()):
-            self.add_roles(xml_child, db_child)
-
-
     def forwards(self, orm):
-        "Deletes and recreates roles with the correct ordering information."
-        orm.VerbNetRole.objects.all().delete()
-
-        reader = VerbnetReader('verbnet/verbnet-3.2/', False)
-        for filename in reader.files:
-            xml_class = reader.files[filename]
-            try:
-                vn_class = VerbNetClass.objects.get(name=filename)
-                db_rootfs = vn_class.verbnetframeset_set.get(parent=None)
-                self.add_roles(xml_class, db_rootfs)
-            except ObjectDoesNotExist:
-                pass
+        "Move LADL/LVF down to root frameset."
+        for vn_class in orm.VerbNetClass.objects.all():
+            parent_frameset = orm.VerbNetFrameSet.objects.get(verbnet_class=vn_class, parent=None)
+            parent_frameset.ladl_string = vn_class.ladl_string
+            parent_frameset.lvf_string = vn_class.lvf_string
+            parent_frameset.save()
 
     def backwards(self, orm):
-        "Removing the position field is enough."
+        "Move LADL/LVF up to VerbNet class."
+        for vn_class in orm.VerbNetClass.objects.all():
+            parent_frameset = orm.VerbNetFrameSet.objects.get(verbnet_class=vn_class, parent=None)
+            vn_class.ladl_string = parent_frameset.ladl_string
+            vn_class.lvf_string = parent_frameset.lvf_string
+            vn_class.save()
 
     models = {
         'syntacticframes.levinclass': {
@@ -64,13 +50,15 @@ class Migration(DataMigration):
         },
         'syntacticframes.verbnetframeset': {
             'Meta': {'object_name': 'VerbNetFrameSet'},
-            'comment': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'blank': 'True'}),
+            'comment': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '1000'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ladl_string': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'lvf_string': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'paragon': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'related_name': "'children'", 'null': 'True', 'blank': 'True', 'to': "orm['syntacticframes.VerbNetFrameSet']"}),
+            'paragon': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
+            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'null': 'True', 'to': "orm['syntacticframes.VerbNetFrameSet']", 'related_name': "'children'"}),
             'removed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),

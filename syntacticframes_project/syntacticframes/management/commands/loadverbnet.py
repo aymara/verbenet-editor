@@ -22,16 +22,16 @@ def iprint(indent, stuff):
     #print(" " * indent, stuff)
 
 
-def update_verbs(xml_class, db_frameset, vn_class):
+def update_verbs(xml_class, db_frameset, current_ladl, current_lvf):
     when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-    verb_logger.info("{}: Removed verbs in class/subclass {}/{}: {}".format(
-        when, vn_class.name, db_frameset.name,
+    verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
+        when, db_frameset.name,
         ", ".join([t.verb for t in
                   VerbTranslation.objects.filter(frameset=db_frameset)])))
     VerbTranslation.objects.filter(frameset=db_frameset).delete()
 
     candidates = mapping.translations_for_class(
-        xml_class['members'], vn_class.ladl_string, vn_class.lvf_string)
+        xml_class['members'], current_ladl, current_lvf)
 
     for french, categoryname, categoryid, originlist in candidates:
         originset = set(originlist.split(','))
@@ -43,27 +43,25 @@ def update_verbs(xml_class, db_frameset, vn_class):
                 origin=originlist).save()
     when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-    verb_logger.info("{}: Added verbs in class/subclass {}/{}: {}".format(
-        when, vn_class.name, db_frameset.name,
+    verb_logger.info("{}: Added verbs in subclass {}: {}".format(
+        when, db_frameset.name,
         ", ".join([t.verb for t in
                   VerbTranslation.objects.filter(frameset=db_frameset)])))
 
     for c in xml_class['children']:
         db_frameset = VerbNetFrameSet.objects.get(name=c['name'])
-        update_verbs(c, db_frameset, vn_class)
+        new_ladl = current_ladl if not db_frameset.ladl_string else db_frameset.ladl_string
+        new_lvf = current_lvf if not db_frameset.lvf_string else db_frameset.lvf_string
+            
+        update_verbs(c, db_frameset, new_ladl, new_lvf)
 
 
-def save_class(c, vn_class, parent=None, indent=0):
+def save_class(c, db_frameset, indent=0):
     #iprint(indent, c['name'])
-    try:
-        db_frameset = VerbNetFrameSet.objects.get(name=c['name'], verbnet_class=vn_class, parent=parent)
-    except:
-        db_frameset = VerbNetFrameSet(name=c['name'], verbnet_class=vn_class, parent=parent)
-        db_frameset.save()
 
     #iprint(indent, ", ".join(c['roles']))
-    for r in c['roles']:
-        VerbNetRole(frameset=db_frameset, name=r).save()
+    for position, role in enumerate(c['roles']):
+        VerbNetRole(frameset=db_frameset, name=role, position=position).save()
     #iprint(indent, ", ".join(c['members']))
     for m in c['members']:
         VerbNetMember(frameset=db_frameset, lemma=m).save()
@@ -80,7 +78,7 @@ def save_class(c, vn_class, parent=None, indent=0):
         db_f.save()
         position += 1
 
-        candidates = mapping.translations_for_class(c['members'], vn_class.ladl_string, vn_class.lvf_string)
+        candidates = mapping.translations_for_class(c['members'], db_frameset.ladl_string, db_frameset.lvf_string)
         for french, categoryname, categoryid, originlist in candidates:
             originset = set(originlist.split(','))
             if set(c['members']) & originset:
@@ -98,7 +96,7 @@ def save_class(c, vn_class, parent=None, indent=0):
     #print()
 
     for c in c['children']:
-        save_class(c, vn_class, db_frameset, indent+4)
+        save_class(c, db_frameset, indent+4)
 
 
 class Command(BaseCommand):
@@ -120,7 +118,8 @@ class Command(BaseCommand):
             r = verbnet.verbnetreader.VerbnetReader('verbnet/verbnet-3.2/', False)
             print('-----')
             for filename in r.files:
-                print("Using {}".format(filename))
+                print("Saving subclasses of {}".format(filename))
                 xml_class = r.files[filename]
                 db_vnclass = VerbNetClass.objects.get(name=filename)
-                save_class(xml_class, db_vnclass)
+                db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
+                save_class(xml_class, db_rootframeset)

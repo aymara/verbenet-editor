@@ -14,8 +14,8 @@ body {
 
 /* Verbs display */
 .both { color: purple }
-.ladl, h2 [data-field="ladl_string"] { color: green }
-.lvf, h2 [data-field="lvf_string"] { color: red }
+.ladl, h3 span[data-field="ladl_string"] { color: green }
+.lvf, h3 span[data-field="lvf_string"] { color: red }
 .unknown { color: gray }
 .hover { background-color: black; color: white }
 h2 a { text-decoration: underline }

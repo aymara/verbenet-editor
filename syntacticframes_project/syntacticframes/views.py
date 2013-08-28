@@ -53,8 +53,7 @@ def update(request):
         vn_class, field, label = post["vn_class"], post["field"], post["label"]
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-        class_fields = ['ladl_string', 'lvf_string']
-        frameset_fields = ['paragon', 'comment']
+        frameset_fields = ['paragon', 'comment', 'ladl_string', 'lvf_string']
         frame_fields = ['roles_syntax', 'syntax', 'semantics', 'example']
         refresh_fields = ['ladl_string', 'lvf_string']
 
@@ -66,14 +65,6 @@ def update(request):
             frame.save()
             logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
                     .format(when, field, frame_id, vn_class, old_label, label))
-        elif field in class_fields:
-            refresh_class = True
-            verbnet_class = VerbNetClass.objects.get(name__exact = vn_class)
-            old_label = getattr(verbnet_class, field)
-            setattr(verbnet_class, field, label)
-            verbnet_class.save()
-            logger.info("{}: Updated {} in {} from '{}' to '{}'"
-                    .format(when, field, vn_class, old_label, label))
         elif field in frameset_fields:
             db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
             old_label = getattr(db_frameset, field)
@@ -91,7 +82,11 @@ def update(request):
             db_vnclass = VerbNetClass.objects.get(name__exact = vn_class)
             reader = verbnet.verbnetreader.VerbnetReader(os.path.join(settings.SITE_ROOT, 'verbnet/verbnet-3.2/'), False)
             xml_vnclass = reader.files[db_vnclass.name]
-            update_verbs(xml_vnclass, db_vnclass.verbnetframeset_set.get(parent=None), db_vnclass)
+            db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
+            update_verbs(xml_vnclass, db_rootframeset,
+                         db_rootframeset.ladl_string,
+                         db_rootframeset.lvf_string)
+                         
 
             
             

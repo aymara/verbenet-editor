@@ -3,34 +3,7 @@
 
         <article id="{{classe.name}}">
             {# Title: class name and LVF/LADL #}
-            <h2>
-
-                {# LVF class: inline editing and links #}
-                <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
-                <span class="vnclass_editable" data-field="lvf_string">{% spaceless %}
-                    {% if classe.lvf_string %}
-                        {{ classe.lvf_string }}
-                    {% else %}
-                        ∅
-                    {% endif %}
-                {% endspaceless %}</span>
-                {% if classe.lvf_string and classe.lvf_string != '∅' %}
-                    <a href="http://rali.iro.umontreal.ca/Dubois/classe/{{classe.lvf_string}}.html" class="external"><i class="icon-share-alt"></i></a>
-                {% endif %}
-
-                {# LADL table: inline editing and links #}
-                <span class="vnclass_editable" data-field="ladl_string">{% spaceless %}
-                    {% if classe.ladl_string %}
-                         {{ classe.ladl_string }}
-                    {% else %}
-                        ∅
-                    {% endif %}
-                {% endspaceless %}</span>
-                {% if classe.ladl_string and classe.ladl_string != '∅' %}
-                    <a href="http://verbenet.pradet.me/verbes-html/V_{{classe.ladl_string}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
-                {% endif %}
-
-            </h2>
+                <h2><a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a></h2>
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
@@ -39,7 +12,32 @@
                     <h3 id="{{node.name}}">Classe {{node.name}} cachée</h3>
                     <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
                 {% else %}
-                    <h3 id="{{node.name}}">Classe {{node.name}}</h3>
+                    <h3 id="{{node.name}}">Classe {{node.name}}
+                        {# LVF class: inline editing and links #}
+                        <span class="frameset_editable" data-field="lvf_string">{% spaceless %}
+                            {% if node.lvf_string %}
+                                {{ node.lvf_string }}
+                            {% else %}
+                                ∅
+                            {% endif %}
+                        {% endspaceless %}</span>
+                        {% if node.lvf_string and node.lvf_string != '∅' %}
+                            <a href="http://rali.iro.umontreal.ca/Dubois/classe/{{node.lvf_string}}.html" class="external"><i class="icon-share-alt"></i></a>
+                        {% endif %}
+
+                        {# LADL table: inline editing and links #}
+                        <span class="frameset_editable" data-field="ladl_string">{% spaceless %}
+                            {% if node.ladl_string %}
+                                 {{ node.ladl_string }}
+                            {% else %}
+                                ∅
+                            {% endif %}
+                        {% endspaceless %}</span>
+                        {% if node.ladl_string and node.ladl_string != '∅' %}
+                            <a href="http://verbenet.pradet.me/verbes-html/V_{{node.ladl_string}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
+                        {% endif %}
+                    </h3>
+
                     <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
                     <p><button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher cette sous-classe</button></p>
 

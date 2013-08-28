@@ -1,40 +1,31 @@
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
-from django.db.models.base import ObjectDoesNotExist
 
-from syntacticframes.models import VerbNetClass, VerbNetRole
-from verbnet.verbnetreader import VerbnetReader
 
-class Migration(DataMigration):
-
-    def add_roles(self, xml_class, db_frameset):
-        for position, role in enumerate(xml_class['roles']):
-            # Also makes sure nested selectional restrictions are handled
-            VerbNetRole(frameset=db_frameset, name=role, position=position).save()
-
-        for xml_child, db_child in zip(xml_class['children'], db_frameset.children.all()):
-            self.add_roles(xml_child, db_child)
-
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        "Deletes and recreates roles with the correct ordering information."
-        orm.VerbNetRole.objects.all().delete()
+        # Adding field 'VerbNetFrameSet.ladl_string'
+        db.add_column('syntacticframes_verbnetframeset', 'ladl_string',
+                      self.gf('django.db.models.fields.CharField')(blank=True, max_length=100, default=''),
+                      keep_default=False)
 
-        reader = VerbnetReader('verbnet/verbnet-3.2/', False)
-        for filename in reader.files:
-            xml_class = reader.files[filename]
-            try:
-                vn_class = VerbNetClass.objects.get(name=filename)
-                db_rootfs = vn_class.verbnetframeset_set.get(parent=None)
-                self.add_roles(xml_class, db_rootfs)
-            except ObjectDoesNotExist:
-                pass
+        # Adding field 'VerbNetFrameSet.lvf_string'
+        db.add_column('syntacticframes_verbnetframeset', 'lvf_string',
+                      self.gf('django.db.models.fields.CharField')(blank=True, max_length=100, default=''),
+                      keep_default=False)
+
 
     def backwards(self, orm):
-        "Removing the position field is enough."
+        # Deleting field 'VerbNetFrameSet.ladl_string'
+        db.delete_column('syntacticframes_verbnetframeset', 'ladl_string')
+
+        # Deleting field 'VerbNetFrameSet.lvf_string'
+        db.delete_column('syntacticframes_verbnetframeset', 'lvf_string')
+
 
     models = {
         'syntacticframes.levinclass': {
@@ -64,13 +55,15 @@ class Migration(DataMigration):
         },
         'syntacticframes.verbnetframeset': {
             'Meta': {'object_name': 'VerbNetFrameSet'},
-            'comment': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'blank': 'True'}),
+            'comment': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '1000'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ladl_string': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'lvf_string': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'paragon': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'related_name': "'children'", 'null': 'True', 'blank': 'True', 'to': "orm['syntacticframes.VerbNetFrameSet']"}),
+            'paragon': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
+            'parent': ('mptt.fields.TreeForeignKey', [], {'null': 'True', 'blank': 'True', 'to': "orm['syntacticframes.VerbNetFrameSet']", 'related_name': "'children'"}),
             'removed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
@@ -100,4 +93,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['syntacticframes']
-    symmetrical = True
