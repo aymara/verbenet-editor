@@ -112,7 +112,7 @@ class Command(BaseCommand):
                 LevinClass(number=number, name=verb_classes[number]).save()
             print("Imported Levin classes!")
 
-        # import vn classes and mapping
+        # import vn classes, root framesets and LADL/LVF mapping
         mapping.import_mapping()
 
         with transaction.commit_on_success():
@@ -120,12 +120,7 @@ class Command(BaseCommand):
             r = verbnet.verbnetreader.VerbnetReader('verbnet/verbnet-3.2/', False)
             print('-----')
             for filename in r.files:
-                lc_number = filename.split('-')[1].split('.')[0]
-                db_lc = LevinClass.objects.get(number=lc_number)
-                print(lc_number)
-
                 print("Using {}".format(filename))
                 xml_class = r.files[filename]
-
-                db_vnclass = VerbNetClass.objects.get(name=filename, levin_class=db_lc)
+                db_vnclass = VerbNetClass.objects.get(name=filename)
                 save_class(xml_class, db_vnclass)
