@@ -11,6 +11,7 @@ admin.site.register(LevinClass)
 
 class VerbNetClassAdmin(reversion.VersionAdmin):
     readonly_fields = ("levin_class", "name", "show_url",)
+    search_fields = ("name",)
 
     def show_url(self, instance):
         url = "{}#{}".format(
