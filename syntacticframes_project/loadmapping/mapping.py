@@ -20,7 +20,7 @@ from django.conf import settings
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-FORGET_LIST = ['?', '*', '', '∅']
+FORGET_LIST = ['?', '-', '', '∅', '*']
 
 
 def get_members(tree):
@@ -39,13 +39,16 @@ with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), '
 # We want to allow multiple classes and various writings that make sense for
 # humans
 def parse_complex_lvfladl(raw):
+    if raw in FORGET_LIST:
+        return None, []
+
     ladl = raw.replace("-", "")
 
     if " ou " in ladl:
-        operation = 'ou'
+        operation = 'or'
         ladl = ladl.split(" ou ")
     elif " et " in ladl:
-        operation = 'et'
+        operation = 'and'
         ladl = ladl.split(" et ")
     else:
         operation = None
@@ -149,9 +152,9 @@ def get_verbs_for_class_list(operation_and_list, resource):
         assert(len(class_list) > 1)
         for specific_class in class_list[1:]:
             new_verbs = set(get_one_verb_class(specific_class, resource))
-            if operation == 'ou':
+            if operation == 'or':
                 verbs |= new_verbs
-            elif operation == 'et':
+            elif operation == 'and':
                 verbs &= new_verbs
 
     return verbs
@@ -168,12 +171,12 @@ def translations_for_class(verbs, ladl, lvf):
         for c in verb_dict[v]:
             candidates[c].add(v)
 
-    if not ladl_classes[1][0] in FORGET_LIST:
+    if ladl_classes[1]:
         ladl = get_verbs_for_class_list(ladl_classes, 'LADL')
         if not ladl:
             print("Warning, unknown class {}".format(ladl_classes))
 
-    if not lvf_classes[1][0] in FORGET_LIST:
+    if lvf_classes[1]:
         lvf = get_verbs_for_class_list(lvf_classes, 'LVF')
         if not lvf:
             print("Warning, unknown class {}".format(lvs_classes))
@@ -191,7 +194,7 @@ def translations_for_class(verbs, ladl, lvf):
             color, id_color = 'dicovalence', 3
         else:
             color, id_color = 'unknown', 4
-        final.append((c, color, id_color, ",".join(candidates[c])))
+        final.append((c, color, id_color, ",".join(sorted(candidates[c]))))
 
     final = sorted(final, key=lambda c: locale.strxfrm(c[0]))
     final.sort(key=itemgetter(2))
