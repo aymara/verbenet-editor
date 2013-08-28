@@ -119,21 +119,28 @@ function edited_frame_field(input_field, span) {
 }
 
 function edited_frameset_field(input_field, span) {
+    var that = span;
     var new_val = $(input_field).val();
 
     var vn_class_id = $(span).closest("article").attr('id');
     var frameset_id = $(span).closest(".subclass").attr('id');
+    var field = $(span).data("field");
 
     var request = $.ajax({
         url: '/update/',
         type: 'POST',
         data: {
-            field: $(span).data("field"),
+            field: field,
             vn_class: vn_class_id,
             frameset_id: frameset_id,
             label: new_val,
         }
     });
+
+
+    if (field == 'lvf_string' || field == 'ladl_string') {
+        request.done(function() { update_class(that); });
+    }
 }
 
 $(document).ready(function() {
