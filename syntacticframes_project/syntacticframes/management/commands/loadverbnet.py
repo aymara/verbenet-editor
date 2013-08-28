@@ -55,8 +55,11 @@ def update_verbs(xml_class, db_frameset, vn_class):
 
 def save_class(c, vn_class, parent=None, indent=0):
     #iprint(indent, c['name'])
-    db_frameset = VerbNetFrameSet(name=c['name'], verbnet_class=vn_class, parent=parent)
-    db_frameset.save()
+    try:
+        db_frameset = VerbNetFrameSet.objects.get(name=c['name'], verbnet_class=vn_class, parent=parent)
+    except:
+        db_frameset = VerbNetFrameSet(name=c['name'], verbnet_class=vn_class, parent=parent)
+        db_frameset.save()
 
     #iprint(indent, ", ".join(c['roles']))
     for r in c['roles']:
@@ -118,10 +121,11 @@ class Command(BaseCommand):
             print('-----')
             for filename in r.files:
                 lc_number = filename.split('-')[1].split('.')[0]
+                db_lc = LevinClass.objects.get(number=lc_number)
                 print(lc_number)
-                c = r.files[filename]
-                lc = LevinClass.objects.get(number=lc_number)
+
                 print("Using {}".format(filename))
-                vn_class = VerbNetClass.objects.get(name=filename, levin_class=lc)
-                #vn_class.save()
-                save_class(c, vn_class)
+                xml_class = r.files[filename]
+
+                db_vnclass = VerbNetClass.objects.get(name=filename, levin_class=db_lc)
+                save_class(xml_class, db_vnclass)

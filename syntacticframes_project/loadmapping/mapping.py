@@ -18,6 +18,8 @@ from collections import defaultdict
 
 from django.conf import settings
 
+from syntacticframes.models import \
+    LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbTranslation
 from parsecorrespondance import parse
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
@@ -205,9 +207,6 @@ def read_csv(filename):
 
     return lines
 
-from syntacticframes.models import \
-    LevinClass, VerbNetClass, VerbNetMember, VerbTranslation
-
 
 def get_levin(c):
     # TODO regex
@@ -228,11 +227,16 @@ def import_mapping():
                 levin_class=LevinClass.objects.get(
                     number=get_levin(classe["classe"])),
                 name=classe["classe"],
-                paragon=classe["paragon"],
-                comment=classe["commentaire"],
                 lvf_string=classe["lvf_orig"],
                 ladl_string=classe["ladl_orig"])
             v.save()
+
+
+            fs = VerbNetFrameSet(
+                verbnet_class=v,
+                name=classe["classe"],
+                paragon=classe["paragon"],
+                comment=classe["commentaire"])
 
             #for word in classe["verbnet_members"]:
             #    VerbNetMember(verbnet_class=v, lemma=word).save()
