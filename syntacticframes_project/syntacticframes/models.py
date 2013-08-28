@@ -89,9 +89,13 @@ class VerbNetRole(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
     # name + restrictions
     name = models.CharField(max_length=1000)
+    position = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['position']
 
 
 # Translation
