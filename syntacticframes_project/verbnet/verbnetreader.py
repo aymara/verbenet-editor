@@ -118,7 +118,7 @@ class VerbnetReader:
         return VerbnetFrame(syntax, syntax_roles, semantics, example, vnclass)
 
 
-    def _build_roles(self, xml_themrole_list):
+    def _build_selrestrs(self, xml_selrestrs):
         def symbol_of_separator(sep):
             if sep == "or":
                 return " | "
@@ -126,20 +126,30 @@ class VerbnetReader:
                 return " & "
             else:
                 raise Exception("Unknown separator {}".format(sep))
+
+        separator = xml_selrestrs.get("logic", "and")
+        selrestr_list = [
+            "{}{}".format(s.get("Value"), s.get("type"))
+            for s in xml_selrestrs.findall("SELRESTR")]
+
+        for inner_selrestrs in xml_selrestrs.findall("SELRESTRS"):
+            selrestr_list.append(self._build_selrestrs(inner_selrestrs))
+
+        if selrestr_list:
+            return "[{}]".format(symbol_of_separator(separator).join(selrestr_list))
+        else:
+            return None
+
+    def _build_roles(self, xml_themrole_list):
             
         themroles_string_list = []
         for themrole in xml_themrole_list.findall("THEMROLE"):
             name = themrole.get("type")
-        
-            selrestrs = themrole.find("SELRESTRS")
-            if not selrestrs:
-                themroles_string_list.append(name)
+            selrestrs = self._build_selrestrs(themrole.find("SELRESTRS"))
+            if selrestrs:
+                themroles_string_list.append("{} {}".format(name, selrestrs))
             else:
-                separator = selrestrs.get("logic")
-                if not separator:
-                    separator = "and"
-                selrestr_list = ["{}{}".format(s.get("Value"), s.get("type")) for s in selrestrs.findall("SELRESTR")]
-                themroles_string_list.append("{} [{}]".format(name, symbol_of_separator(separator).join(selrestr_list)))
+                themroles_string_list.append(name)
 
         return themroles_string_list
 
