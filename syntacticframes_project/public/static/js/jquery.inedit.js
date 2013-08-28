@@ -69,7 +69,7 @@
 			var selected = this;
 
 			// on click function
-			jQuery(selected).live(event.click, function(){
+			jQuery(selected).bind(event.click, function(){
 
 				// prevent to start handler multiple times
 				if (options.clickStarted == true) return;

@@ -15,10 +15,12 @@ function show_plus() {
 function editable_class_fields() {
     // Edit all editable fields
     $('.frame_editable').each(function() {
+        $(this).unbind();
         $(this).inedit({'onEnd': edited_frame_field});
     });
 
     $('.frameset_editable').each(function() {
+        $(this).unbind();
         $(this).inedit({'onEnd': edited_frameset_field});
     });
 }
