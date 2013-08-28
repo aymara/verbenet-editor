@@ -65,8 +65,12 @@ class VerbNetMember(models.Model):
 # Frame: NP V, Agent V, Pred(Agent, E)
 class VerbNetFrame(models.Model):
     frameset = models.ForeignKey(VerbNetFrameSet)
+
+    # Metadata
     position = models.PositiveSmallIntegerField(null=True)
     removed = models.BooleanField(default=False)
+    from_verbnet = models.BooleanField(default=True)
+
     # NP V NP
     syntax = models.CharField(max_length=1000)
     # John confesses it

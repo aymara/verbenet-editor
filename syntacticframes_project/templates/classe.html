@@ -95,7 +95,9 @@
                     {# Frames #}
                     {% if node.verbnetframe_set.all|is_removed:False %}
                         {% for frame in node.verbnetframe_set.all|is_removed:False %}
-                            <div class="frame" data-frameid="{{frame.id}}">
+                            <div
+                                class="{% if not frame.from_verbnet %}created_frame {% endif %} frame"
+                                data-frameid="{{frame.id}}">
                                 <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
                                 <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
                                 <table class="table">

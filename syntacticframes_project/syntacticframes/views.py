@@ -146,11 +146,11 @@ def add(request):
             f = VerbNetFrame(
                 frameset=parent_frameset,
                 position=max_position+1,
-                syntax = post['syntax'],
-                example = post['example'],
-                roles_syntax = post['roles_syntax'],
-                semantics = post['semantics']
-            )
+                syntax=post['syntax'],
+                example=post['example'],
+                roles_syntax=post['roles_syntax'],
+                semantics=post['semantics'],
+                from_verbnet=False)
             f.save()
             logger.info("{}: Added frame {} ({},{},{}) in frameset {} from class {}".format(
                 when, f.syntax, f.example, f.roles_syntax, f.semantics,

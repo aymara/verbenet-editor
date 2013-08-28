@@ -41,6 +41,10 @@ article > .subclass {
   list-style-type: none;
 }
 
+.created_frame {
+  background-color: #d8f8d8;
+}
+
 .table { margin-bottom: 0 }
 .frame td:first-child { width: 8em }
 
