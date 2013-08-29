@@ -26,25 +26,30 @@ admin.site.register(VerbNetClass, VerbNetClassAdmin)
 
 
 class VerbNetFrameSetAdmin(reversion.VersionAdmin):
-    pass
+    search_fields = ('name',)
+
 admin.site.register(VerbNetFrameSet, VerbNetFrameSetAdmin)
 
 
 class VerbNetMemberAdmin(reversion.VersionAdmin):
     pass
+
 admin.site.register(VerbNetMember, VerbNetMemberAdmin)
 
 
 class VerbNetFrameAdmin(reversion.VersionAdmin):
-    pass
+    search_fields = ('syntax', 'example',) 
+
 admin.site.register(VerbNetFrame, VerbNetFrameAdmin)
 
 
 class VerbNetRoleAdmin(reversion.VersionAdmin):
     pass
+
 admin.site.register(VerbNetRole, VerbNetRoleAdmin)
 
 
 class VerbTranslationAdmin(reversion.VersionAdmin):
     pass
+
 admin.site.register(VerbTranslation, VerbTranslationAdmin)
