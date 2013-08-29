@@ -22,7 +22,7 @@ def iprint(indent, stuff):
     #print(" " * indent, stuff)
 
 
-def update_verbs(xml_class, db_frameset, current_ladl, current_lvf):
+def update_verbs(db_frameset, current_ladl, current_lvf):
     when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
     verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
         when, db_frameset.name,
@@ -30,12 +30,13 @@ def update_verbs(xml_class, db_frameset, current_ladl, current_lvf):
                   VerbTranslation.objects.filter(frameset=db_frameset)])))
     VerbTranslation.objects.filter(frameset=db_frameset).delete()
 
-    candidates = mapping.translations_for_class(
-        xml_class['members'], current_ladl, current_lvf)
+    members = db_frameset.verbnetmember_set.all()
+
+    candidates = mapping.translations_for_class(members, current_ladl, current_lvf)
 
     for french, categoryname, categoryid, originlist in candidates:
         originset = set(originlist.split(','))
-        if set(xml_class['members']) & originset:
+        if set(members) & originset:
             VerbTranslation(
                 frameset=db_frameset,
                 verb=french,
@@ -48,12 +49,11 @@ def update_verbs(xml_class, db_frameset, current_ladl, current_lvf):
         ", ".join([t.verb for t in
                   VerbTranslation.objects.filter(frameset=db_frameset)])))
 
-    for c in db_frameset.children.all():
-        db_frameset = VerbNetFrameSet.objects.get(name=c['name'])
-        new_ladl = current_ladl if not db_frameset.ladl_string else db_frameset.ladl_string
-        new_lvf = current_lvf if not db_frameset.lvf_string else db_frameset.lvf_string
+    for db_childrenfs in db_frameset.children.all():
+        new_ladl = current_ladl if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
+        new_lvf = current_lvf if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
             
-        update_verbs(c, db_frameset, new_ladl, new_lvf)
+        update_verbs(db_childrenfs, new_ladl, new_lvf)
 
 
 def save_class(c, db_frameset, indent=0):
