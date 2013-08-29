@@ -146,8 +146,8 @@ def add(request):
                 semantics=post['semantics'],
                 from_verbnet=False)
             f.save()
-            logger.info("{}: Added frame {} ({},{},{}) in frameset {} from class {}".format(
-                when, f.syntax, f.example, f.roles_syntax, f.semantics,
+            logger.info("{}: Added frame {} ({},{},{},{}) in frameset {} from class {}".format(
+                when, f.id, f.syntax, f.example, f.roles_syntax, f.semantics,
                 parent_frameset.name, vn_class.name))
 
         elif post['type'] == 'subclass':
@@ -161,7 +161,7 @@ def add(request):
                 parent=parent_subclass)
             subclass.save()
             logger.info("{}: Added frameset {} in frameset {} from class {}".format(
-                when, subclass_id, parent_subclass.name, parent_subclass.verbnet_class))
+                when, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
             
 
         return HttpResponse("ok")
