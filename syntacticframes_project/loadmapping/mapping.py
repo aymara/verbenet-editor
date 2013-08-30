@@ -8,6 +8,7 @@ import csv
 import sys
 import locale
 import re
+import logging
 from operator import itemgetter
 from collections import defaultdict
 
@@ -18,6 +19,7 @@ from syntacticframes.models import \
 from parsecorrespondance import parse
 
 
+logger_warnings = logging.getLogger('warnings')
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
@@ -151,12 +153,12 @@ def translations_for_class(verbs, ladl, lvf):
     if ladl_classes[1]:
         ladl = get_verbs_for_class_list(ladl_classes, 'LADL')
         if not ladl:
-            print("Warning, unknown class {}".format(ladl_classes))
+            logger_warning.warning("No verb in {}".format(ladl_classes))
 
     if lvf_classes[1]:
         lvf = get_verbs_for_class_list(lvf_classes, 'LVF')
         if not lvf:
-            print("Warning, unknown class {}".format(lvs_classes))
+            logger_warning.warning("No verb in {}".format(lvf_classes))
 
     final = []
     for c in candidates:

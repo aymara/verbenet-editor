@@ -258,6 +258,10 @@ LOGGING = {
             'class': 'logging.handlers.WatchedFileHandler',
             'filename': normpath(join(SITE_ROOT, 'log/verbs.log'))
         },
+        'logfile_warnings': {
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': normpath(join(SITE_ROOT, 'log/warnings.log'))
+        },
     },
     'loggers': {
         'django.request': {
@@ -270,6 +274,9 @@ LOGGING = {
         },
         'verbs': {
             'handlers': ['logfile_verbs'], 'level': 'INFO', 'propagate': 'FALSE'
+        },
+        'warnings': {
+            'handlers': ['logfile_warnings'], 'level': 'WARNING', 'propagate': 'FALSE'
         }
     }
 }
