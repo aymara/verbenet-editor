@@ -14,6 +14,7 @@ from loadmapping import mapping
 from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, \
     VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
 
+
 verb_logger = logging.getLogger('verbs')
 
 
@@ -21,17 +22,26 @@ def iprint(indent, stuff):
     pass
     #print(" " * indent, stuff)
 
+def update_all_verbs():
+    "Updates all verb translations is something went wrong below."
+    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+    verb_logger.info("{}: Start full update of verb translations".format(when))
+    for db_vnclass in VerbNetClass.objects.all():
+        print(db_vnclass.name)
+        db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
+        update_verbs(db_rootframeset,
+                     db_rootframeset.ladl_string,
+                     db_rootframeset.lvf_string)
+    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+    verb_logger.info("{}: Ended full update of verb translations".format(when))
 
 def update_verbs(db_frameset, current_ladl, current_lvf):
-    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-    verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-        when, db_frameset.name,
-        ", ".join([t.verb for t in
-                  VerbTranslation.objects.filter(frameset=db_frameset)])))
-    VerbTranslation.objects.filter(frameset=db_frameset).delete()
+    verbs = VerbTranslation.objects.filter(frameset=db_frameset)
+    initial_set = {(v.verb, v.category) for v in verbs}
+    verbs.delete()
+    first_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-    members = db_frameset.verbnetmember_set.all()
-
+    members = [m.lemma for m in db_frameset.verbnetmember_set.all()]
     candidates = mapping.translations_for_class(members, current_ladl, current_lvf)
 
     for french, categoryname, categoryid, originlist in candidates:
@@ -42,12 +52,17 @@ def update_verbs(db_frameset, current_ladl, current_lvf):
                 verb=french,
                 category=categoryname,
                 origin=originlist).save()
-    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-    verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-        when, db_frameset.name,
-        ", ".join([t.verb for t in
-                  VerbTranslation.objects.filter(frameset=db_frameset)])))
+    last_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+
+    verbs = VerbTranslation.objects.filter(frameset=db_frameset)
+    final_set = {(v.verb, v.category) for v in verbs}
+
+    if initial_set != final_set:
+        verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
+            first_when, db_frameset.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set])))
+        verb_logger.info("{}: Added verbs in subclass {}: {}".format(
+            last_when, db_frameset.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set])))
 
     for db_childrenfs in db_frameset.children.all():
         new_ladl = current_ladl if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
