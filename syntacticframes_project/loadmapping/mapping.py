@@ -2,17 +2,12 @@
 #-*- coding: utf-8 -*-
 
 from lxml.etree import ElementTree
-import subprocess
-import io
 import pickle
-import os
 from os.path import join
 import csv
 import sys
 import locale
 import re
-from functools import cmp_to_key
-import itertools
 from operator import itemgetter
 from collections import defaultdict
 
@@ -22,13 +17,16 @@ from syntacticframes.models import \
     LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbTranslation
 from parsecorrespondance import parse
 
+
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+
 
 FORGET_LIST = ['?', '-', '', '∅', '*']
 
 
 def get_members(tree):
     return [member.get('name') for member in tree.findall(".//MEMBER")]
+
 
 with open(join(settings.SITE_ROOT, 'loadmapping/data/LADL_to_verbes'), 'rb') as f:
     ladl_dict = pickle.load(f)
