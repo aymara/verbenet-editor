@@ -19,8 +19,7 @@ verb_logger = logging.getLogger('verbs')
 
 
 def iprint(indent, stuff):
-    pass
-    #print(" " * indent, stuff)
+    print(" " * indent, stuff)
 
 def update_verbs(db_frameset, current_ladl, current_lvf):
     verbs = VerbTranslation.objects.filter(frameset=db_frameset)
@@ -58,18 +57,18 @@ def update_verbs(db_frameset, current_ladl, current_lvf):
         update_verbs(db_childrenfs, new_ladl, new_lvf)
 
 
-def save_class(c, db_frameset, indent=0):
-    #iprint(indent, c['name'])
+def save_class(xml_class, db_frameset, indent=0):
+    iprint(indent, xml_class['name'])
 
-    #iprint(indent, ", ".join(c['roles']))
-    for position, role in enumerate(c['roles']):
+    #iprint(indent, ", ".join(xml_class['roles']))
+    for position, role in enumerate(xml_class['roles']):
         VerbNetRole(frameset=db_frameset, name=role, position=position).save()
-    #iprint(indent, ", ".join(c['members']))
-    for m in c['members']:
+    #iprint(indent, ", ".join(xml_class['members']))
+    for m in xml_class['members']:
         VerbNetMember(frameset=db_frameset, lemma=m).save()
 
     position = 1
-    for f in c['frames']:
+    for f in xml_class['frames']:
         db_f = VerbNetFrame(
             frameset=db_frameset,
             syntax=f.structure,
@@ -80,25 +79,14 @@ def save_class(c, db_frameset, indent=0):
         db_f.save()
         position += 1
 
-        candidates = mapping.translations_for_class(c['members'], db_frameset.ladl_string, db_frameset.lvf_string)
-        for french, categoryname, categoryid, originlist in candidates:
-            originset = set(originlist.split(','))
-            if set(c['members']) & originset:
-                try:
-                    VerbTranslation.objects.get(frameset=db_frameset, verb=french)
-                except:
-                    VerbTranslation(
-                        frameset=db_frameset,
-                        verb=french,
-                        category=categoryname,
-                        origin=originlist).save()
-        #iprint(indent, f)
-        #iprint(indent, f.example)
-        #iprint(indent, f.semantics)
-    #print()
+    for xml_child in xml_class['children']:
+        db_child_frameset = VerbNetFrameSet(
+            verbnet_class=db_frameset.verbnet_class,
+            name=xml_child['name'],
+            parent=db_frameset)
+        db_child_frameset.save()
 
-    for c in c['children']:
-        save_class(c, db_frameset, indent+4)
+        save_class(xml_child, db_child_frameset, indent+4)
 
 
 class Command(BaseCommand):
@@ -123,5 +111,7 @@ class Command(BaseCommand):
                 print("Saving subclasses of {}".format(filename))
                 xml_class = r.files[filename]
                 db_vnclass = VerbNetClass.objects.get(name=filename)
-                db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
-                save_class(xml_class, db_rootframeset)
+                db_root_frameset = db_vnclass.verbnetframeset_set.get(parent=None)
+
+                save_class(xml_class, db_root_frameset, 0)
+                update_verbs(db_root_frameset, db_root_frameset.ladl_string, db_root_frameset.lvf_string)

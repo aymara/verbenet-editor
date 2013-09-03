@@ -231,7 +231,7 @@ def import_mapping():
 
             fs = VerbNetFrameSet(
                 verbnet_class=v,
-                name=classe["classe"],
+                name=classe["classe"].split('-')[1],
                 paragon=classe["paragon"],
                 comment=classe["commentaire"],
                 lvf_string=classe["lvf_orig"],
