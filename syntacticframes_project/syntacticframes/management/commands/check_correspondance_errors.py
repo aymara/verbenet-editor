@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
             if frameset.ladl_string:
                 try:
-                    parse.FrenchMapping('LADL', frameset.ladl_string).result()
+                    parse.FrenchMapping('LADL', frameset.ladl_string)
                 except parse.UnknownClassException as e:
                     print('{:<30} {}'.format(frameset.name, e))
 
