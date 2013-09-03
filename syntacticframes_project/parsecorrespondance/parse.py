@@ -1,10 +1,9 @@
 class UnknownClassException(Exception):
-    def __init__(self, partial_name, name):
+    def __init__(self, partial_name):
         self.partial_name = partial_name
-        self.name = name
 
     def __str__(self):
-        return '"{}" not found in "{}"'.format(self.partial_name, self.name)
+        return '"{}" not found'.format(self.partial_name)
 
 class SyntaxErrorException(Exception):
     def __init__(self, error, name):
@@ -19,42 +18,91 @@ class FrenchMapping(object):
     Stores a mapping like 'L3f ou E3c', '38LD et (37M1 ou 37M2)'
     """
     def __init__(self, resource, name):
-        if resource == 'LADL':
-            # Strip source/dest
+        self.resource = resource
+        self.operator = None
+        self.operands = []
+
+        # Empty class
+        if name in FORGET_LIST:
+            self.operator = None
+            self.operands = []
+            return
+
+        # Strip source/dest
+        if self.resource == 'LADL':
             name = name.replace(' dest', '')
             name = name.replace(' source', '')
 
-        if name in FORGET_LIST:
-            self.operation = None
-            self.resulting_list = []
-            return
+        # Used to check that every name exists
+        self.reference_list = ladl_list if self.resource == 'LADL' else lvf_list
 
-        self.resulting_list = [name]
-
-        # Split according to operators
-        if ' ou ' in name:
-            self.operation = 'or'
-            self.resulting_list = name.split(' ou ')
-        elif ' et ' in name:
-            self.operation = 'and'
-            self.resulting_list = name.split(' et ')
+        token_list = self._tokenize(name)
+        if len(token_list) == 1:
+            unique_token = token_list[0]
+            if not unique_token in self.reference_list:
+                raise UnknownClassException(unique_token)
+            self.operands = [unique_token]
         else:
-            self.operation = None
-            self.resulting_list = [name]
+            self.parse(token_list)
 
-        # Check that every name exists
-        reference_list = ladl_list if resource == 'LADL' else lvf_list
+    @staticmethod
+    def _tokenize(name):
+        result = ''
+        for c in name:
+            if c in ['(', ')']:
+                result += ' {} '.format(c)
+            else:
+                result += c
 
-        # Detect errors early
-        for partial_name in self.resulting_list:
-            if ' et ' in partial_name or ' ou ' in partial_name:
-                raise SyntaxErrorException('Combinaison de "ou" et "et"', name)
-        for partial_name in self.resulting_list:
-            if not partial_name in reference_list:
-                raise UnknownClassException(partial_name, name)
+        return [t.strip() for t in result.split(' ') if t.strip() != '']
 
-    def result(self):
-        return self.operation, self.resulting_list
+    def parse(self, token_list):
+        i = 0
+        while i < len(token_list):
+            if token_list[i] in ['et', 'ou']:
+                if self.operator and self.operator != token_list[i]:
+                    raise SyntaxErrorException('Combinaison de "ou" et "et"', " ".join(token_list))
+                self.operator = token_list[i]
+            elif token_list[i] == '(':
+                j = i
+                while token_list[j] != ')':
+                    j += 1
+                self.operands.append(FrenchMapping(self.resource, " ".join(token_list[i+1:j])))
+                i = j + 1
+            else:
+                self.operands.append(FrenchMapping(self.resource, token_list[i]))
+
+            i += 1
+
+        if self.operator == 'et':
+            self.operator = 'and'
+        elif self.operator == 'ou':
+            self.operator = 'or'
+
+
+    def infix(self):
+        if not self.operator:
+            if not self.operands:
+                return ''
+            else:
+                assert(len(self.operands) == 1)
+                return self.operands[0]
+        else:
+            return "({} {})".format(self.operator, " ".join([o.infix() for o in self.operands]))
+
+    def entries(self):
+        if not self.operator:
+            if not self.operands:
+                return []
+            else:
+                assert(len(self.operands) == 1)
+                return [self.operands[0]]
+        else:
+            entry_list = []
+            for o in self.operands:
+                entry_list.extend(o.entries())
+
+        return entry_list
                 
 
 # Module level constants
