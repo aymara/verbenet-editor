@@ -61,6 +61,9 @@ class VerbNetMember(models.Model):
     def __str__(self):
         return self.lemma
 
+    class Meta:
+        ordering = ['lemma']
+
 
 # Frame: NP V, Agent V, Pred(Agent, E)
 class VerbNetFrame(models.Model):
