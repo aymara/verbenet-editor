@@ -14,6 +14,55 @@ class SyntaxErrorException(Exception):
     def __str__(self):
         return 'SyntaxError: {} in {}'.format(self.error, self.name)
 
+class FrenchMapping(object):
+    """
+    Stores a mapping like 'L3f ou E3c', '38LD et (37M1 ou 37M2)'
+    """
+    def __init__(self, resource, name):
+        if resource == 'LADL':
+            # Strip source/dest
+            name = name.replace(' dest', '')
+            name = name.replace(' source', '')
+
+        if name in FORGET_LIST:
+            self.operation = None
+            self.resulting_list = []
+            return
+
+        self.resulting_list = [name]
+
+        # Split according to operators
+        if ' ou ' in name:
+            self.operation = 'or'
+            self.resulting_list = name.split(' ou ')
+        elif ' et ' in name:
+            self.operation = 'and'
+            self.resulting_list = name.split(' et ')
+        else:
+            self.operation = None
+            self.resulting_list = [name]
+
+        # Check that every name exists
+        reference_list = ladl_list if resource == 'LADL' else lvf_list
+
+        # Detect errors early
+        for partial_name in self.resulting_list:
+            if ' et ' in partial_name or ' ou ' in partial_name:
+                raise SyntaxErrorException('Combinaison de "ou" et "et"', name)
+        for partial_name in self.resulting_list:
+            if not partial_name in reference_list:
+                raise UnknownClassException(partial_name, name)
+
+    def result(self):
+        return self.operation, self.resulting_list
+                
+
+# Module level constants
+
+
+FORGET_LIST = ['?', '', '-', '∅', '*']
+
+
 ladl_list = [ 
     # verbes
     '1', '2', '2T', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13',
@@ -33,6 +82,7 @@ ladl_list = [
     'C_epcdc', 'C_epcdn', 'C_epcpc', 'C_epcpn', 'C_epcpq', 'C_epdetc', 'C_fc',
     'C_fca', 'C_fcan', 'C_fcana', 'C_fcann', 'C_fcn', 'C_fcpn', 'C_fcpna',
     'C_fcpnn', 'C_ya', 'C_z1', 'C_z5d', 'C_z5p', 'C_zp', 'C_zs']
+
 
 lvf_list = [
     'C', 'C1', 'C1a', 'C1a.1', 'C1a.2', 'C1a.3', 'C1a.4', 'C1a.5', 'C1b', 'C1c',
@@ -127,45 +177,3 @@ lvf_list = [
     'U4d.2', 'X', 'X1', 'X1a', 'X1a.1', 'X1a.2', 'X1a.3', 'X1a.4', 'X1a.5', 'X2',
     'X2a', 'X3', 'X3a', 'X3a.1', 'X3a.2', 'X3a.3', 'X4', 'X4a', 'X4a.1', 'X4a.2',
     'X4a.3']
-
-FORGET_LIST = ['?', '', '-', '∅', '*']
-
-def get_list(resource, name):
-    if name in FORGET_LIST:
-        return None, []
-
-    resulting_list = [name]
-
-    # Split according to operators
-    if ' ou ' in name:
-        operation = 'or'
-        resulting_list = name.split(' ou ')
-    elif ' et ' in name:
-        operation = 'and'
-        resulting_list = name.split(' et ')
-    else:
-        operation = None
-        resulting_list = [name]
-
-    # Check that every name exists
-    reference_list = ladl_list if resource == 'LADL' else lvf_list
-
-    # Detect errors early
-    for partial_name in resulting_list:
-        if ' et ' in partial_name or ' ou ' in partial_name:
-            raise SyntaxErrorException('Combinaison de "ou" et "et"', name)
-    for partial_name in resulting_list:
-        if not partial_name in reference_list:
-            raise UnknownClassException(partial_name, name)
-            
-    return operation, resulting_list
-
-def get_lvf_list(name):
-    return get_list('LVF', name)
-
-def get_ladl_list(name):
-    # Strip source/dest
-    name = name.replace(' dest', '')
-    name = name.replace(' source', '')
-
-    return get_list('LADL', name)

@@ -140,8 +140,8 @@ def get_verbs_for_class_list(operation_and_list, resource):
 
 
 def translations_for_class(verbs, ladl, lvf):
-    ladl_classes = parse.get_ladl_list(ladl)
-    lvf_classes = parse.get_lvf_list(lvf)
+    ladl_classes = parse.FrenchMapping('LADL', ladl).result()
+    lvf_classes = parse.FrenchMapping('LVF', lvf).result()
 
     candidates = defaultdict(set)
     lvf, ladl = set(), set()
