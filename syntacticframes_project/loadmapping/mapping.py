@@ -153,12 +153,12 @@ def translations_for_class(verbs, ladl, lvf):
     if ladl_classes[1]:
         ladl = get_verbs_for_class_list(ladl_classes, 'LADL')
         if not ladl:
-            logger_warning.warning("No verb in {}".format(ladl_classes))
+            logger_warnings.warning("No verb in {}".format(ladl_classes))
 
     if lvf_classes[1]:
         lvf = get_verbs_for_class_list(lvf_classes, 'LVF')
         if not lvf:
-            logger_warning.warning("No verb in {}".format(lvf_classes))
+            logger_warnings.warning("No verb in {}".format(lvf_classes))
 
     final = []
     for c in candidates:
