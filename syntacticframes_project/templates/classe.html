@@ -21,7 +21,7 @@
                                 ∅
                             {% endif %}
                         {% endspaceless %}</span>
-                        {% if node.lvf_string and node.lvf_string != '∅' %}
+                        {% if node.lvf_string and node.lvf_string != '∅' and not ' ' in node.lvf_string %}
                             <a href="http://rali.iro.umontreal.ca/Dubois/classe/{{node.lvf_string}}.html" class="external"><i class="icon-share-alt"></i></a>
                         {% endif %}
 
@@ -33,7 +33,7 @@
                                 ∅
                             {% endif %}
                         {% endspaceless %}</span>
-                        {% if node.ladl_string and node.ladl_string != '∅' %}
+                        {% if node.ladl_string and node.ladl_string != '∅' and not ' ' in node.ladl_string %}
                             <a href="http://verbenet.pradet.me/verbes-html/V_{{node.ladl_string}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
                         {% endif %}
                     </h3>
