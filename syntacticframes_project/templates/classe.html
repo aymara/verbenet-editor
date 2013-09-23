@@ -11,6 +11,16 @@
                 {% if node.removed %}
                     <h3 id="{{node.name}}">Classe {{node.name}} cachée</h3>
                     <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
+                    <p>Frames :</p>
+                    <ul>
+                    {% for frame in node.verbnetframe_set.all %}
+                        <li id="frame_{{frame.id}}">
+                            {% if frame.removed %}<del>{% endif %}
+                            {{ frame.syntax }} ({{ frame.example }})
+                            {% if frame.removed %}</del>{% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
                 {% else %}
                     <h3 id="{{node.name}}">Classe {{node.name}}
                         {# LVF class: inline editing and links #}
