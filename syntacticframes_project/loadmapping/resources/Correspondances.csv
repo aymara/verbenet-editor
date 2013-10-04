@@ -9,38 +9,38 @@ VerbNet,LADL,LVF,Parangon,Commentaires
 9.8: fill-9.8,37M2 ou 37M3 ou 37M4,N3c,remplir,diverses sous-classes ignorées en anglais
 9.9: butter-9.9,37M5 ou 37M6,N3c,beurrer,
 9.10: pocket-9.10,-,-,-,"V=Vn (mettre en boîte, mettre en prison...)"
-10.1: remove-10.1,37E,E3c,enlever,
+10.1: remove-10.1,37E ou 38LS,E3c,enlever,
 10.2: banish-10.2,38LH ou 38LD ou 38LS,E1b ou E1e,extrader,
 10.3: clear-10.3,37E,N3d,nettoyer,Agent V theme locaton : source – plutôt vider que nettoyer ?
-10.4.1: wipe_manner-10.4.1,37E,R3g,vider,se vider – plutôt nettoyer ?
-10.4.2: wipe_instr-10.4.2,37E,R3g,éponger,"Paradoxalement, éponger 01 est lui dans E3c (faire sortir qc de lieu)"
+10.4.1: wipe_manner-10.4.1,37E ou 38LS,R3g,vider,se vider – plutôt nettoyer ?
+10.4.2: wipe_instr-10.4.2,37E et 38LS,R3g,éponger,"Paradoxalement, éponger 01 est lui dans E3c (faire sortir qc de lieu)"
 10.5: steal-10.5,36DT source,D2c,voler,Agent voler theme à source – N1b était proche
-10.6: cheat-10.6,37E,N1b ou N2b ou N3b ou N3d,soigner,déposséder
+10.6: cheat-10.6,37E ou 38R,N1b ou N2b ou N3b ou N3d,soigner,déposséder
 10.7: pit-10.7,-,-,-,"V=Vn SI ça existait, ce serait N3b"
 10.8: debone-10.8,37E,N1d ou N3b ou N1b,dégraisser ou épiler,Dégraisser donne N0 dé-V N 1 de Poss Vn et épiler donne N0 é-V N 1 de Poss Vn
 10.9: mine-10.9,-,E3c,-,V=Vn deux verbes comme bring-11.3
-10.10: fire-10.10,38LH source,E2b,virer,
+10.10: fire-10.10,38LHS,E2b,virer,
 10.11: resign-10.11,35R,E2a,démissionner,Agent + humain V de Source
-11.1: send-11.1,36DT et 38L,E3f,envoyer,
-11.2: slide-11.2,38L,E3d,rouler,
+11.1: send-11.1,38LD ou 38LS,E3f,envoyer,
+11.2: slide-11.2,38LD ou 38LS,E3d et E3f,rouler,
 11.3: bring-11.3,?,?,?,bring and take
-11.4: carry-11.4,38LD,E3f,porter,
-11.5: drive-11.5,38L,E3f,camionner,"Vn = transport,  brouetter différence avec carry-11.4, c'est que l'agent bouge ? Pourquoi “Amanda flew me the package” ?"
-12: push-12,38L,E3f,pousser,
-13.1: give-13.1,36DT dest,D2a,∅,∅
-13.2: contribute-13.2,36DT dest,D2a,distribuer,à merger avec 13-1 puisque pas de dative alternation en français
-13.3: future_having-13.3,36DT dest,D2a,offrir,à merger avec 13-1 puisque pas de dative alternation en français
-13.4.1: fulfilling-13.4.1,36DT et 37M1,N1a,fournir,
+11.4: carry-11.4,38LD ou 38LS,E3f,porter,
+11.5: drive-11.5,38L,E3f,camionner,"Vn = transport,  brouetter différence avec carry-11.4, c'est que l'agent bouge ? Pourquoi “Amanda flew me the package” ? camionner et bouetter sont en 38L"
+12: push-12,38L,E3f,pousser : non,secouer pas les verbes avec un complément locatif de destination ou de source
+13.1: give-13.1,36DT,D2a,"donner, vendre, livrer",
+13.2: contribute-13.2,36DT,D2a,distribuer,à merger avec 13-1 puisque pas de dative alternation en français
+13.3: future_having-13.3,36DT,D2a,offrir,à merger avec 13-1 puisque pas de dative alternation en français
+13.4.1: fulfilling-13.4.1,36DT,N1a,fournir,
 13.4.2: equip-13.4.2,37M1,N1a,équiper,N1humain  = Agent V Recipeint de Theme
-13.5.1: get-13.5.1,36DT dest,D2c,acheter,
-13.5.2: obtain-13.5.2,36DT dest,D2c,obtenir,Quelle différence entre get et obtain ? Les rôles manquants sont quand même dans obtain
+13.5.1: get-13.5.1,36DT,D2c,acheter,
+13.5.2: obtain-13.5.2,36DT,D2c,obtenir,Quelle différence entre get et obtain ? Les rôles manquants sont quand même dans obtain
 13.5.3: hire-13.5.3,,S2b,engager,No V deux secrétaires (comme aides)
 13.6: exchange-13.6,,T3f,échanger,N V N1 contre N2
 13.7: berry-13.7,-,-,-,V=Vn
 14: learn-14,,P3c,,
 15.1: hold-15.1,,S3a,agripper,
 15.2: keep-15.2,38LR,L3b,garder,
-16: concealment-16,38LR,L3b,cacher,NAgnet V Patient à Ida/Loc N2
+16: concealment-16,38LR,L3a,cacher,NAgnet V Patient à Ida/Loc N2
 17.1: throw-17.1,38L et 38LD,E3f.3,lancer,17.1-1-1 métaphorique
 17.2: pelt-17.2,37M4,N1c.5,bombarder,N2 = projectile
 18.1: hit-18.1,36SL,F3a.1,cogner,verbes de choc p 235
@@ -48,8 +48,8 @@ VerbNet,LADL,LVF,Parangon,Commentaires
 18.3: spank-18.3,,F1a.2,fouetter,“donner une fessée”
 18.4: bump-18.4,,F1e,heurter,"Proche hit-18.1, pas d'agent en cause"
 19: poke-19,,R3f.4,piquer,
-20: touch-20,,F1f ou F3d,caresser,F1f correspond à la sous-classe +body_part
-21.1: cut-21.1,,R3f.1 ou R3i,~trancher,
+20: touch-20,32CL,F1f ou F3d,caresser,F1f correspond à la sous-classe +body_part
+21.1: cut-21.1,38PL et 32CL,R3f.1 ou R3i,~trancher,
 21.2: carve-21.2,,F3d.1 ou R3i.1 ou R3f.2 ou F3d.1,,"ne colle pas bien, j'ai fait un travail d'énumération"
 22.1: mix-22.1,,,,"les mix-22.1, amalgamate-22.2 et shake 22.3 (qui doivent correspondent à la Table 36 S et parfois 32PL) se distinguent par la together alternation (d'après Levin)"
 22.2: amalgamate-22.2,,,,
@@ -61,10 +61,10 @@ VerbNet,LADL,LVF,Parangon,Commentaires
 23.3: disassemble-23.3,36SL source,R3i.1,déchirer,N0 dé-V N1 de N2
 23.4: differ-23.4,,U2c,diverger,
 24: coloring-24,,N3a ou N3c,vernir,
-25.1: image_impression-25.1,32A ou 37M1,R3f.5 ou N3a,graver,
-25.2: scribble-25.2,,R3a.1,crayonner,
-25.3: illustrate-25.3,,N3a.1,orner,
-25.4: transcribe-25.4,,R3a ou R4a,reproduire,
+25.1: image_impression-25.1,32A et (37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6),R3f.5 ou N3a,,
+25.2: scribble-25.2,32A,R3a.1,dessiner,
+25.3: illustrate-25.3,37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6,N3a.1,,
+25.4: transcribe-25.4,10,R3a ou R4a,,
 26.1: build-26.1,32A,R3f ou R3a ou R3c,construire,
 26.2: grow-26.2,31R,M3a ou M3c ou T3a ou H3a,éclore,intransitifs en français
 26.3: preparing-26.3,32A ou 38LR,R3a ou R3c,"préparer, pocher",sous-classe pour bouillir qui est intransitif
@@ -76,7 +76,7 @@ VerbNet,LADL,LVF,Parangon,Commentaires
 26.8: rehearse-26.8,,,répéter,
 26.9: adjust-26.9,,,s'adapter,
 27: engender-27,,,,
-28: calve-28,31H,H1c,vêler,
+28: calve-28,31H,H1c,vêler,"il manque NP V NP (Agent V Patient), au moins pour certains verbes"
 29.1: appoint-29.1,39,E2d ou S2f,proclamer,
 29.2: characterize-29.2,32H ou 38LHD,C3e ou C2c,"répudier, engager","pas une bonne classe, voir aussi imaginer 6 – différence entre caractériser quelqu'un et décrire quelque chose"
 29.3: dub-29.3,39,N4a ou N2a,baptiser,
@@ -150,7 +150,7 @@ VerbNet,LADL,LVF,Parangon,Commentaires
 40.8.4: change_bodily_state-40.8.4,31H,H1a ou P1c ou T1b,s’évanouir,
 41.1.1: dress-41.1.1,?,N1a ou N1b,habiller ,se déhabiller : codé bizarement 
 41.1.2: groom-41.1.2,32R3,N1c ou R1a.2,panser,
-41.2.1: floss-41.2.1,32R3,R1a.1,se brosser,se brosser les dents - 32R3 ? à confirmer
+41.2.1: floss-41.2.1,32R3,R1a.1,se brosser,se brosser les dents
 41.2.2: braid-41.2.2,32R3,N1c.3 ou N1a ou R1a ou T3d,brosser,natter 32PL
 41.3.1: simple_dressing-41.3.1,32R3 ou 38L0,L3b.2,,filtrer par HAB serait sympa ici
 41.3.2: dressing_well-41.3.2,-,-,-,être tiré à 4 épingles/sur son 31
@@ -267,5 +267,5 @@ VerbNet,LADL,LVF,Parangon,Commentaires
 105: use-105,11,S4h,utiliser,à et pour 
 106: void-106,32RA,F4b,"annuler, invalider",32RA définie sur un critère morphologique
 107: involve-107,11,?,engager,à et pour
-108: multiply-108,32PL ou 36S,,multiplier,"additionner  soustraire – une classe LVF par verbe, pas de complétive"
+108: multiply-108,32PL ou 36S,∅,multiplier,"additionner  soustraire – une classe LVF par verbe, pas de complétive"
 109: seem-109,1,X2a,sembler,
