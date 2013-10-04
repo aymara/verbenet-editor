@@ -17,7 +17,7 @@ class Command(BaseCommand):
             for vn_class in sorted(VerbNetClass.objects.all(), key = lambda v: LooseVersion(v.name.split('-')[1])):
                 root_fs = vn_class.verbnetframeset_set.get(parent=None)
                 correswriter.writerow(["{}: {}".format(vn_class.name.split('-')[1], vn_class.name),
-                                       vn_class.ladl_string, vn_class.lvf_string,
+                                       root_fs.ladl_string, root_fs.lvf_string,
                                        root_fs.paragon, root_fs.comment])
 
             
