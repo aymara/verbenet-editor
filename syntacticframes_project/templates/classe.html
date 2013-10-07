@@ -48,8 +48,10 @@
                         {% endif %}
                     </h3>
 
-                    <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
-                    <p><button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher cette sous-classe</button></p>
+                    {% if user.is_authenticated %}
+                        <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
+                        <p><button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher cette sous-classe</button></p>
+                    {% endif %}
 
                     {# Paragon and comment #}
                     <p>
@@ -108,7 +110,9 @@
                             <div
                                 class="{% if not frame.from_verbnet %}created_frame {% endif %} frame"
                                 data-frameid="{{frame.id}}">
-                                <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
+                                {% if user.is_authenticated %}
+                                    <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
+                                {% endif %}
                                 <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
                                 <table class="table">
                                     <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{% if frame.example %}{{ frame.example }}{% else %}∅{% endif %}</span></td></tr>
@@ -129,25 +133,27 @@
                         </ul>
                     {% endif %}
 
-                    <p>
-                      <button class="btn new_frame"><i class="icon-plus"></i> Ajouter une frame</button>
-                    </p>
-                    <div class="frame" style="display:none">
-                        <form action="/add/" class="new_frame" method="POST">{% csrf_token %}
-                            <p>
-                                <input type="text" name="syntax" placeholder="NP V NP" />
-                                <input type="hidden" name="type" value="frame" />
-                                <input type="hidden" name="frameset_id" value="{{node.id}}" />
-                                <input type="hidden" name="vn_class_id" value="{{classe.id}}" />
-                            </p>
-                            <table class="table">
-                                <tr><td>Exemple</td><td><input type="text" name="example" /></td></tr>
-                                <tr><td>Syntaxe</td><td><input type="text" name="roles_syntax" /></td></tr>
-                                <tr><td>Sémantique</td><td><input type="text" name="semantics" /></td></tr>
-                            </table>
-                            <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
-                        </form>
-                    </div>
+                    {% if user.is_authenticated %}
+                        <p>
+                          <button class="btn new_frame"><i class="icon-plus"></i> Ajouter une frame</button>
+                        </p>
+                        <div class="frame" style="display:none">
+                            <form action="/add/" class="new_frame" method="POST">{% csrf_token %}
+                                <p>
+                                    <input type="text" name="syntax" placeholder="NP V NP" />
+                                    <input type="hidden" name="type" value="frame" />
+                                    <input type="hidden" name="frameset_id" value="{{node.id}}" />
+                                    <input type="hidden" name="vn_class_id" value="{{classe.id}}" />
+                                </p>
+                                <table class="table">
+                                    <tr><td>Exemple</td><td><input type="text" name="example" /></td></tr>
+                                    <tr><td>Syntaxe</td><td><input type="text" name="roles_syntax" /></td></tr>
+                                    <tr><td>Sémantique</td><td><input type="text" name="semantics" /></td></tr>
+                                </table>
+                                <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
+                            </form>
+                        </div>
+                    {% endif %}
                 {% endif %}
 
                 {# Rinse and repeat with children #}

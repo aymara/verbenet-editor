@@ -1,10 +1,13 @@
 from django.http import HttpResponse
-from django.template import Context, loader
+from django.template import RequestContext, loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.conf import settings
 from django import forms
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib import messages
 
 from distutils.version import LooseVersion
 import logging
@@ -25,7 +28,7 @@ def classe(request, class_number):
     verbnet_classes.sort(key = lambda v: LooseVersion(v.name.split('-')[1]))
 
     template = loader.get_template('index.html')
-    context = Context({
+    context = RequestContext(request, {
         'levin_classes': levin_classes,
         'active_class': active_class,
         'verbnet_classes': verbnet_classes,
@@ -37,7 +40,7 @@ def classe(request, class_number):
 def vn_class(request, class_name):
     verbnet_class = VerbNetClass.objects.get(name=class_name)
     template = loader.get_template('classe.html')
-    context = Context({
+    context = RequestContext(request, {
         'classe': verbnet_class,
     })
     context.update(csrf(request))
@@ -47,6 +50,29 @@ def index(request):
     # Hardcoding that the first class is 9
     return redirect('class/9/')
 
+class LoginForm(forms.Form):
+    login = forms.CharField(required=True)
+
+def login(request):
+    form = LoginForm()
+
+    if request.method == 'POST':
+        user = authenticate(username=request.POST['login'], password='NO_PASSWORD')
+        if user is not None:
+            auth_login(request, user)
+            return redirect('/')
+        else:
+            messages.warning(request, 'Login invalide, merci de réessayer !')
+            form = LoginForm(request.POST)
+
+    template = loader.get_template('login.html')
+    context = RequestContext(request, {
+        'form': form,
+    })
+    context.update(csrf(request))
+    return HttpResponse(template.render(context))
+
+@login_required
 def update(request):
     if request.method == 'POST':
         post = request.POST
@@ -63,15 +89,15 @@ def update(request):
             old_label = getattr(frame, field)
             setattr(frame, field, label)
             frame.save()
-            logger.info("{}: Updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(when, field, frame_id, vn_class, old_label, label))
+            logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'"
+                    .format(request.user.username, when, field, frame_id, vn_class, old_label, label))
         elif field in frameset_fields:
             db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
             old_label = getattr(db_frameset, field)
             setattr(db_frameset, field, label)
             db_frameset.save()
-            logger.info("{}: Updated {} in {}/{} from '{}' to '{}'"
-                    .format(when, field, vn_class, db_frameset.name, old_label, label))
+            logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'"
+                    .format(request.user.username, when, field, vn_class, db_frameset.name, old_label, label))
         else:
             raise Exception("Unknown field {}".format(field))
 
@@ -86,6 +112,7 @@ def update(request):
                          
         return HttpResponse("ok")
 
+@login_required
 def remove(request):
     if request.method == 'POST':
         post = request.POST
@@ -99,19 +126,20 @@ def remove(request):
             assert db_frame.removed == False
             db_frame.removed = True
             db_frame.save()
-            logger.info("{}: Marked frame {}/{} as removed in class {}"
-                        .format(when, frame_id, db_frame.syntax, vn_class))
+            logger.info("{}: {} marked frame {}/{} as removed in class {}"
+                        .format(request.user.username, when, frame_id, db_frame.syntax, vn_class))
         elif model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
             assert db_frameset.removed == False
             db_frameset.removed = True
             db_frameset.save()
-            logger.info("{}: Marked frameset {}/{} as removed in class {}"
-                        .format(when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+            logger.info("{}: {} marked frameset {}/{} as removed in class {}"
+                        .format(request.user.username, when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
 
         return HttpResponse("ok")
 
+@login_required
 def add(request):
 
     def child_of_subclass(parent_class):
@@ -146,8 +174,8 @@ def add(request):
                 semantics=post['semantics'],
                 from_verbnet=False)
             f.save()
-            logger.info("{}: Added frame {} ({},{},{},{}) in frameset {} from class {}".format(
-                when, f.id, f.syntax, f.example, f.roles_syntax, f.semantics,
+            logger.info("{}: {} added frame {} ({},{},{},{}) in frameset {} from class {}".format(
+                request.user.username, when, f.id, f.syntax, f.example, f.roles_syntax, f.semantics,
                 parent_frameset.name, vn_class.name))
 
         elif post['type'] == 'subclass':
@@ -160,8 +188,8 @@ def add(request):
                 name=subclass_id,
                 parent=parent_subclass)
             subclass.save()
-            logger.info("{}: Added frameset {} in frameset {} from class {}".format(
-                when, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
+            logger.info("{}: {} added frameset {} in frameset {} from class {}".format(
+                request.user.username, when, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
             
 
         return HttpResponse("ok")
@@ -178,8 +206,8 @@ def show(request):
             assert db_frameset.removed == True
             db_frameset.removed = False
             db_frameset.save()
-            logger.info("{}: Marked frameset {}/{} as shown in class {}"
-                        .format(when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+            logger.info("{}: {} marked frameset {}/{} as shown in class {}"
+                        .format(request.user.username, when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
         elif model == 'VerbNetFrame':
             frame_id = post['frame_id']
             db_frame = VerbNetFrame.objects.get(id=frame_id)
@@ -187,8 +215,8 @@ def show(request):
             db_frame.removed = False
             db_frame.save()
 
-            logger.info("{}: Marked frame {} ({}/{}) as shown in class {}"
-                        .format(when, frame_id, db_frame.syntax, db_frame.example,
+            logger.info("{}: {} marked frame {} ({}/{}) as shown in class {}"
+                        .format(request.user.username, when, frame_id, db_frame.syntax, db_frame.example,
                                 db_frame.frameset.name))
             
 

@@ -18,6 +18,10 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script>
+        {% comment %} lower is used to switch from True to true {% endcomment %}
+        window._user_authenticated = {{ user.is_authenticated|lower }};
+    </script>
 
     {% block extra_css %}{% endblock extra_css %}
   </head>
@@ -33,16 +37,18 @@
             <span class="icon-bar"></span>
           </a>
           -->
-          <span class="brand">VerbeNet</span>
-          <!--
+          <span class="brand"><a href="/">VerbeNet</a></span>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#"><i class="icon-home"></i>Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="/login">
+              {% if user.is_authenticated %}
+                {{ user.username }}
+              {% else %}
+                 Login
+              {% endif %}
+              </a></li>
             </ul>
           </div>
-          -->
           <span class="ajax-status brand">
                 <i id="ajax-ok" class="icon-ok icon-white" style="display:none" ></i>
                 <img id="ajax-loading" class="icon-nothing" style="display:none" src="{% static 'img/loading.gif' %}" />

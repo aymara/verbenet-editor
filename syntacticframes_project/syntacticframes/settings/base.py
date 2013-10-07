@@ -164,6 +164,7 @@ TEMPLATE_DIRS = (
 
 
 ########## MIDDLEWARE CONFIGURATION
+LOGIN_URL = '/login/'
 
 # Will be a middleware in 1.6
 SEND_BROKEN_LINK_EMAILS = True

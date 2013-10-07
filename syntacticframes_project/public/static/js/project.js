@@ -153,149 +153,152 @@ $(document).ready(function() {
     // Show dark/gray verbs
     show_plus();
 
-    var csrftoken = getCookie('csrftoken');
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                // Send the token to same-origin, relative URLs only.
-                // Send the token only if the method warrants CSRF protection
-                // Using the CSRFToken value acquired earlier
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        }
-    });
+    if (window._user_authenticated) {
 
-    var previous_timeout = -1;
-
-    $(document).ajaxStart(function(e, request, settings) {
-        $("#ajax-ok").hide();
-        $("#ajax-loading").show();
-    });
-    $(document).ajaxSuccess(function(e, request, settings) {
-        var is_vn_class = settings.url.indexOf("/vn_class/") == 0;
-        var is_update = settings.url.indexOf("update") >= 0;
-        var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
-        if(is_vn_class || (is_update && !is_lvf_or_ladl)) {
-            $("#ajax-loading").hide();
-            $("#ajax-ok").show();
-            clearTimeout(previous_timeout);
-            previous_timeout = setTimeout(function() {
-                $("#ajax-ok").fadeOut('slow');
-            }, 10000);
-        }
-    });
-    $(document).ajaxError(function(e, request, settings) {
-        alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe.");
-        location.reload(true);
-    });
-
-    editable_class_fields();
-
-    // remove frame
-    $(document).on('click', '.remove_frame', function() {
-        var that = this;
-        var vn_class_id = $(this).closest("article").attr('id');
-        var frame_id = $(this).closest(".frame").data("frameid");
-
-        var request = $.ajax({
-            url: '/remove/',
-            type: 'POST',
-            data: {
-                model: 'VerbNetFrame',
-                vn_class: vn_class_id,
-                frame_id: frame_id,
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                    // Send the token to same-origin, relative URLs only.
+                    // Send the token only if the method warrants CSRF protection
+                    // Using the CSRFToken value acquired earlier
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
             }
         });
 
-        request.done(function() { update_class(that); });
+        var previous_timeout = -1;
 
-        return false;
-    });
-
-    // new frame
-    $(document).on('click', 'button.new_frame', function() {
-        $(this).hide();
-        var form = $(this).parent().next(".frame");
-        form.slideDown();
-    });
-
-    $(document).on('submit', 'form.new_frame', function() {
-        var that = this;
-        var data = $(this).serialize();
-        var request = $.post($(this).attr('action'), data);
-
-        request.done(function() { update_class(that); });
-
-        return false;
-    });
-
-    // new subclass
-    $(document).on('click', 'button.new_subclass', function() {
-        var that = this;
-
-        var request = $.ajax({
-            url: '/add/',
-            type: 'POST',
-            data: {
-               type: 'subclass',
-               frameset_id: $(this).data("frameset_id"),
+        $(document).ajaxStart(function(e, request, settings) {
+            $("#ajax-ok").hide();
+            $("#ajax-loading").show();
+        });
+        $(document).ajaxSuccess(function(e, request, settings) {
+            var is_vn_class = settings.url.indexOf("/vn_class/") == 0;
+            var is_update = settings.url.indexOf("update") >= 0;
+            var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
+            if(is_vn_class || (is_update && !is_lvf_or_ladl)) {
+                $("#ajax-loading").hide();
+                $("#ajax-ok").show();
+                clearTimeout(previous_timeout);
+                previous_timeout = setTimeout(function() {
+                    $("#ajax-ok").fadeOut('slow');
+                }, 10000);
             }
         });
-
-        request.done(function() { update_class(that); });
-        return false;
-    });
-
-    // remove subclass
-    $(document).on('click', 'button.remove_subclass', function() {
-        var that = this;
-
-        var request = $.ajax({
-            url: '/remove/',
-            type: 'POST',
-            data: {
-                model: 'VerbNetFrameSet',
-                frameset_id: $(this).data("frameset_id"),
-            }
+        $(document).ajaxError(function(e, request, settings) {
+            alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe.");
+            location.reload(true);
         });
 
-        request.done(function() { update_class(that); });
-        return false;
-    });
+        editable_class_fields();
 
-    // show subclass
-    $(document).on('click', 'button.show_subclass', function() {
-        var that = this;
+        // remove frame
+        $(document).on('click', '.remove_frame', function() {
+            var that = this;
+            var vn_class_id = $(this).closest("article").attr('id');
+            var frame_id = $(this).closest(".frame").data("frameid");
 
-        var request = $.ajax({
-            url: '/show/',
-            type: 'POST',
-            data: {
-                model: 'VerbNetFrameSet',
-                frameset_id: $(this).data("frameset_id"),
-            }
-        });
-        request.done(function() { update_class(that); });
-        return false;
-    });
+            var request = $.ajax({
+                url: '/remove/',
+                type: 'POST',
+                data: {
+                    model: 'VerbNetFrame',
+                    vn_class: vn_class_id,
+                    frame_id: frame_id,
+                }
+            });
 
-    // show frame
-    $(document).on('click', 'button.show_frame', function() {
-        var that = this;
+            request.done(function() { update_class(that); });
 
-        var request = $.ajax({
-            url: '/show/',
-            type: 'POST',
-            data: {
-                model: 'VerbNetFrame',
-                frame_id: $(this).data("frame_id")
-            }
+            return false;
         });
 
-        request.done(function() { update_class(that); });
-        return false;
-    });
-              
+        // new frame
+        $(document).on('click', 'button.new_frame', function() {
+            $(this).hide();
+            var form = $(this).parent().next(".frame");
+            form.slideDown();
+        });
+
+        $(document).on('submit', 'form.new_frame', function() {
+            var that = this;
+            var data = $(this).serialize();
+            var request = $.post($(this).attr('action'), data);
+
+            request.done(function() { update_class(that); });
+
+            return false;
+        });
+
+        // new subclass
+        $(document).on('click', 'button.new_subclass', function() {
+            var that = this;
+
+            var request = $.ajax({
+                url: '/add/',
+                type: 'POST',
+                data: {
+                   type: 'subclass',
+                   frameset_id: $(this).data("frameset_id"),
+                }
+            });
+
+            request.done(function() { update_class(that); });
+            return false;
+        });
+
+        // remove subclass
+        $(document).on('click', 'button.remove_subclass', function() {
+            var that = this;
+
+            var request = $.ajax({
+                url: '/remove/',
+                type: 'POST',
+                data: {
+                    model: 'VerbNetFrameSet',
+                    frameset_id: $(this).data("frameset_id"),
+                }
+            });
+
+            request.done(function() { update_class(that); });
+            return false;
+        });
+
+        // show subclass
+        $(document).on('click', 'button.show_subclass', function() {
+            var that = this;
+
+            var request = $.ajax({
+                url: '/show/',
+                type: 'POST',
+                data: {
+                    model: 'VerbNetFrameSet',
+                    frameset_id: $(this).data("frameset_id"),
+                }
+            });
+            request.done(function() { update_class(that); });
+            return false;
+        });
+
+        // show frame
+        $(document).on('click', 'button.show_frame', function() {
+            var that = this;
+
+            var request = $.ajax({
+                url: '/show/',
+                type: 'POST',
+                data: {
+                    model: 'VerbNetFrame',
+                    frame_id: $(this).data("frame_id")
+                }
+            });
+
+            request.done(function() { update_class(that); });
+            return false;
+        });
+
+    }
 
 });
 

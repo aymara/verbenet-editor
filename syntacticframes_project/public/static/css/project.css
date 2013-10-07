@@ -4,6 +4,8 @@ body {
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
+.brand a { color: white }
+
 .left { float: left }
 .right { float: right }
 
@@ -57,3 +59,5 @@ article > .subclass {
 .frame button[type="submit"] { margin-top: 1em }
 
 .new_frame button { margin-top: 0.5em }
+
+.warning { color: red }
