@@ -90,14 +90,14 @@ def update(request):
             setattr(frame, field, label)
             frame.save()
             logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(request.user.username, when, field, frame_id, vn_class, old_label, label))
+                    .format(when, request.user.username, field, frame_id, vn_class, old_label, label))
         elif field in frameset_fields:
             db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
             old_label = getattr(db_frameset, field)
             setattr(db_frameset, field, label)
             db_frameset.save()
             logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'"
-                    .format(request.user.username, when, field, vn_class, db_frameset.name, old_label, label))
+                    .format(when, request.user.username, field, vn_class, db_frameset.name, old_label, label))
         else:
             raise Exception("Unknown field {}".format(field))
 
@@ -127,7 +127,7 @@ def remove(request):
             db_frame.removed = True
             db_frame.save()
             logger.info("{}: {} marked frame {}/{} as removed in class {}"
-                        .format(request.user.username, when, frame_id, db_frame.syntax, vn_class))
+                        .format(when, request.user.username, frame_id, db_frame.syntax, vn_class))
         elif model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
@@ -135,7 +135,7 @@ def remove(request):
             db_frameset.removed = True
             db_frameset.save()
             logger.info("{}: {} marked frameset {}/{} as removed in class {}"
-                        .format(request.user.username, when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+                        .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
 
         return HttpResponse("ok")
 
@@ -175,7 +175,7 @@ def add(request):
                 from_verbnet=False)
             f.save()
             logger.info("{}: {} added frame {} ({},{},{},{}) in frameset {} from class {}".format(
-                request.user.username, when, f.id, f.syntax, f.example, f.roles_syntax, f.semantics,
+                when, request.user.username, f.id, f.syntax, f.example, f.roles_syntax, f.semantics,
                 parent_frameset.name, vn_class.name))
 
         elif post['type'] == 'subclass':
@@ -189,7 +189,7 @@ def add(request):
                 parent=parent_subclass)
             subclass.save()
             logger.info("{}: {} added frameset {} in frameset {} from class {}".format(
-                request.user.username, when, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
+                when, request.user.username, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
             
 
         return HttpResponse("ok")
@@ -207,7 +207,7 @@ def show(request):
             db_frameset.removed = False
             db_frameset.save()
             logger.info("{}: {} marked frameset {}/{} as shown in class {}"
-                        .format(request.user.username, when, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+                        .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
         elif model == 'VerbNetFrame':
             frame_id = post['frame_id']
             db_frame = VerbNetFrame.objects.get(id=frame_id)
@@ -216,7 +216,7 @@ def show(request):
             db_frame.save()
 
             logger.info("{}: {} marked frame {} ({}/{}) as shown in class {}"
-                        .format(request.user.username, when, frame_id, db_frame.syntax, db_frame.example,
+                        .format(when, request.user.username, frame_id, db_frame.syntax, db_frame.example,
                                 db_frame.frameset.name))
             
 
