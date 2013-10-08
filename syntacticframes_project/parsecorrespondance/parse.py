@@ -28,11 +28,6 @@ class FrenchMapping(object):
             self.operands = []
             return
 
-        # Strip source/dest
-        if self.resource == 'LADL':
-            name = name.replace(' dest', '')
-            name = name.replace(' source', '')
-
         # Used to check that every name exists
         self.reference_list = ladl_list if self.resource == 'LADL' else lvf_list
 
@@ -116,10 +111,10 @@ ladl_list = [
     '1', '2', '2T', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13',
     '14', '15', '16', '18', '31H', '31R', '32A', '32C', '32CL', '32CV', '32D',
     '32H', '32NM', '32PL', '32R1', '32R2', '32R3', '32RA', '33', '34L0', '35L',
-    '35LD', '35LR', '35LS', '35R', '35RR', '35S', '35ST', '36DT', '36R', '36S',
-    '36SL', '37E', '37M1', '37M2', '37M3', '37M4', '37M5', '37M6', '38L', '38L0',
-    '38L1', '38LD', '38LH', '38LHD', '38LHR', '38LHS', '38LR', '38LS', '38PL',
-    '38R', '38RR', '39',
+    '35LD', '35LR', '35LS', '35R', '35RR', '35S', '35ST', '36DT', '36DT-source',
+    '36DT-dest', '36R', '36S', '36SL', '37E', '37M1', '37M2', '37M3', '37M4',
+    '37M5', '37M6', '38L', '38L0', '38L1', '38LD', '38LH', '38LHD', '38LHR',
+    '38LHS', '38LR', '38LS', '38PL', '38R', '38RR', '39',
     # figees
     'C_31i', 'C_a1', 'C_a12', 'C_a1p2', 'C_a1pn', 'C_anp2', 'C_c0', 'C_c0e',
     'C_c0q', 'C_c1d', 'C_c1dpn', 'C_c1g', 'C_c1gpn', 'C_c1i', 'C_c1ipn', 'C_c1p2',

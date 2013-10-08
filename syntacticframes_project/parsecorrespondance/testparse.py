@@ -33,7 +33,8 @@ class TestParsingFunctions(unittest.TestCase):
         self.assertEqual(parse.FrenchMapping('LADL', '38LD').infix(), '38LD')
 
     def test_sourcedest(self):
-        self.assertEqual(parse.FrenchMapping('LADL', '36DT source').infix(), '36DT')
+        self.assertEqual(parse.FrenchMapping('LADL', '36DT-source').infix(), '36DT-source')
+        self.assertEqual(parse.FrenchMapping('LADL', '36DT-dest').infix(), '36DT-dest')
 
     def test_operator(self):
         self.assertEqual(parse.FrenchMapping('LVF', 'L3b ou X4a.2').infix(), '(or L3b X4a.2)')
