@@ -41,6 +41,22 @@ def LADL_to_verbes():
             except ValueError:
                 pronominal_index = None
 
+            if classe == '36DT':
+                source = [first_row.index('N2 bénéficiaire')]
+                dest = [first_row.index('N2 détrimentaire')]
+            elif classe == '36SL':
+                source = [first_row.index('Loc N2 =: de N2 source')]
+                dest = [
+                    first_row.index('Loc N2 =: de N2 destination'),
+                    first_row.index('Loc N2 =: dans N2 destination'),
+                    first_row.index('Loc N2 =: sur N2 destination'),
+                    first_row.index('Loc N2 =: contre N2 destination'),
+                    first_row.index('Loc N2 =: à N2 destination'),
+                ]
+            else:
+                source = None
+                dest = None
+
             for row in ladlreader:
                 if len(row) > 1:
                     verb = row[verbe_index]
@@ -52,11 +68,11 @@ def LADL_to_verbes():
                             verb += " {}".format(pronominal_marker)
 
                     verbes[classe].append(verb)
-                    if classe == '36DT':
-                        if row[3] == '+':
-                            verbes['36DT-source'].append(verb)
-                        if row[4] == '+':
-                            verbes['36DT-dest'].append(verb)
+
+                    if source and any([row[index] == '+' for index in source]):
+                        verbes["{}-source".format(classe)].append(verb)
+                    if dest and any([row[index] == '+' for index in dest]):
+                        verbes["{}-dest".format(classe)].append(verb)
 
     return verbes
 
