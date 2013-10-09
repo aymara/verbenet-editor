@@ -1,271 +1,271 @@
-VerbNet,LADL,LVF,Parangon,Commentaires
-9.1: put-9.1,38LD,L3b,mettre,programmer n'est pas locatif et ne nous intéresse pas
-9.2: put_spatial-9.2,38LD ou 36SL,L3b,pendre,
-9.3: funnel-9.3,38LD,L3b,-?,Entonner ? Embouteiller ? Encuver ? mix entre enfoncer 01/06/11 dans le LVF
-9.4: put_direction-9.4,38LD,L3b,monter ?,38-L double locatif – il y a bien les sens « soulever » et « lâcher/laisser tomber » en anglais
-9.5: pour-9.5,38LD,L3b,verser,
-9.6: coil-9.6,38LD ou 36SL,L3b,enrouler,
-9.7: spray-9.7,37M2 et 37M3 et 37M4 et 37M5 et 37M6 et 38LD,L3b ou L4b ou E3f,charger,standard/croisé – à la fois entasser et asperger de l'eau ou de la peinture
-9.8: fill-9.8,37M2 ou 37M3 ou 37M4,N3c,remplir,diverses sous-classes ignorées en anglais
-9.9: butter-9.9,37M5 ou 37M6,N3c,beurrer,
+VerbNet,LVF,LADL,Parangon,Commentaires
+9.1: put-9.1,L3b,38LD,mettre,programmer n'est pas locatif et ne nous intéresse pas
+9.2: put_spatial-9.2,L3b,38LD ou 36SL,pendre,
+9.3: funnel-9.3,L3b,38LD,-?,Entonner ? Embouteiller ? Encuver ? mix entre enfoncer 01/06/11 dans le LVF
+9.4: put_direction-9.4,L3b,38LD,monter ?,38-L double locatif – il y a bien les sens « soulever » et « lâcher/laisser tomber » en anglais
+9.5: pour-9.5,L3b,38LD,verser,
+9.6: coil-9.6,L3b,38LD ou 36SL,enrouler,
+9.7: spray-9.7,L3b ou L4b ou E3f,37M2 et 37M3 et 37M4 et 37M5 et 37M6 et 38LD,charger,standard/croisé – à la fois entasser et asperger de l'eau ou de la peinture
+9.8: fill-9.8,N3c,37M2 ou 37M3 ou 37M4,remplir,diverses sous-classes ignorées en anglais
+9.9: butter-9.9,N3c,37M5 ou 37M6,beurrer,
 9.10: pocket-9.10,-,-,-,"V=Vn (mettre en boîte, mettre en prison...)"
-10.1: remove-10.1,37E ou 38LS,E3c,enlever,
-10.2: banish-10.2,38LH ou 38LD ou 38LS,E1b ou E1e,extrader,
-10.3: clear-10.3,37E,N3d,nettoyer,Agent V theme locaton : source – plutôt vider que nettoyer ?
-10.4.1: wipe_manner-10.4.1,37E ou 38LS,R3g,vider,se vider – plutôt nettoyer ?
-10.4.2: wipe_instr-10.4.2,37E et 38LS,R3g,éponger,"Paradoxalement, éponger 01 est lui dans E3c (faire sortir qc de lieu)"
-10.5: steal-10.5,36DT source,D2c,voler,Agent voler theme à source – N1b était proche
-10.6: cheat-10.6,37E ou 38R,N1b ou N2b ou N3b ou N3d,soigner,déposséder
+10.1: remove-10.1,E3c,37E ou 38LS,enlever,
+10.2: banish-10.2,E1b ou E1e,38LH ou 38LD ou 38LS,extrader,
+10.3: clear-10.3,N3d,37E,nettoyer,Agent V theme locaton : source – plutôt vider que nettoyer ?
+10.4.1: wipe_manner-10.4.1,R3g,37E ou 38LS,vider,se vider – plutôt nettoyer ?
+10.4.2: wipe_instr-10.4.2,R3g,37E et 38LS,éponger,"Paradoxalement, éponger 01 est lui dans E3c (faire sortir qc de lieu)"
+10.5: steal-10.5,D2c,36DT source,voler,Agent voler theme à source – N1b était proche
+10.6: cheat-10.6,N1b ou N2b ou N3b ou N3d,37E ou 38R,soigner,déposséder
 10.7: pit-10.7,-,-,-,"V=Vn SI ça existait, ce serait N3b"
-10.8: debone-10.8,37E,N1d ou N3b ou N1b,dégraisser ou épiler,Dégraisser donne N0 dé-V N 1 de Poss Vn et épiler donne N0 é-V N 1 de Poss Vn
-10.9: mine-10.9,-,E3c,-,V=Vn deux verbes comme bring-11.3
-10.10: fire-10.10,38LHS,E2b,virer,
-10.11: resign-10.11,35R,E2a,démissionner,Agent + humain V de Source
-11.1: send-11.1,38LD ou 38LS,E3f,envoyer,
-11.2: slide-11.2,38LD ou 38LS,E3d et E3f,rouler,
+10.8: debone-10.8,N1d ou N3b ou N1b,37E,dégraisser ou épiler,Dégraisser donne N0 dé-V N 1 de Poss Vn et épiler donne N0 é-V N 1 de Poss Vn
+10.9: mine-10.9,E3c,-,-,V=Vn deux verbes comme bring-11.3
+10.10: fire-10.10,E2b,38LHS,virer,
+10.11: resign-10.11,E2a,35R,démissionner,Agent + humain V de Source
+11.1: send-11.1,E3f,38LD ou 38LS,envoyer,
+11.2: slide-11.2,E3d et E3f,38LD ou 38LS,rouler,
 11.3: bring-11.3,?,?,?,bring and take
-11.4: carry-11.4,38LD ou 38LS,E3f,porter,
-11.5: drive-11.5,38L,E3f,camionner,"Vn = transport,  brouetter différence avec carry-11.4, c'est que l'agent bouge ? Pourquoi “Amanda flew me the package” ? camionner et bouetter sont en 38L"
-12: push-12,38L,E3f,pousser : non,secouer pas les verbes avec un complément locatif de destination ou de source
-13.1: give-13.1,36DT,D2a,"donner, vendre, livrer",
-13.2: contribute-13.2,36DT,D2a,distribuer,à merger avec 13-1 puisque pas de dative alternation en français
-13.3: future_having-13.3,36DT,D2a,offrir,à merger avec 13-1 puisque pas de dative alternation en français
-13.4.1: fulfilling-13.4.1,36DT,N1a,fournir,
-13.4.2: equip-13.4.2,37M1,N1a,équiper,N1humain  = Agent V Recipeint de Theme
-13.5.1: get-13.5.1,36DT,D2c,acheter,
-13.5.2: obtain-13.5.2,36DT,D2c,obtenir,Quelle différence entre get et obtain ? Les rôles manquants sont quand même dans obtain
-13.5.3: hire-13.5.3,38R,S2b,engager,No V deux secrétaires (comme aides)
-13.6: exchange-13.6,38R,T3f,échanger,N V N1 contre N2
+11.4: carry-11.4,E3f,38LD ou 38LS,porter,
+11.5: drive-11.5,E3f,38L,camionner,"Vn = transport,  brouetter différence avec carry-11.4, c'est que l'agent bouge ? Pourquoi “Amanda flew me the package” ? camionner et bouetter sont en 38L"
+12: push-12,E3f,38L,pousser : non,secouer pas les verbes avec un complément locatif de destination ou de source
+13.1: give-13.1,D2a,36DT,"donner, vendre, livrer",
+13.2: contribute-13.2,D2a,36DT,distribuer,à merger avec 13-1 puisque pas de dative alternation en français
+13.3: future_having-13.3,D2a,36DT,offrir,à merger avec 13-1 puisque pas de dative alternation en français
+13.4.1: fulfilling-13.4.1,N1a,36DT,fournir,
+13.4.2: equip-13.4.2,N1a,37M1,équiper,N1humain  = Agent V Recipeint de Theme
+13.5.1: get-13.5.1,D2c,36DT,acheter,
+13.5.2: obtain-13.5.2,D2c,36DT,obtenir,Quelle différence entre get et obtain ? Les rôles manquants sont quand même dans obtain
+13.5.3: hire-13.5.3,S2b,38R,engager,No V deux secrétaires (comme aides)
+13.6: exchange-13.6,T3f,38R,échanger,N V N1 contre N2
 13.7: berry-13.7,-,-,-,V=Vn
-14: learn-14,?,P3c,"apprendre, étudier",pas une bonne classe en français
-15.1: hold-15.1,32CL,S3a,agripper,
-15.2: keep-15.2,38LR,L3b,garder,
-16: concealment-16,38LR,L3a,cacher,NAgnet V Patient à Ida/Loc N2
-17.1: throw-17.1,38L et 38LD,E3f.3,lancer,17.1-1-1 métaphorique
-17.2: pelt-17.2,37M4,N1c.5,bombarder,N2 = projectile
-18.1: hit-18.1,36SL,F3a.1,cogner,verbes de choc p 235
-18.2: swat-18.2,32CL,?,,
-18.3: spank-18.3,32CL,F1a.2,fouetter,“donner une fessée”
-18.4: bump-18.4,32CL,F1e,heurter,"Proche hit-18.1, pas d'agent en cause"
-19: poke-19,37M3 ou 37M4,R3f.4,piquer,"percer, transpercer ?"
-20: touch-20,32CL,F1f ou F3d,caresser,F1f correspond à la sous-classe +body_part
-21.1: cut-21.1,38PL et 32CL,R3f.1 ou R3i,~trancher,
-21.2: carve-21.2,38PL,F3d.1 ou R3i.1 ou R3f.2 ou F3d.1,broyer,"ne colle pas bien au LVF, j'ai fait un travail d'énumération"
-22.1: mix-22.1,36S,,,"les mix-22.1, amalgamate-22.2 et shake 22.3 (qui doivent correspondent à la Table 36 S et parfois 32PL) se distinguent par la together alternation (d'après Levin)"
-22.2: amalgamate-22.2,36S,,,
-22.3: shake-22.3,36S,,,
-22.4: tape-22.4,36SL dest,U3a.1,scotcher,
-22.5: cling-22.5,?,F3d ou U2b,coller,"trop spécifique : soit “l'enfant se colle à sa mère”, soit “cette chemise lui colle à la peau”"
-23.1: separate-23.1,36SL,U1c ou U2c ou U3d,séparer,
-23.2: split-23.2,36SL,,détacher,
-23.3: disassemble-23.3,36SL source,R3i.1,déchirer,N0 dé-V N1 de N2
-23.4: differ-23.4,35S,U2c,diverger,
-24: coloring-24,37M5,N3a ou N3c,vernir,
-25.1: image_impression-25.1,32A et (37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6),R3f.5 ou N3a,,
-25.2: scribble-25.2,32A,R3a.1,dessiner,
-25.3: illustrate-25.3,37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6,N3a.1,,
-25.4: transcribe-25.4,10,R3a ou R4a,,
-26.1: build-26.1,32A,R3f ou R3a ou R3c,construire,
-26.2: grow-26.2,31R,M3a ou M3c ou T3a ou H3a,éclore,intransitifs en français
-26.3: preparing-26.3,32A ou 38LR,R3a ou R3c,"préparer, pocher",sous-classe pour bouillir qui est intransitif
-26.4: create-26.4,32A,R3a,créer,
-26.5: knead-26.5,32A ou 32C,R3a ou R4a,pétrir,
-26.6.1: turn-26.6.1,38R,T1,convertir,
-26.6.2: convert-26.6.2,31R,E2d ou T2a ou T2b,convertir (religion),
-26.7: performance-26.7,32A ou 32R2,R3a ou R4a,"dessiner, chanter",C1b pour chanter
-26.8: rehearse-26.8,32R3,,répéter,
-26.9: adjust-26.9,11,,s'adapter,"formes pronominales : s'adapter, se conformer; le role de l'Agent non spécifié dans VerbNet"
-27: engender-27,6,,,
-28: calve-28,31H,H1c,vêler,"il manque NP V NP (Agent V Patient), au moins pour certains verbes"
-29.1: appoint-29.1,39,E2d ou S2f,proclamer,
-29.2: characterize-29.2,32H ou 38LHD,C3e ou C2c,"répudier, engager","pas une bonne classe, voir aussi imaginer 6 – différence entre caractériser quelqu'un et décrire quelque chose"
-29.3: dub-29.3,39,N4a ou N2a,baptiser,
-29.4: declare-29.4,39,C2d,déclarer,
-29.5: conjecture-29.5,6,P3c,,pas une bonne classe en français
-29.6: masquerade-29.6,?,,se déguiser,"pas une bonne classse en français, déguiser 38R transitif"
-29.7: orphan-29.7,32H,,canoniser,en anglais V=N donc pas de traduction en français – autant de classes LVF que de verbes
-29.8: captain-29.8,?,H2h,coacher,"en anglais V=N donc peu de traduction en français sauf escorter, coacher, chaperonner : La brigade escorte le général – autant de classes LVF que de verbes"
-29.9: consider-29.9,6,P1g,considérer,revoir les frames - parfait sémantiquement
-29.10: classify-29.10,32PL,R4a ou L2b,classifier,trier un ensemble ou cataloguer un élément
-30.1: see-30.1,6,H1d ou P3c,percevoir,entre 30-1 et 30-2 voir les frames : Luc (voit + *regarde) que la pluie tombe
-30.2: sight-30.2,6,H1d ou P3a,regarder,
-30.3: peer-30.3,35R,H1d,loucher/lorgner sur,les traduc doivent être jeter un cou d'œil sur ; renifler table 6 est transitif
-30.4: stimulus_subject-30.4,32NM,E1c,renifler,Cette pièce renifle l'ail
-31.1: amuse-31.1,4,P1a ou P2,amuser,
-31.2: admire-31.2,12,P1j ou P1i,admirer,
-31.3: marvel-31.3,8,P1a ou P1c,enrager,"pas une bonne classe en français ; plein de formes pronominales s'émerveiller de, s'énerver contre ; découpée avec les prépositions anglaises"
-31.4: appeal-31.4,5,,"plaire, convenir",5 verbes Stimulus V Prep Experiencer
-32.1: want-32.1,6,P1j ou P1i,désirer,pas une belle classe
-32.2: long-32.2,35R,P1d ou P1j,pleurer /(se) languir pour,pas une belle classe ; prépositions variables
-33: judgment-33,13,C1j ou C1i,complimenter,éventuellemnt Table 12
-34.1: assessment-34.1,6,H3f ou P3b,évaluer,
-34.2: estimate-34.2,6,H3f,estimer,
-35.1: hunt-35.1,32H ou 32R3,S1a,chasser,La table 35 des verbes de searching est définie par NO V N1 for N2 : I hunted/searched  the town for a treasure.  
-35.2: search-35.2,38LR,M1b,chercher,"Cela n'existe pas en français : J'ai fouillé la ville à la recherche d'un trésor, ouj'aii cherché un trésor dans les bois"
-35.3: stalk-35.3,38LHR,M1c,traquer,
-35.4: investigate-35.4,38L1,P3b,inspecter,We inspected the area : manifestement for bombs est interdit
-35.5: rummage-35.5,35LR ou 38L1,M1b,fouiller,
-35.6: ferret-35.6,38LR,M1b,dénicher,*I ferreted the wood for games ; I ferreted the secret out of him
-36.1: correspond-36.1,35S ou 32H,C1h ou U2a,,verbes symétriques de 35S humains
-36.2: marry-36.2,35S ou 32H,U2 ou P1j ou S1c,,ou verbes trarnsitifs de 32 H : rencontrer
-36.3: meet-36.3,35S ou 32H,F1d ou S1b ou U1a,,certains verbes ont d'autres compléments : bavarder de ce que P table 15
-36.4: battle-36.4,35S ou 32H,C1h ou C1i ou C1f,,certains verbes sont en 36S : marier avec ou divorcer d'avec
-37.1.1: transfer_mesg-37.1.1,9,C2a ou C3a,expliquer,
-37.1.2: inquire-37.1.2,9,C2i ou C2k,demander,
-37.1.3: interrogate-37.1.3,9,C2i,interroger,
-37.2: tell-37.2,9,C2j,informer,
-37.3: manner_speaking-37.3,9,C2a,,
-37.4: instr_communication-37.4,9,C1a ou C1b,,
-37.5: talk-37.5,9,C1a,,
-37.6: chit_chat-37.6,9,C1h ou C1f,,
-37.7: say-37.7,9,C2a,,
-37.8: complain-37.8,9,C1f ou C1j,,
-37.9: advise-37.9,9,C2,,
-37.10: confess-37.10,9,C2c ou C2d ou C2e ou P1h,avouer,
-37.11: lecture-37.11,9,C1h,,
-37.12: overstate-37.12,9,T4d ou C1e ou M4b,,
-37.13: promise-37.13,9,C2 ou D3a ou D3c,,
-38: animal_sounds-38,9,C1a.1,,
-39.1: eat-39.1,38L0,S3j,manger,boire
-39.2: chew-39.2,38L0,R3h ou S3j,mâcher,Aussi siroter (d'où S3j)
-39.3: gobble-39.3,38L0,S3j,avaler,en français pas de down donc
-39.4: devour-39.4,38L0,S3j,dévorer,regrouper 39-3 et 39-4
-39.5: dine-39.5,35R,?,dîner,dîner d’une poire – un peu partout dans LVF
-39.6: gorge-39.6,35R,N1c ou S3a,vivre,se nourrir de poires – regrouper 39.5 et 39.6 ?
-39.7: feeding-39.7,37M1,N1c ou S3a,nourrir,nourrir N1 de/avec des poires
-40.1.1: hiccup-40.1.1,38L0,E1c ou H1a,roter,roter un rot gras – défini par tout ce qui est involontaire : réparti dans le LVF
-40.1.2: breathe-40.1.2,38L0,E1c,respirer,"pleurer, vomir"
-40.1.3: exhale-40.1.3,38L0,-,déféquer,inhaler  prend un cod et doit être mis en 40.1.2
-40.2: nonverbal_expression-40.2,31H,*,grimacer,réparti dans le LVF
-40.3.1: wink-40.3.1,31H,M1a.1 ou M1a.2,cligner,"hocher de la tête,  se lécher les babines"
-40.3.2: crane-40.3.2,31H,M3b,?,épaules voutées ? Faire un mouvement du corps pouvant indiquer une information
-40.3.3: curtsey-40.3.3,38LHD,M2b.1 ou M3b.1 ou M1b.3,s’agenouiller,Luc a agenouillé Max ? (je ne sais pas non plus)
-40.4: snooze-40.4,31H,H1a,dormir,faire un roupillon/sieste/somme
-40.5: flinch-40.5,31H,M1a.1 ou M1a.2 ou M1a.4,tressaillir,tressauter
-40.6: body_internal_states-40.6,8,M1a.1 ou M1a.2,frissonner,trembler
-40.7: suffocate-40.7,32H,F1b,asphyxier,noyer en 38LHR
-40.8.1: pain-40.8.1,32H,F1d.1,gratter,
-40.8.2: tingle-40.8.2,?,H1b.1,picoter,"fourmiller, picoter en 32 C et bazar dans les tables LADL"
-40.8.3: hurt-40.8.3,37M3,F1d,s'écorcher,"Max s’est fracturé le tibia : pas codé, uniqument : un choc a - son tibia, itou pour sedéchirer un muscle (hurt body part → parfait pour le LVF)"
-40.8.4: change_bodily_state-40.8.4,31H,H1a ou P1c ou T1b,s’évanouir,
-41.1.1: dress-41.1.1,37M6,N1a ou N1b,habiller ,"se déhabiller : codé bizarement, dévêtir et désaper pas codé au LADL"
-41.1.2: groom-41.1.2,32R3 ou 32CL,N1c ou R1a.2,panser,
-41.2.1: floss-41.2.1,32R3,R1a.1,se brosser,se brosser les dents
-41.2.2: braid-41.2.2,32R3,N1c.3 ou N1a ou R1a ou T3d,brosser,natter 32PL
-41.3.1: simple_dressing-41.3.1,32R3 ou 38L0,L3b.2,,filtrer par HAB serait sympa ici
+14: learn-14,P3c,?,"apprendre, étudier",pas une bonne classe en français
+15.1: hold-15.1,S3a,32CL,agripper,
+15.2: keep-15.2,L3b,38LR,garder,
+16: concealment-16,L3a,38LR,cacher,NAgnet V Patient à Ida/Loc N2
+17.1: throw-17.1,E3f.3,38L et 38LD,lancer,17.1-1-1 métaphorique
+17.2: pelt-17.2,N1c.5,37M4,bombarder,N2 = projectile
+18.1: hit-18.1,F3a.1,36SL,cogner,verbes de choc p 235
+18.2: swat-18.2,?,32CL,,
+18.3: spank-18.3,F1a.2,32CL,fouetter,“donner une fessée”
+18.4: bump-18.4,F1e,32CL,heurter,"Proche hit-18.1, pas d'agent en cause"
+19: poke-19,R3f.4,37M3 ou 37M4,piquer,"percer, transpercer ?"
+20: touch-20,F1f ou F3d,32CL,caresser,F1f correspond à la sous-classe +body_part
+21.1: cut-21.1,R3f.1 ou R3i,38PL et 32CL,~trancher,
+21.2: carve-21.2,F3d.1 ou R3i.1 ou R3f.2 ou F3d.1,38PL,broyer,"ne colle pas bien au LVF, j'ai fait un travail d'énumération"
+22.1: mix-22.1,,36S,,"les mix-22.1, amalgamate-22.2 et shake 22.3 (qui doivent correspondent à la Table 36 S et parfois 32PL) se distinguent par la together alternation (d'après Levin)"
+22.2: amalgamate-22.2,,36S,,
+22.3: shake-22.3,,36S,,
+22.4: tape-22.4,U3a.1,36SL-dest,scotcher,
+22.5: cling-22.5,F3d ou U2b,?,coller,"trop spécifique : soit “l'enfant se colle à sa mère”, soit “cette chemise lui colle à la peau”"
+23.1: separate-23.1,U1c ou U2c ou U3d,36SL-source,séparer,
+23.2: split-23.2,,36SL,détacher,
+23.3: disassemble-23.3,R3i.1,36SL-source,déchirer,N0 dé-V N1 de N2
+23.4: differ-23.4,U2c,35S,diverger,
+24: coloring-24,N3a ou N3c,37M5,vernir,
+25.1: image_impression-25.1,R3f.5 ou N3a,32A et (37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6),,
+25.2: scribble-25.2,R3a.1,32A,dessiner,
+25.3: illustrate-25.3,N3a.1,37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6,,
+25.4: transcribe-25.4,R3a ou R4a,10,,
+26.1: build-26.1,R3f ou R3a ou R3c,32A,construire,
+26.2: grow-26.2,M3a ou M3c ou T3a ou H3a,31R,éclore,intransitifs en français
+26.3: preparing-26.3,R3a ou R3c,32A ou 38LR,"préparer, pocher",sous-classe pour bouillir qui est intransitif
+26.4: create-26.4,R3a,32A,créer,
+26.5: knead-26.5,R3a ou R4a,32A ou 32C,pétrir,
+26.6.1: turn-26.6.1,T1,38R,convertir,
+26.6.2: convert-26.6.2,E2d ou T2a ou T2b,31R,convertir (religion),
+26.7: performance-26.7,R3a ou R4a,32A ou 32R2,"dessiner, chanter",C1b pour chanter
+26.8: rehearse-26.8,,32R3,répéter,
+26.9: adjust-26.9,,11,s'adapter,"formes pronominales : s'adapter, se conformer; le role de l'Agent non spécifié dans VerbNet"
+27: engender-27,,6,,
+28: calve-28,H1c,31H,vêler,"il manque NP V NP (Agent V Patient), au moins pour certains verbes"
+29.1: appoint-29.1,E2d ou S2f,39,proclamer,
+29.2: characterize-29.2,C3e ou C2c,32H ou 38LHD,"répudier, engager","pas une bonne classe, voir aussi imaginer 6 – différence entre caractériser quelqu'un et décrire quelque chose"
+29.3: dub-29.3,N4a ou N2a,39,baptiser,
+29.4: declare-29.4,C2d,39,déclarer,
+29.5: conjecture-29.5,P3c,6,,pas une bonne classe en français
+29.6: masquerade-29.6,,?,se déguiser,"pas une bonne classse en français, déguiser 38R transitif"
+29.7: orphan-29.7,,32H,canoniser,en anglais V=N donc pas de traduction en français – autant de classes LVF que de verbes
+29.8: captain-29.8,H2h,?,coacher,"en anglais V=N donc peu de traduction en français sauf escorter, coacher, chaperonner : La brigade escorte le général – autant de classes LVF que de verbes"
+29.9: consider-29.9,P1g,6,considérer,revoir les frames - parfait sémantiquement
+29.10: classify-29.10,R4a ou L2b,32PL,classifier,trier un ensemble ou cataloguer un élément
+30.1: see-30.1,H1d ou P3c,6,percevoir,entre 30-1 et 30-2 voir les frames : Luc (voit + *regarde) que la pluie tombe
+30.2: sight-30.2,H1d ou P3a,6,regarder,
+30.3: peer-30.3,H1d,35R,loucher/lorgner sur,les traduc doivent être jeter un cou d'œil sur ; renifler table 6 est transitif
+30.4: stimulus_subject-30.4,E1c,32NM,renifler,Cette pièce renifle l'ail
+31.1: amuse-31.1,P1a ou P2,4,amuser,
+31.2: admire-31.2,P1j ou P1i,12,admirer,
+31.3: marvel-31.3,P1a ou P1c,8,enrager,"pas une bonne classe en français ; plein de formes pronominales s'émerveiller de, s'énerver contre ; découpée avec les prépositions anglaises"
+31.4: appeal-31.4,,5,"plaire, convenir",5 verbes Stimulus V Prep Experiencer
+32.1: want-32.1,P1j ou P1i,6,désirer,pas une belle classe
+32.2: long-32.2,P1d ou P1j,35R,pleurer /(se) languir pour,pas une belle classe ; prépositions variables
+33: judgment-33,C1j ou C1i,13,complimenter,éventuellemnt Table 12
+34.1: assessment-34.1,H3f ou P3b,6,évaluer,
+34.2: estimate-34.2,H3f,6,estimer,
+35.1: hunt-35.1,S1a,32H ou 32R3,chasser,La table 35 des verbes de searching est définie par NO V N1 for N2 : I hunted/searched  the town for a treasure.  
+35.2: search-35.2,M1b,38LR,chercher,"Cela n'existe pas en français : J'ai fouillé la ville à la recherche d'un trésor, ouj'aii cherché un trésor dans les bois"
+35.3: stalk-35.3,M1c,38LHR,traquer,
+35.4: investigate-35.4,P3b,38L1,inspecter,We inspected the area : manifestement for bombs est interdit
+35.5: rummage-35.5,M1b,35LR ou 38L1,fouiller,
+35.6: ferret-35.6,M1b,38LR,dénicher,*I ferreted the wood for games ; I ferreted the secret out of him
+36.1: correspond-36.1,C1h ou U2a,35S ou 32H,,verbes symétriques de 35S humains
+36.2: marry-36.2,U2 ou P1j ou S1c,35S ou 32H,,ou verbes trarnsitifs de 32 H : rencontrer
+36.3: meet-36.3,F1d ou S1b ou U1a,35S ou 32H,,certains verbes ont d'autres compléments : bavarder de ce que P table 15
+36.4: battle-36.4,C1h ou C1i ou C1f,35S ou 32H,,certains verbes sont en 36S : marier avec ou divorcer d'avec
+37.1.1: transfer_mesg-37.1.1,C2a ou C3a,9,expliquer,
+37.1.2: inquire-37.1.2,C2i ou C2k,9,demander,
+37.1.3: interrogate-37.1.3,C2i,9,interroger,
+37.2: tell-37.2,C2j,9,informer,
+37.3: manner_speaking-37.3,C2a,9,,
+37.4: instr_communication-37.4,C1a ou C1b,9,,
+37.5: talk-37.5,C1a,9,,
+37.6: chit_chat-37.6,C1h ou C1f,9,,
+37.7: say-37.7,C2a,9,,
+37.8: complain-37.8,C1f ou C1j,9,,
+37.9: advise-37.9,C2,9,,
+37.10: confess-37.10,C2c ou C2d ou C2e ou P1h,9,avouer,
+37.11: lecture-37.11,C1h,9,,
+37.12: overstate-37.12,T4d ou C1e ou M4b,9,,
+37.13: promise-37.13,C2 ou D3a ou D3c,9,,
+38: animal_sounds-38,C1a.1,9,,
+39.1: eat-39.1,S3j,38L0,manger,boire
+39.2: chew-39.2,R3h ou S3j,38L0,mâcher,Aussi siroter (d'où S3j)
+39.3: gobble-39.3,S3j,38L0,avaler,en français pas de down donc
+39.4: devour-39.4,S3j,38L0,dévorer,regrouper 39-3 et 39-4
+39.5: dine-39.5,?,35R,dîner,dîner d’une poire – un peu partout dans LVF
+39.6: gorge-39.6,N1c ou S3a,35R,vivre,se nourrir de poires – regrouper 39.5 et 39.6 ?
+39.7: feeding-39.7,N1c ou S3a,37M1,nourrir,nourrir N1 de/avec des poires
+40.1.1: hiccup-40.1.1,E1c ou H1a,38L0,roter,roter un rot gras – défini par tout ce qui est involontaire : réparti dans le LVF
+40.1.2: breathe-40.1.2,E1c,38L0,respirer,"pleurer, vomir"
+40.1.3: exhale-40.1.3,-,38L0,déféquer,inhaler  prend un cod et doit être mis en 40.1.2
+40.2: nonverbal_expression-40.2,*,31H,grimacer,réparti dans le LVF
+40.3.1: wink-40.3.1,M1a.1 ou M1a.2,31H,cligner,"hocher de la tête,  se lécher les babines"
+40.3.2: crane-40.3.2,M3b,31H,?,épaules voutées ? Faire un mouvement du corps pouvant indiquer une information
+40.3.3: curtsey-40.3.3,M2b.1 ou M3b.1 ou M1b.3,38LHD,s’agenouiller,Luc a agenouillé Max ? (je ne sais pas non plus)
+40.4: snooze-40.4,H1a,31H,dormir,faire un roupillon/sieste/somme
+40.5: flinch-40.5,M1a.1 ou M1a.2 ou M1a.4,31H,tressaillir,tressauter
+40.6: body_internal_states-40.6,M1a.1 ou M1a.2,8,frissonner,trembler
+40.7: suffocate-40.7,F1b,32H,asphyxier,noyer en 38LHR
+40.8.1: pain-40.8.1,F1d.1,32H,gratter,
+40.8.2: tingle-40.8.2,H1b.1,?,picoter,"fourmiller, picoter en 32 C et bazar dans les tables LADL"
+40.8.3: hurt-40.8.3,F1d,37M3,s'écorcher,"Max s’est fracturé le tibia : pas codé, uniqument : un choc a - son tibia, itou pour sedéchirer un muscle (hurt body part → parfait pour le LVF)"
+40.8.4: change_bodily_state-40.8.4,H1a ou P1c ou T1b,31H,s’évanouir,
+41.1.1: dress-41.1.1,N1a ou N1b,37M6,habiller ,"se déhabiller : codé bizarement, dévêtir et désaper pas codé au LADL"
+41.1.2: groom-41.1.2,N1c ou R1a.2,32R3 ou 32CL,panser,
+41.2.1: floss-41.2.1,R1a.1,32R3,se brosser,se brosser les dents
+41.2.2: braid-41.2.2,N1c.3 ou N1a ou R1a ou T3d,32R3,brosser,natter 32PL
+41.3.1: simple_dressing-41.3.1,L3b.2,32R3 ou 38L0,,filtrer par HAB serait sympa ici
 41.3.2: dressing_well-41.3.2,-,-,-,être tiré à 4 épingles/sur son 31
 41.3.3: being_dressed-41.3.3,-,-,s’affubler,affubler 37M6
-42.1: murder-42.1,32H,F1b,assassiner,
-42.2: poison-42.2,32H,N1c ou F1b,empoisonner,
-42.3: subjugate-42.3,32H,F4b,asphyxier,"étouffer, soumettre, réprimer (plein d'autres classes que F4b en théorie)"
-43.1: light_emission-43.1,34L0,H3c.1,scintiller,
-43.2: sound_emission-43.2,34L0,H3d,crépiter,
-43.3: smell_emission-43.3,32NM,E1c.1,puer,Ce fromage - l’amoniaque
-43.4: substance_emission-43.4,38L0,E1c,jaillir,"baver, vomir"
-44: destroy-44,32D ou 32H,F3c,détruire,
-45.1: break-45.1,37M3 ou 32C,R3i,fêler,
-45.2: bend-45.2,32C,M3a ou R3i ou R3f,plier,
-45.3: cooking-45.3,32C,R3c,cuire,classe proche de 26-3
-45.4: other_cos-45.4,32C ou 32CL ou 32CV ou 32RA,*,,pas compris ?
-45.5: entity_specific_cos-45.5,31R,*,germer,
-45.6: calibratable_cos-45.6,?,M4a ou M3a,,c'est le bazar dans les tables du LADL
-46: lodge-46,35ST,L1a,camper,la causative alternation est codée en 38LHR
-47.1: exist-47.1,35ST,X3a ou M4a,exister,
-47.2: entity_specific_modes_being-47.2,34L0 ou 31R,M3a ou H3e,"mousser, écumer, fleurir",c'est le bazar : autant de classes que de verbes
-47.3: modes_of_being_with_motion-47.3,34L0 ou 31R,M1a ou M3a,vaciller,c'est le bazar
-47.4: sound_existence-47.4,34L0,E3b ou H3d,résonner,
-47.5.1: swarm-47.5.1,34L0,M1a,grouiller,
-47.5.2: herd-47.5.2,32PL et 2,U1a,s'ammasser,
-47.5.3: bulge-47.5.3,37M3 ou 37M4,M1a ou M3a ou N3c,"gonfler, renfler",
-47.6: spatial_configuration-47.6,38LR ou 38LD,M1b ou M3b ou M3a ou L3a ou L3b,"dresser, pendre",
-47.7: meander-47.7,35ST ou 35LR,L3a,courir,
-47.8: contiguous_location-47.8,35ST,F3d ou L3b,toucher,bcp de verbes anglais ne doivent pas avoir de traduction en français
-48.1.1: appear-48.1.1,35L ou 35LS,L1a ou E3a,"apparaître, émaner",
-48.1.2: reflexive_appearance-48.1.2,35R ou 31R,C4d,"se manifester, se déclarer",
-48.2: disappearance-48.2,35L,X4a ou F4b,disparaître,incohérence dans les frames de VerbNet
-48.3: occurrence-48.3,31R ou 35R,L4a ou M4a,se produire,
-49: body_internal_motion-49,32CL ou 32R3 ou 32C,M1a,"se trémousser, se tortiller","gigoter  permet peu de locatif de destination : jusqu'au bar, se dandiner vers la sortie"
-50: assuming_position-50,38LD,M1a ou L1a,"s'allonger, s'étendre","LADL formes pronominales de verbes de 38LD - verbes LVF sans conviction : s'allonger, s'étendre ont des entrées dans le LVF en M1a"
-51.1: escape-51.1,2,E1a ou E1d,"sortir, rentrer",découpage nécessaire
-51.2: leave-51.2,38L1,S3h,quitter,
-51.3.1: roll-51.3.1,35L ou 38L,E3c ou E3d ou E3f ou E1e ou E1d,rouler,
-51.3.2: run-51.3.2,2,M1a ou E3e,courir,
-51.4.1: vehicle-51.4.1,2,M1a,"skier, patiner",V= VN= vehicule
-51.4.2: nonvehicle-51.4.2,2,M1a,pédaler,
-51.5: waltz-51.5,32R3,M1a,"dancer, valser",valser est en 32CV valser un tango
-51.6: chase-51.6,38LD,M1c,poursuivre,
-51.7: accompany-51.7,3,E1e,conduire,
-51.8: reach-51.8,38L1,S3g ou E1d ou E3d,atteindre,
-52: avoid-52,32R2,S3c ou E1a,éviter,classe peu définie
-53.1: linger-53.1,?,E4d ou M2a ou X1a,"traîner, faire traîner",voir ce qui est fait avec les sentential complements
-53.2: rush-53.2,?,M4a ou M4b,"accélérer, faire accélérer",voir ce qui est fait avec les sentential complements
-54.1: register-54.1,32NM,H3f,peser,
-54.2: cost-54.2,32NM,H3f,coûter,
-54.3: fit-54.3,32NM,S3k,contenir,
-54.4: price-54.4,32R2,H3f,évaluer,
-54.5: bill-54.5,36DT,D2a ou L1b ou N4a ou F2b,facturer,LVF : une classe par verbe
-55.1: begin-55.1,1,X1a ou X4a ou M4b,commencer,
-55.2: complete-55.2,1,X1a ou X4a ou M4b,achever,
-55.3: continue-55.3,1,X1a ou M4a ou M4b ou S3f,continuer,
-55.4: stop-55.4,1,X1a ou X4a ou M3a ou M3b ou M4a ou M4b,arrêter,
-55.5: establish-55.5,32A ou 38R,X4a ou R3b,établir,initier et introduire 38R
-55.6: sustain-55.6,36R,S4f ou L2b ou M4b,"maintenir, garder",garder 15 entrées
+42.1: murder-42.1,F1b,32H,assassiner,
+42.2: poison-42.2,N1c ou F1b,32H,empoisonner,
+42.3: subjugate-42.3,F4b,32H,asphyxier,"étouffer, soumettre, réprimer (plein d'autres classes que F4b en théorie)"
+43.1: light_emission-43.1,H3c.1,34L0,scintiller,
+43.2: sound_emission-43.2,H3d,34L0,crépiter,
+43.3: smell_emission-43.3,E1c.1,32NM,puer,Ce fromage - l’amoniaque
+43.4: substance_emission-43.4,E1c,38L0,jaillir,"baver, vomir"
+44: destroy-44,F3c,32D ou 32H,détruire,
+45.1: break-45.1,R3i,37M3 ou 32C,fêler,
+45.2: bend-45.2,M3a ou R3i ou R3f,32C,plier,
+45.3: cooking-45.3,R3c,32C,cuire,classe proche de 26-3
+45.4: other_cos-45.4,*,32C ou 32CL ou 32CV ou 32RA,,pas compris ?
+45.5: entity_specific_cos-45.5,*,31R,germer,
+45.6: calibratable_cos-45.6,M4a ou M3a,?,,c'est le bazar dans les tables du LADL
+46: lodge-46,L1a,35ST,camper,la causative alternation est codée en 38LHR
+47.1: exist-47.1,X3a ou M4a,35ST,exister,
+47.2: entity_specific_modes_being-47.2,M3a ou H3e,34L0 ou 31R,"mousser, écumer, fleurir",c'est le bazar : autant de classes que de verbes
+47.3: modes_of_being_with_motion-47.3,M1a ou M3a,34L0 ou 31R,vaciller,c'est le bazar
+47.4: sound_existence-47.4,E3b ou H3d,34L0,résonner,
+47.5.1: swarm-47.5.1,M1a,34L0,grouiller,
+47.5.2: herd-47.5.2,U1a,32PL et 2,s'ammasser,
+47.5.3: bulge-47.5.3,M1a ou M3a ou N3c,37M3 ou 37M4,"gonfler, renfler",
+47.6: spatial_configuration-47.6,M1b ou M3b ou M3a ou L3a ou L3b,38LR ou 38LD,"dresser, pendre",
+47.7: meander-47.7,L3a,35ST ou 35LR,courir,
+47.8: contiguous_location-47.8,F3d ou L3b,35ST,toucher,bcp de verbes anglais ne doivent pas avoir de traduction en français
+48.1.1: appear-48.1.1,L1a ou E3a,35L ou 35LS,"apparaître, émaner",
+48.1.2: reflexive_appearance-48.1.2,C4d,35R ou 31R,"se manifester, se déclarer",
+48.2: disappearance-48.2,X4a ou F4b,35L,disparaître,incohérence dans les frames de VerbNet
+48.3: occurrence-48.3,L4a ou M4a,31R ou 35R,se produire,
+49: body_internal_motion-49,M1a,32CL ou 32R3 ou 32C,"se trémousser, se tortiller","gigoter  permet peu de locatif de destination : jusqu'au bar, se dandiner vers la sortie"
+50: assuming_position-50,M1a ou L1a,38LD,"s'allonger, s'étendre","LADL formes pronominales de verbes de 38LD - verbes LVF sans conviction : s'allonger, s'étendre ont des entrées dans le LVF en M1a"
+51.1: escape-51.1,E1a ou E1d,2,"sortir, rentrer",découpage nécessaire
+51.2: leave-51.2,S3h,38L1,quitter,
+51.3.1: roll-51.3.1,E3c ou E3d ou E3f ou E1e ou E1d,35L ou 38L,rouler,
+51.3.2: run-51.3.2,M1a ou E3e,2,courir,
+51.4.1: vehicle-51.4.1,M1a,2,"skier, patiner",V= VN= vehicule
+51.4.2: nonvehicle-51.4.2,M1a,2,pédaler,
+51.5: waltz-51.5,M1a,32R3,"dancer, valser",valser est en 32CV valser un tango
+51.6: chase-51.6,M1c,38LD,poursuivre,
+51.7: accompany-51.7,E1e,3,conduire,
+51.8: reach-51.8,S3g ou E1d ou E3d,38L1,atteindre,
+52: avoid-52,S3c ou E1a,32R2,éviter,classe peu définie
+53.1: linger-53.1,E4d ou M2a ou X1a,?,"traîner, faire traîner",voir ce qui est fait avec les sentential complements
+53.2: rush-53.2,M4a ou M4b,?,"accélérer, faire accélérer",voir ce qui est fait avec les sentential complements
+54.1: register-54.1,H3f,32NM,peser,
+54.2: cost-54.2,H3f,32NM,coûter,
+54.3: fit-54.3,S3k,32NM,contenir,
+54.4: price-54.4,H3f,32R2,évaluer,
+54.5: bill-54.5,D2a ou L1b ou N4a ou F2b,36DT,facturer,LVF : une classe par verbe
+55.1: begin-55.1,X1a ou X4a ou M4b,1,commencer,
+55.2: complete-55.2,X1a ou X4a ou M4b,1,achever,
+55.3: continue-55.3,X1a ou M4a ou M4b ou S3f,1,continuer,
+55.4: stop-55.4,X1a ou X4a ou M3a ou M3b ou M4a ou M4b,1,arrêter,
+55.5: establish-55.5,X4a ou R3b,32A ou 38R,établir,initier et introduire 38R
+55.6: sustain-55.6,S4f ou L2b ou M4b,36R,"maintenir, garder",garder 15 entrées
 56: weekend-56,-,-,-,V=Vn = période n'existe pas en français
-57: weather-57,C_31i,H3b,neiger,table de figée ; ancien 31I
-58.1: urge-58.1,9,C2,conseiller,
-58.2: beg-58.2,9,C2h ou C2k,demander,
-59: force-59,11,H2j,forcer,
-60: order-60,9,C2b,ordonner,
-61: try-61,1,P1h,essayer,
-62: wish-62,6,P1i,souhaiter,
-63: enforce-63,6,C2b,imposer,3 verbes danas la classe : pas sérieux mais 2 rôles sémantiques et pas 3 donc pas en 9 : mais à voir ???
-64: allow-64,6 ou 9,D3c ou P1h,autoriser,
-65: admit-65,38LHD,S2f ou E1f,recevoir,"classe  de merde, objet humain"
-66: consume-66,11,,gâcher,classe de 3 elements 
-67: forbid-67,12 ou 6,S2e ou M2c ou S4f ou C2b,empêcher,classe dont les frames ne sont pas clairs en anglais
-68: pay-68,39,D2a ou N2a ou S4b,payer,
-69: refrain-69,8,S2e ou U2c ou C4d ou P1e,s'abstenir,
-70: rely-70,16,P1f ou P1d,compter/parier sur,
-71: conspire-71,14,F2d ou C1f ou P3c,conspirer,conspirer avec N2 pour V-inf ; refair les frames français
-72: help-72,11,D1c ou P2a,aider,aider (à + pour) V-inf
-73: cooperate-73,14,U2b,collaborer,collaborer (à+pour) V-inf
-74: succeed-74,1,H2e,"réussir, échouer",
-75: neglect-75,1,S4b,négliger,traduc de manage = not-neglect ?
-76: limit-76,11,L4b ou L2b ou M2c,confiner,
-77: accept-77,6,?,,"Classe bizarre – mal défini sémantiquement (comprendre, encourager, accepter)"
-78: indicate-78,9,C4b,"indiquer, expliquer",à sujet Nnr et pas à sujet humain
-79: dedicate-79,11,D2a ou P1h,dévouer,dévouer sa vie / se dévouer à+pour V-inf
-80: free-80,13,U2c ou E2b,"libérer, guérir",
-81: suspect-81,13,P3c,soupçonner,
-82: withdraw-82,?,E1a,se retirer,4 verbes anglais et pas de table en français
-83: cope-83,7,M2b ou E2a,"se débrouiller, réussir",alternance à /pour
-84: discover-84,6,P3c ou P3b,découvrir,
-85: defend-85,13 ou 32R3,F2d,défendre,pas bien clair
-86.1: correlate-86.1,?,T2a,alterner,"classe mal définie, se rapporter à, se rattacher à ? Je ne comprends pas Theme et co-Theme"
-86.2: relate-86.2,4,F2b,concerner,emploi non psy
-87.1: focus-87.1,11,P1e ou P1f,concentrer,concentrer ses efforts ou se concentrer
-87.2: comprehend-87.2,6,P3c,comprendre,
-88.1: care-88.1,8 ou 4,P2a ou P1a,s'inquiéter,
-88.2: empathize-88.2,35R,U2b,compatir,
-89: settle-89,14 ou 16,U2a ou F4b ou X1a,s'harmoniser,"une classe LVF par verbe, s'accorder à, s'arranger pour"
-90: exceed-90,32R2 ou 32R1,E4d,"dépasser, surpasser",
-91: matter-91,5,H2k,compter,classes de deux verbes
-92: confine-92,38LHD,L1b,incarcérer,
-93: adopt-93,6,H4c,adopter,
-94: risk-94,?,L4b,"(se) risquer, jouer","jouer a 20 entrées, pas de bonne entreée pour (se) risquer ou hasarder"
-95: acquiesce-95,?,D1b ou P1f,"se rendre, capituler","capituler 35R, se rendre 33"
-96: addict-96,11,H2j,"prédisposer, inciter",sujet Nnr ou Hum – LVF sans conviction
-97.1: base-97.1,10 ou 38R,L4b,baser,pas de bonne entrée pour établir
-97.2: deduce-97.2,16,E4b,déduire,
-98: confront-98,32R2,F4a,braver,
-99: ensure-99,9,T4b ou D3c,garantir,sujet Nnr = cause
-100: own-100,32R2,S3k,posséder,
-101: patent-101,32R3,L3b ou N4a,breveter,LVF: sans conviction
-102: promote-102,32R2,D3b ou P2a ou P2c,"promouvoir, promotionner",
-103: require-103,10,C2k,nécessiter,demander à sujet Nnr
+57: weather-57,H3b,C_31i,neiger,table de figée ; ancien 31I
+58.1: urge-58.1,C2,9,conseiller,
+58.2: beg-58.2,C2h ou C2k,9,demander,
+59: force-59,H2j,11,forcer,
+60: order-60,C2b,9,ordonner,
+61: try-61,P1h,1,essayer,
+62: wish-62,P1i,6,souhaiter,
+63: enforce-63,C2b,6,imposer,3 verbes danas la classe : pas sérieux mais 2 rôles sémantiques et pas 3 donc pas en 9 : mais à voir ???
+64: allow-64,D3c ou P1h,6 ou 9,autoriser,
+65: admit-65,S2f ou E1f,38LHD,recevoir,"classe  de merde, objet humain"
+66: consume-66,,11,gâcher,classe de 3 elements 
+67: forbid-67,S2e ou M2c ou S4f ou C2b,12 ou 6,empêcher,classe dont les frames ne sont pas clairs en anglais
+68: pay-68,D2a ou N2a ou S4b,39,payer,
+69: refrain-69,S2e ou U2c ou C4d ou P1e,8,s'abstenir,
+70: rely-70,P1f ou P1d,16,compter/parier sur,
+71: conspire-71,F2d ou C1f ou P3c,14,conspirer,conspirer avec N2 pour V-inf ; refair les frames français
+72: help-72,D1c ou P2a,11,aider,aider (à + pour) V-inf
+73: cooperate-73,U2b,14,collaborer,collaborer (à+pour) V-inf
+74: succeed-74,H2e,1,"réussir, échouer",
+75: neglect-75,S4b,1,négliger,traduc de manage = not-neglect ?
+76: limit-76,L4b ou L2b ou M2c,11,confiner,
+77: accept-77,?,6,,"Classe bizarre – mal défini sémantiquement (comprendre, encourager, accepter)"
+78: indicate-78,C4b,9,"indiquer, expliquer",à sujet Nnr et pas à sujet humain
+79: dedicate-79,D2a ou P1h,11,dévouer,dévouer sa vie / se dévouer à+pour V-inf
+80: free-80,U2c ou E2b,13,"libérer, guérir",
+81: suspect-81,P3c,13,soupçonner,
+82: withdraw-82,E1a,?,se retirer,4 verbes anglais et pas de table en français
+83: cope-83,M2b ou E2a,7,"se débrouiller, réussir",alternance à /pour
+84: discover-84,P3c ou P3b,6,découvrir,
+85: defend-85,F2d,13 ou 32R3,défendre,pas bien clair
+86.1: correlate-86.1,T2a,?,alterner,"classe mal définie, se rapporter à, se rattacher à ? Je ne comprends pas Theme et co-Theme"
+86.2: relate-86.2,F2b,4,concerner,emploi non psy
+87.1: focus-87.1,P1e ou P1f,11,concentrer,concentrer ses efforts ou se concentrer
+87.2: comprehend-87.2,P3c,6,comprendre,
+88.1: care-88.1,P2a ou P1a,8 ou 4,s'inquiéter,
+88.2: empathize-88.2,U2b,35R,compatir,
+89: settle-89,U2a ou F4b ou X1a,14 ou 16,s'harmoniser,"une classe LVF par verbe, s'accorder à, s'arranger pour"
+90: exceed-90,E4d,32R2 ou 32R1,"dépasser, surpasser",
+91: matter-91,H2k,5,compter,classes de deux verbes
+92: confine-92,L1b,38LHD,incarcérer,
+93: adopt-93,H4c,6,adopter,
+94: risk-94,L4b,?,"(se) risquer, jouer","jouer a 20 entrées, pas de bonne entreée pour (se) risquer ou hasarder"
+95: acquiesce-95,D1b ou P1f,?,"se rendre, capituler","capituler 35R, se rendre 33"
+96: addict-96,H2j,11,"prédisposer, inciter",sujet Nnr ou Hum – LVF sans conviction
+97.1: base-97.1,L4b,10 ou 38R,baser,pas de bonne entrée pour établir
+97.2: deduce-97.2,E4b,16,déduire,
+98: confront-98,F4a,32R2,braver,
+99: ensure-99,T4b ou D3c,9,garantir,sujet Nnr = cause
+100: own-100,S3k,32R2,posséder,
+101: patent-101,L3b ou N4a,32R3,breveter,LVF: sans conviction
+102: promote-102,D3b ou P2a ou P2c,32R2,"promouvoir, promotionner",
+103: require-103,C2k,10,nécessiter,demander à sujet Nnr
 104: spend_time-104,?,?,passer,classe mal définie : J'ai perdu/gaspillé 5 heures à Vinf – LVF : E4d ?
-105: use-105,11,S4h,utiliser,à et pour 
-106: void-106,32RA,F4b,"annuler, invalider",32RA définie sur un critère morphologique
-107: involve-107,11,?,engager,à et pour
-108: multiply-108,32PL ou 36S,∅,multiplier,"additionner  soustraire – une classe LVF par verbe, pas de complétive"
-109: seem-109,1,X2a,sembler,
+105: use-105,S4h,11,utiliser,à et pour 
+106: void-106,F4b,32RA,"annuler, invalider",32RA définie sur un critère morphologique
+107: involve-107,?,11,engager,à et pour
+108: multiply-108,∅,32PL ou 36S,multiplier,"additionner  soustraire – une classe LVF par verbe, pas de complétive"
+109: seem-109,X2a,1,sembler,
