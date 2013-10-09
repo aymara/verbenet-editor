@@ -187,7 +187,11 @@ $(document).ready(function() {
             }
         });
         $(document).ajaxError(function(e, request, settings) {
-            alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe.");
+            if (request.status == 403) {
+                alert(request.responseText);
+            } else {
+                alert("Erreur : modification non prise en compte. Je vais regarder ce qui se passe.");
+            }
             location.reload(true);
         });
 

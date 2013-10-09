@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.template import RequestContext, loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -8,6 +8,7 @@ from django.conf import settings
 from django import forms
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
+from django.db import transaction
 
 from distutils.version import LooseVersion
 import logging
@@ -15,6 +16,7 @@ from time import gmtime, strftime
 import os.path
 
 from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame
+from parsecorrespondance.parse import UnknownClassException
 
 logger = logging.getLogger('database')
 
@@ -106,9 +108,13 @@ def update(request):
             from syntacticframes.management.commands.loadverbnet import update_verbs
             db_vnclass = VerbNetClass.objects.get(name__exact = vn_class)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
-            update_verbs(db_rootframeset,
-                         db_rootframeset.ladl_string,
-                         db_rootframeset.lvf_string)
+            try:
+                update_verbs(db_rootframeset,
+                             db_rootframeset.ladl_string,
+                             db_rootframeset.lvf_string)
+            except UnknownClassException as e:
+                transaction.rollback()
+                return HttpResponseForbidden(e)
                          
         return HttpResponse("ok")
 

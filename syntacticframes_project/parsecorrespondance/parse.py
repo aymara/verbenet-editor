@@ -3,7 +3,7 @@ class UnknownClassException(Exception):
         self.partial_name = partial_name
 
     def __str__(self):
-        return '"{}" not found'.format(self.partial_name)
+        return 'L\'entrée "{}" n\'existe pas.'.format(self.partial_name)
 
 class SyntaxErrorException(Exception):
     def __init__(self, error, name):
