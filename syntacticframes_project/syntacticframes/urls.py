@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     url(r'^class/(?P<class_number>\d+)/$', views.classe),
     url(r'^vn_class/(?P<class_name>\w+-[\d\.]+)/$', views.vn_class),
 
+    # Stats
+    url(r'^stats/', include('stats.urls')),
+
     # Auth
     url(r'^login/$', views.login),
 
