@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block all %}
+
+<div class="container">
+<p>VerbeNet contient {{ num_classes }} classes, contenant en tout {{ num_members }} membres anglais ({{ unique_members }} uniques) pour {{ num_verbs }} verbes français ({{unique_verbs}} uniques).</p>
+</div>
+
+{% endblock all %}

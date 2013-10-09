@@ -223,6 +223,7 @@ LOCAL_APPS = (
     'syntacticframes',
     'loadmapping',
     'parsecorrespondance',
+    'stats',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
