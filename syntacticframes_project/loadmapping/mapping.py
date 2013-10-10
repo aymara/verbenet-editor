@@ -34,8 +34,8 @@ with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), '
 
 
 def translations_for_class(verbs, ladl, lvf):
-    ladl_verbs = verbs_for_class_mapping(parse.FrenchMapping('LADL', ladl))
-    lvf_verbs = verbs_for_class_mapping(parse.FrenchMapping('LVF', lvf))
+    ladl_verbs = verbs_for_class_mapping(parse.FrenchMapping('LADL', ladl)) if ladl else set()
+    lvf_verbs = verbs_for_class_mapping(parse.FrenchMapping('LVF', lvf)) if lvf else set()
 
     candidates = defaultdict(set)
     for v in verbs:
