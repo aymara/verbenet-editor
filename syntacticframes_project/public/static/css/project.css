@@ -60,4 +60,8 @@ article > .subclass {
 
 .new_frame button { margin-top: 0.5em }
 
+/* Auth */
 .warning { color: red }
+
+/* Stats */
+table.emptytranslations .entry { width: 20em }

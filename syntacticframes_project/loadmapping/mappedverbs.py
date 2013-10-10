@@ -95,10 +95,3 @@ def verbs_for_class_mapping(mapping):
             return set.intersection(*verb_lists)
         elif mapping.operator == 'or':
             return set.union(*verb_lists)
-
-    if not verbs:
-        logger_warnings.warning("No verb in {}".format(ladl_classes))
-
-    return verbs
-
-
