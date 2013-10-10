@@ -33,7 +33,7 @@ def empty_translations():
     last_lvf = None
     last_ladl = None
 
-    for db_fs in VerbNetFrameSet.objects.all():
+    for db_fs in VerbNetFrameSet.objects.filter(removed=False):
         lvf = db_fs.lvf_string if db_fs.lvf_string else last_lvf
         ladl = db_fs.ladl_string if db_fs.ladl_string else last_ladl
 
