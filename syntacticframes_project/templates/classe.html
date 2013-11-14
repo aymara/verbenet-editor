@@ -3,7 +3,10 @@
 
         <article id="{{classe.name}}">
             {# Title: class name and LVF/LADL #}
-                <h2><a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a></h2>
+            <h2>
+                <a class="innerlink" href="#{{classe.name}}">#</a>
+                <a class="verbnet" href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php">{{classe.name}}</a>
+            </h2>
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
