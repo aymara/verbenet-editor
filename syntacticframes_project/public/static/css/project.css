@@ -26,9 +26,11 @@ h2 a { text-decoration: underline }
 h2 form { display: inline }
 h2 form input { width: 5em; font-size: 31.5px }
 
-h2 .innerlink {
-    text-decoration: none;
-    font-size: 0.6em;
+/* Links to class names */
+h2[name] {
+  padding-top: 40px;
+  margin-top: -40px;
+  margin-left: -24px;
 }
 
 /* Subclass indentation */
