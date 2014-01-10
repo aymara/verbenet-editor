@@ -122,7 +122,6 @@ class VerbNetRole(models.Model):
 
 
 # Translation
-@total_ordering
 class VerbTranslation(models.Model):
     TRANSLATION_CATEGORY = (
         ('both', 'Both'),
@@ -132,18 +131,23 @@ class VerbTranslation(models.Model):
         ('unknown', 'No category'),
     )
 
+    CATEGORY_ID = {
+        'both': 0,
+        'ladl': 1,
+        'lvf': 2,
+        'dicovalence': 3,
+        'unknown': 4,
+    }
+
     frameset = models.ForeignKey(VerbNetFrameSet)
     verb = models.CharField(max_length=100)
     category = models.CharField(max_length=20, choices=TRANSLATION_CATEGORY)
+    category_id = models.PositiveSmallIntegerField()
     # english comma-separated verbs
     origin = models.CharField(max_length=500)
 
     def __str__(self):
         return "{} ({})".format(self.verb, self.category)
 
-    def __gt__(self, other):
-        order = [x[0] for x in VerbTranslation.TRANSLATION_CATEGORY]
-        if self.category == other.category:
-            return self.verb > other.verb
-        else:
-            return order.index(self.category) > order.index(other.category)
+    class Meta:
+        ordering = ['category_id', 'verb']

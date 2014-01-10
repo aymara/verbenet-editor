@@ -5,14 +5,6 @@ from django import template
 
 register = template.Library()
 
-@register.filter
-def is_removed(value, arg):
-    return value.filter(removed=arg)
-
-@register.filter
-def sort_translations(value):
-    return sorted(list(value))
-
 from django.conf import settings
 import os, re
 
