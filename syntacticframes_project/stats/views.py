@@ -34,7 +34,13 @@ def empty_translations():
     last_ladl = None
 
     for db_fs in VerbNetFrameSet.objects.filter(removed=False):
-        lvf = db_fs.lvf_string if db_fs.lvf_string else last_lvf
+        if db_fs.lvf_string:
+            lvf = db_fs.lvf_string
+        else:
+            if '-' in db_fs.name:
+                lvf = last_lvf
+            else:
+                lvf = None
         ladl = db_fs.ladl_string if db_fs.ladl_string else last_ladl
 
         members = [member.lemma for member in db_fs.verbnetmember_set.all()]
