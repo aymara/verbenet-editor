@@ -32,6 +32,10 @@ h2[name] {
   margin-top: -40px;
 }
 
+h2[name] a {
+ text-decoration: none;
+}
+
 /* Subclass indentation */
 .subclass {
   margin-left: 4em;
