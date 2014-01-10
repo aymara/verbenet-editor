@@ -26,8 +26,15 @@ def classe(request, class_number):
     levin_classes.sort(key = lambda l: LooseVersion(l.number))
 
     active_class = LevinClass.objects.get(number = class_number)
-    verbnet_classes = list(VerbNetClass.objects.filter(levin_class__exact = active_class))
-    verbnet_classes.sort(key = lambda v: LooseVersion(v.name.split('-')[1]))
+    verbnet_classes = VerbNetClass.objects.filter(levin_class__exact = active_class)
+    verbnet_classes = verbnet_classes.prefetch_related(
+        'verbnetframeset_set',
+        'verbnetframeset_set__verbnetmember_set',
+        'verbnetframeset_set__verbtranslation_set',
+        'verbnetframeset_set__verbnetrole_set',
+        'verbnetframeset_set__verbnetframe_set',
+    )
+    verbnet_classes = sorted(verbnet_classes, key = lambda v: LooseVersion(v.name.split('-')[1]))
 
     template = loader.get_template('index.html')
     context = RequestContext(request, {

@@ -38,18 +38,29 @@ class VerbNetFrameSet(MPTTModel):
 
     A given subclass contains members, roles, and frames.
     """
-    verbnet_class = models.ForeignKey(VerbNetClass)
-    name = models.CharField(max_length=100)
     parent = TreeForeignKey('self', null=True, blank=True,
                             related_name='children')
+
+    verbnet_class = models.ForeignKey(VerbNetClass)
+    name = models.CharField(max_length=100)
+
+    has_removed_frames = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
+
     paragon = models.CharField(max_length=100, blank=True)
     comment = models.CharField(max_length=1000, blank=True)
     ladl_string = models.CharField(max_length=100, blank=True)
     lvf_string = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return self.name
+        return 'VerbNetFrameSet: {}'.format(self.name)
+
+    def check_has_removed_frames(self):
+        self.has_removed_frames = self.verbnetframe_set.filter(removed=True)
+        self.save()
+
+    class Meta:
+        ordering = ['id']
 
 
 # English member
@@ -85,6 +96,11 @@ class VerbNetFrame(models.Model):
 
     def __str__(self):
         return "{} ({})".format(self.syntax, self.example)
+
+    def save(self, *args, **kwargs):
+        super(VerbNetFrame, self).save(*args, **kwargs)
+        self.frameset.check_has_removed_frames()
+
 
     class Meta:
         ordering = ['position']

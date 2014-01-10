@@ -108,8 +108,8 @@
                     </p>
 
                     {# Frames #}
-                    {% if node.verbnetframe_set.all|is_removed:False %}
-                        {% for frame in node.verbnetframe_set.all|is_removed:False %}
+                    {% for frame in node.verbnetframe_set.all %}
+                        {% if not frame.removed %}
                             <div
                                 class="{% if not frame.from_verbnet %}created_frame {% endif %} frame"
                                 data-frameid="{{frame.id}}">
@@ -123,15 +123,17 @@
                                     <tr><td>Sémantique</td><td><span class="frame_editable" data-field="semantics">{% if frame.semantics %}{{ frame.semantics }}{% else %}∅{% endif %}</span></td></tr>
                                 </table>
                             </div>
-                        {% endfor %}
-                    {% endif %}
+                        {% endif %}
+                    {% endfor %}
 
                     {# Deleted frames #}
-                    {% if node.verbnetframe_set.all|is_removed:True %}
+                    {% if node.has_removed_frames %}
                         <p>Frames supprimées :</p>
                         <ul>
-                        {% for frame in node.verbnetframe_set.all|is_removed:True %}
-                            <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }}) <button class="btn show_frame" data-frame_id="{{ frame.id }}"><i class="icon-repeat"></i> Réintégrer</button></li>
+                        {% for frame in node.verbnetframe_set.all %}
+                            {% if frame.removed %}
+                                <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }}) <button class="btn show_frame" data-frame_id="{{ frame.id }}"><i class="icon-repeat"></i> Réintégrer</button></li>
+                            {% endif %}
                         {% endfor %}
                         </ul>
                     {% endif %}
