@@ -1,4 +1,3 @@
-{% load cache %}
 {% load mptt_tags %}
 {% load syntacticframes_extras %}
 
@@ -85,8 +84,6 @@
                         {% endif %}
                     </p>
 
-                    {# Translations cached for one week #}
-                    {% cache 604800 translations node.id %}
                     <p class="translations">Traductions :
                         {% if not node.verbtranslation_set.all %}
                             ∅
@@ -96,7 +93,6 @@
                             {% endfor %}
                         {% endif %}
                     </p>
-                    {% endcache %}
 
                     {# Roles #}
                     <p>Roles :
