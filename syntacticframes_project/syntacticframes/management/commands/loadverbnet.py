@@ -37,6 +37,7 @@ def update_verbs(db_frameset, current_ladl, current_lvf):
                 frameset=db_frameset,
                 verb=french,
                 category=categoryname,
+                category_id=VerbTranslation.CATEGORY_ID[categoryname],
                 origin=originlist).save()
 
     last_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
