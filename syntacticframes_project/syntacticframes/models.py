@@ -86,12 +86,13 @@ class VerbNetFrameSet(MPTTModel):
         verbs = self.verbtranslation_set.all()
         final_set = {(v.verb, v.category) for v in verbs}
 
-        if initial_set != final_set:
-            verb_logger = logging.getLogger('verbs')
+        verb_logger = logging.getLogger('verbs')
+        if initial_set - final_set:
             verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-                first_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set])))
+                first_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set - final_set])))
+        if final_set - initial_set:
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-                last_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set])))
+                last_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set - initial_set])))
 
         for db_childrenfs in self.children.all():
             new_ladl = self.ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
