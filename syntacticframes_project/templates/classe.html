@@ -12,7 +12,7 @@
             {% recursetree classe.verbnetframeset_set.all %}
             <div class="subclass" id="{{node.id}}">
                 {% if node.removed %}
-                    <h3 id="{{node.name}}">Classe {{node.name}} cachée</h3>
+                    <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}} cachée</h3>
                     <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
                     <p>Frames :</p>
                     <ul>
@@ -25,7 +25,7 @@
                     {% endfor %}
                     </ul>
                 {% else %}
-                    <h3 id="{{node.name}}">Classe {{node.name}}
+                    <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}}
                         {# LVF class: inline editing and links #}
                         <span class="frameset_editable" data-field="lvf_string">{% spaceless %}
                             {% if node.lvf_string %}
