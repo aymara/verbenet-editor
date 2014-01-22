@@ -1,16 +1,24 @@
 import pickle
+import locale
 from os.path import join
+from operator import itemgetter
+from collections import defaultdict
 
 from django.conf import settings
 
-import logging
-logger_warnings = logging.getLogger('warnings')
+from parsecorrespondance import parse
+
+locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
 with open(join(settings.SITE_ROOT, 'loadmapping/data/LADL_to_verbes'), 'rb') as f:
     ladl_dict = pickle.load(f)
 with open(join(settings.SITE_ROOT, 'loadmapping/data/LVF+1_to_verbs'), 'rb') as f:
     lvf_dict = pickle.load(f)
+with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') as f:
+    dicovalence_verbs = pickle.load(f)
+with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
+    verb_dict = pickle.load(f)
 
 
 def parse_path(specific_class):
@@ -95,3 +103,34 @@ def verbs_for_class_mapping(mapping):
             return set.intersection(*verb_lists)
         elif mapping.operator == 'or':
             return set.union(*verb_lists)
+
+
+
+def translations_for_class(verbs, ladl, lvf):
+    ladl_verbs = verbs_for_class_mapping(parse.FrenchMapping('LADL', ladl)) if ladl else set()
+    lvf_verbs = verbs_for_class_mapping(parse.FrenchMapping('LVF', lvf)) if lvf else set()
+
+    candidates = defaultdict(set)
+    for v in verbs:
+        for c in verb_dict[v]:
+            candidates[c].add(v)
+
+    final = []
+    for c in candidates:
+        color = 'none'
+        if c in ladl_verbs and c in lvf_verbs:
+            color, id_color = 'both', 0
+        elif c in lvf_verbs:
+            color, id_color = 'lvf', 2
+        elif c in ladl_verbs:
+            color, id_color = 'ladl', 1
+        elif c in dicovalence_verbs:
+            color, id_color = 'dicovalence', 3
+        else:
+            color, id_color = 'unknown', 4
+        final.append((c, color, id_color, ",".join(sorted(candidates[c]))))
+
+    final = sorted(final, key=lambda c: locale.strxfrm(c[0]))
+    final.sort(key=itemgetter(2))
+
+    return final

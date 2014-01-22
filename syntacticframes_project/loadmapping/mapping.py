@@ -5,19 +5,12 @@ from lxml.etree import ElementTree
 import pickle
 from os.path import join
 import csv
-import locale
-from operator import itemgetter
-from collections import defaultdict
 
 from django.conf import settings
 
 from syntacticframes.models import \
     LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbTranslation
-from parsecorrespondance import parse
-from .mappedverbs import verbs_for_class_mapping
-
-
-locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+from .mappedverbs import verbs_for_class_mapping, translations_for_class
 
 
 FORGET_LIST = ['?', '-', '', '∅', '*']
@@ -25,43 +18,6 @@ FORGET_LIST = ['?', '-', '', '∅', '*']
 
 def get_members(tree):
     return [member.get('name') for member in tree.findall(".//MEMBER")]
-
-
-with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') as f:
-    dicovalence_verbs = pickle.load(f)
-with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
-    verb_dict = pickle.load(f)
-
-
-def translations_for_class(verbs, ladl, lvf):
-    ladl_verbs = verbs_for_class_mapping(parse.FrenchMapping('LADL', ladl)) if ladl else set()
-    lvf_verbs = verbs_for_class_mapping(parse.FrenchMapping('LVF', lvf)) if lvf else set()
-
-    candidates = defaultdict(set)
-    for v in verbs:
-        for c in verb_dict[v]:
-            candidates[c].add(v)
-
-    final = []
-    for c in candidates:
-        color = 'none'
-        if c in ladl_verbs and c in lvf_verbs:
-            color, id_color = 'both', 0
-        elif c in lvf_verbs:
-            color, id_color = 'lvf', 2
-        elif c in ladl_verbs:
-            color, id_color = 'ladl', 1
-        elif c in dicovalence_verbs:
-            color, id_color = 'dicovalence', 3
-        else:
-            color, id_color = 'unknown', 4
-        final.append((c, color, id_color, ",".join(sorted(candidates[c]))))
-
-    final = sorted(final, key=lambda c: locale.strxfrm(c[0]))
-    final.sort(key=itemgetter(2))
-
-    return final
-
 
 def read_csv(filename):
     with open(filename) as csvfile:

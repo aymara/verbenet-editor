@@ -112,13 +112,10 @@ def update(request):
 
 
         if field in refresh_fields:
-            from syntacticframes.management.commands.loadverbnet import update_verbs
             db_vnclass = VerbNetClass.objects.get(name__exact = vn_class)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
             try:
-                update_verbs(db_rootframeset,
-                             db_rootframeset.ladl_string,
-                             db_rootframeset.lvf_string)
+                db_rootframeset.update_translations()
             except UnknownClassException as e:
                 transaction.rollback()
                 return HttpResponseForbidden(e)

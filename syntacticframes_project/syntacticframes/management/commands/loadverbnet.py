@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import logging
-from time import gmtime, strftime
-
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
@@ -15,47 +12,10 @@ from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, \
     VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
 
 
-verb_logger = logging.getLogger('verbs')
 
 
 def iprint(indent, stuff):
     print(" " * indent, stuff)
-
-def update_verbs(db_frameset, current_ladl, current_lvf):
-    verbs = VerbTranslation.objects.filter(frameset=db_frameset)
-    initial_set = {(v.verb, v.category) for v in verbs}
-    verbs.delete()
-    first_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-
-    members = [m.lemma for m in db_frameset.verbnetmember_set.all()]
-    candidates = mapping.translations_for_class(members, current_ladl, current_lvf)
-
-    for french, categoryname, categoryid, originlist in candidates:
-        originset = set(originlist.split(','))
-        if set(members) & originset:
-            VerbTranslation(
-                frameset=db_frameset,
-                verb=french,
-                category=categoryname,
-                category_id=VerbTranslation.CATEGORY_ID[categoryname],
-                origin=originlist).save()
-
-    last_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-
-    verbs = VerbTranslation.objects.filter(frameset=db_frameset)
-    final_set = {(v.verb, v.category) for v in verbs}
-
-    if initial_set != final_set:
-        verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-            first_when, db_frameset.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set])))
-        verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-            last_when, db_frameset.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set])))
-
-    for db_childrenfs in db_frameset.children.all():
-        new_ladl = current_ladl if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
-        new_lvf = current_lvf if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
-            
-        update_verbs(db_childrenfs, new_ladl, new_lvf)
 
 
 def save_class(xml_class, db_frameset, indent=0):
@@ -115,4 +75,4 @@ class Command(BaseCommand):
                 db_root_frameset = db_vnclass.verbnetframeset_set.get(parent=None)
 
                 save_class(xml_class, db_root_frameset, 0)
-                update_verbs(db_root_frameset, db_root_frameset.ladl_string, db_root_frameset.lvf_string)
+                db_root_frameset.update_translations()

@@ -1,9 +1,12 @@
 from functools import total_ordering
+from time import gmtime, strftime
+import logging
 
 from django.db import models
 
 from mptt.models import MPTTModel, TreeForeignKey
 
+from loadmapping.mappedverbs import translations_for_class
 
 # Levin class 9..104
 class LevinClass(models.Model):
@@ -58,6 +61,43 @@ class VerbNetFrameSet(MPTTModel):
     def check_has_removed_frames(self):
         self.has_removed_frames = self.verbnetframe_set.filter(removed=True)
         self.save()
+
+    def update_translations(self):
+        verbs = self.verbtranslation_set.all()
+        initial_set = {(v.verb, v.category) for v in verbs}
+        verbs.delete()
+        first_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+
+        members = [m.lemma for m in self.verbnetmember_set.all()]
+        candidates = translations_for_class(members, self.ladl_string, self.lvf_string)
+
+        for french, categoryname, categoryid, originlist in candidates:
+            originset = set(originlist.split(','))
+            if set(members) & originset:
+                VerbTranslation(
+                    frameset=self,
+                    verb=french,
+                    category=categoryname,
+                    category_id=VerbTranslation.CATEGORY_ID[categoryname],
+                    origin=originlist).save()
+
+        last_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+
+        verbs = self.verbtranslation_set.all()
+        final_set = {(v.verb, v.category) for v in verbs}
+
+        if initial_set != final_set:
+            verb_logger = logging.getLogger('verbs')
+            verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
+                first_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set])))
+            verb_logger.info("{}: Added verbs in subclass {}: {}".format(
+                last_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set])))
+
+        for db_childrenfs in self.children.all():
+            new_ladl = self.ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
+            new_lvf = self.lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
+
+            db_childrenfs.update_translations()
 
     class Meta:
         ordering = ['id']

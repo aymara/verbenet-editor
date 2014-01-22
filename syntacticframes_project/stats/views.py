@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 
 from syntacticframes.models import VerbNetClass, VerbTranslation, VerbNetFrameSet
-from loadmapping.mapping import translations_for_class
+from loadmapping.mappedverbs import translations_for_class
 
 
 def index(request):
