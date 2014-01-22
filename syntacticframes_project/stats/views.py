@@ -62,15 +62,23 @@ def empty_translations():
 
     return errors
 
-
+def chosen_verbs(vn_fs):
+    all_verbs = vn_fs.verbtranslation_set.all()
+    both_verbs = [verb for verb in all_verbs if verb.category == 'both']
+    if both_verbs:
+        return both_verbs
+    else:
+        ladl_verbs = set([verb for verb in all_verbs if verb.category == 'ladl'])
+        lvf_verbs = set([verb for verb in all_verbs if verb.category == 'lvf'])
+        return list(ladl_verbs | lvf_verbs)
+    
 def count_verbs():
     unique_verbs, unique_members = set(), set()
     num_classes, num_verbs, num_members = 0, 0, 0
     for vn_class in VerbNetClass.objects.all():
         num_classes += 1
         for vn_fs in vn_class.verbnetframeset_set.all():
-            for t in VerbTranslation.objects.filter(frameset=vn_fs,
-                                                    category = 'both'):
+            for t in chosen_verbs(vn_fs):
                unique_verbs.add(t.verb) 
                num_verbs += 1
             for m in vn_fs.verbnetmember_set.all():
