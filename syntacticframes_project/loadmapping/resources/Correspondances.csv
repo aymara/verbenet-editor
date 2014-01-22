@@ -1,20 +1,20 @@
 VerbNet,LVF,LADL,Parangon,Commentaires
 9.1: put-9.1,L3b,38LD,mettre,programmer n'est pas locatif et ne nous intéresse pas
-9.2: put_spatial-9.2,L3b,38LD ou 36SL,pendre,
-9.3: funnel-9.3,L3b,38LD,-?,Entonner ? Embouteiller ? Encuver ? mix entre enfoncer 01/06/11 dans le LVF
-9.4: put_direction-9.4,L3b,38LD,monter ?,38-L double locatif – il y a bien les sens « soulever » et « lâcher/laisser tomber » en anglais
+9.2: put_spatial-9.2,L3b,38LD,pendre,
+9.3: funnel-9.3,L3b,38LD,-?,"Entonner ? Embouteiller ? Encuver ? mix entre enfoncer 01/06/11 dans le LVF ; ces trois verbes ne sont pas codés en tant que ""locatif transitif"" !"
+9.4: put_direction-9.4,L3b,38L,monter ?,38-L double locatif – il y a bien les sens « soulever » et « lâcher/laisser tomber » en anglais | 38LS (?)
 9.5: pour-9.5,L3b,38LD,verser,
 9.6: coil-9.6,L3b,38LD ou 36SL,enrouler,
 9.7: spray-9.7,L3b ou L4b ou E3f,37M2 et 37M3 et 37M4 et 37M5 et 37M6 et 38LD,charger,standard/croisé – à la fois entasser et asperger de l'eau ou de la peinture
-9.8: fill-9.8,N3c,37M2 ou 37M3 ou 37M4,remplir,diverses sous-classes ignorées en anglais
+9.8: fill-9.8,N3c,37M1 ou 37M2 ou 37M3 ou 37M4 ou 37M5 ou 37M6,remplir,diverses sous-classes ignorées en anglais
 9.9: butter-9.9,N3c,37M5 ou 37M6,beurrer,
-9.10: pocket-9.10,-,-,-,"V=Vn (mettre en boîte, mettre en prison...)"
+9.10: pocket-9.10,-,38LD,-,"V=Vn = N2 (mettre en boîte, mettre en prison...)"
 10.1: remove-10.1,E3c,37E ou 38LS,enlever,
-10.2: banish-10.2,E1b ou E1e,38LH ou 38LD ou 38LS,extrader,
+10.2: banish-10.2,E1b ou E1e,38LHS,extrader,
 10.3: clear-10.3,N3d,37E,nettoyer,Agent V theme locaton : source – plutôt vider que nettoyer ?
 10.4.1: wipe_manner-10.4.1,R3g,37E ou 38LS,vider,se vider – plutôt nettoyer ?
 10.4.2: wipe_instr-10.4.2,R3g,37E et 38LS,éponger,"Paradoxalement, éponger 01 est lui dans E3c (faire sortir qc de lieu)"
-10.5: steal-10.5,D2c,36DT source,voler,Agent voler theme à source – N1b était proche
+10.5: steal-10.5,D2c,36DT-dest,voler,Agent voler theme à source – N1b était proche
 10.6: cheat-10.6,N1b ou N2b ou N3b ou N3d,37E ou 38R,soigner,déposséder
 10.7: pit-10.7,-,-,-,"V=Vn SI ça existait, ce serait N3b"
 10.8: debone-10.8,N1d ou N3b ou N1b,37E,dégraisser ou épiler,Dégraisser donne N0 dé-V N 1 de Poss Vn et épiler donne N0 é-V N 1 de Poss Vn
@@ -45,19 +45,19 @@ VerbNet,LVF,LADL,Parangon,Commentaires
 17.2: pelt-17.2,N1c.5,37M4,bombarder,N2 = projectile
 18.1: hit-18.1,F3a.1,36SL,cogner,verbes de choc p 235
 18.2: swat-18.2,?,32CL,,
-18.3: spank-18.3,F1a.2,32CL,fouetter,“donner une fessée”
+18.3: spank-18.3,F1a,32CL,fouetter,“donner une fessée”
 18.4: bump-18.4,F1e,32CL,heurter,"Proche hit-18.1, pas d'agent en cause"
 19: poke-19,R3f.4,37M3 ou 37M4,piquer,"percer, transpercer ?"
 20: touch-20,F1f ou F3d,32CL,caresser,F1f correspond à la sous-classe +body_part
 21.1: cut-21.1,R3f.1 ou R3i,38PL et 32CL,~trancher,
 21.2: carve-21.2,F3d.1 ou R3i.1 ou R3f.2 ou F3d.1,38PL,broyer,"ne colle pas bien au LVF, j'ai fait un travail d'énumération"
-22.1: mix-22.1,,36S,,"les mix-22.1, amalgamate-22.2 et shake 22.3 (qui doivent correspondent à la Table 36 S et parfois 32PL) se distinguent par la together alternation (d'après Levin)"
-22.2: amalgamate-22.2,,36S,,
-22.3: shake-22.3,,36S,,
+22.1: mix-22.1,U3b,36S,,"les mix-22.1, amalgamate-22.2 et shake 22.3 (qui doivent correspondent à la Table 36 S et parfois 32PL) se distinguent par la together alternation (d'après Levin)"
+22.2: amalgamate-22.2,U3b,36S,,
+22.3: shake-22.3,U3b,36S,,
 22.4: tape-22.4,U3a.1,36SL-dest,scotcher,
 22.5: cling-22.5,F3d ou U2b,?,coller,"trop spécifique : soit “l'enfant se colle à sa mère”, soit “cette chemise lui colle à la peau”"
 23.1: separate-23.1,U1c ou U2c ou U3d,36SL-source,séparer,
-23.2: split-23.2,,36SL,détacher,
+23.2: split-23.2,U3d ou E3c,36SL,détacher,
 23.3: disassemble-23.3,R3i.1,36SL-source,déchirer,N0 dé-V N1 de N2
 23.4: differ-23.4,U2c,35S,diverger,
 24: coloring-24,N3a ou N3c,37M5,vernir,
@@ -73,17 +73,17 @@ VerbNet,LVF,LADL,Parangon,Commentaires
 26.6.1: turn-26.6.1,T1,38R,convertir,
 26.6.2: convert-26.6.2,E2d ou T2a ou T2b,31R,convertir (religion),
 26.7: performance-26.7,R3a ou R4a,32A ou 32R2,"dessiner, chanter",C1b pour chanter
-26.8: rehearse-26.8,,32R3,répéter,
-26.9: adjust-26.9,,11,s'adapter,"formes pronominales : s'adapter, se conformer; le role de l'Agent non spécifié dans VerbNet"
-27: engender-27,,6,,
+26.8: rehearse-26.8,H2f ou R4b,32R3,répéter,
+26.9: adjust-26.9,U2b ou U4b,11,s'adapter,"formes pronominales : s'adapter, se conformer; le role de l'Agent non spécifié dans VerbNet"
+27: engender-27,E4f,6,,
 28: calve-28,H1c,31H,vêler,"il manque NP V NP (Agent V Patient), au moins pour certains verbes"
 29.1: appoint-29.1,E2d ou S2f,39,proclamer,
 29.2: characterize-29.2,C3e ou C2c,32H ou 38LHD,"répudier, engager","pas une bonne classe, voir aussi imaginer 6 – différence entre caractériser quelqu'un et décrire quelque chose"
 29.3: dub-29.3,N4a ou N2a,39,baptiser,
 29.4: declare-29.4,C2d,39,déclarer,
 29.5: conjecture-29.5,P3c,6,,pas une bonne classe en français
-29.6: masquerade-29.6,,?,se déguiser,"pas une bonne classse en français, déguiser 38R transitif"
-29.7: orphan-29.7,,32H,canoniser,en anglais V=N donc pas de traduction en français – autant de classes LVF que de verbes
+29.6: masquerade-29.6,?,?,se déguiser,"pas une bonne classse en français, déguiser 38R transitif"
+29.7: orphan-29.7,*,32H,canoniser,en anglais V=N donc pas de traduction en français – autant de classes LVF que de verbes
 29.8: captain-29.8,H2h,?,coacher,"en anglais V=N donc peu de traduction en français sauf escorter, coacher, chaperonner : La brigade escorte le général – autant de classes LVF que de verbes"
 29.9: consider-29.9,P1g,6,considérer,revoir les frames - parfait sémantiquement
 29.10: classify-29.10,R4a ou L2b,32PL,classifier,trier un ensemble ou cataloguer un élément
@@ -94,7 +94,7 @@ VerbNet,LVF,LADL,Parangon,Commentaires
 31.1: amuse-31.1,P1a ou P2,4,amuser,
 31.2: admire-31.2,P1j ou P1i,12,admirer,
 31.3: marvel-31.3,P1a ou P1c,8,enrager,"pas une bonne classe en français ; plein de formes pronominales s'émerveiller de, s'énerver contre ; découpée avec les prépositions anglaises"
-31.4: appeal-31.4,,5,"plaire, convenir",5 verbes Stimulus V Prep Experiencer
+31.4: appeal-31.4,*,5,"plaire, convenir",5 verbes Stimulus V Prep Experiencer
 32.1: want-32.1,P1j ou P1i,6,désirer,pas une belle classe
 32.2: long-32.2,P1d ou P1j,35R,pleurer /(se) languir pour,pas une belle classe ; prépositions variables
 33: judgment-33,C1j ou C1i,13,complimenter,éventuellemnt Table 12
@@ -221,7 +221,7 @@ VerbNet,LVF,LADL,Parangon,Commentaires
 63: enforce-63,C2b,6,imposer,3 verbes danas la classe : pas sérieux mais 2 rôles sémantiques et pas 3 donc pas en 9 : mais à voir ???
 64: allow-64,D3c ou P1h,6 ou 9,autoriser,
 65: admit-65,S2f ou E1f,38LHD,recevoir,"classe  de merde, objet humain"
-66: consume-66,,11,gâcher,classe de 3 elements 
+66: consume-66,S4g ou M4b,11,gâcher,classe de 3 elements 
 67: forbid-67,S2e ou M2c ou S4f ou C2b,12 ou 6,empêcher,classe dont les frames ne sont pas clairs en anglais
 68: pay-68,D2a ou N2a ou S4b,39,payer,
 69: refrain-69,S2e ou U2c ou C4d ou P1e,8,s'abstenir,
