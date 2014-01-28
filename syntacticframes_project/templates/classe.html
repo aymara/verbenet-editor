@@ -13,7 +13,9 @@
             <div class="subclass" id="{{node.id}}">
                 {% if node.removed %}
                     <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}} cachée</h3>
-                    <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
+                    {% if user.is_authenticated %}
+                        <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
+                    {% endif %}
                     <p>Frames :</p>
                     <ul>
                     {% for frame in node.verbnetframe_set.all %}
@@ -130,7 +132,10 @@
                         <ul>
                         {% for frame in node.verbnetframe_set.all %}
                             {% if frame.removed %}
-                                <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }}) <button class="btn show_frame" data-frame_id="{{ frame.id }}"><i class="icon-repeat"></i> Réintégrer</button></li>
+                                <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }})
+                                {% if user.is_authenticated %}
+                                    <button class="btn show_frame" data-frame_id="{{ frame.id }}"><i class="icon-repeat"></i> Réintégrer</button></li>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                         </ul>
