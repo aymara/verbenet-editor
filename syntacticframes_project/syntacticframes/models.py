@@ -62,7 +62,7 @@ class VerbNetFrameSet(MPTTModel):
         self.has_removed_frames = self.verbnetframe_set.filter(removed=True)
         self.save()
 
-    def update_translations(self):
+    def update_translations(self, ladl_string, lvf_string):
         verbs = self.verbtranslation_set.all()
         initial_set = {(v.verb, v.category) for v in verbs}
         verbs.delete()
@@ -98,7 +98,7 @@ class VerbNetFrameSet(MPTTModel):
             new_ladl = self.ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
             new_lvf = self.lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
 
-            db_childrenfs.update_translations()
+            db_childrenfs.update_translations(new_ladl, new_lvf)
 
     class Meta:
         ordering = ['id']

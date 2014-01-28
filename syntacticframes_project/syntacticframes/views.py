@@ -115,7 +115,9 @@ def update(request):
             db_vnclass = VerbNetClass.objects.get(name__exact = vn_class)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
             try:
-                db_rootframeset.update_translations()
+                db_rootframeset.update_translations(
+                    db_rootframeset.ladl_string,
+                    db_rootframeset.lvf_string)
             except UnknownClassException as e:
                 transaction.rollback()
                 return HttpResponseForbidden(e)

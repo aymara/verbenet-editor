@@ -11,14 +11,21 @@ verb_logger = logging.getLogger('verbs')
 
 
 def update_all_verbs():
-    "Updates all verb translations is something went wrong below."
+
+    """
+    Updates all verb translations (if verb translations or mappings
+    changed
+    """
+
     when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
     verb_logger.info("{}: Start full update of verb translations".format(when))
     for db_vnclass in VerbNetClass.objects.all():
         print(db_vnclass.name)
         db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
         try:
-            db_rootframeset.update_translations()
+            db_rootframeset.update_translations(
+                db_rootframeset.ladl_string,
+                db_rootframeset.lvf_string)
         except parse.UnknownClassException as e:
             print("Ignoring {}".format(e))
     when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
