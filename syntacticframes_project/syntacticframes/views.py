@@ -90,7 +90,8 @@ def update(request):
 
         frameset_fields = ['paragon', 'comment', 'ladl_string', 'lvf_string']
         frame_fields = ['roles_syntax', 'syntax', 'semantics', 'example']
-        refresh_fields = ['ladl_string', 'lvf_string']
+        refresh_fields = ['ladl_string', 'lvf_string']  # Verbs need to be updated
+        emptyset_fields = ['ladl_string', 'lvf_string']  # '∅' becomes ''
 
         if field in frame_fields:
             frame_id = int(post["frame_id"])
@@ -101,6 +102,8 @@ def update(request):
             logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'"
                     .format(when, request.user.username, field, frame_id, vn_class, old_label, label))
         elif field in frameset_fields:
+            if field in emptyset_fields and label == '∅':
+                label = ''
             db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
             old_label = getattr(db_frameset, field)
             setattr(db_frameset, field, label)

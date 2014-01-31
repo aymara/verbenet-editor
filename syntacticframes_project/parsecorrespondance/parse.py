@@ -103,7 +103,7 @@ class FrenchMapping(object):
 # Module level constants
 
 
-FORGET_LIST = ['?', '', '-', '∅', '*']
+FORGET_LIST = ['?', '', '-', '*']
 
 
 ladl_list = [ 

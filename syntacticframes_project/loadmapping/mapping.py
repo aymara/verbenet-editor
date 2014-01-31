@@ -13,7 +13,7 @@ from syntacticframes.models import \
 from .mappedverbs import verbs_for_class_mapping, translations_for_class
 
 
-FORGET_LIST = ['?', '-', '', '∅', '*']
+FORGET_LIST = ['?', '-', '', '*']
 
 
 def get_members(tree):
