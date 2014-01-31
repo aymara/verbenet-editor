@@ -7,5 +7,5 @@ logutils==0.3.3
 psycopg2==2.5
 lxml==3.2.3
 South==0.8.2
-django-reversion==1.7.1
+django-reversion==1.8.0
 pytz==2013.7
