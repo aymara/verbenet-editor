@@ -14,6 +14,9 @@ body {
     vertical-align: baseline;
 }
 
+/* Levin class display */
+h1 { text-align: center }
+
 /* Verbs display */
 .both { color: purple }
 .ladl, h3 span[data-field="ladl_string"] { color: green }
