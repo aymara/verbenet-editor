@@ -54,12 +54,12 @@
                     </h3>
 
                     {% if user.is_authenticated %}
-                        <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
                         <p><button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher cette sous-classe</button></p>
                     {% endif %}
 
+                    <ul>
                     {# Paragon and comment #}
-                    <p>
+                    <li> Paragon :
                         <span class="frameset_editable" data-field="paragon">{% spaceless %}
                         {% if node.paragon %}
                             {{ node.paragon }}
@@ -67,7 +67,9 @@
                             ∅
                         {% endif %}
                         {% endspaceless %}</span>
-                        |
+                    </li>
+                    <li>
+                        Commentaire :
                         <span class="frameset_editable" data-field="comment">{% spaceless %}
                         {% if node.comment %}
                             {{ node.comment }}
@@ -75,18 +77,18 @@
                             ∅
                         {% endif %}
                         {% endspaceless %}</span>
-                    </p>
+                    </li>
 
                     {# Members #}
-                    <p class="members">Membres :
+                    <li class="members">Membres :
                         {% if not node.verbnetmember_set.all %}
                             ∅
                         {% else %}
                             {% for word in node.verbnetmember_set.all %}<span>{{ word }}</span> {% endfor %}
                         {% endif %}
-                    </p>
+                    </li>
 
-                    <p class="translations">Traductions :
+                    <li class="translations">Traductions :
                         {% if not node.verbtranslation_set.all %}
                             ∅
                         {% else %}
@@ -94,10 +96,10 @@
                                 <span {% if word.category == 'unknown' or word.category == 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</span>
                             {% endfor %}
                         {% endif %}
-                    </p>
+                    </li>
 
                     {# Roles #}
-                    <p>Roles :
+                    <li>Roles :
                         {% if not node.verbnetrole_set.all %}
                             ∅
                         {% else %}
@@ -105,7 +107,9 @@
                                 {{ role.name }}{% if not forloop.last %},{% endif %}
                             {% endfor %}
                         {% endif %}
-                    </p>
+                    </li>
+
+                    </ul>
 
                     {# Frames #}
                     {% for frame in node.verbnetframe_set.all %}
@@ -161,6 +165,7 @@
                                 <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
                             </form>
                         </div>
+                        <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
                     {% endif %}
                 {% endif %}
 
