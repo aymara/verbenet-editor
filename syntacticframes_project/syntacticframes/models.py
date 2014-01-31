@@ -69,7 +69,7 @@ class VerbNetFrameSet(MPTTModel):
         first_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         members = [m.lemma for m in self.verbnetmember_set.all()]
-        candidates = translations_for_class(members, self.ladl_string, self.lvf_string)
+        candidates = translations_for_class(members, ladl_string, lvf_string)
 
         for french, categoryname, categoryid, originlist in candidates:
             originset = set(originlist.split(','))
@@ -95,9 +95,8 @@ class VerbNetFrameSet(MPTTModel):
                 last_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set - initial_set])))
 
         for db_childrenfs in self.children.all():
-            new_ladl = self.ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
-            new_lvf = self.lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
-
+            new_ladl = ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
+            new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
             db_childrenfs.update_translations(new_ladl, new_lvf)
 
     class Meta:
