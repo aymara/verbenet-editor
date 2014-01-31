@@ -9,4 +9,3 @@ lxml==3.2.3
 South==0.8.2
 django-reversion==1.7.1
 pytz==2013.7
-django-reversion==1.7.1
