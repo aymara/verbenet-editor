@@ -33,6 +33,10 @@ class VerbNetClass(models.Model):
     def __str__(self):
         return self.name
 
+    def set_inherited_members(self):
+        for frameset in self.verbnetframeset_set.filter(parent=None):
+            frameset.set_inherited_members(frameset)
+
 
 # Subclass (9.1-2)
 class VerbNetFrameSet(MPTTModel):
@@ -54,6 +58,9 @@ class VerbNetFrameSet(MPTTModel):
     comment = models.CharField(max_length=1000, blank=True)
     ladl_string = models.CharField(max_length=100, blank=True)
     lvf_string = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return 'VerbNetFrameSet: {}'.format(self.name)
@@ -99,18 +106,72 @@ class VerbNetFrameSet(MPTTModel):
             new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
             db_childrenfs.update_translations(new_ladl, new_lvf)
 
-    class Meta:
-        ordering = ['id']
+
+    def set_inherited_members(self, frameset):
+        def get_all_members(frameset, parent_fs):
+            """Recursively retrieve members from all subclasses"""
+            members = frameset.verbnetmember_set.all()
+
+            # We need to set this before putting members into a set
+            for f in members:
+                f.inherited_from = frameset
+                f.frameset = parent_fs
+
+            members = set(members)
+
+            for child_fs in frameset.children.all():
+                members |= get_all_members(child_fs, parent_fs)
+
+            return members
+
+
+        existing_inherited_members = set(frameset.verbnetmember_set.filter(inherited_from__isnull=False))
+
+        real_inherited_members = set()
+
+        for child_fs in frameset.children.all():
+            if child_fs.removed:
+                real_inherited_members |= get_all_members(child_fs, frameset)
+            else:
+                self.set_inherited_members(child_fs)
+
+        verb_logger = logging.getLogger('verbs')
+        if existing_inherited_members != real_inherited_members:
+            for extra_inherited_member in existing_inherited_members - real_inherited_members:
+                extra_inherited_member.delete()
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                verb_logger.info("{}: Removed {} (was inherited from {} in subclass {})".format(
+                    when, extra_inherited_member.lemma, extra_inherited_members.inherited_from, extra_inherited_members.frameset))
+
+            for missing_inherited_member in real_inherited_members - existing_inherited_members:
+                missing_inherited_member.pk = None
+                missing_inherited_member.save()
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
+                    when, missing_inherited_member.lemma, missing_inherited_members.inherited_from, missing_inherited_members.frameset))
+
+            frameset.update_translations(frameset.ladl_string, frameset.lvf_string)
 
 
 # English member
 class VerbNetMember(models.Model):
     """An english member"""
     frameset = models.ForeignKey(VerbNetFrameSet)
+    inherited_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='inheritedmember_set')
     lemma = models.CharField(max_length=1000)
 
     def __str__(self):
         return self.lemma
+
+    def __eq__(self, other):
+        return self.frameset == other.frameset and self.inherited_from == other.inherited_from and self.lemma == other.lemma
+
+    def __repr__(self):
+        return "VerbNetMember: {} ({}/{})".format(self.lemma, self.frameset.name,
+            self.inherited_from.name if self.inherited_from else "None")
+
+    def __hash__(self):
+        return hash(self.__repr__())
 
     class Meta:
         ordering = ['lemma']

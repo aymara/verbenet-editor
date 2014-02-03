@@ -149,6 +149,7 @@ def remove(request):
             assert db_frameset.removed == False
             db_frameset.removed = True
             db_frameset.save()
+            db_frameset.verbnet_class.set_inherited_members()
             logger.info("{}: {} marked frameset {}/{} as removed in class {}"
                         .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
 
@@ -221,6 +222,7 @@ def show(request):
             assert db_frameset.removed == True
             db_frameset.removed = False
             db_frameset.save()
+            db_frameset.verbnet_class.set_inherited_members()
             logger.info("{}: {} marked frameset {}/{} as shown in class {}"
                         .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
         elif model == 'VerbNetFrame':
