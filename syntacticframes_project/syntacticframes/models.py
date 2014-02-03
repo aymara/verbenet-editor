@@ -148,7 +148,7 @@ class VerbNetFrameSet(MPTTModel):
                 missing_inherited_member.save()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
                 verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
-                    when, missing_inherited_member.lemma, missing_inherited_members.inherited_from, missing_inherited_members.frameset))
+                    when, missing_inherited_member.lemma, missing_inherited_member.inherited_from, missing_inherited_member.frameset))
 
             frameset.update_translations(frameset.ladl_string, frameset.lvf_string)
 
