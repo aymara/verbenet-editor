@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>fcpn</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Le styles -->
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            /* Styles for rotateTableCellContent plugin*/
+            table div.rotated {
+                -webkit-transform: rotate(270deg);
+                -moz-transform: rotate(270deg);
+                -ms-transform: rotate(270deg);
+                -o-transform: rotate(270deg);
+                transform: rotate(270deg);
+                writing-mode:tb-rl;
+                white-space: nowrap;
+            }
+
+            thead th {
+                vertical-align: bottom;
+            }
+
+            table .vertical {
+                white-space: nowrap;
+            }
+
+            /* My styles */
+            h1 { text-align: center }
+
+            table { margin-top: 2em; margin-bottom: 2em }
+            table { border-collapse: collapse }
+
+            thead th, .alignit { text-align: center }
+
+        </style>
+        <link href="../static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h1>Classe fcpn</h1>
+
+                    <table>
+                        <thead><tr>
+                                <th class="vertical">&lt;ID&gt;</th>
+                                <th class="vertical">&lt;ENT&gt;&lt;faire&gt;</th>
+                                <th class="vertical">&lt;ENT&gt;Det1</th>
+                                <th class="vertical">&lt;ENT&gt;C1</th>
+                                <th class="vertical">&lt;ENT&gt;Prép2</th>
+                                <th class="vertical">N2 =: Nhum</th>
+                                <th class="vertical">N2 =: N-hum</th>
+                                <th class="vertical">N0 =: Nhum</th>
+                                <th class="vertical">N0 =: N-hum</th>
+                                <th class="vertical">N0 =: Nnr</th>
+                                <th class="vertical">N0 et N2 faire Det1 C1</th>
+                                <th class="vertical">il y avoir Det1 C1 W</th>
+                                
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="alignit">1</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">abstraction</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">2</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">affaire</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">3</td>
+                                <td class="big">faire</td>
+                                <td class="big">Poss0</td>
+                                <td class="big">affaire</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">4</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">ami-ami</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">5</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">amour</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">6</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">argent</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">7</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">autorité</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">8</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">ballon</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">9</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">belle</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">10</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">bloc</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">11</td>
+                                <td class="big">faire</td>
+                                <td class="big">les</td>
+                                <td class="big">caprices</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">12</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">cas</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">13</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">cauchemar</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">14</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">cercle</td>
+                                <td class="big">autour</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">15</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">chaîne</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">16</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">chapelle</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">17</td>
+                                <td class="big">faire</td>
+                                <td class="big">Poss0</td>
+                                <td class="big">chemin</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">18</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">chorus</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">19</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">clan</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">20</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">commerce</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">21</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">connaissance</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">22</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">connaissance</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">23</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">contact</td>
+                                <td class="big">entre</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">24</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">corps</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">25</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">couple</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">26</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">croix</td>
+                                <td class="big">sur</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">27</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">culbute</td>
+                                <td class="big">sur</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">28</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">date</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">29</td>
+                                <td class="big">faire</td>
+                                <td class="big">Poss0</td>
+                                <td class="big">deuil</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">30</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">équipe</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">31</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">erreur</td>
+                                <td class="big">sur</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">32</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">étalage</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">33</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">étape</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">34</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">état</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">35</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">façon</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">36</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">faction</td>
+                                <td class="big">E</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">37</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">feu</td>
+                                <td class="big">sur</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">38</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">fi</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">39</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">fifty-fifty</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">40</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">figure</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">41</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">figure</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">42</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">foin</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">43</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">fond</td>
+                                <td class="big">sur</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">44</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">fortune</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">45</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">front</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">46</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">fureur</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">47</td>
+                                <td class="big">faire</td>
+                                <td class="big">une</td>
+                                <td class="big">histoire</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">48</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">intermédiaire</td>
+                                <td class="big">entre</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">49</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">joujou</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">50</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">justice</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">51</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">litière</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">52</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">loi</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">53</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">marche</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">54</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">marche</td>
+                                <td class="big">vers</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">55</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">moitié-moitié</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">56</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">montre</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">57</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">mouvement</td>
+                                <td class="big">vers</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">58</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">objet</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">59</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">oeuvre</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">60</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">office</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">61</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">parade</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">62</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">partie</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">63</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">planque</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">64</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">planton</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">65</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">plein</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">66</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">point</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">67</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">point</td>
+                                <td class="big">sur</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">68</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">poireau</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">69</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">police</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">70</td>
+                                <td class="big">faire</td>
+                                <td class="big">la</td>
+                                <td class="big">police</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">71</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">preuve</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">72</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">problème</td>
+                                <td class="big">pour</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">73</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">profession</td>
+                                <td class="big">de</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">74</td>
+                                <td class="big">faire</td>
+                                <td class="big">Poss0</td>
+                                <td class="big">profit</td>
+                                <td class="big">de</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">75</td>
+                                <td class="big">faire</td>
+                                <td class="big">du</td>
+                                <td class="big">propre</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">76</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">question</td>
+                                <td class="big">pour</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">77</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">rage</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">78</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">route</td>
+                                <td class="big">vers</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">79</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">sensation</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">80</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">sentinelle</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">81</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">tache</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">82</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">tampon</td>
+                                <td class="big">entre</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">83</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">tandem</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">84</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">tchin-tchin</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">85</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">un</td>
+                                <td class="big">avec</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">86</td>
+                                <td class="big">faire</td>
+                                <td class="big">le</td>
+                                <td class="big">vide</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">87</td>
+                                <td class="big">faire</td>
+                                <td class="big">du</td>
+                                <td class="big">vilain</td>
+                                <td class="big">Loc</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">88</td>
+                                <td class="big">faire</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="big">voile</td>
+                                <td class="big">vers</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                
+                            </tr>
+                            
+                        </tbody>
+                </div>
+            </div>
+        </div>
+        <script src="../static/js/jquery.min.js"></script>
+        <script>
+            (function ($) {
+                $.fn.rotateTableCellContent = function (options) {
+                    /*
+                    Version 1.0
+                    7/2011
+                    Written by David Votrubec (davidjs.com) and
+                    Michal Tehnik (@Mictech) for ST-Software.com
+                    */
+
+                    var cssClass = ((options) ? options.className : false) || "vertical";
+
+                    var cellsToRotate = $('.' + cssClass, this);
+
+                    var betterCells = [];
+                    cellsToRotate.each(function () {
+                        var cell = $(this)
+                        , newText = cell.text()
+                        , height = cell.height()
+                        , width = cell.width()
+                        , newDiv = $('<div>', { height: width, width: height })
+                            , newInnerDiv = $('<div>', { text: newText, 'class': 'rotated' });
+
+                                newInnerDiv.css('-webkit-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-moz-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-ms-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-o-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newDiv.append(newInnerDiv);
+
+                                betterCells.push(newDiv);
+                            });
+
+                            cellsToRotate.each(function (i) {
+                                $(this).html(betterCells[i]);
+                            });
+                        };
+                    })(jQuery);
+
+            $(document).ready(function() {
+                $('table').rotateTableCellContent();
+            });
+        </script>
+    </body>
+</html>

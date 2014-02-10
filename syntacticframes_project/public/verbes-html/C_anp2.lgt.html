@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>anp2</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Le styles -->
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            /* Styles for rotateTableCellContent plugin*/
+            table div.rotated {
+                -webkit-transform: rotate(270deg);
+                -moz-transform: rotate(270deg);
+                -ms-transform: rotate(270deg);
+                -o-transform: rotate(270deg);
+                transform: rotate(270deg);
+                writing-mode:tb-rl;
+                white-space: nowrap;
+            }
+
+            thead th {
+                vertical-align: bottom;
+            }
+
+            table .vertical {
+                white-space: nowrap;
+            }
+
+            /* My styles */
+            h1 { text-align: center }
+
+            table { margin-top: 2em; margin-bottom: 2em }
+            table { border-collapse: collapse }
+
+            thead th, .alignit { text-align: center }
+
+        </style>
+        <link href="../static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h1>Classe anp2</h1>
+
+                    <table>
+                        <thead><tr>
+                                <th class="vertical">&lt;ID&gt;</th>
+                                <th class="vertical">N0 =: Nhum</th>
+                                <th class="vertical">N0 =: N-hum</th>
+                                <th class="vertical">Ppv =: Neg</th>
+                                <th class="vertical">&lt;ENT&gt;Ppv</th>
+                                <th class="vertical">&lt;ENT&gt;&lt;avoir&gt;</th>
+                                <th class="vertical">N1 =: Nhum</th>
+                                <th class="vertical">N1 =: N-hum</th>
+                                <th class="vertical">N0 V N1</th>
+                                <th class="vertical">&lt;ENT&gt;Prép2</th>
+                                <th class="vertical">&lt;ENT&gt;Det2</th>
+                                <th class="vertical">C2 =: Npc</th>
+                                <th class="vertical">&lt;ENT&gt;C2</th>
+                                <th class="vertical">Vsup = garder</th>
+                                <th class="vertical">Vsup = rester</th>
+                                <th class="vertical">Vsup = tomber</th>
+                                <th class="vertical">Exemple</th>
+                                
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="alignit">1</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  abomination</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en abomination </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">2</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  aversion</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en aversion </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">3</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  pour</td>
+                                <td class="big">tout</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  bagage</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§pour tout bagage </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">4</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  banque</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en banque </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">5</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  bonne</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à la bonne </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">6</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  bouche</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à la bouche </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">7</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  pour</td>
+                                <td class="big">une</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  bouchée de pain</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§pour une bouchée de pain </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">8</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  bout du fil</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au bout du fil </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">9</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  boutonnière</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à la boutonnière </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">10</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">les</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  bras</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">§a§sur les bras </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">11</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  caisse</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en caisse </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">12</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  charge</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à charge </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">13</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  pour</td>
+                                <td class="big">pas</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  cher</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§pour pas cher </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">14</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  compte</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en compte </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">15</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  conscience</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur la conscience </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">16</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  cornet</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans le cornet </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">17</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  corps</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans le corps </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">18</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  de</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  côté</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§de côté </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">19</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sous</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  coude</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sous le coude </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">20</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  plein</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  crâne</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§plein le crâne </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">21</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  cul</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au cul </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">22</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  culot</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au culot </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">23</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  déjeuner</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à déjeuner </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">24</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dîner</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à dîner </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">25</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  dos</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">§a§sur le dos </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">26</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  dos</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur le dos </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">27</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dot</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en dot </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">28</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  double</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en double </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">29</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">n&#39;</td>
+                                <td class="big">avoir que</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  de</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  égal</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§n&#39;a que§d&#39;égal </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">30</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  épaule</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à l&#39;épaule </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">31</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  sur</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  épaule</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur l&#39;épaule </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">32</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  esbrouffe</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à l&#39;esbrouffe </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">33</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  estime</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en estime </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">34</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">haute</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  estime</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en haute estime </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">35</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  estomac</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à l&#39;estomac </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">36</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  exécration</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en exécration </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">37</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">les</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  fesses</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§aux fesses </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">38</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  gauche</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à gauche </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">39</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  jusqu&#39;à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  gauche</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§jusqu&#39;à la gauche </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">40</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  goûter</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à goûter </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">41</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  dans</td>
+                                <td class="big">les</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  grandes largeurs</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans les grandes largeurs </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">42</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  horreur</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en horreur </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">43</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  devant</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  Lui-0</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§devant lui </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">44</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  par  devers</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  Lui-0</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§par devers lui </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">45</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  sur</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  Lui-0</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur lui </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">46</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  sur</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  Lui-0</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur lui </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">47</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">Poss0</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à sa main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">48</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  bien  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§bien en main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">49</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">50</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">51</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à la main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">52</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à la main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">53</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sous</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  main</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">§a§sous la main </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">54</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  dans</td>
+                                <td class="big">Poss0</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  manche</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans sa manche </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">55</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">Poss0</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  manche</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans sa manche </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">56</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  de</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  moins que N</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§de moins que N </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">57</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  nez</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans le nez </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">58</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  nourrir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à nourrir </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">59</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  n-uple</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en n-uple </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">60</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  oeil</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à l&#39;oeil </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">61</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  jusqu&#39;à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  os</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§jusqu&#39;à l&#39;os </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">62</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  paletot</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">§a§sur le paletot </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">63</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  plein</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  panse</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§plein la panse </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">64</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">un</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  paquet de bonux</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans un paquet de bonux </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">65</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  partage</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en partage </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">66</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  patate</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur la patate </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">67</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  peau</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans la peau </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">68</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  pelle</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à la pelle </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">69</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  personne de Nhum</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en la personne de Nhum </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">70</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  perspective</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en perspective </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">71</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">les</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  pieds</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§aux pieds </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">72</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  de</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  plus que N</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§de plus que N </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">73</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  poche</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en poche </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">74</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  plein</td>
+                                <td class="big">Poss0</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  poches</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§plein ses poches </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">75</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">une</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  pochette surprise</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans une pochette surprise </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">76</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  poil</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">§a§sur le poil </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">77</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  poing</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au poing </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">78</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">bon</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  prix</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à bon prix </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">79</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">le quart du</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  prix</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au quart du prix </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">80</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">moitié</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  prix</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à moitié prix </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">81</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sur</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  râble</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">§a§sur le râble </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">82</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  sur</td>
+                                <td class="big">les</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  reins</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§sur les reins </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">83</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  de</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  reste</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§de reste </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">84</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  revendre</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à revendre </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">85</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  pour</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  rien</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§pour rien </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">86</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">n&#39;</td>
+                                <td class="big">avoir pas</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  pour</td>
+                                <td class="big">deux</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  ronds</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§n&#39;a pas§pour deux ronds </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">87</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  dans</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  sang</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§dans le sang </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">88</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">ne</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  savoir qu&#39;en faire</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à ne sa qu&#39;en fait </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">89</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">ne pas</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  savoir qu&#39;en faire</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à ne pas sa qu&#39;en fait </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">90</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">ne plus</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  savoir qu&#39;en faire</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à ne plus sa qu&#39;en fait </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">91</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">Poss0</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  sein</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en son sein </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">92</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sentiment</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au sentiment </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">93</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">n&#39;</td>
+                                <td class="big">avoir pas</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  pour</td>
+                                <td class="big">un</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sou</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§n&#39;a pas§pour un sou </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">94</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  à</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  souper</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à souper </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">95</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">n&#39;</td>
+                                <td class="big">avoir pas</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  pour</td>
+                                <td class="big">deux</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  sous</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§n&#39;a pas§pour deux sous </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">96</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  téléphone</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au téléphone </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">97</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  plein</td>
+                                <td class="big">la</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  tête</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§plein la tête </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">98</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  tournant</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§au tournant </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">99</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  travers de la gorge</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en travers de la gorge </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">100</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  en</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  triple</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§en triple </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">101</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  jusqu&#39;à</td>
+                                <td class="big">le</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  trognon</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§jusqu&#39;à le trognon </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">102</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  de</td>
+                                <td class="big">&lt;E&gt;</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  trop</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§de trop </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">103</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  à</td>
+                                <td class="big">la</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  usure</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§à l&#39;usure </td>
+                                
+                            </tr>
+                            <tr>
+                                <td class="alignit">104</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">&lt;E&gt;</td>
+                                <td class="big">avoir</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">+</td>
+                                <td class="alignit">-</td>
+                                <td class="big">  plein</td>
+                                <td class="big">le</td>
+                                <td class="alignit">+</td>
+                                <td class="big">  ventre</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="alignit">-</td>
+                                <td class="big">§a§plein le ventre </td>
+                                
+                            </tr>
+                            
+                        </tbody>
+                </div>
+            </div>
+        </div>
+        <script src="../static/js/jquery.min.js"></script>
+        <script>
+            (function ($) {
+                $.fn.rotateTableCellContent = function (options) {
+                    /*
+                    Version 1.0
+                    7/2011
+                    Written by David Votrubec (davidjs.com) and
+                    Michal Tehnik (@Mictech) for ST-Software.com
+                    */
+
+                    var cssClass = ((options) ? options.className : false) || "vertical";
+
+                    var cellsToRotate = $('.' + cssClass, this);
+
+                    var betterCells = [];
+                    cellsToRotate.each(function () {
+                        var cell = $(this)
+                        , newText = cell.text()
+                        , height = cell.height()
+                        , width = cell.width()
+                        , newDiv = $('<div>', { height: width, width: height })
+                            , newInnerDiv = $('<div>', { text: newText, 'class': 'rotated' });
+
+                                newInnerDiv.css('-webkit-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-moz-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-ms-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-o-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newDiv.append(newInnerDiv);
+
+                                betterCells.push(newDiv);
+                            });
+
+                            cellsToRotate.each(function (i) {
+                                $(this).html(betterCells[i]);
+                            });
+                        };
+                    })(jQuery);
+
+            $(document).ready(function() {
+                $('table').rotateTableCellContent();
+            });
+        </script>
+    </body>
+</html>
