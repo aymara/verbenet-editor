@@ -141,7 +141,7 @@ class VerbNetFrameSet(MPTTModel):
                 extra_inherited_member.delete()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
                 verb_logger.info("{}: Removed {} (was inherited from {} in subclass {})".format(
-                    when, extra_inherited_member.lemma, extra_inherited_members.inherited_from, extra_inherited_members.frameset))
+                    when, extra_inherited_member.lemma, extra_inherited_member.inherited_from, extra_inherited_member.frameset))
 
             for missing_inherited_member in real_inherited_members - existing_inherited_members:
                 missing_inherited_member.pk = None
