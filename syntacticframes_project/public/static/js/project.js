@@ -147,8 +147,8 @@ function edited_frameset_field(input_field, span) {
 
 $(document).ready(function() {
     // Show relation between verbs and origin
-    $('.translations span').hover(toggleHighlightMembers, toggleHighlightMembers);
-    $('.members span').hover(toggleHighlightCandidates, toggleHighlightCandidates);
+    $(document).on('mouseenter mouseleave', '.translations span', toggleHighlightMembers);
+    $(document).on('mouseenter mouseleave', '.members span', toggleHighlightCandidates);
 
     // Show dark/gray verbs
     show_plus();
