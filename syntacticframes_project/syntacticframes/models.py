@@ -7,6 +7,7 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
 from loadmapping.mappedverbs import translations_for_class
+from parsecorrespondance.parse import FrenchMapping
 
 # Levin class 9..104
 class LevinClass(models.Model):
@@ -64,6 +65,12 @@ class VerbNetFrameSet(MPTTModel):
 
     def __str__(self):
         return 'VerbNetFrameSet: {}'.format(self.name)
+
+    def lvf_parts(self):
+        return FrenchMapping('LVF', self.lvf_string).flat_parse()
+
+    def ladl_parts(self):
+        return FrenchMapping('LADL', self.ladl_string).flat_parse()
 
     def check_has_removed_frames(self):
         self.has_removed_frames = self.verbnetframe_set.filter(removed=True)

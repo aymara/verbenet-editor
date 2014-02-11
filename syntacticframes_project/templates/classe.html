@@ -29,28 +29,24 @@
                 {% else %}
                     <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}}
                         {# LVF class: inline editing and links #}
-                        <span class="frameset_editable" data-field="lvf_string">{% spaceless %}
-                            {% if node.lvf_string %}
-                                {{ node.lvf_string }}
-                            {% else %}
-                                ∅
-                            {% endif %}
+                        <span class="frameset_editable" data-text="{{node.lvf_string}}" data-field="lvf_string">{% spaceless %}
+                            {% for text, is_link in node.lvf_parts %}
+                                {{ text }}
+                                {% if is_link %}
+                                    <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{text}}.html" class="external"><i class="icon-share-alt"></i></a>
+                                {% endif %}
+                            {% endfor %}
                         {% endspaceless %}</span>
-                        {% if node.lvf_string and node.lvf_string != '∅' and not ' ' in node.lvf_string %}
-                            <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{node.lvf_string}}.html" class="external"><i class="icon-share-alt"></i></a>
-                        {% endif %}
 
                         {# LADL table: inline editing and links #}
-                        <span class="frameset_editable" data-field="ladl_string">{% spaceless %}
-                            {% if node.ladl_string %}
-                                 {{ node.ladl_string }}
-                            {% else %}
-                                ∅
-                            {% endif %}
+                        <span class="frameset_editable" data-text="{{node.ladl_string}}" data-field="ladl_string">{% spaceless %}
+                            {% for text, is_link in node.ladl_parts %}
+                                {{ text }}
+                                {% if is_link %}
+                                    <a href="http://verbenet.pradet.me/verbes-html/V_{{text}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
+                                {% endif %}
+                            {% endfor %}
                         {% endspaceless %}</span>
-                        {% if node.ladl_string and node.ladl_string != '∅' and not ' ' in node.ladl_string %}
-                            <a href="http://verbenet.pradet.me/verbes-html/V_{{node.ladl_string}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
-                        {% endif %}
                     </h3>
 
                     {% if user.is_authenticated %}

@@ -77,7 +77,7 @@
 				options.clickStarted = true;
 
 				// fetch the text to edit
-				var text = jQuery(selected).text();
+				var text = jQuery(selected).data("text");
 				var input = null;
 
 				// remove text from text label
@@ -112,6 +112,7 @@
 
                             // update label and remove the input field
                             var newText = jQuery(input).val();
+                            jQuery(selected).data("text", newText);
                             jQuery(selected).text(newText);
                             jQuery(selected).show();
                             jQuery(input).remove();

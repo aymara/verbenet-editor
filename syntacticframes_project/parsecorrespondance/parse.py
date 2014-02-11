@@ -98,6 +98,26 @@ class FrenchMapping(object):
                 entry_list.extend(o.entries())
 
         return entry_list
+
+    def flat_parse(self):
+        """
+        "A ou B" return [('A', True), ('ou', False), ('B', True)]
+        """
+        if not self.operator:
+            if not self.operands:
+                return [('∅', False)]
+            else:
+                assert(len(self.operands) == 1)
+                return [(self.operands[0], True)]
+        else:
+            parts = []
+            french_operator = 'et' if self.operator == 'and' else 'ou'
+            for o in self.operands:
+                parts.extend(o.flat_parse())
+                parts.append((french_operator, False))
+
+            parts.pop()
+            return parts
                 
 
 # Module level constants
