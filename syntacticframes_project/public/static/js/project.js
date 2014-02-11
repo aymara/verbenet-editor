@@ -3,8 +3,6 @@
 function show_plus() {
     // Show/hide verbs that are not interesting
     var showLink = $('<a/>').attr('class', 'plus_link').text('[+]').prop('href', '#');
-    $(document).off("click", ".plus_link", toggleHideShow);
-    $(document).on("click", ".plus_link", toggleHideShow);
     $('.translations a').remove();
     $('.translations').each(function() {
         if ($(this).find('span').size() > 0) {
@@ -151,6 +149,9 @@ $(document).ready(function() {
     // Show relation between verbs and origin
     $(document).on('mouseenter mouseleave', '.translations span', toggleHighlightMembers);
     $(document).on('mouseenter mouseleave', '.members span', toggleHighlightCandidates);
+
+    // Clicking on [+] always toggles verbs
+    $(document).on("click", ".plus_link", toggleHideShow);
 
     // Show dark/gray verbs
     show_plus();
