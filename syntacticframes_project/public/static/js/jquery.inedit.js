@@ -70,6 +70,7 @@
 
 			// on click function
 			jQuery(selected).bind(event.click, function(){
+				var text;
 
 				// prevent to start handler multiple times
 				if (options.clickStarted == true) return;
@@ -77,7 +78,11 @@
 				options.clickStarted = true;
 
 				// fetch the text to edit
-				var text = jQuery(selected).data("text");
+				if (jQuery(selected).attr('data-text')) {
+					text = jQuery(selected).data("text");
+				} else {
+					text = jQuery(selected).text();
+				}
 				var input = null;
 
 				// remove text from text label
