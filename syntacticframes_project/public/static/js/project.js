@@ -21,7 +21,11 @@ function editable_class_fields() {
     $('.frameset_editable').each(function() {
         $(this).unbind();
         $('.frameset_editable .external').click(function(e) { e.stopPropagation(); });
-        $(this).inedit({'onEnd': edited_frameset_field});
+        if ($(this).data('field') === 'comment') {
+            $(this).inedit({'onEnd': edited_frameset_field, 'type': 'textarea'});
+        } else {
+            $(this).inedit({'onEnd': edited_frameset_field});
+        }
     });
 }
 

@@ -48,6 +48,14 @@ article > .subclass {
   margin-left: 0;
 }
 
+/* Frameset display */
+
+.frameset_editable + textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 5em;
+}
+
 /* Frame display */
 .frame {
   border: 1px solid black;
