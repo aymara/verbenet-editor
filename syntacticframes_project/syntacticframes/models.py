@@ -77,6 +77,13 @@ class VerbNetFrameSet(MPTTModel):
         self.save()
 
     def update_translations(self, ladl_string, lvf_string):
+        translations_in_subclasses = set()
+
+        for db_childrenfs in self.children.all():
+            new_ladl = ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
+            new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
+            translations_in_subclasses |= db_childrenfs.update_translations(new_ladl, new_lvf)
+
         verbs = self.verbtranslation_set.all()
         initial_set = {(v.verb, v.category) for v in verbs}
         verbs.delete()
@@ -87,7 +94,7 @@ class VerbNetFrameSet(MPTTModel):
 
         for french, categoryname, categoryid, originlist in candidates:
             originset = set(originlist.split(','))
-            if set(members) & originset:
+            if set(members) & originset and french not in translations_in_subclasses:
                 VerbTranslation(
                     frameset=self,
                     verb=french,
@@ -99,6 +106,7 @@ class VerbNetFrameSet(MPTTModel):
 
         verbs = self.verbtranslation_set.all()
         final_set = {(v.verb, v.category) for v in verbs}
+        translations_in_subclasses |= {v[0] for v in final_set}
 
         verb_logger = logging.getLogger('verbs')
         if initial_set - final_set:
@@ -108,10 +116,7 @@ class VerbNetFrameSet(MPTTModel):
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
                 last_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set - initial_set])))
 
-        for db_childrenfs in self.children.all():
-            new_ladl = ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
-            new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
-            db_childrenfs.update_translations(new_ladl, new_lvf)
+        return translations_in_subclasses
 
 
     def set_inherited_members(self, frameset):
