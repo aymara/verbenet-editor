@@ -65,10 +65,10 @@ DATABASES = {
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = normpath(join(SITE_ROOT, 'public/static'))
+STATIC_ROOT = normpath(join(SITE_ROOT, 'public/'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static/'
+STATIC_URL = '/'
 
 
 
