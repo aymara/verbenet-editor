@@ -117,14 +117,16 @@ STATICFILES_FINDERS = (
 
 ########## DJANGO-PIPELINE CONFIGURATION
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+PIPELINE_COMPILERS = ('pipeline.compilers.less.LessCompiler',)
 
 PIPELINE_CSS = {
     'syntacticframes': {
         'source_filenames': (
-            'css/bootstrap.min.css',
+            'less/bootstrap.less',
             'css/project.css',
-            'css/bootstrap-responsive.min.css',
+            'less/responsive.less',
         ),
         'output_filename': 'css/syntacticframes.css',
     },
