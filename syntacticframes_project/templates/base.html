@@ -1,5 +1,6 @@
 {% load staticfiles %}<!DOCTYPE html>
 {% load syntacticframes_extras %}
+{% load compressed %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -10,33 +11,19 @@
     <link rel="icon" href="{% version 'favicon.ico' %}" />
 
     <!-- Le styles -->
-    <link href="{% version 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% version 'css/project.css' %}" rel="stylesheet">
-    <link href="{% version 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    {% compressed_css 'syntacticframes' %}
+
     <script>
         {% comment %} lower is used to switch from True to true {% endcomment %}
         window._user_authenticated = {{ user.is_authenticated|lower }};
     </script>
-
-    {% block extra_css %}{% endblock extra_css %}
   </head>
 
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <!--
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          -->
           <span class="brand"><a href="/">VerbeNet</a></span>
           <div class="nav-collapse collapse">
             <ul class="nav">
@@ -59,15 +46,7 @@
     </div>
 
     {% block all %}
-    <div class="container">
 
-      <h1>{% block page_title %}Example Base Template{% endblock page_title %}</h1>
-
-      {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
-
-    </div> <!-- /container -->
     {% endblock %}
 
     <!-- Le javascript

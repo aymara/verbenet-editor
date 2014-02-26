@@ -98,14 +98,14 @@ MEDIA_URL = '/media/'
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
+STATIC_ROOT = normpath(join(SITE_ROOT, 'public'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/'
+STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
-    normpath(join(SITE_ROOT, 'public/')),
+    normpath(join(SITE_ROOT, 'assets')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
@@ -115,6 +115,21 @@ STATICFILES_FINDERS = (
 )
 ########## END STATIC FILE CONFIGURATION
 
+########## DJANGO-PIPELINE CONFIGURATION
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+
+PIPELINE_CSS = {
+    'syntacticframes': {
+        'source_filenames': (
+            'css/bootstrap.min.css',
+            'css/project.css',
+            'css/bootstrap-responsive.min.css',
+        ),
+        'output_filename': 'css/syntacticframes.css',
+    },
+}
+########## END DJANGO-PIPELINE CONFIGURATION
 
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
@@ -217,6 +232,8 @@ THIRD_PARTY_APPS = (
     'mptt',
     # version control for models
     'reversion',
+    # asset packaging
+    'pipeline',
 )
 
 # Apps specific for this project go here.
