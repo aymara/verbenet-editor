@@ -119,6 +119,7 @@ STATICFILES_FINDERS = (
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_COMPILERS = ('pipeline.compilers.less.LessCompiler',)
 
 PIPELINE_CSS = {
@@ -129,6 +130,17 @@ PIPELINE_CSS = {
             'less/responsive.less',
         ),
         'output_filename': 'css/syntacticframes.css',
+    },
+}
+
+PIPELINE_JS = {
+    'syntacticframes': {
+        'source_filenames': (
+            'js/jquery.min.js',
+            'js/jquery.inedit.js',
+            'js/project.js'
+        ),
+        'output_filename': 'js/syntacticframes.js',
     },
 }
 ########## END DJANGO-PIPELINE CONFIGURATION

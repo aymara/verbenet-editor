@@ -49,16 +49,7 @@
 
     {% endblock %}
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{% version 'js/jquery.min.js' %}"></script>
-    <script src="{% version 'js/bootstrap.min.js' %}"></script>
-    <script src="{% version 'js/jquery.inedit.js' %}"></script>
-
-    <!-- place project specific Javascript in this file -->
-    <script src="{% version 'js/project.js' %}"></script>
-
-    {% block extra_js %}{% endblock extra_js %}
+    <!-- Le javascript -->
+    {% compressed_js 'syntacticframes' %}
   </body>
 </html>
