@@ -10,11 +10,16 @@
   <div class="well sidebar-nav">
     <ul class="nav nav-list">
         {% for class in levin_classes %}
+            <li class="
             {% if class.number == active_class.number %}
-              <li class="active"><a href="/class/{{class.number}}">{{ class.number }}: {{ class.name }}</a></li>
-            {% else %}
-              <li><a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
+              selected
             {% endif %}
+            {% if class.is_translated %}
+              accepted
+            {% endif %}
+            ">
+
+            <a href="/class/{{class.number}}">{{ class.number }}: {{ class.name }}</a></li>
         {% endfor %}
         </ul>
       </div>
@@ -22,7 +27,13 @@
 
     <div class="span9">
 
-      <h1>{% block page_title %}{{ active_class.number }}: {{ active_class.name }}{% endblock page_title %}</h1>
+      <h1 class="{{ active_class.is_translated }}">
+        <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
+        {% if user.is_authenticated and not active_class.is_translated %}
+          <button data-levinid="{{active_class.number}}" class="btn validate_class"><i class="icon-ok"></i> Valider cette classe</button>
+        {% endif %}
+      </h1>
+
  
       {% block content %}
         {% for classe in verbnet_classes %}

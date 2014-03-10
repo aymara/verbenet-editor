@@ -204,6 +204,21 @@ $(document).ready(function() {
 
         editable_class_fields();
 
+        // validate Levin class
+        $(document).on('click', '.validate_class', function() {
+            var that = $(this);
+
+            var request = $.ajax({
+                url: '/validate/',
+                type: 'POST',
+                data: { levin_class: that.data('levinid') }
+            });
+
+            request.done(function() { document.location.reload(true); });
+
+            return false;
+        });
+
         // remove frame
         $(document).on('click', '.remove_frame', function() {
             var that = this;

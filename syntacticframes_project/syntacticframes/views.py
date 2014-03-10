@@ -210,6 +210,15 @@ def add(request):
 
         return HttpResponse("ok")
 
+@login_required
+def validate(request):
+    if request.method == 'POST':
+        levin_class_id = request.POST['levin_class']
+        db_levin_class = LevinClass.objects.get(number=levin_class_id)
+        db_levin_class.is_translated = True
+        db_levin_class.save()
+        return HttpResponse('ok')
+
 def show(request):
     if request.method == 'POST':
         post = request.POST

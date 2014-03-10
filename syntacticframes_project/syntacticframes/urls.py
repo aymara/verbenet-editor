@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^remove/$', views.remove),
     url(r'^add/$', views.add),
     url(r'^show/$', views.show),
+    url(r'^validate/$', views.validate),
 
     # Examples:
     # url(r'^$', 'syntacticframes.views.home', name='home'),

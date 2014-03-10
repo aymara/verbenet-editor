@@ -13,6 +13,7 @@ from parsecorrespondance.parse import FrenchMapping
 class LevinClass(models.Model):
     number = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
+    is_translated = models.BooleanField(default=False)
 
     def __str__(self):
         return "{}: {}".format(self.number, self.name)
