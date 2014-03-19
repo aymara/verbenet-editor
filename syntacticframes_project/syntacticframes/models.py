@@ -36,8 +36,9 @@ class VerbNetClass(models.Model):
         return self.name
 
     def set_inherited_members(self):
-        for frameset in self.verbnetframeset_set.filter(parent=None):
-            frameset.set_inherited_members(frameset)
+        root_frameset = self.verbnetframeset_set.get(parent=None)
+        root_frameset.set_inherited_members(root_frameset)
+        root_frameset.update_translations(root_frameset.ladl_string, root_frameset.lvf_string)
 
 
 # Subclass (9.1-2)
@@ -78,6 +79,14 @@ class VerbNetFrameSet(MPTTModel):
         self.save()
 
     def update_translations(self, ladl_string, lvf_string):
+        """
+        Updates translations given members in class and ladl_string/lvf_string parameters.
+
+        ladl_string and lvf_string can be different from self.ladl_string and
+        self.lvf_string if we're using an inherited lvf or ladl string, eg. if the
+        current node's string is unset but his parent's string is set.
+        """
+
         translations_in_subclasses = set()
 
         for db_childrenfs in self.children.filter(removed=False):
@@ -162,8 +171,6 @@ class VerbNetFrameSet(MPTTModel):
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
                 verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
                     when, missing_inherited_member.lemma, missing_inherited_member.inherited_from, missing_inherited_member.frameset))
-
-            frameset.update_translations(frameset.ladl_string, frameset.lvf_string)
 
 
 # English member
