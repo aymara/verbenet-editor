@@ -35,9 +35,9 @@ class VerbNetClass(models.Model):
     def __str__(self):
         return self.name
 
-    def set_inherited_members(self):
+    def update_members_and_translations(self):
         root_frameset = self.verbnetframeset_set.get(parent=None)
-        root_frameset.set_inherited_members(root_frameset)
+        root_frameset.update_members(root_frameset)
         root_frameset.update_translations(root_frameset.ladl_string, root_frameset.lvf_string)
 
 
@@ -129,7 +129,7 @@ class VerbNetFrameSet(MPTTModel):
         return translations_in_subclasses
 
 
-    def set_inherited_members(self, frameset):
+    def update_members(self, frameset):
         def get_all_members(frameset, parent_fs):
             """Recursively retrieve members from all subclasses"""
             members = frameset.verbnetmember_set.all()
@@ -155,7 +155,7 @@ class VerbNetFrameSet(MPTTModel):
             if child_fs.removed:
                 real_inherited_members |= get_all_members(child_fs, frameset)
             else:
-                self.set_inherited_members(child_fs)
+                self.update_members(child_fs)
 
         verb_logger = logging.getLogger('verbs')
         if existing_inherited_members != real_inherited_members:
