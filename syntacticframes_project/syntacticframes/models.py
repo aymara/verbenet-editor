@@ -80,7 +80,7 @@ class VerbNetFrameSet(MPTTModel):
     def update_translations(self, ladl_string, lvf_string):
         translations_in_subclasses = set()
 
-        for db_childrenfs in self.children.all():
+        for db_childrenfs in self.children.filter(removed=False):
             new_ladl = ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
             new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
             translations_in_subclasses |= db_childrenfs.update_translations(new_ladl, new_lvf)
