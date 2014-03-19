@@ -71,6 +71,7 @@
 			// on click function
 			jQuery(selected).bind(event.click, function(){
 				var text;
+				var data_text = jQuery(selected).data('text');
 
 				// prevent to start handler multiple times
 				if (options.clickStarted == true) return;
@@ -78,11 +79,17 @@
 				options.clickStarted = true;
 
 				// fetch the text to edit
-				if (jQuery(selected).attr('data-text')) {
-					text = jQuery(selected).data("text");
+				if (data_text) {
+					text = data_text;
 				} else {
 					text = jQuery(selected).text();
 				}
+
+				// if text contains empty_text, start with empty string
+				if (options.empty_text == text) {
+					text = '';
+				}
+
 				var input = null;
 
 				// remove text from text label
@@ -154,7 +161,8 @@
 		onStart: jQuery.noop,
 		onEnd: jQuery.noop,
 		style: "",
-		position: 'after'
+		position: 'after',
+		empty_text: '',
 	};
 
 })(jQuery);

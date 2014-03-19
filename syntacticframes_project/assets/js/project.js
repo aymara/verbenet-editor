@@ -15,16 +15,16 @@ function editable_class_fields() {
     // Edit all editable fields
     $('.frame_editable').each(function() {
         $(this).unbind();
-        $(this).inedit({'onEnd': edited_frame_field});
+        $(this).inedit({onEnd: edited_frame_field, empty_text: '∅'});
     });
 
     $('.frameset_editable').each(function() {
         $(this).unbind();
         $('.frameset_editable .external').click(function(e) { e.stopPropagation(); });
         if ($(this).data('field') === 'comment') {
-            $(this).inedit({'onEnd': edited_frameset_field, 'type': 'textarea'});
+            $(this).inedit({onEnd: edited_frameset_field, empty_text: '∅', type: 'textarea'});
         } else {
-            $(this).inedit({'onEnd': edited_frameset_field});
+            $(this).inedit({onEnd: edited_frameset_field, empty_text: '∅'});
         }
     });
 }
