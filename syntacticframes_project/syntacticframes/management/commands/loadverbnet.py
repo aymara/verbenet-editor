@@ -75,6 +75,4 @@ class Command(BaseCommand):
                 db_root_frameset = db_vnclass.verbnetframeset_set.get(parent=None)
 
                 save_class(xml_class, db_root_frameset, 0)
-                db_root_frameset.update_translations(
-                    db_root_frameset.ladl_string,
-                    db_root_frameset.lvf_string)
+                db_root_frameset.update_translations()

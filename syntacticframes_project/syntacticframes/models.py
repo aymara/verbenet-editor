@@ -38,7 +38,7 @@ class VerbNetClass(models.Model):
     def update_members_and_translations(self):
         root_frameset = self.verbnetframeset_set.get(parent=None)
         root_frameset.update_members(root_frameset)
-        root_frameset.update_translations(root_frameset.ladl_string, root_frameset.lvf_string)
+        root_frameset.update_translations()
 
 
 # Subclass (9.1-2)
@@ -78,7 +78,7 @@ class VerbNetFrameSet(MPTTModel):
         self.has_removed_frames = self.verbnetframe_set.filter(removed=True)
         self.save()
 
-    def update_translations(self, ladl_string, lvf_string):
+    def update_translations(self, ladl_string=None, lvf_string=None):
         """
         Updates translations given members in class and ladl_string/lvf_string parameters.
 
@@ -87,12 +87,18 @@ class VerbNetFrameSet(MPTTModel):
         current node's string is unset but his parent's string is set.
         """
 
+        if ladl_string is None:
+            ladl_string = self.ladl_string
+
+        if lvf_string is None:
+            lvf_string = self.lvf_string
+
         translations_in_subclasses = set()
 
         for db_childrenfs in self.children.filter(removed=False):
             new_ladl = ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
             new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
-            translations_in_subclasses |= db_childrenfs.update_translations(new_ladl, new_lvf)
+            translations_in_subclasses |= db_childrenfs.update_translations(ladl_string=new_ladl, lvf_string=new_lvf)
 
         verbs = self.verbtranslation_set.all()
         initial_set = {(v.verb, v.category) for v in verbs}
