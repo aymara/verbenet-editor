@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}{{ active_class.number }} : {{ active_class.name }}{% endblock %}
+
 {% block all %}
 
 <div class="container">
@@ -26,6 +28,7 @@
     </div>
 
     <div class="span9">
+
 
       <h1 class="{{ active_class.is_translated }}">
         <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
