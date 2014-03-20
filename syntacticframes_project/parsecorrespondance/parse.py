@@ -42,12 +42,40 @@ class FrenchMapping(object):
 
     @staticmethod
     def _tokenize(name):
-        result = ''
-        for c in name:
-            if c in ['(', ')']:
-                result += ' {} '.format(c)
+        token_list = []
+        current_token = ''
+
+        for i in range(len(name)):
+            c = name[i]
+
+            if c == ' ' and current_token:
+                token_list.append(current_token)
+                current_token = ''
+            elif c in ['(', ')', '[', ']']:
+                if c == '[' and name[i-1] == ' ':
+                    raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
+                elif c == '[' and name[i+1] not in ['-', '+']:
+                    raise SyntaxErrorException('+ ou - requis après un crochet', name)
+                else:
+                    if current_token:
+                        token_list.append(current_token)
+                        current_token = ''
+                    token_list.append(c)
+            elif c in ['+', '-']:
+                if token_list and token_list[-1] != '[' or name[i+1] == ' ':
+                    raise SyntaxErrorException('Pas d\'espace autour du +', name)
+                elif current_token:
+                    raise SyntaxErrorException('- doit arriver après [, pas {}'.format(current_token), name)
+                else:
+                    token_list.append(c)
             else:
-                result += c
+                current_token += c
+
+        if current_token:
+            token_list.append(current_token)
+            current_token = ''
+
+        return token_list
 
         return [t.strip() for t in result.split(' ') if t.strip() != '']
 
@@ -64,6 +92,11 @@ class FrenchMapping(object):
                     j += 1
                 self.operands.append(FrenchMapping(self.resource, " ".join(token_list[i+1:j])))
                 i = j + 1
+            # TODO currently ignoring square brackets
+            elif token_list[i] == '[':
+                while token_list[i] != ']':
+                    i += 1
+                i += 1
             else:
                 self.operands.append(FrenchMapping(self.resource, token_list[i]))
 
@@ -131,10 +164,10 @@ ladl_list = [
     '1', '2', '2T', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13',
     '14', '15', '16', '18', '31H', '31R', '32A', '32C', '32CL', '32CV', '32D',
     '32H', '32NM', '32PL', '32R1', '32R2', '32R3', '32RA', '33', '34L0', '35L',
-    '35LD', '35LR', '35LS', '35R', '35RR', '35S', '35ST', '36DT', '36DT-source',
-    '36DT-dest', '36R', '36S', '36SL', '36SL-source', '36SL-dest', '37E', '37M1',
-    '37M2', '37M3', '37M4', '37M5', '37M6', '38L', '38L0', '38L1', '38LD', '38LH',
-    '38LHD', '38LHR', '38LHS', '38LR', '38LS', '38PL', '38R', '38RR', '39',
+    '35LD', '35LR', '35LS', '35R', '35RR', '35S', '35ST', '36DT', '36R', '36S',
+    '36SL', '37E', '37M1', '37M2', '37M3', '37M4', '37M5', '37M6', '38L', '38L0',
+    '38L1', '38LD', '38LH', '38LHD', '38LHR', '38LHS', '38LR', '38LS', '38PL',
+    '38R', '38RR', '39',
     # figees
     'C_31i', 'C_a1', 'C_a12', 'C_a1p2', 'C_a1pn', 'C_anp2', 'C_c0', 'C_c0e',
     'C_c0q', 'C_c1d', 'C_c1dpn', 'C_c1g', 'C_c1gpn', 'C_c1i', 'C_c1ipn', 'C_c1p2',
