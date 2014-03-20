@@ -1,6 +1,6 @@
 import unittest
 
-import parse
+from parsecorrespondance import parse
 
 class TestParsingFunctions(unittest.TestCase):
 
@@ -16,7 +16,7 @@ class TestParsingFunctions(unittest.TestCase):
         self.assertEqual(parse.FrenchMapping('LADL', '-').infix(), '')
         self.assertEqual(parse.FrenchMapping('LADL', '?').infix(), '')
         self.assertEqual(parse.FrenchMapping('LADL', '').infix(), '')
-        self.assertEqual(parse.FrenchMapping('LVF', '∅').infix(), '')
+        self.assertEqual(parse.FrenchMapping('LVF', '*').infix(), '')
 
     def test_syntaxerror(self):
         with self.assertRaises(parse.SyntaxErrorException):
