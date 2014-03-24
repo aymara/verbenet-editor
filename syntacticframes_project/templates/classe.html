@@ -30,20 +30,20 @@
                     <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}}
                         {# LVF class: inline editing and links #}
                         <span class="frameset_editable" data-text="{{node.lvf_string}}" data-field="lvf_string">{% spaceless %}
-                            {% for text, is_link in node.lvf_parts %}
+                            {% for text, class_name in node.lvf_parts %}
                                 {{ text }}
-                                {% if is_link %}
-                                    <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{text}}.html" class="external"><i class="icon-share-alt"></i></a>
+                                {% if class_name %}
+                                    <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{class_name}}.html" class="external"><i class="icon-share-alt"></i></a>
                                 {% endif %}
                             {% endfor %}
                         {% endspaceless %}</span>
 
                         {# LADL table: inline editing and links #}
                         <span class="frameset_editable" data-text="{{node.ladl_string}}" data-field="ladl_string">{% spaceless %}
-                            {% for text, is_link in node.ladl_parts %}
+                            {% for text, class_name in node.ladl_parts %}
                                 {{ text }}
-                                {% if is_link %}
-                                    <a href="http://verbenet.pradet.me/verbes-html/V_{{text}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
+                                {% if class_name %}
+                                    <a href="http://verbenet.pradet.me/verbes-html/V_{{class_name}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
                                 {% endif %}
                             {% endfor %}
                         {% endspaceless %}</span>

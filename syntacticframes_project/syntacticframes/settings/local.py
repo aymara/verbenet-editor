@@ -17,6 +17,10 @@ TEMPLATE_DEBUG = DEBUG
 ########## EMAIL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'nenuphar.saclay.cea.fr'
+SERVER_EMAIL = 'quentin-noreply@cea.fr'
+MANAGERS = (('Quentin Pradet', 'quentin.pradet@cea.fr'),)
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 ########## END EMAIL CONFIGURATION
 
 

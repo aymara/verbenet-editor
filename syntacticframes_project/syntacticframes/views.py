@@ -16,7 +16,8 @@ from time import gmtime, strftime
 import os.path
 
 from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame
-from parsecorrespondance.parse import UnknownClassException
+from parsecorrespondance.parse import UnknownClassException, SyntaxErrorException, UnknownErrorException
+from loadmapping.mappedverbs import UnknownColumnException
 
 logger = logging.getLogger('database')
 
@@ -119,7 +120,7 @@ def update(request):
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
             try:
                 db_rootframeset.update_translations()
-            except UnknownClassException as e:
+            except (UnknownClassException, SyntaxErrorException, UnknownErrorException, UnknownColumnException) as e:
                 transaction.rollback()
                 return HttpResponseForbidden(e)
                          

@@ -1,3 +1,7 @@
+import traceback
+
+from django.core.mail import mail_managers
+
 class UnknownClassException(Exception):
     def __init__(self, partial_name):
         self.partial_name = partial_name
@@ -11,7 +15,17 @@ class SyntaxErrorException(Exception):
         self.name = name
 
     def __str__(self):
-        return 'SyntaxError: {} in {}'.format(self.error, self.name)
+        return '{} : {}'.format(self.name, self.error)
+
+class UnknownErrorException(Exception):
+    """
+    Errors that were not identified precisely. They make FrenchMapping.__init__ fail.
+    """
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return 'Erreur : {} invalide'.format(self.name)
 
 class FrenchMapping(object):
     """
@@ -19,26 +33,18 @@ class FrenchMapping(object):
     """
     def __init__(self, resource, name):
         self.resource = resource
-        self.operator = None
-        self.operands = []
-
-        # Empty class
-        if name in FORGET_LIST:
-            self.operator = None
-            self.operands = []
-            return
 
         # Used to check that every name exists
         self.reference_list = ladl_list if self.resource == 'LADL' else lvf_list
 
-        token_list = self._tokenize(name)
-        if len(token_list) == 1:
-            unique_token = token_list[0]
-            if not unique_token in self.reference_list:
-                raise UnknownClassException(unique_token)
-            self.operands = [unique_token]
-        else:
-            self.parse(token_list)
+        try:
+            token_list = FrenchMapping._tokenize(name)
+            self.parse_tree = FrenchMapping._parse(token_list, self.reference_list)
+        except (SyntaxErrorException, UnknownClassException) as e:
+            raise e
+        except:   # We don't want to send anything else than our errors
+            mail_managers('Unknown error', traceback.format_exc())
+            raise UnknownErrorException(name)
 
     @staticmethod
     def _tokenize(name):
@@ -62,7 +68,7 @@ class FrenchMapping(object):
                         current_token = ''
                     token_list.append(c)
             elif c in ['+', '-']:
-                if token_list and token_list[-1] != '[' or name[i+1] == ' ':
+                if c == '+' and (token_list and token_list[-1] != '[' or len(name) > i and name[i+1] == ' '):
                     raise SyntaxErrorException('Pas d\'espace autour du +', name)
                 elif current_token:
                     raise SyntaxErrorException('- doit arriver après [, pas {}'.format(current_token), name)
@@ -75,82 +81,109 @@ class FrenchMapping(object):
             token_list.append(current_token)
             current_token = ''
 
+        for i, token in enumerate(token_list):
+            if token == 'et':
+                token_list[i] = 'and'
+            elif token == 'ou':
+                token_list[i] = 'or'
+
         return token_list
 
-        return [t.strip() for t in result.split(' ') if t.strip() != '']
+    @staticmethod
+    def _parse(token_list, reference_list):
+        if not token_list:
+            return {}
+        elif len(token_list) == 1:
+            class_name = token_list[0]
+            if class_name in FORGET_LIST:
+                return {}
+            if not class_name in reference_list:
+                raise UnknownClassException(class_name)
+            return {'leaf': (class_name, None)}
+        else:
+            parse_tree = {'children': []}
+            i = 0
+            while i < len(token_list):
+                if token_list[i] in ['and', 'or']:
+                    if 'operator' in parse_tree and parse_tree['operator'] != token_list[i]:
+                        raise SyntaxErrorException('Combinaison de "ou" et "et"', " ".join(token_list))
+                    parse_tree['operator'] = token_list[i]
+                elif token_list[i] == '(':
+                    j = i
+                    while token_list[j] != ')':
+                        j += 1
+                    parse_tree['children'].append(FrenchMapping._parse(token_list[i+1:j], reference_list))
+                    i = j + 1
+                elif token_list[i] == '[':
+                    j = i
+                    while token_list[j] != ']':
+                        j += 1
+                    class_name, restriction = parse_tree['children'][-1]['leaf']
+                    if not class_name in reference_list:
+                        raise UnknownClassException(class_name)
 
-    def parse(self, token_list):
-        i = 0
-        while i < len(token_list):
-            if token_list[i] in ['et', 'ou']:
-                if self.operator and self.operator != token_list[i]:
-                    raise SyntaxErrorException('Combinaison de "ou" et "et"', " ".join(token_list))
-                self.operator = token_list[i]
-            elif token_list[i] == '(':
-                j = i
-                while token_list[j] != ')':
-                    j += 1
-                self.operands.append(FrenchMapping(self.resource, " ".join(token_list[i+1:j])))
-                i = j + 1
-            # TODO currently ignoring square brackets
-            elif token_list[i] == '[':
-                while token_list[i] != ']':
-                    i += 1
+                    assert restriction == None
+                    restr = token_list[i+1] + ' '.join(token_list[i+2:j])
+                    parse_tree['children'][-1]['leaf'] = (class_name, restr)
+                    i = j + 1
+                else:
+                    parse_tree['children'].append(FrenchMapping._parse(token_list[i:i+1], reference_list))
+
                 i += 1
-            else:
-                self.operands.append(FrenchMapping(self.resource, token_list[i]))
 
-            i += 1
+            if 'children' in parse_tree and not 'operator' in parse_tree:
+                assert len(parse_tree['children']) == 1
+                return parse_tree['children'][0]
 
-        if self.operator == 'et':
-            self.operator = 'and'
-        elif self.operator == 'ou':
-            self.operator = 'or'
-
+            return parse_tree
 
     def infix(self):
-        if not self.operator:
-            if not self.operands:
+        def infix_aux(parse_tree):
+            if not parse_tree:
                 return ''
+            elif 'leaf' in parse_tree:
+                class_name, restr = parse_tree['leaf']
+                if restr is not None:
+                    return '{}[{}]'.format(class_name, restr)
+                else:
+                    return class_name
+            elif 'operator' in parse_tree:
+                children_infix = [infix_aux(c) for c in parse_tree['children']]
+                return '({} {})'.format(parse_tree['operator'], ' '.join(children_infix))
             else:
-                assert(len(self.operands) == 1)
-                return self.operands[0]
-        else:
-            return "({} {})".format(self.operator, " ".join([o.infix() for o in self.operands]))
+                assert False
 
-    def entries(self):
-        if not self.operator:
-            if not self.operands:
-                return []
-            else:
-                assert(len(self.operands) == 1)
-                return [self.operands[0]]
-        else:
-            entry_list = []
-            for o in self.operands:
-                entry_list.extend(o.entries())
-
-        return entry_list
+        return infix_aux(self.parse_tree)
 
     def flat_parse(self):
         """
         "A ou B" return [('A', True), ('ou', False), ('B', True)]
         """
-        if not self.operator:
-            if not self.operands:
-                return [('∅', False)]
-            else:
-                assert(len(self.operands) == 1)
-                return [(self.operands[0], True)]
-        else:
-            parts = []
-            french_operator = 'et' if self.operator == 'and' else 'ou'
-            for o in self.operands:
-                parts.extend(o.flat_parse())
-                parts.append((french_operator, False))
+        def flat_parse_aux(parse_tree):
+            if not parse_tree:
+                return [('∅', None)]
+            elif 'leaf' in parse_tree:
+                class_name, restr = parse_tree['leaf']
+                if restr is not None:
+                    return [('{}[{}]'.format(class_name, restr), class_name)]
+                else:
+                    return [(class_name, class_name)]
+            elif 'operator' in parse_tree:
+                french_operators = {'or': 'ou', 'and': 'et'}
+                parts = [('(', None)]
+                if parse_tree['children']:
+                    for c in parse_tree['children']:
+                        parts.extend(flat_parse_aux(c))
+                        parts.append((french_operators[parse_tree['operator']], None))
+                    parts.pop()  # remove last unneeded operator
+                parts.append((')', None))
+                return parts
 
-            parts.pop()
-            return parts
+        flat_parts = flat_parse_aux(self.parse_tree)
+
+        if len(flat_parts) > 1:
+            flat_parts = flat_parts[1:-1]
+        return flat_parts
                 
 
 # Module level constants

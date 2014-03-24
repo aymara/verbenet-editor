@@ -20,6 +20,14 @@ with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') 
 with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
     verb_dict = pickle.load(f)
 
+class UnknownColumnException(Exception):
+    def __init__(self, column, class_name):
+        # Remove + or -
+        self.column = column[1:]
+        self.class_name = class_name
+
+    def __str__(self):
+        return 'La classe {} n\'a pas de colonne {}'.format(self.class_name, self.column)
 
 def parse_path(specific_class):
     path = []
@@ -80,9 +88,17 @@ def verbs_for_one_lvf_class(lvf_dict, lvf_path):
         return verb_set
 
 
-def verbs_for_one_class(specific_class, resource):
+def verbs_for_one_class(resource, wanted_class):
+    specific_class, column = wanted_class
+
     if resource == 'LADL':
-        return set(ladl_dict[specific_class])
+        if column is None:
+            column = 'all'
+
+        if not column in ladl_dict[specific_class]:
+            raise UnknownColumnException(column, specific_class)
+
+        return set(ladl_dict[specific_class][column])
     elif resource == 'LVF':
         path = parse_path(specific_class)
         return verbs_for_one_lvf_class(lvf_dict, path)
@@ -90,25 +106,26 @@ def verbs_for_one_class(specific_class, resource):
 
 
 def verbs_for_class_mapping(mapping):
-    """Given a pre-processed list (by parse_*), return corresponding verbs"""
-    if mapping.operator is None:
-        if not mapping.operands:
+    def verbs_for_class_mapping_aux(resource, parse_tree):
+        """Given a pre-processed list (by parse_*), return corresponding verbs"""
+        if not parse_tree:
             return []
-        else:
-            assert len(mapping.operands) == 1
-            return verbs_for_one_class(mapping.operands[0], mapping.resource)
-    else:
-        verb_lists = [verbs_for_class_mapping(o) for o in mapping.operands]
-        if mapping.operator == 'and':
-            return set.intersection(*verb_lists)
-        elif mapping.operator == 'or':
-            return set.union(*verb_lists)
+        elif 'leaf' in parse_tree:
+            return verbs_for_one_class(resource, parse_tree['leaf'])
+        elif 'operator' in parse_tree:
+            verb_lists = [verbs_for_class_mapping_aux(resource, c) for c in parse_tree['children']]
+            if parse_tree['operator'] == 'and':
+                return set.intersection(*verb_lists)
+            elif parse_tree['operator'] == 'or':
+                return set.union(*verb_lists)
+
+    return verbs_for_class_mapping_aux(mapping.resource, mapping.parse_tree)
 
 
 
 def translations_for_class(verbs, ladl, lvf):
-    ladl_verbs = verbs_for_class_mapping(parse.FrenchMapping('LADL', ladl)) if ladl else set()
-    lvf_verbs = verbs_for_class_mapping(parse.FrenchMapping('LVF', lvf)) if lvf else set()
+    ladl_verbs = verbs_for_class_mapping(parse.FrenchMapping('LADL', ladl))
+    lvf_verbs = verbs_for_class_mapping(parse.FrenchMapping('LVF', lvf))
 
     candidates = defaultdict(set)
     for v in verbs:
