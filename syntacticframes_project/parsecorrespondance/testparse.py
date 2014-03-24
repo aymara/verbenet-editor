@@ -65,6 +65,10 @@ class TestLADLColumns(unittest.TestCase):
         self.assertEqual(
             parse.FrenchMapping._tokenize('36DT[+N2 détrimentaire]'),
             ['36DT', '[', '+', 'N2', 'détrimentaire', ']'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('38[+inexistant] et 22'),
+            ['38', '[', '+', 'inexistant', ']', 'and', '22'])
+
 
     def test_parse(self):
         self.assertEqual(

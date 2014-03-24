@@ -57,6 +57,9 @@ class FrenchMapping(object):
             if c == ' ' and current_token:
                 token_list.append(current_token)
                 current_token = ''
+            elif c == ' ':
+                # Nothing to do
+                pass
             elif c in ['(', ')', '[', ']']:
                 if c == '[' and name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
@@ -113,7 +116,7 @@ class FrenchMapping(object):
                     while token_list[j] != ')':
                         j += 1
                     parse_tree['children'].append(FrenchMapping._parse(token_list[i+1:j], reference_list))
-                    i = j + 1
+                    i = j
                 elif token_list[i] == '[':
                     j = i
                     while token_list[j] != ']':
@@ -125,7 +128,7 @@ class FrenchMapping(object):
                     assert restriction == None
                     restr = token_list[i+1] + ' '.join(token_list[i+2:j])
                     parse_tree['children'][-1]['leaf'] = (class_name, restr)
-                    i = j + 1
+                    i = j
                 else:
                     parse_tree['children'].append(FrenchMapping._parse(token_list[i:i+1], reference_list))
 

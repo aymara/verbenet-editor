@@ -20,6 +20,10 @@ class TestMappedVerbsFunctions(SimpleTestCase):
         self.assertIn('abîmer', verbs)
         self.assertNotIn('accidenter', verbs)
 
+    def test_mixedcolumns(self):
+        verbs = mappedverbs.verbs_for_class_mapping(
+            parse.FrenchMapping('LADL', '32C[+N1 =: Nabs métaphore] et 37M1'))
+
     def test_36dt(self):
         verbs = mappedverbs.verbs_for_class_mapping(
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire]'))
