@@ -133,7 +133,8 @@ def update(request):
 
 
         if field in refresh_fields:
-            db_vnclass = VerbNetClass.objects.get(name__exact = vn_class)
+            vn_class_name = post['vn_class']
+            db_vnclass = VerbNetClass.objects.get(name__exact = vn_class_name)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
             try:
                 db_rootframeset.update_translations()
