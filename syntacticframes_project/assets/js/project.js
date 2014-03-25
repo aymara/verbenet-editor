@@ -22,10 +22,20 @@ function editable_class_fields() {
         $(this).unbind();
         $('.frameset_editable .external').click(function(e) { e.stopPropagation(); });
         if ($(this).data('field') === 'comment') {
-            $(this).inedit({onEnd: edited_frameset_field, empty_text: '∅', type: 'textarea'});
+            $(this).inedit({onStart: call_resize_textarea, onEnd: edited_frameset_field, empty_text: '∅', type: 'textarea'});
         } else {
             $(this).inedit({onEnd: edited_frameset_field, empty_text: '∅'});
         }
+    });
+
+    $('.class_editable').each(function() {
+        $(this).unbind();
+        $(this).inedit({onStart: call_resize_textarea, onEnd: edited_class_field, empty_text: '∅', type: 'textarea'});
+    });
+
+    $('.levin_editable').each(function() {
+        $(this).unbind();
+        $(this).inedit({onStart: call_resize_textarea, onEnd: edited_levin_field, empty_text: '∅', type: 'textarea'});
     });
 }
 
@@ -116,6 +126,7 @@ function edited_frame_field(input_field, span) {
         url: '/update/',
         type: 'POST',
         data: {
+            type: 'frame',
             field: $(span).data("field"),
             vn_class: vn_class_id,
             frame_id: frame_id,
@@ -136,6 +147,7 @@ function edited_frameset_field(input_field, span) {
         url: '/update/',
         type: 'POST',
         data: {
+            type: 'frameset',
             field: field,
             vn_class: vn_class_id,
             frameset_id: frameset_id,
@@ -143,10 +155,58 @@ function edited_frameset_field(input_field, span) {
         }
     });
 
+    request.done(function() { update_class(that); });
+    return false;
+}
 
-    if (field == 'lvf_string' || field == 'ladl_string') {
-        request.done(function() { update_class(that); });
-    }
+function edited_class_field(input_field, span) {
+    var that = span;
+    var new_val = $(input_field).val();
+
+    var vn_class_id = $(span).closest('article').attr('id')
+
+    var request = $.ajax({
+        url: '/update/',
+        type: 'POST',
+        data: {
+            type: 'vn_class',
+            field: 'comment',
+            vn_class: vn_class_id,
+            label: new_val,
+        }
+    });
+
+    request.done(function() { update_class(that); });
+    return false;
+}
+
+function edited_levin_field(input_field, span) {
+    var that = span;
+    var new_val = $(input_field).val();
+
+    var request = $.ajax({
+        url: '/update/',
+        type: 'POST',
+        data: {
+            type: 'levin',
+            field: 'comment',
+            levin_number: $(that).data('levinnumber'),
+            label: new_val,
+        }
+    });
+
+    request.done(function() { location.reload(true); });
+    return false;
+}
+
+function call_resize_textarea(textarea) {
+    resize_textarea(textarea[0]);
+}
+
+function resize_textarea(textarea) {
+    while($(textarea).outerHeight() < textarea.scrollHeight + parseFloat($(textarea).css("borderTopWidth")) + parseFloat($(textarea).css("borderBottomWidth"))) {
+        $(textarea).height($(textarea).height()+1);
+    };
 }
 
 $(document).ready(function() {
@@ -215,7 +275,6 @@ $(document).ready(function() {
             });
 
             request.done(function() { document.location.reload(true); });
-
             return false;
         });
 
@@ -236,7 +295,6 @@ $(document).ready(function() {
             });
 
             request.done(function() { update_class(that); });
-
             return false;
         });
 
@@ -322,6 +380,17 @@ $(document).ready(function() {
 
             request.done(function() { update_class(that); });
             return false;
+        });
+
+        $(document).on('keyup', 'textarea', function(e) {
+            resize_textarea(this);
+        });
+
+        /* Temporary fix: 'enter' still means 'submit content', not 'new line, please' */
+        $(document).on('keypress', 'textarea', function(e) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+            }
         });
 
     }

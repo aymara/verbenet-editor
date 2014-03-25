@@ -86,7 +86,7 @@ def login(request):
 def update(request):
     if request.method == 'POST':
         post = request.POST
-        vn_class, field, label = post["vn_class"], post["field"], post["label"]
+        field, label, object_type = post["field"], post["label"], post["type"]
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         frameset_fields = ['paragon', 'comment', 'ladl_string', 'lvf_string']
@@ -94,25 +94,42 @@ def update(request):
         refresh_fields = ['ladl_string', 'lvf_string']  # Verbs need to be updated
         emptyset_fields = ['ladl_string', 'lvf_string']  # '∅' becomes ''
 
-        if field in frame_fields:
+        if object_type == 'frame':
+            vn_class_name = post['vn_class']
             frame_id = int(post["frame_id"])
             frame = VerbNetFrame.objects.get(id=frame_id)
             old_label = getattr(frame, field)
             setattr(frame, field, label)
             frame.save()
             logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(when, request.user.username, field, frame_id, vn_class, old_label, label))
-        elif field in frameset_fields:
-            if field in emptyset_fields and label == '∅':
+                    .format(when, request.user.username, field, frame_id, vn_class_name, old_label, label))
+        elif object_type == 'frameset':
+            vn_class_name = post['vn_class']
+            if field in emptyset_fields and label.strip() == '∅':
                 label = ''
             db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
             old_label = getattr(db_frameset, field)
             setattr(db_frameset, field, label)
             db_frameset.save()
             logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'"
-                    .format(when, request.user.username, field, vn_class, db_frameset.name, old_label, label))
+                    .format(when, request.user.username, field, vn_class_name, db_frameset.name, old_label, label))
+        elif object_type == 'vn_class':
+            vn_class_name = post['vn_class']
+            vn_class = VerbNetClass.objects.get(name=vn_class_name)
+            old_label = getattr(vn_class, field)
+            setattr(vn_class, field, label)
+            vn_class.save()
+            logger.info("{}: {} updated {} in VN class {} from '{}' to '{}'"
+                    .format(when, request.user.username, field, vn_class_name, old_label, label))
+        elif object_type == 'levin':
+            levin_class = LevinClass.objects.get(number=post['levin_number'])
+            old_label = getattr(levin_class, field)
+            setattr(levin_class, field, label)
+            levin_class.save()
+            logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'"
+                    .format(when, request.user.username, field, levin_class, old_label, label))
         else:
-            raise Exception("Unknown field {}".format(field))
+            raise Exception("Unknown object type {}".format(object_type))
 
 
         if field in refresh_fields:

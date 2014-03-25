@@ -148,7 +148,6 @@
 				jQuery(input).val(text);
 				jQuery(input).show();	
 				jQuery(input).focus();
-
 			});
 		});
 		

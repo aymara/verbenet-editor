@@ -37,6 +37,10 @@
         {% endif %}
       </h1>
 
+      <div class="levin_editable" data-levinnumber="{{active_class.number}}" data-text="{{ active_class.comment|default:"∅" }}">
+            {{ active_class.comment|default:"∅"|linebreaks }}
+      </div>
+
  
       {% block content %}
         {% for classe in verbnet_classes %}

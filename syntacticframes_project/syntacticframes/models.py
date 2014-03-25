@@ -14,6 +14,7 @@ class LevinClass(models.Model):
     number = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     is_translated = models.BooleanField(default=False)
+    comment = models.TextField(max_length=100000, blank=True)
 
     def __str__(self):
         return "{}: {}".format(self.number, self.name)
@@ -24,6 +25,7 @@ class VerbNetClass(models.Model):
     """A high-level VerbNet class (eg. put-9.1)"""
     levin_class = models.ForeignKey(LevinClass)
     name = models.CharField(max_length=100)
+    comment = models.TextField(max_length=100000, blank=True)
 
     def number(self):
         class_number = self.name.split('-')[1]
@@ -58,7 +60,7 @@ class VerbNetFrameSet(MPTTModel):
     removed = models.BooleanField(default=False)
 
     paragon = models.CharField(max_length=100, blank=True)
-    comment = models.CharField(max_length=1000, blank=True)
+    comment = models.TextField(max_length=100000, blank=True)
     ladl_string = models.CharField(max_length=100, blank=True)
     lvf_string = models.CharField(max_length=100, blank=True)
 

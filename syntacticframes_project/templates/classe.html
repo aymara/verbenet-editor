@@ -8,14 +8,21 @@
                 <a href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php" class="external"><i class="icon-share-alt"></i></a>
             </h2>
 
+            <div class="class_editable" data-text="{{classe.comment|default:"∅"}}">
+                {{ classe.comment|default:"∅"|linebreaks }}
+            </div>
+
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
             <div class="subclass" id="{{node.id}}">
                 {% if node.removed %}
-                    <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}} cachée</h3>
-                    {% if user.is_authenticated %}
-                        <p><button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer cette classe</button></p>
-                    {% endif %}
+                    <h3 id="{{node.name}}" name="{{node.name}}">
+                        Classe {{node.name}} cachée
+                        {% if user.is_authenticated %}
+                            <button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer</button>
+                        {% endif %}
+                    </h3>
+
                     <p>Frames :</p>
                     <ul>
                     {% for frame in node.verbnetframe_set.all %}
@@ -47,11 +54,15 @@
                                 {% endif %}
                             {% endfor %}
                         {% endspaceless %}</span>
+                        {% if user.is_authenticated %}
+                            <button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher</button>
+                        {% endif %}
                     </h3>
 
-                    {% if user.is_authenticated %}
-                        <p><button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher cette sous-classe</button></p>
-                    {% endif %}
+                    <div class="frameset_editable" data-field="comment" data-text="{{node.comment|default:"∅"}}">
+                        {{ node.comment|default:"∅"|linebreaks }}
+                     </div>
+
 
                     <ul>
                     {# Paragon and comment #}
@@ -59,16 +70,6 @@
                         <span class="frameset_editable" data-field="paragon">{% spaceless %}
                         {% if node.paragon %}
                             {{ node.paragon }}
-                        {% else %}
-                            ∅
-                        {% endif %}
-                        {% endspaceless %}</span>
-                    </li>
-                    <li>
-                        Commentaire :
-                        <span class="frameset_editable" data-field="comment">{% spaceless %}
-                        {% if node.comment %}
-                            {{ node.comment }}
                         {% else %}
                             ∅
                         {% endif %}
