@@ -50,35 +50,41 @@ class FrenchMapping(object):
     def _tokenize(name):
         token_list = []
         current_token = ''
+        i = 0
 
-        for i in range(len(name)):
+        while i < len(name):
             c = name[i]
 
             if c == ' ' and current_token:
                 token_list.append(current_token)
                 current_token = ''
-            elif c == ' ':
-                # Nothing to do
-                pass
-            elif c in ['(', ')', '[', ']']:
-                if c == '[' and name[i-1] == ' ':
+            elif c == '[':
+                if name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
-                elif c == '[' and name[i+1] not in ['-', '+']:
+                elif name[i+1] not in ['-', '+']:
                     raise SyntaxErrorException('+ ou - requis après un crochet', name)
                 else:
                     if current_token:
                         token_list.append(current_token)
                         current_token = ''
-                    token_list.append(c)
-            elif c in ['+', '-']:
-                if c == '+' and (token_list and token_list[-1] != '[' or len(name) > i and name[i+1] == ' '):
-                    raise SyntaxErrorException('Pas d\'espace autour du +', name)
-                elif current_token:
-                    raise SyntaxErrorException('- doit arriver après [, pas {}'.format(current_token), name)
-                else:
-                    token_list.append(c)
+
+                    token_list.append(c)  # [
+                    token_list.append(name[i+1])  # + or -
+                    j = i + 2
+                    while name[j] != ']':
+                        j += 1
+                    token_list.append(name[i+2:j])  # restr
+                    token_list.append(name[j])  # ]
+                    i = j + 1
+            elif c in ['(', ')']:
+                if current_token:
+                    token_list.append(current_token)
+                    current_token = ''
+                token_list.append(c)
             else:
                 current_token += c
+
+            i += 1
 
         if current_token:
             token_list.append(current_token)
@@ -118,17 +124,14 @@ class FrenchMapping(object):
                     parse_tree['children'].append(FrenchMapping._parse(token_list[i+1:j], reference_list))
                     i = j
                 elif token_list[i] == '[':
-                    j = i
-                    while token_list[j] != ']':
-                        j += 1
                     class_name, restriction = parse_tree['children'][-1]['leaf']
                     if not class_name in reference_list:
                         raise UnknownClassException(class_name)
 
                     assert restriction == None
-                    restr = token_list[i+1] + ' '.join(token_list[i+2:j])
+                    restr = token_list[i+1] + token_list[i+2]
                     parse_tree['children'][-1]['leaf'] = (class_name, restr)
-                    i = j
+                    i = i + 3
                 else:
                     parse_tree['children'].append(FrenchMapping._parse(token_list[i:i+1], reference_list))
 

@@ -58,16 +58,19 @@ class TestLADLColumns(unittest.TestCase):
     def test_tokenize(self):
         self.assertEqual(
             parse.FrenchMapping._tokenize('38L[+N1 V W]'),
-            ['38L', '[', '+', 'N1', 'V', 'W', ']'])
+            ['38L', '[', '+', 'N1 V W', ']'])
         self.assertEqual(
             parse.FrenchMapping._tokenize('38L[-N1 V W]'),
-            ['38L', '[', '-', 'N1', 'V', 'W', ']'])
+            ['38L', '[', '-', 'N1 V W', ']'])
         self.assertEqual(
             parse.FrenchMapping._tokenize('36DT[+N2 détrimentaire]'),
-            ['36DT', '[', '+', 'N2', 'détrimentaire', ']'])
+            ['36DT', '[', '+', 'N2 détrimentaire', ']'])
         self.assertEqual(
             parse.FrenchMapping._tokenize('38[+inexistant] et 22'),
             ['38', '[', '+', 'inexistant', ']', 'and', '22'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('38L[+V-n transport (forme V-n)]'),
+            ['38L', '[', '+', 'V-n transport (forme V-n)', ']'])
 
 
     def test_parse(self):
