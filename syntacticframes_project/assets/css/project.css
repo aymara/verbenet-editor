@@ -90,9 +90,7 @@ textarea {
 
 .frame form { margin-bottom: 0 }
 .frame:after { clear: both }
-.frame input { padding: 1px; margin-bottom: 0 }
 .frame table input { width: 80% }
-.frame button[type="submit"] { margin-top: 1em }
 
 .new_frame button { margin-top: 0.5em }
 
@@ -101,3 +99,9 @@ textarea {
 
 /* Stats */
 table.emptytranslations .entry { width: 20em }
+
+/* JS edits */
+
+textarea.inedit + .btn { margin-bottom: 1em }
+input.inedit + .btn { margin: 0 5px }
+input.inedit[type='text'] { margin-bottom: 0 }

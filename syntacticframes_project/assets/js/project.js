@@ -1,5 +1,24 @@
 /* Project specific Javascript goes here. */
 
+var def_opts = {
+    'empty_text': '∅',
+    'style': 'inedit'
+};
+
+function linebreaks(value) {
+    /* Converts new lines into <p> and <br />s.
+     * Should be as close as possible to django.utils.html.linebreaks */
+    var para_list;
+
+    // normalize newlines: \n\r is accepted by all browsers
+    value = value.replace(/\n(?!\r)/g, "\n\r");
+    para_list = value.split(/(?:\n\r){2,}/);
+    para_list = para_list.map(function(para) {
+        return '<p>' + para.replace('\n\r', '<br />') + '</p>';
+    });
+    return para_list.join('\n\r\n\r')
+}
+
 function show_plus() {
     // Show/hide verbs that are not interesting
     var showLink = $('<a/>').attr('class', 'plus_link').text('[+]').prop('href', '#');
@@ -15,27 +34,27 @@ function editable_class_fields() {
     // Edit all editable fields
     $('.frame_editable').each(function() {
         $(this).unbind();
-        $(this).inedit({onEnd: edited_frame_field, empty_text: '∅'});
+        $(this).inedit($.extend({}, def_opts, {onEnd: edited_frame_field, empty_text: '∅'}));
     });
 
     $('.frameset_editable').each(function() {
         $(this).unbind();
         $('.frameset_editable .external').click(function(e) { e.stopPropagation(); });
         if ($(this).data('field') === 'comment') {
-            $(this).inedit({onStart: call_resize_textarea, onEnd: edited_frameset_field, empty_text: '∅', type: 'textarea'});
+            $(this).inedit($.extend({}, def_opts, {onStart: call_resize_textarea, onEnd: edited_frameset_field, type: 'textarea'}));
         } else {
-            $(this).inedit({onEnd: edited_frameset_field, empty_text: '∅'});
+            $(this).inedit($.extend({}, def_opts, {onEnd: edited_frameset_field}));
         }
     });
 
     $('.class_editable').each(function() {
         $(this).unbind();
-        $(this).inedit({onStart: call_resize_textarea, onEnd: edited_class_field, empty_text: '∅', type: 'textarea'});
+        $(this).inedit($.extend({}, def_opts, {onStart: call_resize_textarea, onEnd: edited_class_field, type: 'textarea'}));
     });
 
     $('.levin_editable').each(function() {
         $(this).unbind();
-        $(this).inedit({onStart: call_resize_textarea, onEnd: edited_levin_field, empty_text: '∅', type: 'textarea'});
+        $(this).inedit($.extend({}, def_opts, {onStart: call_resize_textarea, onEnd: edited_levin_field, type: 'textarea'}));
     });
 }
 
@@ -155,13 +174,22 @@ function edited_frameset_field(input_field, span) {
         }
     });
 
-    request.done(function() { update_class(that); });
-    return false;
+    if ($(span).data('field') == 'comment') {
+        if (new_val.trim() == '') {
+            new_val = def_opts.empty_text
+        }
+        var formatted_new_val = linebreaks(new_val);
+        $(span).html(formatted_new_val);
+    } else {
+        request.done(function() { update_class(that); });
+    }
 }
 
 function edited_class_field(input_field, span) {
     var that = span;
     var new_val = $(input_field).val();
+    var formatted_new_val = linebreaks(new_val);
+    $(span).html(formatted_new_val);
 
     var vn_class_id = $(span).closest('article').attr('id')
 
@@ -175,14 +203,13 @@ function edited_class_field(input_field, span) {
             label: new_val,
         }
     });
-
-    request.done(function() { update_class(that); });
-    return false;
 }
 
 function edited_levin_field(input_field, span) {
     var that = span;
     var new_val = $(input_field).val();
+    var formatted_new_val = linebreaks(new_val);
+    $(span).html(formatted_new_val);
 
     var request = $.ajax({
         url: '/update/',
@@ -194,9 +221,6 @@ function edited_levin_field(input_field, span) {
             label: new_val,
         }
     });
-
-    request.done(function() { location.reload(true); });
-    return false;
 }
 
 function call_resize_textarea(textarea) {
@@ -385,14 +409,6 @@ $(document).ready(function() {
         $(document).on('keyup', 'textarea', function(e) {
             resize_textarea(this);
         });
-
-        /* Temporary fix: 'enter' still means 'submit content', not 'new line, please' */
-        $(document).on('keypress', 'textarea', function(e) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-            }
-        });
-
     }
 
 });
