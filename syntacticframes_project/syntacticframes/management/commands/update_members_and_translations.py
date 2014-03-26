@@ -9,6 +9,7 @@ This command ensures that after an algorithmic change, everything is
 consistent.
 """
 
+import logging
 from time import gmtime, strftime
 
 from django.core.management.base import BaseCommand
@@ -18,6 +19,7 @@ from syntacticframes.models import VerbNetClass
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
+        verb_logger = logging.getLogger('verbs')
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
         verb_logger.info("{}: Start full update of verbs (members and translations)".format(when))
 
