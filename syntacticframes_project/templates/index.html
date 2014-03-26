@@ -33,7 +33,7 @@
       <h1 class="{{ active_class.is_translated }}">
         <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
         {% if user.is_authenticated and not active_class.is_translated %}
-          <button data-levinid="{{active_class.number}}" class="btn validate_class"><i class="icon-ok"></i> Valider cette classe</button>
+          <button data-levinid="{{active_class.number}}" class="btn validate_class"><i class="icon-ok"></i> Valider</button>
         {% endif %}
       </h1>
 
