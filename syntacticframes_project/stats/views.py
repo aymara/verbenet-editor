@@ -45,14 +45,14 @@ def empty_translations():
 
         members = [member.lemma for member in db_fs.verbnetmember_set.all()]
         if members:
-            if ladl not in ['-', '?', '∅']:
-                ladl_verbs = translations_for_class(members, ladl, None)
-                if not is_any_from_resource(ladl_verbs, 'ladl'):
-                    errors.append((db_fs.name, url_of_fs(db_fs), 'ladl', ladl, ", ".join(members)))
-            if lvf not in ['-', '?', '∅']:
-                lvf_verbs = translations_for_class(members, None, lvf)
-                if not is_any_from_resource(lvf_verbs, 'lvf'):
-                    errors.append((db_fs.name, url_of_fs(db_fs), 'lvf', lvf, ", ".join(members)))
+            final_translations = translations_for_class(members, ladl, lvf)
+            ladl_verbs = [t for t final_translations if t[1] == 'ladl']
+            lvf_verbs = [t for t final_translations if t[1] == 'lvf']
+
+            if not is_any_from_resource(ladl_verbs, 'ladl'):
+                errors.append((db_fs.name, url_of_fs(db_fs), 'ladl', ladl, ", ".join(members)))
+            if not is_any_from_resource(lvf_verbs, 'lvf'):
+                errors.append((db_fs.name, url_of_fs(db_fs), 'lvf', lvf, ", ".join(members)))
 
 
         if db_fs.lvf_string:
