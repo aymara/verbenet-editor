@@ -38,6 +38,8 @@ class FrenchMapping(object):
         # Used to check that every name exists
         self.reference_list = ladl_list if self.resource == 'LADL' else lvf_list
 
+        if name is None: name = ''
+
         try:
             token_list = FrenchMapping._tokenize(name)
             self.parse_tree = FrenchMapping._parse(token_list, self.reference_list)

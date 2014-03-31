@@ -1,8 +1,10 @@
 from django.http import HttpResponse
 from django.template import RequestContext, loader
+from django.core.mail import mail_managers
 
 from syntacticframes.models import VerbNetClass, VerbTranslation, VerbNetFrameSet
 from loadmapping.mappedverbs import translations_for_class
+from parsecorrespondance.parse import UnknownErrorException
 
 
 def index(request):
@@ -43,16 +45,19 @@ def empty_translations():
                 lvf = None
         ladl = db_fs.ladl_string if db_fs.ladl_string else last_ladl
 
-        members = [member.lemma for member in db_fs.verbnetmember_set.all()]
-        if members:
-            final_translations = translations_for_class(members, ladl, lvf)
-            ladl_verbs = [t for t final_translations if t[1] == 'ladl']
-            lvf_verbs = [t for t final_translations if t[1] == 'lvf']
+        try:
+            members = [member.lemma for member in db_fs.verbnetmember_set.all()]
+            if members:
+                final_translations = translations_for_class(members, ladl, lvf)
+                ladl_verbs = [t for t in final_translations if t[1] == 'ladl']
+                lvf_verbs = [t for t in final_translations if t[1] == 'lvf']
 
-            if not is_any_from_resource(ladl_verbs, 'ladl'):
-                errors.append((db_fs.name, url_of_fs(db_fs), 'ladl', ladl, ", ".join(members)))
-            if not is_any_from_resource(lvf_verbs, 'lvf'):
-                errors.append((db_fs.name, url_of_fs(db_fs), 'lvf', lvf, ", ".join(members)))
+                if not is_any_from_resource(ladl_verbs, 'ladl'):
+                    errors.append((db_fs.name, url_of_fs(db_fs), 'ladl', ladl, ", ".join(members)))
+                if not is_any_from_resource(lvf_verbs, 'lvf'):
+                    errors.append((db_fs.name, url_of_fs(db_fs), 'lvf', lvf, ", ".join(members)))
+        except UnknownErrorException as e:
+            mail_managers('Error was in {}'.format(db_fs.name), message='')                
 
 
         if db_fs.lvf_string:
