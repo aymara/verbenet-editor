@@ -21,11 +21,12 @@ class UnknownErrorException(Exception):
     """
     Errors that were not identified precisely. They make FrenchMapping.__init__ fail.
     """
-    def __init__(self, name):
+    def __init__(self, resource, name):
+        self.resource = resource
         self.name = name
 
     def __str__(self):
-        return 'Erreur : {} invalide'.format(self.name)
+        return 'Erreur : {} ({}) invalide'.format(self.name, self.resource)
 
 class FrenchMapping(object):
     """
@@ -44,7 +45,7 @@ class FrenchMapping(object):
             raise e
         except:   # We don't want to send anything else than our errors
             mail_managers('Unknown error', traceback.format_exc())
-            raise UnknownErrorException(name)
+            raise UnknownErrorException(resource, name)
 
     @staticmethod
     def _tokenize(name):
