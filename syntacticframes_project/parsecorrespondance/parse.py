@@ -44,7 +44,7 @@ class FrenchMapping(object):
         except (SyntaxErrorException, UnknownClassException) as e:
             raise e
         except:   # We don't want to send anything else than our errors
-            mail_managers('Unknown error', traceback.format_exc())
+            mail_managers('Unknown error for {}'.format(name), traceback.format_exc())
             raise UnknownErrorException(resource, name)
 
     @staticmethod
