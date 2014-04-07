@@ -64,19 +64,39 @@ class FrenchMapping(object):
             elif c == '[':
                 if name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
-                elif name[i+1] not in ['-', '+']:
-                    raise SyntaxErrorException('+ ou - requis après un crochet', name)
                 else:
                     if current_token:
                         token_list.append(current_token)
                         current_token = ''
 
                     token_list.append(c)  # [
-                    token_list.append(name[i+1])  # + or -
+
                     j = i + 2
                     while name[j] != ']':
+                        if len(name) <= j+1:
+                            raise SyntaxErrorException('Crochet ] manquant', name)
                         j += 1
-                    token_list.append(name[i+2:j])  # restr
+
+                    if ' et ' in name[i+1:j] and ' ou ' in name[i+1:j]:
+                        raise SyntaxErrorException('Combinaison de "ou" et "et" dans la restriction {}', name[i+1:j])
+                    elif ' et ' in name[i+1:j]:
+                        restriction_list = name[i+1:j].split(' et ')
+                        restriction_operator = 'et'
+                    elif ' ou ' in name[i+1:j]:
+                        restriction_list = name[i+1:j].split(' ou ')
+                        restriction_operator = 'ou'
+                    else:
+                        restriction_list = [name[i+1:j]]
+                        restriction_operator = None
+
+                    for part in restriction_list:
+                            if part[0] not in ['-', '+']:
+                                raise SyntaxErrorException('+ ou - requis après un crochet', name)
+                            token_list.append(part[0])
+                            token_list.append(part[1:])
+                            token_list.append(restriction_operator)
+                    token_list.pop()
+
                     token_list.append(name[j])  # ]
                     i = j + 1
             elif c in ['(', ')']:
