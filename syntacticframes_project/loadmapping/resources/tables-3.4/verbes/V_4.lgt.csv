@@ -1,4 +1,4 @@
-"<ID>";"N0 =: Nhum";"N0 =: le fait Qu P";"N0 =: V1-inf W";"<ENT>Ppv";"Ppv =: Neg";"<ENT>V";"Neg";"Aux =: avoir";"Aux =: être";"N0 V";"N0 être V-ant W";"N0 être V-able W";"N0 être V-eux W";"N0 être V-(eur+ateur) W";"N1 =: Nabs";"N1 =: le fait Qu P";"N1 se V de ce Qu P";"N1 se V auprès de N3hum de ce Qu P";"N1 être Vpp de ce Qu P";"[passif par]";"[passif de]";"N0 V N1 contre N2hum";"<OPT>";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"<ID>";"N0 =: Nhum";"N0 =: le fait Qu P";"N0 =: V1-inf W";"<ENT>Ppv";"Ppv =: Neg";"<ENT>V";"Neg";"Aux =: avoir";"Aux =: être";"N0 V";"N0 être V-ant W";"N0 être V-able W";"N0 être V-eux W";"N0 être V-(eur+ateur) W";"N1 =: Nabs";"N1 =: le fait Qu P";"N1 se V de ce Qu P";"N1 se V auprès de N3hum de ce Qu P";"N1 être Vpp de ce Qu P";"[passif par]";"[passif de]";"N0 V N1 contre N2hum";"<OPT>"
 "1";"+";"+";"+";"<E>";"-";"abasourdir";"-";"+";"-";"+";"+";"-";"-";"-";"-";"-";"-";"-";"+";"+";"-";"-";"Cette nouvelle a abasourdi Max"
 "2";"+";"+";"+";"<E>";"-";"abattre";"-";"+";"-";"+";"-";"-";"-";"-";"-";"-";"+";"-";"+";"+";"-";"-";"Que Paul ait dit cela a abattu Max"
 "3";"+";"+";"+";"<E>";"-";"abêtir";"-";"+";"-";"+";"+";"-";"-";"-";"-";"-";"+";"-";"+";"+";"-";"-";"Que Paul soit toujours là abêtit Maria"
@@ -73,7 +73,7 @@
 "72";"+";"+";"+";"<E>";"-";"aveugler";"-";"+";"-";"+";"+";"-";"-";"-";"+";"-";"-";"-";"-";"+";"-";"-";"Qu'on l'ait insulté aveugle Max"
 "73";"-";"+";"+";"<E>";"-";"aveulir";"-";"+";"-";"+";"+";"-";"-";"-";"-";"-";"-";"-";"-";"+";"-";"-";"Les mauvais traitements ont aveuli Max"
 "74";"+";"+";"+";"<E>";"-";"avilir";"-";"+";"-";"+";"+";"-";"-";"-";"-";"-";"-";"-";"-";"+";"-";"-";"Que Max ait cédé a avili Max"
-"75";"~";"~";"~";"<E>";"~";"avoir fourbu";"~";"+";"-";"~";"~";"~";"~";"~";"-";"~";"~";"~";"~";"~";"~";"~";"Qu'il ait tant marché a fourbu Max";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+"75";"~";"~";"~";"<E>";"~";"avoir fourbu";"~";"+";"-";"~";"~";"~";"~";"~";"-";"~";"~";"~";"~";"~";"~";"~";"Qu'il ait tant marché a fourbu Max"
 "76";"+";"+";"+";"<E>";"-";"azimuter";"-";"+";"-";"+";"+";"-";"-";"-";"-";"-";"-";"-";"+";"+";"-";"-";"Qu'Ida l'ait quitté a azimuté Max"
 "77";"+";"+";"+";"<E>";"-";"bafouer";"-";"+";"-";"+";"-";"-";"-";"-";"-";"-";"-";"-";"-";"+";"-";"-";"Que Max dise cela a bafoué Luc"
 "78";"+";"+";"+";"<E>";"-";"bâillonner";"-";"+";"-";"+";"-";"-";"-";"-";"-";"-";"-";"-";"-";"+";"-";"-";"Qu'on ait pris ces mesures bâillonne la presse"
