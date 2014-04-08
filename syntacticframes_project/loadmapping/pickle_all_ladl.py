@@ -79,4 +79,4 @@ def LADL_to_verbes():
 
 print("dumping LADL data")
 with open('data/LADL_to_verbes', 'wb') as f:
-    pickle.dump(LADL_to_verbes(), f, pickle.HIGHEST_PROTOCOL)
+    pickle.dump(LADL_to_verbes(), f, 3)
