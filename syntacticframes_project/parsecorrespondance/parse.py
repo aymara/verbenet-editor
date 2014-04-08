@@ -181,12 +181,18 @@ class FrenchMapping(object):
 
     def infix(self):
         def infix_aux(parse_tree):
+            french_operators = {'or': 'ou', 'and': 'et'}
             if not parse_tree:
                 return ''
             elif 'leaf' in parse_tree:
                 class_name, restr = parse_tree['leaf']
                 if restr is not None:
-                    return '{}[{}]'.format(class_name, restr)
+                    if restr[0]:
+                        restr_string = ' {} '.format(french_operators[restr[0]]).join(restr[1:])
+                    else:
+                        assert len(restr) == 2
+                        restr_string = restr[1]
+                    return '{}[{}]'.format(class_name, restr_string)
                 else:
                     return class_name
             elif 'operator' in parse_tree:

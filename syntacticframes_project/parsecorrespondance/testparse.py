@@ -83,6 +83,9 @@ class TestLADLColumns(unittest.TestCase):
         with self.assertRaises(parse.SyntaxErrorException):
             parse.FrenchMapping('LVF', 'L3b[+1]').infix()
 
+    def test_infix(self):
+        self.assertEqual(parse.FrenchMapping('LADL', '38LD[+A ou +B]').infix(), '38LD[+A ou +B]')
+
     def test_parse(self):
         self.assertEqual(
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire]').parse_tree,
