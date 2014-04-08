@@ -20,9 +20,28 @@ class TestMappedVerbsFunctions(SimpleTestCase):
         self.assertIn('abîmer', verbs)
         self.assertNotIn('accidenter', verbs)
 
-    def test_mixedcolumns(self):
+    def test_two_mixed_columns(self):
+        verbs = mappedverbs.verbs_for_class_mapping(
+            parse.FrenchMapping('LADL', '32C[+N1 =: Nabs métaphore et +N0 être V-n]'))
+        self.assertNotIn('abîmer', verbs)
+        self.assertIn('ankyloser', verbs)
+
+    def test_three_mixed_columns(self):
+        verbs = mappedverbs.verbs_for_class_mapping(
+            parse.FrenchMapping('LADL', '32C[+N1 =: Nabs métaphore et +N0 être V-n et +N1 être Vpp W]'))
+        self.assertNotIn('inspecter', verbs)
+        self.assertIn('ankyloser', verbs)
+
+    def test_ored_columns(self):
+        verbs = mappedverbs.verbs_for_class_mapping(
+            parse.FrenchMapping('LADL', '32C[+N1 V ou +N0 être V-n]'))
+        self.assertIn('ankyloser', verbs)
+        self.assertNotIn('accidenter', verbs)
+
+    def test_column_and_class(self):
         verbs = mappedverbs.verbs_for_class_mapping(
             parse.FrenchMapping('LADL', '32C[+N1 =: Nabs métaphore] et 37M1'))
+        self.assertEqual(verbs, {'envenimer', 'restaurer', 'rafraîchir'})
 
     def test_36dt(self):
         verbs = mappedverbs.verbs_for_class_mapping(

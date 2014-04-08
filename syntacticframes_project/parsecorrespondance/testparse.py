@@ -83,7 +83,10 @@ class TestLADLColumns(unittest.TestCase):
     def test_parse(self):
         self.assertEqual(
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire]').parse_tree,
-            {'leaf': ('36DT', '+N2 détrimentaire')})
+            {'leaf': ('36DT', [None, '+N2 détrimentaire'])})
+        self.assertEqual(
+            parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire ou -N2 être V-n]').parse_tree,
+            {'leaf': ('36DT', ['or', '+N2 détrimentaire', '-N2 être V-n']), })
 
     def test_syntaxerror(self):
         with self.assertRaises(parse.SyntaxErrorException):

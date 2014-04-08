@@ -89,16 +89,27 @@ def verbs_for_one_lvf_class(lvf_dict, lvf_path):
 
 
 def verbs_for_one_class(resource, wanted_class):
-    specific_class, column = wanted_class
+    specific_class, column_list = wanted_class
 
     if resource == 'LADL':
-        if column is None:
-            column = 'all'
+        if column_list is None:
+            return set(ladl_dict[specific_class]['all'])
+        else:
+            if len(column_list) > 2:
+                assert column_list[0] in ['and', 'or']
 
-        if not column in ladl_dict[specific_class]:
-            raise UnknownColumnException(column, specific_class)
+            for column in column_list[1:]:
+                if not column in ladl_dict[specific_class]:
+                    raise UnknownColumnException(column, specific_class)
 
-        return set(ladl_dict[specific_class][column])
+            ladl_verbs = set(ladl_dict[specific_class][column_list[1]])
+            for column in column_list[2:]:
+                if column_list[0] == 'or':
+                    ladl_verbs |= set(ladl_dict[specific_class][column])
+                elif column_list[0] == 'and':
+                    ladl_verbs &= set(ladl_dict[specific_class][column])
+            return ladl_verbs
+
     elif resource == 'LVF':
         path = parse_path(specific_class)
         return verbs_for_one_lvf_class(lvf_dict, path)

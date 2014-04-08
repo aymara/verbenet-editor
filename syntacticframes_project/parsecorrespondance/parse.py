@@ -61,6 +61,7 @@ class FrenchMapping(object):
             if c == ' ' and current_token:
                 token_list.append(current_token)
                 current_token = ''
+            # TODO prevent with LVF
             elif c == '[':
                 if name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
@@ -148,13 +149,24 @@ class FrenchMapping(object):
                     i = j
                 elif token_list[i] == '[':
                     class_name, restriction = parse_tree['children'][-1]['leaf']
+                    assert restriction == None
                     if not class_name in reference_list:
                         raise UnknownClassException(class_name)
 
-                    assert restriction == None
-                    restr = token_list[i+1] + token_list[i+2]
-                    parse_tree['children'][-1]['leaf'] = (class_name, restr)
-                    i = i + 3
+                    restr_op_list = []
+                    operator = None
+                    i += 1
+                    while token_list[i] != ']':
+                        if token_list[i] in ['and', 'or']:
+                            operator = token_list[i]
+                            i += 1
+                        else:
+                            restr_op_list.append(token_list[i] + token_list[i+1])
+                            i += 2
+
+                    restr_op_list = [operator] + restr_op_list
+
+                    parse_tree['children'][-1]['leaf'] = (class_name, restr_op_list)
                 else:
                     parse_tree['children'].append(FrenchMapping._parse(token_list[i:i+1], reference_list))
 
@@ -189,16 +201,21 @@ class FrenchMapping(object):
         "A ou B" return [('A', True), ('ou', False), ('B', True)]
         """
         def flat_parse_aux(parse_tree):
+            french_operators = {'or': 'ou', 'and': 'et'}
             if not parse_tree:
                 return [('∅', None)]
             elif 'leaf' in parse_tree:
                 class_name, restr = parse_tree['leaf']
                 if restr is not None:
-                    return [('{}[{}]'.format(class_name, restr), class_name)]
+                    if restr[0]:
+                        restr_string = ' {} '.format(french_operators[restr[0]].join(restr[1:]))
+                    else:
+                        assert len(restr) == 2
+                        restr_string = restr[1]
+                    return [('{}[{}]'.format(class_name, restr_string), class_name)]
                 else:
                     return [(class_name, class_name)]
             elif 'operator' in parse_tree:
-                french_operators = {'or': 'ou', 'and': 'et'}
                 parts = [('(', None)]
                 if parse_tree['children']:
                     for c in parse_tree['children']:
