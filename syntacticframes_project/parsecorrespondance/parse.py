@@ -41,7 +41,7 @@ class FrenchMapping(object):
         if name is None: name = ''
 
         try:
-            token_list = FrenchMapping._tokenize(name)
+            token_list = FrenchMapping._tokenize(self.resource, name)
             self.parse_tree = FrenchMapping._parse(token_list, self.reference_list)
         except (SyntaxErrorException, UnknownClassException) as e:
             raise e
@@ -50,7 +50,7 @@ class FrenchMapping(object):
             raise UnknownErrorException(resource, name)
 
     @staticmethod
-    def _tokenize(name):
+    def _tokenize(resource, name):
         token_list = []
         current_token = ''
         i = 0
@@ -61,9 +61,10 @@ class FrenchMapping(object):
             if c == ' ' and current_token:
                 token_list.append(current_token)
                 current_token = ''
-            # TODO prevent with LVF
             elif c == '[':
-                if name[i-1] == ' ':
+                if resource == 'LVF':
+                    raise SyntaxErrorException('Pas de restriction de colonne avec le LVF', name)
+                elif name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
                 else:
                     if current_token:

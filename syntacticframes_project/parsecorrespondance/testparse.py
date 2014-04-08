@@ -5,12 +5,12 @@ from parsecorrespondance import parse
 class TestParsingFunctions(unittest.TestCase):
 
     def test_tokenize(self):
-        self.assertEqual(parse.FrenchMapping._tokenize('L3b'), ['L3b'])
-        self.assertEqual(parse.FrenchMapping._tokenize('L3b ou L3c'), ['L3b', 'or', 'L3c'])
+        self.assertEqual(parse.FrenchMapping._tokenize('LVF', 'L3b'), ['L3b'])
+        self.assertEqual(parse.FrenchMapping._tokenize('LVF', 'L3b ou L3c'), ['L3b', 'or', 'L3c'])
         self.assertEqual(
-            parse.FrenchMapping._tokenize('L3b ou(L3c)'),
+            parse.FrenchMapping._tokenize('LVF', 'L3b ou(L3c)'),
             ['L3b', 'or', '(', 'L3c', ')'])
-        self.assertEqual(parse.FrenchMapping._tokenize('(L3b'), ['(', 'L3b'])
+        self.assertEqual(parse.FrenchMapping._tokenize('LVF', '(L3b'), ['(', 'L3b'])
 
     def test_nothing(self):
         self.assertEqual(parse.FrenchMapping('LADL', '-').infix(), '')
@@ -57,28 +57,31 @@ class TestParsingFunctions(unittest.TestCase):
 class TestLADLColumns(unittest.TestCase):
     def test_tokenize(self):
         self.assertEqual(
-            parse.FrenchMapping._tokenize('38L[+N1 V W]'),
+            parse.FrenchMapping._tokenize('LADL', '38L[+N1 V W]'),
             ['38L', '[', '+', 'N1 V W', ']'])
         self.assertEqual(
-            parse.FrenchMapping._tokenize('38L[-N1 V W]'),
+            parse.FrenchMapping._tokenize('LADL', '38L[-N1 V W]'),
             ['38L', '[', '-', 'N1 V W', ']'])
         self.assertEqual(
-            parse.FrenchMapping._tokenize('36DT[+N2 détrimentaire]'),
+            parse.FrenchMapping._tokenize('LADL', '36DT[+N2 détrimentaire]'),
             ['36DT', '[', '+', 'N2 détrimentaire', ']'])
         self.assertEqual(
-            parse.FrenchMapping._tokenize('38[+inexistant] et 22'),
+            parse.FrenchMapping._tokenize('LADL', '38[+inexistant] et 22'),
             ['38', '[', '+', 'inexistant', ']', 'and', '22'])
         self.assertEqual(
-            parse.FrenchMapping._tokenize('38L[+V-n transport (forme V-n)]'),
+            parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport (forme V-n)]'),
             ['38L', '[', '+', 'V-n transport (forme V-n)', ']'])
         self.assertEqual(
-            parse.FrenchMapping._tokenize('38L[+V-n transport (forme V-n) et +N0 V]'),
+            parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport (forme V-n) et +N0 V]'),
             ['38L', '[', '+', 'V-n transport (forme V-n)', 'and', '+', 'N0 V', ']'])
         with self.assertRaises(parse.SyntaxErrorException):
-            parse.FrenchMapping._tokenize('38L[+V-n transport ou -N et +N0 V]'),
+            parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou -N et +N0 V]'),
         with self.assertRaises(parse.SyntaxErrorException):
-            parse.FrenchMapping._tokenize('38L[+V-n transport ou N]'),
+            parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou N]'),
 
+    def test_lvf_no_column(self):
+        with self.assertRaises(parse.SyntaxErrorException):
+            parse.FrenchMapping('LVF', 'L3b[+1]').infix()
 
     def test_parse(self):
         self.assertEqual(
