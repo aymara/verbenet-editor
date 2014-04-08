@@ -12,44 +12,68 @@ def LADL_to_verbes():
     verbes = defaultdict(dict)
 
     for f in glob('resources/tables-3.4/verbes/*.csv') + glob('resources/tables-3.4/figees/*.csv'):
-        with open(f) as csvfile:
-            # Si pas verbe, alors figée
-            try:
-                classe = re.search('V_([^.]+).lgt.csv', os.path.basename(f)).group(1)
-            except AttributeError as e:
-                classe = re.search('([^.]+).lgt.csv', os.path.basename(f)).group(1)
+        csvfile = open(f)
+        # Si pas verbe, alors figée
+        try:
+            classe = re.search('V_([^.]+).lgt.csv', os.path.basename(f)).group(1)
+        except AttributeError as e:
+            classe = re.search('([^.]+).lgt.csv', os.path.basename(f)).group(1)
 
-            verbes[classe]['all'] = []
+        ladlreader = csv.reader(csvfile, delimiter=';', quotechar='"')
+        verbes[classe]['all'] = []
 
-            ladlreader = csv.reader(csvfile, delimiter=';', quotechar='"')
-            first_row = next(ladlreader)
-            print(f)
-            try:
-                verbe_index = first_row.index('<ENT>V')
-                pronominal_index = first_row.index('<ENT>Ppv')
+        # Read verb position from first line
+        first_line = next(ladlreader)
+        try:
+            verbe_index = first_line.index('<ENT>V')
+            pronominal_index = first_line.index('<ENT>Ppv')
+        except ValueError as e:
+            print('ERROR in {}'.format(f))
+            continue
 
-                for row in ladlreader:
-                    if len(row) > 1:
-                        # First search verb
-                        verbes[classe]['all'].append(row[verbe_index])
-                        pronominal_marker = row[pronominal_index]
-                        if pronominal_marker != "<E>":
-                            verbes[classe]['all'][-1] += " {}".format(pronominal_marker)
-                        verb = verbes[classe]['all'][-1] 
+        # Read verb attributes with other lines
+        for line in ladlreader:
+            if len(line) <= 1:
+                continue
 
-                        # Then store column information
-                        for i, col in enumerate(row):
-                            # Make sure lists for - and + exist, even if empty
-                            if col in ['-', '+', '~']:
-                                for possible in ['-', '+']:
-                                    col_name = '{}{}'.format(possible, first_row[i])
-                                    if not col_name in verbes[classe]:
-                                        verbes[classe][col_name] = []
+            # Search verb
+            verbes[classe]['all'].append(line[verbe_index])
+            pronominal_marker = line[pronominal_index]
+            if pronominal_marker != "<E>":
+                verbes[classe]['all'][-1] += " {}".format(pronominal_marker)
+            verb = verbes[classe]['all'][-1]
 
-                            if col in ['-', '+']:
-                                col_name = '{}{}'.format(col, first_row[i])  # '+N2 détrimentaire'
-                                verbes[classe][col_name].append(verb)
-            except: continue
+            # Store column information
+            for i, col in enumerate(line):
+                # Make sure lists for - and + exist, even if empty
+                if col in ['-', '+', '~', '<E>']:
+                    for possible in ['-', '+']:
+                        col_name = '{}{}'.format(possible, first_line[i])
+                        if not col_name in verbes[classe]:
+                            verbes[classe][col_name] = []
+
+        csvfile = open(f)
+        ladlreader = csv.reader(csvfile, delimiter=';', quotechar='"')
+        next(ladlreader)
+        for verb_id, line in enumerate(ladlreader):
+            if len(line) <= 1:
+                continue
+            assert len(line) == len(first_line)
+
+            for i, col in enumerate(line):
+                if col == '~':
+                    continue
+
+                col_name = first_line[i]
+                if '+{}'.format(col_name) in verbes[classe]:
+                    if col in ['-', '<E>']:
+                        col = '-'
+                    else:
+                        col = '+'
+                    col_name = '{}{}'.format(col, first_line[i])  # '+N2 détrimentaire'
+                    verbes[classe][col_name].append(verbes[classe]['all'][verb_id])
+
+        print(f)
 
     return verbes
 

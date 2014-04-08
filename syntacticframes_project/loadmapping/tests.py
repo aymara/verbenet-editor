@@ -43,6 +43,12 @@ class TestMappedVerbsFunctions(SimpleTestCase):
             parse.FrenchMapping('LADL', '32C[+N1 =: Nabs métaphore] et 37M1'))
         self.assertEqual(verbs, {'envenimer', 'restaurer', 'rafraîchir'})
 
+    def test_noun_column(self):
+        verbs = mappedverbs.verbs_for_class_mapping(parse.FrenchMapping('LADL', '32C[+V-n instrument (forme V-n)]'))
+        self.assertNotIn('acérer', verbs)
+        self.assertIn('baratter', verbs)
+        self.assertIn('shampouiner', verbs)
+
     def test_36dt(self):
         verbs = mappedverbs.verbs_for_class_mapping(
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire]'))
