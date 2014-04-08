@@ -94,6 +94,11 @@ class TestLADLColumns(unittest.TestCase):
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire ou -N2 être V-n]').parse_tree,
             {'leaf': ('36DT', ['or', '+N2 détrimentaire', '-N2 être V-n']), })
 
+    def test_flatparse(self):
+        self.assertEqual(
+                parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire et -Ppv =: y]').flat_parse(),
+                [('36DT[+N2 détrimentaire et -Ppv =: y]', '36DT')])
+
     def test_syntaxerror(self):
         with self.assertRaises(parse.SyntaxErrorException):
             parse.FrenchMapping('LADL', '38L [+N1 V W]')  # extra space

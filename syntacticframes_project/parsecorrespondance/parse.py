@@ -215,7 +215,8 @@ class FrenchMapping(object):
                 class_name, restr = parse_tree['leaf']
                 if restr is not None:
                     if restr[0]:
-                        restr_string = ' {} '.format(french_operators[restr[0]].join(restr[1:]))
+                        space_french_operator = ' {} '.format(french_operators[restr[0]])
+                        restr_string = space_french_operator.join(restr[1:])
                     else:
                         assert len(restr) == 2
                         restr_string = restr[1]
