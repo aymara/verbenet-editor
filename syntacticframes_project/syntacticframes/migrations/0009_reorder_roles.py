@@ -5,7 +5,6 @@ from south.v2 import DataMigration
 from django.db import models
 from django.db.models.base import ObjectDoesNotExist
 
-from syntacticframes.models import VerbNetClass, VerbNetRole
 from verbnet.verbnetreader import VerbnetReader
 
 class Migration(DataMigration):
@@ -13,7 +12,7 @@ class Migration(DataMigration):
     def add_roles(self, xml_class, db_frameset):
         for position, role in enumerate(xml_class['roles']):
             # Also makes sure nested selectional restrictions are handled
-            VerbNetRole(frameset=db_frameset, name=role, position=position).save()
+            orm.VerbNetRole(frameset=db_frameset, name=role, position=position).save()
 
         for xml_child, db_child in zip(xml_class['children'], db_frameset.children.all()):
             self.add_roles(xml_child, db_child)
@@ -27,7 +26,7 @@ class Migration(DataMigration):
         for filename in reader.files:
             xml_class = reader.files[filename]
             try:
-                vn_class = VerbNetClass.objects.get(name=filename)
+                vn_class = orm.VerbNetClass.objects.get(name=filename)
                 db_rootfs = vn_class.verbnetframeset_set.get(parent=None)
                 self.add_roles(xml_class, db_rootfs)
             except ObjectDoesNotExist:
