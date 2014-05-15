@@ -63,6 +63,7 @@ def index(request):
 class LoginForm(forms.Form):
     login = forms.CharField(required=True)
 
+@ensure_csrf_cookie
 def login(request):
     form = LoginForm()
 
