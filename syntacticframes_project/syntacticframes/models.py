@@ -61,8 +61,8 @@ class VerbNetFrameSet(MPTTModel):
 
     paragon = models.CharField(max_length=100, blank=True)
     comment = models.TextField(max_length=100000, blank=True)
-    ladl_string = models.CharField(max_length=100, blank=True)
-    lvf_string = models.CharField(max_length=100, blank=True)
+    ladl_string = models.TextField(blank=True)
+    lvf_string = models.TextField(blank=True)
 
     class Meta:
         ordering = ['id']
