@@ -18,6 +18,7 @@ import os.path
 from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame, VerbNetRole
 from parsecorrespondance.parse import UnknownClassException, SyntaxErrorException, UnknownErrorException
 from loadmapping.mappedverbs import UnknownColumnException
+from role.parserole import ParsedRole
 
 logger = logging.getLogger('database')
 
@@ -129,12 +130,16 @@ def update(request):
             logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'"
                     .format(when, request.user.username, field, levin_class, old_label, label))
         elif object_type == 'role':
-            role = VerbNetRole.objects.get(id=post['vn_role_id'])
-            old_label = role.name
-            role.name = label
-            role.save()
-            logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'"
-                    .format(when, request.user.username, post['frameset_id'], old_label, label))
+            try:
+                ParsedRole(label)
+                role = VerbNetRole.objects.get(id=post['vn_role_id'])
+                old_label = role.name
+                role.name = label
+                role.save()
+                logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'"
+                        .format(when, request.user.username, post['frameset_id'], old_label, label))
+            except:
+                return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
         else:
             raise Exception("Unknown object type {}".format(object_type))
 

@@ -58,6 +58,11 @@ class TestRoleParses(TestCase):
             'children': ['+b', '+a', '+i']})
 
     def test_lexical_errors(self):
+        with self.assertRaises(AttributeError):
+            ParsedRole('')
+        with self.assertRaises(AttributeError):
+            ParsedRole('  ')
+
         with self.assertRaises(AssertionError):
             ParsedRole('Agent[+b]')
 
