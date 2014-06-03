@@ -39,6 +39,11 @@ function editable_class_fields() {
         $(this).inedit($.extend({}, def_opts, {onEnd: edited_frame_field, empty_text: '∅'}));
     });
 
+    $('.role_editable').each(function() {
+        $(this).unbind();
+        $(this).inedit($.extend({}, def_opts, {onEnd: edited_role_field}));
+    });
+
     $('.frameset_editable').each(function() {
         $(this).unbind();
         $('.frameset_editable .external').click(function(e) { e.stopPropagation(); });
@@ -152,6 +157,24 @@ function edited_frame_field(input_field, span) {
             vn_class: vn_class_id,
             frame_id: frame_id,
             label: new_val,
+        }
+    });
+}
+
+function edited_role_field(input_field, span) {
+    var new_val = $(input_field).val();
+    var vn_role_id = $(span).data('role_id');
+    var frameset_id = $(span).closest(".subclass").attr('id');
+
+    var request = $.ajax({
+        url: '/update/',
+        type: 'POST',
+        data: {
+            type: 'role',
+            field: 'N/A',
+            label: new_val,
+            vn_role_id: vn_role_id,
+            frameset_id: frameset_id
         }
     });
 }

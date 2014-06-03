@@ -15,7 +15,7 @@ import logging
 from time import gmtime, strftime
 import os.path
 
-from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame
+from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame, VerbNetRole
 from parsecorrespondance.parse import UnknownClassException, SyntaxErrorException, UnknownErrorException
 from loadmapping.mappedverbs import UnknownColumnException
 
@@ -128,6 +128,13 @@ def update(request):
             levin_class.save()
             logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'"
                     .format(when, request.user.username, field, levin_class, old_label, label))
+        elif object_type == 'role':
+            role = VerbNetRole.objects.get(id=post['vn_role_id'])
+            old_label = role.name
+            role.name = label
+            role.save()
+            logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'"
+                    .format(when, request.user.username, post['frameset_id'], old_label, label))
         else:
             raise Exception("Unknown object type {}".format(object_type))
 

@@ -101,7 +101,8 @@
                             ∅
                         {% else %}
                             {% for role in node.verbnetrole_set.all %}
-                                {{ role.name }}{% if not forloop.last %},{% endif %}
+                                <span class="role_editable" data-role_id={{role.id}}>{{ role.name }}</span>
+                                {% if not forloop.last %},{% endif %}
                             {% endfor %}
                         {% endif %}
                     </li>
