@@ -7,7 +7,9 @@ var def_opts = {
 
 function linebreaks(value) {
     /* Converts new lines into <p> and <br />s.
-     * Should be as close as possible to django.utils.html.linebreaks */
+     * Should be as close as possible to django.utils.html.linebreaks
+     * (the goal is to avoid reloading the page)
+     */
     var para_list;
 
     // normalize newlines: \n\r is accepted by all browsers
