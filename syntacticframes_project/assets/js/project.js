@@ -266,6 +266,10 @@ $(document).ready(function() {
     // Clicking on [+] always toggles verbs
     $(document).on("click", ".plus_link", toggleHideShow);
 
+    // Not 'toggle' to keep synchronised
+    $(document).on("mouseenter", ".role", function() { $(this).find('a').addClass('visible'); });
+    $(document).on("mouseleave", ".role", function() { $(this).find('a').removeClass('visible'); });
+
     // Show dark/gray verbs
     show_plus();
 
@@ -292,8 +296,9 @@ $(document).ready(function() {
         $(document).ajaxSuccess(function(e, request, settings) {
             var is_vn_class = settings.url.indexOf("/vn_class/") == 0;
             var is_update = settings.url.indexOf("update") >= 0;
+            var is_remove = settings.url.indexOf("remove") >= 0;
             var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
-            if(is_vn_class || (is_update && !is_lvf_or_ladl)) {
+            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove) {
                 $("#ajax-loading").hide();
                 $("#ajax-ok").show();
                 clearTimeout(previous_timeout);
@@ -434,6 +439,49 @@ $(document).ready(function() {
         $(document).on('keyup', 'textarea', function(e) {
             resize_textarea(this);
         });
+
+        // add role
+        function added_role(input_field, span) {
+            var that = span;
+            var request = $.ajax({
+                url: '/add/',
+                type: 'POST',
+                data: {
+                    type: 'role',
+                    label: $(input_field).val(),
+                    frameset_id: $(span).closest('.subclass').attr('id'),
+                }
+            });
+            request.done(function() { update_class(that); });
+        }
+
+        $(document).on('click', '.new_role', function() {
+            var span = $(this).parent().find('.new_role_editable');
+            $(span).inedit($.extend({}, def_opts, {onEnd: added_role, empty_text: ''}));
+            $(span).trigger('click');
+            return false;
+        });
+
+        // remove role
+        $(document).on('click', '.remove_role', function() {
+            var frameset_id = $(this).closest(".subclass").attr('id');
+            var role_id = $(this).closest('.role').find('.role_editable').data('role_id')
+
+            $(this).closest('.role').fadeOut();
+
+            var request = $.ajax({
+                url: '/remove/',
+                type: 'POST',
+                data: {
+                    model: 'VerbNetRole',
+                    frameset_id: frameset_id,
+                    role_id: role_id,
+                }
+            });
+
+            return false;
+        });
+
     }
 
 });

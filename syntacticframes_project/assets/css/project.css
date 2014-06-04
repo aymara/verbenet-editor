@@ -94,6 +94,10 @@ textarea {
 
 .new_frame button { margin-top: 0.5em }
 
+/* Roles */
+.role a { visibility: hidden }
+.role a.visible { visibility: visible }
+
 /* Auth */
 .warning { color: red }
 

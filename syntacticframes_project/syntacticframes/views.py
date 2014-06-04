@@ -131,7 +131,7 @@ def update(request):
                     .format(when, request.user.username, field, levin_class, old_label, label))
         elif object_type == 'role':
             try:
-                ParsedRole(label)
+                ParsedRole(label)  # check if role is well-formed
                 role = VerbNetRole.objects.get(id=post['vn_role_id'])
                 old_label = role.name
                 role.name = label
@@ -181,6 +181,14 @@ def remove(request):
             db_frameset.verbnet_class.update_members_and_translations()
             logger.info("{}: {} marked frameset {}/{} as removed in class {}"
                         .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+        elif model == 'VerbNetRole':
+            role_id = post['role_id']
+            frameset_id = post['frameset_id']
+            db_role = VerbNetRole.objects.get(id=role_id)
+            role_name = db_role.name
+            db_role.delete()
+            logger.info("{}: {} removed role {} in subclass {}"
+                        .format(when, request.user.username, role_name, frameset_id))
 
         return HttpResponse("ok")
 
@@ -235,6 +243,23 @@ def add(request):
             subclass.save()
             logger.info("{}: {} added frameset {} in frameset {} from class {}".format(
                 when, request.user.username, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
+
+        elif post['type'] == 'role':
+            label = post['label']
+            try:
+                ParsedRole(label)  # check if role is well-formed
+
+                frameset_id = post['frameset_id']
+                frameset = VerbNetFrameSet.objects.get(id=frameset_id)
+                next_position = frameset.update_roles()
+                VerbNetRole(
+                        name=label,
+                        position=next_position,
+                        frameset=frameset).save()
+                logger.info("{}: {} added role {} in frameset {}".format(
+                    when, request.user.username, label, frameset_id))
+            except:
+                return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
             
 
         return HttpResponse("ok")
