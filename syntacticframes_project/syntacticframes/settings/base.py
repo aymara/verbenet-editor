@@ -258,7 +258,8 @@ LOCAL_APPS = (
     'loadmapping',
     'parsecorrespondance',
     'stats',
-    'export'
+    'export',
+    'role',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

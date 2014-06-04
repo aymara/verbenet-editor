@@ -180,6 +180,17 @@ class VerbNetFrameSet(MPTTModel):
                 verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
                     when, missing_inherited_member.lemma, missing_inherited_member.inherited_from, missing_inherited_member.frameset))
 
+    def update_roles(self):
+        role_list = self.verbnetrole_set.all()
+        i = 0
+
+        for role in role_list:
+            role.position = i
+            role.save()
+            i += 1
+
+        return i
+
 
 # English member
 class VerbNetMember(models.Model):
