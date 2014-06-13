@@ -45,9 +45,10 @@ function editable_class_fields() {
     });
 
     $('.frameset_editable').each(function() {
+        var field = $(this).data('field');
         $(this).unbind();
         $('.frameset_editable .external').click(function(e) { e.stopPropagation(); });
-        if ($(this).data('field') === 'comment') {
+        if (field === 'comment' || field == 'ladl_string' || field == 'lvf_string') {
             $(this).inedit($.extend({}, def_opts, {onStart: call_resize_textarea, onEnd: edited_frameset_field, type: 'textarea'}));
         } else {
             $(this).inedit($.extend({}, def_opts, {onEnd: edited_frameset_field}));
