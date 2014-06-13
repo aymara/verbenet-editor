@@ -32,14 +32,6 @@ h1.True > .text {
     color: white;
 }
 
-/* Verbs display */
-.both { color: purple }
-.ladl, h3 span[data-field="ladl_string"] { color: green }
-.lvf, h3 span[data-field="lvf_string"] { color: red }
-.unknown { color: gray }
-.hover { background-color: black; color: white }
-h2 a { text-decoration: underline }
-
 /* Subclass title */
 h2 form { display: inline }
 h2 form input { width: 5em; font-size: 31.5px }
@@ -53,6 +45,22 @@ h2[name], h3[name] {
 h2[name] a {
  text-decoration: none;
 }
+
+/* Mapping display */
+[data-field="ladl_string"], [data-field="lvf_string"] {
+    font-weight: bold;
+    text-rendering: optimizelegibility;
+    font-size: 24.5px;
+    margin: 10px 0;
+}
+
+/* Verbs display */
+.both { color: purple }
+.ladl, [data-field="ladl_string"] { color: green }
+.lvf, [data-field="lvf_string"] { color: red }
+.unknown { color: gray }
+.hover { background-color: black; color: white }
+h2 a { text-decoration: underline }
 
 /* Subclass indentation */
 .subclass {
@@ -69,6 +77,10 @@ textarea {
     box-sizing: border-box;
     width: 100%;
     height: 5em;
+}
+
+[data-field="lvf_string"] + textarea, [data-field="ladl_string"] + textarea {
+    height: 4em;
 }
 
 /* Frame display */
