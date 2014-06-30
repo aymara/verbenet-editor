@@ -7,14 +7,13 @@ from collections import defaultdict
 from django.conf import settings
 
 from parsecorrespondance import parse
+from loadmapping.models import LVFVerb
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 
 with open(join(settings.SITE_ROOT, 'loadmapping/data/LADL_to_verbes'), 'rb') as f:
     ladl_dict = pickle.load(f)
-with open(join(settings.SITE_ROOT, 'loadmapping/data/LVF+1_to_verbs'), 'rb') as f:
-    lvf_dict = pickle.load(f)
 with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') as f:
     dicovalence_verbs = pickle.load(f)
 with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
@@ -63,31 +62,6 @@ def everything_from_dict(d):
         raise Exception("Unknown type {}!".format(type(d)))
 
 
-def verbs_for_one_lvf_class(lvf_dict, lvf_path):
-    """Recursively return all verbs for @lvf_class (eg. L3b, N1c.[12])"""
-    if not lvf_path:
-        if type(lvf_dict) == list:
-            return set(lvf_dict)
-        elif type(lvf_dict) == dict:
-            return everything_from_dict(lvf_dict)
-        else:
-            raise Exception("Unknown type {}!".format(type(d)))
-    else:
-        prefix = lvf_path[0]
-        suffix = lvf_path[1:]
-        if len(prefix) > 1:
-            keys = [c for c in prefix]
-        else:
-            keys = [prefix]
-
-        verb_set = set()
-        for k in keys:
-            new_stuff = set(verbs_for_one_lvf_class(lvf_dict[k], suffix))
-            verb_set |= new_stuff
-
-        return verb_set
-
-
 def verbs_for_one_class(resource, wanted_class):
     specific_class, column_list = wanted_class
 
@@ -111,9 +85,30 @@ def verbs_for_one_class(resource, wanted_class):
             return ladl_verbs
 
     elif resource == 'LVF':
-        path = parse_path(specific_class)
-        return verbs_for_one_lvf_class(lvf_dict, path)
+        lvf_verbs_qs = LVFVerb.objects.filter(lvf_class__startswith=specific_class)
+        if column_list is not None:
+            if len(column_list) == 2:
+                lvf_verbs_qs = LVFVerb.objects.filter(construction__contains=column_list[1][1:])
+            else:
+                assert column_list[0] in ['and', 'or']
 
+                for column in column_list[1:]:
+                    if column_list[0] == 'and':
+                        if column[0] == '+':
+                            lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.filter(
+                                construction__contains=column[1:])
+                        elif column[0] == '-':
+                            lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.exclude(
+                                construction__contains=column[1:])
+                    elif column_list[0] == 'or':
+                        if column[0] == '+':
+                            lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.filter(
+                                construction__contains=column[1:])
+                        elif column[0] == '-':
+                            lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.exclude(
+                                construction__contains=column[1:])
+
+        return [v.lemma for v in lvf_verbs_qs]
 
 
 def verbs_for_class_mapping(mapping):

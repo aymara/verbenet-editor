@@ -53,6 +53,11 @@ class TestParsingFunctions(unittest.TestCase):
             parse.FrenchMapping('LADL', '32C[+N1 être Vpp W]').flat_parse(),
             [('32C[+N1 être Vpp W]', '32C')])
 
+class TestLVFColumns(unittest.TestCase):
+    def test_parse(self):
+        self.assertEqual(
+            parse.FrenchMapping('LVF', 'L3b[+T1300]').parse_tree,
+            {'leaf': ('L3b', [None, '+T1300'])})
 
 class TestLADLColumns(unittest.TestCase):
     def test_tokenize(self):
@@ -78,10 +83,6 @@ class TestLADLColumns(unittest.TestCase):
             parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou -N et +N0 V]'),
         with self.assertRaises(parse.SyntaxErrorException):
             parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou N]'),
-
-    def test_lvf_no_column(self):
-        with self.assertRaises(parse.SyntaxErrorException):
-            parse.FrenchMapping('LVF', 'L3b[+1]').infix()
 
     def test_infix(self):
         self.assertEqual(parse.FrenchMapping('LADL', '38LD[+A ou +B]').infix(), '38LD[+A ou +B]')
