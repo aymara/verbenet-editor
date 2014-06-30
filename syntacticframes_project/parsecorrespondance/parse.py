@@ -62,9 +62,7 @@ class FrenchMapping(object):
                 token_list.append(current_token)
                 current_token = ''
             elif c == '[':
-                if resource == 'LVF':
-                    raise SyntaxErrorException('Pas de restriction de colonne avec le LVF', name)
-                elif name[i-1] == ' ':
+                if name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
                 else:
                     if current_token:
