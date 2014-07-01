@@ -108,7 +108,7 @@ def verbs_for_one_class(resource, wanted_class):
                             lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.exclude(
                                 construction__contains=column[1:])
 
-        return [v.lemma for v in lvf_verbs_qs]
+        return {v.lemma for v in lvf_verbs_qs}
 
 
 def verbs_for_class_mapping(mapping):
