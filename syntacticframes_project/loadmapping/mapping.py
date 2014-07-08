@@ -10,7 +10,7 @@ from django.conf import settings
 
 from syntacticframes.models import \
     LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbTranslation
-from .mappedverbs import verbs_for_class_mapping, translations_for_class
+from .mappedverbs import translations_for_class
 
 
 FORGET_LIST = ['?', '-', '', '*']

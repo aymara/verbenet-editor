@@ -1,12 +1,41 @@
 from django.test import SimpleTestCase
 
-from loadmapping import mappedverbs 
+from loadmapping import mappedverbs
 from parsecorrespondance import parse
+from loadmapping.savelvf import normalize_verb
 
-class TestMappedVerbsFunctions(SimpleTestCase):
+
+class TestNormalize(SimpleTestCase):
+    def test_normalize_verb(self):
+        """Test parsing of various LVF verb senses"""
+
+        verbs_lvfp1 = {
+            'abaisser 01': {'verb': 'abaisser', 'number': 1},
+            'abaisser 08 (s\')': {'verb': "abaisser s'", 'number': 8},
+            'zinzinuler': {'verb': 'zinzinuler', 'number': 0},
+            'amuïr (s\')': {'verb': "amuïr s'", 'number': 0},
+            'zéolitiser (se)': {'verb': 'zéolitiser se', 'number': 0}
+        }
+
+        for v in verbs_lvfp1:
+            self.assertEqual(normalize_verb(v), verbs_lvfp1[v])
+
+class TestLVFMappedVerbs(SimpleTestCase):
+    def test_verbs_for_one_class(self):
+        self.assertIn('mettre', mappedverbs.verbs_for_one_class('LVF', ('L3b', None)))
+
+    def test_restrictions(self):
+        verbs = mappedverbs.verbs_for_class_mapping(parse.FrenchMapping('LVF', 'M3c[+P3000]'))
+        self.assertEqual(verbs, {'amortir', 'attiser', 'corser', 'désexciter',
+            'développer', 'exalter', 'forcer', 'hausser', 'multiplier',
+            'pousser', 'préconcentrer', 'ralentir', 'ranimer', 'renforcer',
+            'réattiser', 'sous', 'suractiver', 'ébranler', 'élever', 'étaler',
+            'étouffer'})
+
+
+class TestLADLMappedVerbsFunctions(SimpleTestCase):
     def test_verbs_for_one_class(self):
         self.assertIn('mettre', mappedverbs.verbs_for_one_class('LADL', ('38LD', None)))
-        self.assertIn('mettre', mappedverbs.verbs_for_one_class('LVF', ('L3b', None)))
 
     def test_verbs_for_class_mapping(self):
         verbs = mappedverbs.verbs_for_class_mapping(parse.FrenchMapping(

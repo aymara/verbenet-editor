@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-from lxml.etree import ElementTree
-from collections import defaultdict
-import pickle
 import csv
 import re
 import sys
 
-from loadmapping.models import LVFVerb
 
 def normalize_verb(verb):
     """Return the verb in a normalized form for HTML display"""
@@ -32,8 +28,13 @@ def normalize_verb(verb):
         return {'verb': normalized, 'number': number}
 
 
-def LVFp1_to_database():
-    """Save LVF+1 hierarchy by parsing the CSV version"""
+def LVFp1_to_database(LVFVerb):
+    """
+    Save LVF+1 hierarchy by parsing the CSV version
+
+    LVFVerb is the LVFVerb model at a given point in time, and not directly
+    imported from loadmapping.models
+    """
     with open('loadmapping/resources/LVF+1/LVF+1.csv') as lvfp1:
         lvfp1reader = csv.reader(lvfp1, delimiter=',', quotechar='"')
         next(lvfp1reader)
@@ -46,14 +47,6 @@ def LVFp1_to_database():
                 lvf_class = lvf_class,
                 construction = row[11]).save()
 
-            print("\rComplete: {:.0%}".format(i/25610), end="")
+            print("\rLVF import: {:.0%}".format(i/25610), end="")
             sys.stdout.flush()
-
-
-def savelvf():
-    print("saving LVF+1 data")
-    with open('loadmapping/data/LVF+1_to_verbs', 'wb') as f:
-        # delete existing LVF verbs
-        LVFVerb.objects.all().delete()
-        # retrieve the information from LVF
-        LVFp1_to_database()
+        print()
