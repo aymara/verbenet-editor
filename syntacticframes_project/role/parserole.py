@@ -9,11 +9,14 @@ class ParsedRole(object):
         match = re.match('(\w+)( )?(.+)?', role_str)
         self.role, space, selrestrs_str = match.groups()
 
+        # http://verbs.colorado.edu/verb-index/vn/reference.php
         assert self.role in [
-            'Agent', 'Asset', 'Attribute', 'Beneficiary', 'Cause',
-            'Location', 'Destination', 'Source', 'Experiencer', 'Extent',
-            'Instrument', 'Material', 'Product', 'Patient', 'Predicate',
-            'Recipient', 'Stimulus', 'Theme', 'Co-Theme', 'Time', 'Topic']
+            'Agent', 'Asset', 'Attribute', 'Beneficiary', 'Cause', 'Co-Agent',
+            'Co-Patient', 'Co-Theme', 'Destination', 'Experiencer', 'Extent',
+            'Goal', 'Initial_Location', 'Instrument', 'Location', 'Material',
+            'Patient', 'Pivot', 'Predicate' 'Product', 'Recipient',
+            'Reflexive', 'Result', 'Source', 'Stimulus', 'Theme', 'Time',
+            'Topic', 'Trajectory', 'Value']
 
         if selrestrs_str is None:
             assert space is None
