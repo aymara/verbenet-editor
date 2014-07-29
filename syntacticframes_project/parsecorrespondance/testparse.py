@@ -58,6 +58,9 @@ class TestLVFColumns(unittest.TestCase):
         self.assertEqual(
             parse.FrenchMapping('LVF', 'L3b[+T1300]').parse_tree,
             {'leaf': ('L3b', [None, '+T1300'])})
+        self.assertEqual(
+            parse.FrenchMapping('LVF', 'P1i.2[-T14b0]').parse_tree,
+            {'leaf': ('P1i.2', [None, '-T14b0'])})
 
 class TestLADLColumns(unittest.TestCase):
     def test_tokenize(self):

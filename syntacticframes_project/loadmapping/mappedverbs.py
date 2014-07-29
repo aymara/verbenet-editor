@@ -88,8 +88,13 @@ def verbs_for_one_class(resource, wanted_class):
         lvf_verbs_qs = LVFVerb.objects.filter(lvf_class__startswith=specific_class)
         if column_list is not None:
             if len(column_list) == 2:
-                lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.filter(
-                    construction__contains=column_list[1][1:])
+                restriction = column_list[1]
+                if restriction[0] == '+':
+                    lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.filter(
+                        construction__contains=restriction[1:])
+                else:
+                    lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.exclude(
+                        construction__contains=restriction[1:])
             else:
                 assert column_list[0] in ['and', 'or']
 

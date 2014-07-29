@@ -32,6 +32,19 @@ class TestLVFMappedVerbs(SimpleTestCase):
             'réattiser', 'sous', 'suractiver', 'ébranler', 'élever', 'étaler',
             'étouffer'})
 
+    def test_negative_restriction(self):
+        verbs = mappedverbs.verbs_for_class_mapping(parse.FrenchMapping('LVF', 'P1i.2[-T14b0]'))
+
+        # Verb "craindre" is included because of craindre 6 (in T1500), not
+        # because of craindre 2 (in T14b0)
+        self.assertEqual(verbs, {'convoiter', 'craindre', 'revouloir', 'supporter',
+            'choyer', 'bercer', 'compter', 'redésirer', 'brûler', 'savourer', 'regretter',
+            'chérir', 'mépriser', 'haïr', 'rougir', 'ressentir', 'espérer', 'appéter',
+            'envier', 'caresser', 'détester', 'oser', 'idolâtrer', 'coter', 'désirer',
+            'préférer', 'trembler', 'réaimer', 'jalouser', 'déguster', 'inattendre être',
+            'adorer', 'admirer', 'entendre', 'vouloir', 'goûter', 'chercher', 'daigner',
+            'désespérer', 'aimer', 'souhaiter'}
+
 
 class TestLADLMappedVerbsFunctions(SimpleTestCase):
     def test_verbs_for_one_class(self):
