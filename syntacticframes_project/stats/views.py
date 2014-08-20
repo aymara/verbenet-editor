@@ -8,7 +8,7 @@ from parsecorrespondance.parse import UnknownErrorException
 
 
 def index(request):
-    num_members, unique_members, num_verbs, unique_verbs, num_classes = count_verbs()
+    num_members, unique_members, num_verbs, unique_verbs, num_classes, num_framesets = count_verbs()
     empty_translations_errors = empty_translations()
 
     template = loader.get_template('stats.html')
@@ -18,6 +18,7 @@ def index(request):
         'num_verbs': num_verbs,
         'unique_verbs': len(unique_verbs),
         'num_classes': num_classes,
+        'num_framesets': num_framesets,
 
         'empty_translations_errors': empty_translations_errors,
     })
@@ -79,10 +80,11 @@ def chosen_verbs(vn_fs):
     
 def count_verbs():
     unique_verbs, unique_members = set(), set()
-    num_classes, num_verbs, num_members = 0, 0, 0
+    num_framesets, num_classes, num_verbs, num_members = 0, 0, 0, 0
     for vn_class in VerbNetClass.objects.all():
         num_classes += 1
         for vn_fs in vn_class.verbnetframeset_set.all():
+            num_framesets += 1
             for t in chosen_verbs(vn_fs):
                unique_verbs.add(t.verb) 
                num_verbs += 1
@@ -90,6 +92,6 @@ def count_verbs():
                 unique_members.add(m.lemma)
                 num_members += 1
 
-    return num_members, unique_members, num_verbs, unique_verbs, num_classes
+    return num_members, unique_members, num_verbs, unique_verbs, num_classes, num_framesets
 
 
