@@ -3,9 +3,11 @@ from xml.etree import ElementTree as ET
 
 from syntacticframes.models import LevinClass 
 
-def export_subclass(db_frameset, tagname=None):
-    xml_vnclass = ET.Element(tagname)
-    xml_vnclass.set('ID', db_frameset.name)
+def export_subclass(db_frameset, classname=None):
+    if classname is not None:
+        xml_vnclass = ET.Element('VNCLASS', {'ID': classname})
+    else:
+        xml_vnclass = ET.Element('VNSUBCLASS', {'ID': db_frameset.name})
 
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
@@ -37,7 +39,7 @@ def export_subclass(db_frameset, tagname=None):
     if db_frameset.children.all():
         xml_subclass_list = ET.SubElement(xml_vnclass, 'SUBCLASSES')
     for db_childfs in db_frameset.children.all():
-        xml_subclass = export_subclass(db_childfs, tagname='VNSUBCLASS')
+        xml_subclass = export_subclass(db_childfs)
         xml_subclass_list.append(xml_subclass)
 
     return xml_vnclass
@@ -47,6 +49,7 @@ def export_all_vn_classes():
     os.makedirs('export/verbenet', exist_ok=True)
     for db_levinclass in LevinClass.objects.filter(is_translated=True):
         for db_vnclass in db_levinclass.verbnetclass_set.all():
+            print(db_vnclass)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
-            xml_vnclass = export_subclass(db_rootframeset, tagname='VNCLASS')
+            xml_vnclass = export_subclass(db_rootframeset, classname=db_vnclass.name)
             ET.ElementTree(xml_vnclass).write('export/verbenet/{}.xml'.format(db_vnclass.name))
