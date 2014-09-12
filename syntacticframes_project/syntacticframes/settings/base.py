@@ -29,6 +29,8 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 SOUTH_TESTS_MIGRATE = True
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ########## END DEBUG CONFIGURATION
 
 
@@ -242,8 +244,6 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    # Database migration helpers:
-    'south',
     # Hierarchy (nested sets)
     'mptt',
     # version control for models
