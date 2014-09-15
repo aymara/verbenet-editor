@@ -36,7 +36,7 @@ def export_subclass(db_frameset, classname=None):
         syntax = ET.SubElement(frame, 'SYNTAX')
         syntax.text = db_frame.roles_syntax
         # Semantics
-        semantics = ET.SubElement(frame, 'SYNTAX')
+        semantics = ET.SubElement(frame, 'SEMANTICS')
         semantics.text = db_frame.semantics
 
     if db_frameset.children.filter(removed=False):
