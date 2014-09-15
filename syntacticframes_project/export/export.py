@@ -18,7 +18,10 @@ def export_subclass(db_frameset, classname=None):
     # Roles
     xml_roles = ET.SubElement(xml_vnclass, 'THEMROLES')
     for db_role in db_frameset.verbnetrole_set.all():
-        ET.SubElement(xml_roles, 'THEMROLE', {'type': db_role.name})
+        role, *selrestrs = db_role.name.split(' ')
+        ET.SubElement(
+            xml_roles, 'THEMROLE',
+            {'type': role, 'selrestrs': ' '.join(selrestrs)})
 
     # Frames
     xml_frames = ET.SubElement(xml_vnclass, 'FRAMES')
