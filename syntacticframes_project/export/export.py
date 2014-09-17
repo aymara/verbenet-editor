@@ -2,12 +2,140 @@ import os
 from xml.etree import ElementTree as ET
 
 from syntacticframes.models import LevinClass, VerbNetFrameSet
+from role.parserole import ROLE_LIST
+
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF']
+
+
+def split_syntax(syntax):
+    mode = 'NORMAL'
+    current_part = []
+    final_list = []
+
+    for syntax_part in syntax.split():
+        if syntax_part.startswith('{') and not syntax_part.endswith('}'):
+            assert mode == 'NORMAL' and not current_part
+            mode = 'BRACE_LIST'
+            current_part = [syntax_part]
+        elif syntax_part.endswith('}') and not syntax_part.startswith('{'):
+            assert mode == 'BRACE_LIST'
+            current_part.append(syntax_part)
+            mode = 'NORMAL'
+            if current_part:
+                final_list.append(' '.join(current_part))
+                current_part = []
+            else:
+                raise Exception('End of list but the list didn\'t start.')
+        elif mode == 'BRACE_LIST':
+            current_part.append(syntax_part)
+        else:
+            final_list.append(syntax_part)
+
+    if current_part:
+        raise Exception('Start of list but the list didn\'t end.')
+
+    return final_list
+
+
+def separate_phrasetype(primary_part):
+    try:
+        phrase_type, role = primary_part.split('.')
+        if phrase_type in PHRASE_TYPE_LIST and role.title() in ROLE_LIST:
+            return phrase_type, role.title()
+    except ValueError:
+        pass
+
+    if primary_part.endswith('-Middle'):
+        real_phrasetype = primary_part[:-7]
+        assert real_phrasetype in PHRASE_TYPE_LIST
+        return real_phrasetype, None
+
+    return primary_part, None
+
+
+def separate_syntax(syntax_part):
+    split = syntax_part.split('<')
+    if len(split) == 1:
+        return syntax_part, None
+
+    if not split[1].endswith('>'):
+        raise Exception('Unknown modifier {}.'.format(syntax_part))
+
+    role = split[0]
+    restr = '<{}'.format(split[1])
+
+    return role, restr
+
+
+def merge_primary_and_syntax(primary, syntax):
+    print('{:<40} {}'.format(primary, syntax))
+    primary_parts, syntax_parts = primary.split(), split_syntax(syntax)
+    parsed_frame = []
+
+    print(primary_parts, syntax_parts)
+
+    i, j = 0, 0
+    while i < len(syntax_parts) and j < len(primary_parts):
+        print(i, j, syntax_parts[i], primary_parts[j])
+
+        syntax_role, restr = separate_syntax(syntax_parts[i])
+        phrase_type, primary_role = separate_phrasetype(primary_parts[j])
+
+        print('   |{}| |{}|'.format(syntax_role, restr))
+        print('   |{}| |{}|'.format(phrase_type, primary_role))
+
+        if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
+            if primary_role is not None:
+                assert syntax_role == primary_role
+            parsed_frame.append({'type': phrase_type, 'role': syntax_role})
+            i, j = i+1, j+1
+
+        elif syntax_parts[i] == 'V' and primary_parts[j] == 'V':
+            parsed_frame.append({'type': 'V'})
+            i, j = i+1, j+1
+        elif syntax_parts[i] == 'V<+neutre>' and primary_parts[j] == 'V':
+            parsed_frame.append({'type': 'V', 'attribute': 'neutre'})
+            i, j = i+1, j+1
+
+        elif 'se' in primary_parts[j] and syntax_parts[j].startswith('se'):
+            parsed_frame.append({'type': 'se', 'syntax': syntax_parts[j]})
+            i, j = i+1, j+1
+
+        elif 'que' in primary_parts[j]:
+            # Send away 'que' in primary since it's in syntax
+            if syntax_parts[i].endswith('<+que_comp>') or syntax_parts[i].endswith('<+que_Psubj>'):
+                j = j+1
+            else:
+                raise Exception('que without <+que_comp> or <+que_Psubj>!')
+
+        elif syntax_parts[i].startswith('{') and syntax_parts[i].endswith('}'):
+            parsed_frame.append({'type': 'special', 'content': syntax_parts[i]})
+            i += 1
+        elif syntax_role == 'ADV' and phrase_type == 'ADV':
+            parsed_frame.append({'type': 'ADV'})
+            i, j = i+1, j+1
+        else:
+            raise Exception('Didn\'t expect {} and {}'.format(primary_parts[j], syntax_parts[i]))
+
+        print(parsed_frame)
+
+    assert i == len(syntax_parts)
+    assert j == len(primary_parts)
+
+    print(parsed_frame)
+    print()
+
+    return parsed_frame
+
 
 def export_subclass(db_frameset, classname=None):
     if classname is not None:
         xml_vnclass = ET.Element('VNCLASS', {'ID': classname})
     else:
         xml_vnclass = ET.Element('VNSUBCLASS', {'ID': db_frameset.name})
+
+    if db_frameset.name in ['45.3-1']:
+        return xml_vnclass
 
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
@@ -39,6 +167,9 @@ def export_subclass(db_frameset, classname=None):
         semantics = ET.SubElement(frame, 'SEMANTICS')
         semantics.text = db_frame.semantics
 
+        print(example.text)
+        merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax)
+
     if db_frameset.children.filter(removed=False):
         xml_subclass_list = ET.SubElement(xml_vnclass, 'SUBCLASSES')
 
@@ -53,6 +184,9 @@ def export_all_vn_classes():
     os.makedirs('export/verbenet', exist_ok=True)
     for db_levinclass in LevinClass.objects.filter(is_translated=True):
         for db_vnclass in db_levinclass.verbnetclass_set.all():
+            if db_vnclass.name in ['hold-15.1']:
+                continue
+
             try:
                 db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None, removed=False)
             except VerbNetFrameSet.DoesNotExist:

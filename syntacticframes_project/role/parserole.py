@@ -1,6 +1,14 @@
 import re
 
 
+# http://verbs.colorado.edu/verb-index/vn/reference.php
+ROLE_LIST = ['Agent', 'Asset', 'Attribute', 'Beneficiary', 'Cause', 'Co-Agent',
+'Co-Patient', 'Co-Theme', 'Destination', 'Experiencer', 'Extent', 'Goal',
+'Initial_Location', 'Instrument', 'Location', 'Material', 'Patient', 'Pivot',
+'Predicate' 'Product', 'Recipient', 'Reflexive', 'Result', 'Source',
+'Stimulus', 'Theme', 'Time', 'Topic', 'Trajectory', 'Value']
+
+
 class ParsedRole(object):
     """
     Stores role name and selection restrictions
@@ -9,14 +17,7 @@ class ParsedRole(object):
         match = re.match('(\w+)( )?(.+)?', role_str)
         self.role, space, selrestrs_str = match.groups()
 
-        # http://verbs.colorado.edu/verb-index/vn/reference.php
-        assert self.role in [
-            'Agent', 'Asset', 'Attribute', 'Beneficiary', 'Cause', 'Co-Agent',
-            'Co-Patient', 'Co-Theme', 'Destination', 'Experiencer', 'Extent',
-            'Goal', 'Initial_Location', 'Instrument', 'Location', 'Material',
-            'Patient', 'Pivot', 'Predicate' 'Product', 'Recipient',
-            'Reflexive', 'Result', 'Source', 'Stimulus', 'Theme', 'Time',
-            'Topic', 'Trajectory', 'Value']
+        assert self.role in ROLE_LIST
 
         if selrestrs_str is None:
             assert space is None
