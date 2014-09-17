@@ -1,0 +1,2 @@
+This directory contains various logs. git needs a file in this otherwise empty
+directory to accept a commit.
