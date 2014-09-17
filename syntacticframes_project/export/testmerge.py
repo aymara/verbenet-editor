@@ -1,18 +1,23 @@
 from django.test import SimpleTestCase
 
 from export.export import (
-        split_syntax, separate_phrasetype, separate_syntax,
-        merge_primary_and_syntax)
+    split_syntax, separate_phrasetype, separate_syntax,
+    merge_primary_and_syntax)
+
 
 class TestSplitSyntax(SimpleTestCase):
     def test_normal_split(self):
         self.assertEqual(split_syntax('Agent V Patient'), ['Agent', 'V', 'Patient'])
         self.assertEqual(split_syntax('Agent V   Patient'), ['Agent', 'V', 'Patient'])
-        self.assertEqual(split_syntax('Agent V {{+loc}} Location'), ['Agent', 'V', '{{+loc}}', 'Location'])
+        self.assertEqual(split_syntax(
+            'Agent V {{+loc}} Location'),
+            ['Agent', 'V', '{{+loc}}', 'Location'])
 
     def test_preposition_list(self):
-        self.assertEqual(split_syntax('Agent V {à dans verbs} Location'), ['Agent' , 'V', '{à dans verbs}', 'Location'])
-        self.assertEqual(split_syntax('Agent V {à} Location'), ['Agent' , 'V', '{à}', 'Location'])
+        self.assertEqual(split_syntax(
+            'Agent V {à dans verbs} Location'),
+            ['Agent', 'V', '{à dans verbs}', 'Location'])
+        self.assertEqual(split_syntax('Agent V {à} Location'), ['Agent', 'V', '{à}', 'Location'])
 
 
 class TestSeparatePhraseType(SimpleTestCase):
@@ -46,25 +51,26 @@ class TestSeparateSyntax(SimpleTestCase):
     def test_modified_role(self):
         self.assertEqual(separate_syntax('Instrument<+Plural>'), ('Instrument', '<+Plural>'))
 
+
 class TestFullMerge(SimpleTestCase):
     def test_simple_sentence(self):
         self.assertEqual(
-                merge_primary_and_syntax('NP V NP', 'Agent V Patient'),
-                [{'role': 'Agent', 'type': 'NP'},
-                 {'type': 'V'},
-                 {'role': 'Patient', 'type': 'NP'}])
+            merge_primary_and_syntax('NP V NP', 'Agent V Patient'),
+            [{'role': 'Agent', 'type': 'NP'},
+                {'type': 'V'},
+                {'role': 'Patient', 'type': 'NP'}])
 
     def test_neutral_verb(self):
         self.assertEqual(
-                merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient'),
-                [{'role': 'Agent', 'type': 'NP'},
-                 {'attribute': 'neutre', 'type': 'V'},
-                 {'role': 'Patient', 'type': 'NP'}])
+            merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient'),
+            [{'role': 'Agent', 'type': 'NP'},
+                {'attribute': 'neutre', 'type': 'V'},
+                {'role': 'Patient', 'type': 'NP'}])
 
     def test_adverb_as_role(self):
         self.assertEqual(
-                merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV'),
-                [{'role': 'Patient', 'type': 'NP'},
-                 {'type': 'V'},
-                 {'type': 'ADV'}])
+            merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV'),
+            [{'role': 'Patient', 'type': 'NP'},
+                {'type': 'V'},
+                {'type': 'ADV'}])
 
