@@ -43,7 +43,7 @@ class TestLVFMappedVerbs(SimpleTestCase):
             'envier', 'caresser', 'détester', 'oser', 'idolâtrer', 'coter', 'désirer',
             'préférer', 'trembler', 'réaimer', 'jalouser', 'déguster', 'inattendre être',
             'adorer', 'admirer', 'entendre', 'vouloir', 'goûter', 'chercher', 'daigner',
-            'désespérer', 'aimer', 'souhaiter'}
+            'désespérer', 'aimer', 'souhaiter'})
 
 
 class TestLADLMappedVerbsFunctions(SimpleTestCase):
