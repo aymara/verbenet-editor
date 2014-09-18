@@ -80,3 +80,10 @@ class TestFullMerge(SimpleTestCase):
             [{'role': 'Agent', 'type': 'NP'},
              {'type': 'V'},
              {'type': 'S', 'role': 'Theme', 'introduced_by': 'que', 'restr': 'comp'}])
+
+    def test_de(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de_Vinf>'),
+            [{'type': 'NP', 'role': 'Pivot'},
+             {'type': 'V'},
+             {'type': 'V-inf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'Vinf'}])

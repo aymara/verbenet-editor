@@ -105,22 +105,23 @@ def merge_primary_and_syntax(primary, syntax):
             i, j = i+1, j+1
 
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
-        elif 'que' in primary_parts[j]:
+        elif primary_parts[j] in ['que', 'de']:
+            primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
 
-            assert restr.startswith('<+que_') and restr.endswith('>')
+            assert restr.startswith('<+{}_'.format(primary_word)) and restr.endswith('>')
             if next_primary_role is not None:
                 assert next_primary_role == syntax_role
 
             # Remove <+que and >
-            specific_restr = restr[6:-1]
+            specific_restr = restr[3+len(primary_word):-1]
 
-            assert specific_restr in ['comp', 'Psubj']
+            assert specific_restr in ['comp', 'Psubj', 'Vinf']
 
             parsed_frame.append({
                 'type': next_phrase_type, 'role': syntax_role,
-                'introduced_by': 'que', 'restr': specific_restr})
+                'introduced_by': primary_word, 'restr': specific_restr})
 
             j = j+2
             i = i+1
