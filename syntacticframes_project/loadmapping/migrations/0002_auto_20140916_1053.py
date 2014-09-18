@@ -11,6 +11,7 @@ from loadmapping.models import LVFVerb
 
 def import_verbs(apps, schema_editor):
     LVFVerb = apps.get_model('loadmapping', 'LVFVerb')
+    LVFVerb.objects.all().delete()
     with open(join(settings.SITE_ROOT, 'loadmapping/fixtures/lvfverb.json')) as fixture:
             for entry in json.loads(fixture.read()):
                 assert entry['model'] == 'loadmapping.lvfverb'
@@ -21,6 +22,10 @@ def import_verbs(apps, schema_editor):
                     lvf_class=fields['lvf_class'],
                     construction=fields['construction']).save()
 
+def delete_verbs(apps, schema_editor):
+    LVFVerb = apps.get_model('loadmapping', 'LVFVerb')
+    LVFVerb.objects.all().delete()
+
 
 class Migration(migrations.Migration):
 
@@ -29,5 +34,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(import_verbs)
+        migrations.RunPython(import_verbs, delete_verbs)
     ]
