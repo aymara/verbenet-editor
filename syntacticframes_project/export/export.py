@@ -156,9 +156,6 @@ def export_subclass(db_frameset, classname=None):
     else:
         xml_vnclass = ET.Element('VNSUBCLASS', {'ID': db_frameset.name})
 
-    if db_frameset.name in ['45.3-1', '32.2', '31.1', '31.2', '31.3', '31.4', '34.1', '21.1-1']:
-        return xml_vnclass
-
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
     for db_translation in db_frameset.verbtranslation_set.all():
@@ -195,8 +192,9 @@ def export_subclass(db_frameset, classname=None):
         try:
             merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
             handled_frames += 1
-        except:
+        except Exception as e:
             print(output.getvalue())
+            print(e)
             print()
             pass
 
