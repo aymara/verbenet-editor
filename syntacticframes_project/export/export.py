@@ -1,3 +1,4 @@
+import io
 import os
 from xml.etree import ElementTree as ET
 
@@ -5,6 +6,8 @@ from syntacticframes.models import LevinClass, VerbNetFrameSet
 from role.parserole import ROLE_LIST
 
 PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF']
+
+total_frames, handled_frames = 0, 0
 
 
 def split_syntax(syntax):
@@ -67,22 +70,22 @@ def separate_syntax(syntax_part):
     return role, restr
 
 
-def merge_primary_and_syntax(primary, syntax):
-    print('{:<40} {}'.format(primary, syntax))
+def merge_primary_and_syntax(primary, syntax, output):
+    print('{:<40} {}'.format(primary, syntax), file=output)
     primary_parts, syntax_parts = primary.split(), split_syntax(syntax)
     parsed_frame = []
 
-    print(primary_parts, syntax_parts)
+    print(primary_parts, syntax_parts, file=output)
 
     i, j = 0, 0
     while i < len(syntax_parts) and j < len(primary_parts):
-        print(i, j, syntax_parts[i], primary_parts[j])
+        print(i, j, syntax_parts[i], primary_parts[j], file=output)
 
         syntax_role, restr = separate_syntax(syntax_parts[i])
         phrase_type, primary_role = separate_phrasetype(primary_parts[j])
 
-        print('   |{}| |{}|'.format(syntax_role, restr))
-        print('   |{}| |{}|'.format(phrase_type, primary_role))
+        print('   |{}| |{}|'.format(syntax_role, restr), file=output)
+        print('   |{}| |{}|'.format(phrase_type, primary_role), file=output)
 
         # Usual NP.Agent
         if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
@@ -135,18 +138,18 @@ def merge_primary_and_syntax(primary, syntax):
         else:
             raise Exception('Didn\'t expect {} and {}'.format(primary_parts[j], syntax_parts[i]))
 
-        print(parsed_frame)
+        print(parsed_frame, file=output)
 
     assert i == len(syntax_parts)
     assert j == len(primary_parts)
 
-    print(parsed_frame)
-    print()
+    print(parsed_frame, file=output)
 
     return parsed_frame
 
 
 def export_subclass(db_frameset, classname=None):
+    global handled_frames, total_frames
 
     if classname is not None:
         xml_vnclass = ET.Element('VNCLASS', {'ID': classname})
@@ -186,8 +189,16 @@ def export_subclass(db_frameset, classname=None):
         semantics = ET.SubElement(frame, 'SEMANTICS')
         semantics.text = db_frame.semantics
 
-        print(example.text)
-        merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax)
+        total_frames += 1
+        output = io.StringIO()
+        print(example.text, file=output)
+        try:
+            merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
+            handled_frames += 1
+        except:
+            print(output.getvalue())
+            print()
+            pass
 
     if db_frameset.children.filter(removed=False):
         xml_subclass_list = ET.SubElement(xml_vnclass, 'SUBCLASSES')
@@ -215,3 +226,5 @@ def export_all_vn_classes():
 
             xml_vnclass = export_subclass(db_rootframeset, classname=db_vnclass.name)
             ET.ElementTree(xml_vnclass).write('export/verbenet/{}.xml'.format(db_vnclass.name))
+
+    print('Handled {:.2%} of frames'.format(handled_frames/total_frames))
