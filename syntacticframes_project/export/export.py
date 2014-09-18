@@ -84,12 +84,14 @@ def merge_primary_and_syntax(primary, syntax):
         print('   |{}| |{}|'.format(syntax_role, restr))
         print('   |{}| |{}|'.format(phrase_type, primary_role))
 
+        # Usual NP.Agent
         if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
             if primary_role is not None:
                 assert syntax_role == primary_role
             parsed_frame.append({'type': phrase_type, 'role': syntax_role})
             i, j = i+1, j+1
 
+        # Verbs, can also be neutral
         elif syntax_parts[i] == 'V' and primary_parts[j] == 'V':
             parsed_frame.append({'type': 'V'})
             i, j = i+1, j+1
@@ -97,10 +99,12 @@ def merge_primary_and_syntax(primary, syntax):
             parsed_frame.append({'type': 'V', 'attribute': 'neutre'})
             i, j = i+1, j+1
 
+        # 'se' is indicated in both parts
         elif 'se' in primary_parts[j] and syntax_parts[j].startswith('se'):
             parsed_frame.append({'type': 'se', 'syntax': syntax_parts[j]})
             i, j = i+1, j+1
 
+        # Redundancy between NP V que S and Agent V Theme<+que_comp>
         elif 'que' in primary_parts[j]:
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
@@ -121,12 +125,17 @@ def merge_primary_and_syntax(primary, syntax):
             j = j+2
             i = i+1
 
+        # Handle special syntax like {{+loc}} or {avec dans pour}
         elif syntax_parts[i].startswith('{') and syntax_parts[i].endswith('}'):
             parsed_frame.append({'type': 'special', 'content': syntax_parts[i]})
             i += 1
+
+        # Some 'ADV' without roles appear both in syntax and primary
         elif syntax_role == 'ADV' and phrase_type == 'ADV':
             parsed_frame.append({'type': 'ADV'})
             i, j = i+1, j+1
+
+        # We should have handled everything
         else:
             raise Exception('Didn\'t expect {} and {}'.format(primary_parts[j], syntax_parts[i]))
 
