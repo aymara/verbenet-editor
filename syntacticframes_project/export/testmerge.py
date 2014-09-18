@@ -78,5 +78,5 @@ class TestFullMerge(SimpleTestCase):
         self.assertEqual(
             merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>'),
             [{'role': 'Agent', 'type': 'NP'},
-                {'type': 'V'},
-                {'type': 'Theme', 'attribute': 'que_comp'}])
+             {'type': 'V'},
+             {'type': 'S', 'role': 'Theme', 'introduced_by': 'que', 'restr': 'comp'}])

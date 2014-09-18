@@ -102,11 +102,24 @@ def merge_primary_and_syntax(primary, syntax):
             i, j = i+1, j+1
 
         elif 'que' in primary_parts[j]:
-            # Send away 'que' in primary since it's in syntax
-            if syntax_parts[i].endswith('<+que_comp>') or syntax_parts[i].endswith('<+que_Psubj>'):
-                j = j+1
-            else:
-                raise Exception('que without <+que_comp> or <+que_Psubj>!')
+            # Ensure that que also appears in syntax
+            next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
+
+            assert restr.startswith('<+que_') and restr.endswith('>')
+            if next_primary_role is not None:
+                assert next_primary_role == syntax_role
+
+            # Remove <+que and >
+            specific_restr = restr[6:-1]
+
+            assert specific_restr in ['comp', 'Psubj']
+
+            parsed_frame.append({
+                'type': next_phrase_type, 'role': syntax_role,
+                'introduced_by': 'que', 'restr': specific_restr})
+
+            j = j+2
+            i = i+1
 
         elif syntax_parts[i].startswith('{') and syntax_parts[i].endswith('}'):
             parsed_frame.append({'type': 'special', 'content': syntax_parts[i]})
