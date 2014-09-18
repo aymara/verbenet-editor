@@ -34,6 +34,7 @@ class TestSeparatePhraseType(SimpleTestCase):
         # Get rid of -Middle - doesn't seem useful and should be in the
         # secondary attribute
         self.assertEqual(separate_phrasetype('NP-Middle'), ('NP', None))
+        self.assertEqual(separate_phrasetype('NP-Moyen'), ('NP', None))
 
     def test_something_else(self):
         self.assertEqual(separate_phrasetype('V'), ('V', None))
@@ -97,3 +98,10 @@ class TestFullMerge(SimpleTestCase):
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'V-inf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'Vinf'}])
+
+    def test_comment(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V comment S', 'Experiencer V Stimulus<+comment_extract>', output=sys.stdout),
+            [{'type': 'NP', 'role': 'Experiencer'},
+             {'type': 'V'},
+             {'type': 'S', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'extract'}])

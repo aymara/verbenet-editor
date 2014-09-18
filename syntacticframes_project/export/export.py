@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 from syntacticframes.models import LevinClass, VerbNetFrameSet
 from role.parserole import ROLE_LIST
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING']
 
 total_frames, handled_frames = 0, 0
 
@@ -48,8 +48,8 @@ def separate_phrasetype(primary_part):
     except ValueError:
         pass
 
-    if primary_part.endswith('-Middle'):
-        real_phrasetype = primary_part[:-7]
+    if primary_part.endswith('-Middle') or primary_part.endswith('-Moyen'):
+        real_phrasetype = '-'.join(primary_part.split('-')[:-1])
         assert real_phrasetype in PHRASE_TYPE_LIST
         return real_phrasetype, None
 
@@ -108,7 +108,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
-        elif primary_parts[j] in ['que', 'de']:
+        elif primary_parts[j] in ['que', 'de', 'comment']:
             primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
@@ -120,7 +120,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             # Remove <+que and >
             specific_restr = restr[3+len(primary_word):-1]
 
-            assert specific_restr in ['comp', 'Psubj', 'Vinf']
+            assert specific_restr in ['comp', 'Psubj', 'Vinf', 'extract']
 
             parsed_frame.append({
                 'type': next_phrase_type, 'role': syntax_role,

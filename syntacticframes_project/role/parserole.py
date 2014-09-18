@@ -3,10 +3,10 @@ import re
 
 # http://verbs.colorado.edu/verb-index/vn/reference.php
 ROLE_LIST = ['Agent', 'Asset', 'Attribute', 'Beneficiary', 'Cause', 'Co-Agent',
-'Co-Patient', 'Co-Theme', 'Destination', 'Experiencer', 'Extent', 'Goal',
-'Initial_Location', 'Instrument', 'Location', 'Material', 'Patient', 'Pivot',
-'Predicate', 'Product', 'Recipient', 'Reflexive', 'Result', 'Source',
-'Stimulus', 'Theme', 'Time', 'Topic', 'Trajectory', 'Value']
+'Co-Patient', 'Co-Theme', 'Co-Stimulus', 'Destination', 'Experiencer',
+'Extent', 'Goal', 'Initial_Location', 'Instrument', 'Location', 'Material',
+'Patient', 'Pivot', 'Predicate', 'Product', 'Recipient', 'Reflexive', 'Result',
+'Source', 'Stimulus', 'Theme', 'Time', 'Topic', 'Trajectory', 'Value']
 
 
 class ParsedRole(object):
