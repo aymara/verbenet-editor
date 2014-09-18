@@ -1,6 +1,0 @@
-
-# This is an example compile script.  It will be updated
-# to be more thorough at a later date.
-
-javac -d . src/*.java
-
