@@ -1,3 +1,5 @@
+import sys
+
 from django.test import SimpleTestCase
 
 from export.export import (
@@ -55,28 +57,28 @@ class TestSeparateSyntax(SimpleTestCase):
 class TestFullMerge(SimpleTestCase):
     def test_simple_sentence(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP', 'Agent V Patient'),
+            merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stderr),
             [{'role': 'Agent', 'type': 'NP'},
                 {'type': 'V'},
                 {'role': 'Patient', 'type': 'NP'}])
 
     def test_neutral_verb(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient'),
+            merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient', output=sys.stderr),
             [{'role': 'Agent', 'type': 'NP'},
                 {'attribute': 'neutre', 'type': 'V'},
                 {'role': 'Patient', 'type': 'NP'}])
 
     def test_adverb_as_role(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV'),
+            merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV', output=sys.stderr),
             [{'role': 'Patient', 'type': 'NP'},
                 {'type': 'V'},
                 {'type': 'ADV'}])
 
     def test_adj_as_role(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP Adj', 'Pivot V Theme Adj'),
+            merge_primary_and_syntax('NP V NP Adj', 'Pivot V Theme Adj', output=sys.stderr),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'NP', 'role': 'Theme'},
@@ -84,14 +86,14 @@ class TestFullMerge(SimpleTestCase):
 
     def test_que(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>'),
+            merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>', output=sys.stderr),
             [{'role': 'Agent', 'type': 'NP'},
              {'type': 'V'},
              {'type': 'S', 'role': 'Theme', 'introduced_by': 'que', 'restr': 'comp'}])
 
     def test_de(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de_Vinf>'),
+            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de_Vinf>', output=sys.stderr),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'V-inf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'Vinf'}])
