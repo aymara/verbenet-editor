@@ -132,8 +132,8 @@ def merge_primary_and_syntax(primary, syntax):
             i += 1
 
         # Some 'ADV' without roles appear both in syntax and primary
-        elif syntax_role == 'ADV' and phrase_type == 'ADV':
-            parsed_frame.append({'type': 'ADV'})
+        elif syntax_role in ['ADV', 'Adj'] and phrase_type == syntax_role:
+            parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
         # We should have handled everything

@@ -74,6 +74,15 @@ class TestFullMerge(SimpleTestCase):
                 {'type': 'V'},
                 {'type': 'ADV'}])
 
+    def test_adj_as_role(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V NP Adj', 'Pivot V Theme Adj'),
+            [{'type': 'NP', 'role': 'Pivot'},
+             {'type': 'V'},
+             {'type': 'NP', 'role': 'Theme'},
+             {'type': 'Adj'}])
+
+
     def test_que(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>'),
