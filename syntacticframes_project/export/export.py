@@ -99,7 +99,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             parsed_frame.append({'type': 'V'})
             i, j = i+1, j+1
         elif syntax_parts[i] == 'V<+neutre>' and primary_parts[j] == 'V':
-            parsed_frame.append({'type': 'V', 'attribute': 'neutre'})
+            parsed_frame.append({'type': 'V', 'restr': 'neutre'})
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
@@ -190,7 +190,7 @@ def export_subclass(db_frameset, classname=None):
         output = io.StringIO()
         print(example.text, file=output)
         try:
-            merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
+            parsed_frame = merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
             handled_frames += 1
         except Exception as e:
             print(output.getvalue())

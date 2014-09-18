@@ -59,23 +59,23 @@ class TestFullMerge(SimpleTestCase):
     def test_simple_sentence(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stderr),
-            [{'role': 'Agent', 'type': 'NP'},
-                {'type': 'V'},
-                {'role': 'Patient', 'type': 'NP'}])
+            [{'type': 'NP', 'role': 'Agent'},
+             {'type': 'V'},
+             {'type': 'NP', 'role': 'Patient'}])
 
     def test_neutral_verb(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient', output=sys.stderr),
-            [{'role': 'Agent', 'type': 'NP'},
-                {'attribute': 'neutre', 'type': 'V'},
-                {'role': 'Patient', 'type': 'NP'}])
+            [{'type': 'NP', 'role': 'Agent'},
+             {'type': 'V', 'restr': 'neutre'},
+             {'type': 'NP', 'role': 'Patient'}])
 
     def test_adverb_as_role(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV', output=sys.stderr),
-            [{'role': 'Patient', 'type': 'NP'},
-                {'type': 'V'},
-                {'type': 'ADV'}])
+            [{'type': 'NP', 'role': 'Patient'},
+             {'type': 'V'},
+             {'type': 'ADV'}])
 
     def test_adj_as_role(self):
         self.assertEqual(
@@ -88,7 +88,7 @@ class TestFullMerge(SimpleTestCase):
     def test_que(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>', output=sys.stderr),
-            [{'role': 'Agent', 'type': 'NP'},
+            [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'type': 'S', 'role': 'Theme', 'introduced_by': 'que', 'restr': 'comp'}])
 
