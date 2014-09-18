@@ -16,6 +16,9 @@ class LevinClass(models.Model):
     is_translated = models.BooleanField(default=False)
     comment = models.TextField(max_length=100000, blank=True)
 
+    class Meta:
+        ordering = ['number']
+
     def __str__(self):
         return "{}: {}".format(self.number, self.name)
 

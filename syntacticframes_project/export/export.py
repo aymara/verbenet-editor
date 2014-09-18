@@ -4,7 +4,7 @@ from xml.etree import ElementTree as ET
 from syntacticframes.models import LevinClass, VerbNetFrameSet
 from role.parserole import ROLE_LIST
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF']
 
 
 def split_syntax(syntax):
@@ -99,9 +99,9 @@ def merge_primary_and_syntax(primary, syntax):
             parsed_frame.append({'type': 'V', 'attribute': 'neutre'})
             i, j = i+1, j+1
 
-        # 'se' is indicated in both parts
-        elif 'se' in primary_parts[j] and syntax_parts[j].startswith('se'):
-            parsed_frame.append({'type': 'se', 'syntax': syntax_parts[j]})
+        # Various words appear both in primary and syntax
+        elif syntax_role in ['ADV', 'ADVP', 'Adj', 'se', 'CL-lui'] and phrase_type == syntax_role:
+            parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
@@ -131,11 +131,6 @@ def merge_primary_and_syntax(primary, syntax):
             parsed_frame.append({'type': 'special', 'content': syntax_parts[i]})
             i += 1
 
-        # Some 'ADV' without roles appear both in syntax and primary
-        elif syntax_role in ['ADV', 'Adj'] and phrase_type == syntax_role:
-            parsed_frame.append({'type': phrase_type})
-            i, j = i+1, j+1
-
         # We should have handled everything
         else:
             raise Exception('Didn\'t expect {} and {}'.format(primary_parts[j], syntax_parts[i]))
@@ -152,12 +147,13 @@ def merge_primary_and_syntax(primary, syntax):
 
 
 def export_subclass(db_frameset, classname=None):
+
     if classname is not None:
         xml_vnclass = ET.Element('VNCLASS', {'ID': classname})
     else:
         xml_vnclass = ET.Element('VNSUBCLASS', {'ID': db_frameset.name})
 
-    if db_frameset.name in ['45.3-1']:
+    if db_frameset.name in ['45.3-1', '32.2', '31.1', '31.2', '31.3', '31.4', '34.1', '21.1-1']:
         return xml_vnclass
 
     # Members
