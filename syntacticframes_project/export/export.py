@@ -147,6 +147,41 @@ def merge_primary_and_syntax(primary, syntax, output):
 
     return parsed_frame
 
+def add_to_syntax(parsed_frame, syntax):
+    syntax.text = ''
+    for frame_part in parsed_frame:
+        if frame_part['type'] == 'NP':
+            np = ET.SubElement(syntax, 'NP')
+            np.set('value', frame_part['role'])
+            synrestrs = ET.SubElement(np, 'SYNRESTRS')
+        elif frame_part['type'] == 'PP':
+            pp = ET.SubElement(syntax, 'PP')
+            pp.set('value', frame_part['role'])
+            synrestrs = ET.SubElement(pp, 'SYNRESTRS')
+
+        # Goal is to remove this block
+        elif frame_part['type'] == 'special':
+            prep = ET.SubElement(syntax, 'PREP')
+            prep.set('restr', frame_part['content'])
+        elif frame_part['type'] == 'se':
+            prep = ET.SubElement(syntax, 'SE')
+
+        # To be improved
+        elif frame_part['type'] == 'CL-lui':
+            prep = ET.SubElement(syntax, 'CLLUI')
+
+        elif frame_part['type'] == 'V':
+            v = ET.SubElement(syntax, 'VERB')
+
+        elif frame_part['type'] in ['ADV', 'ADJ']:
+            adv = ET.SubElement(syntax, frame_part['type'])
+        elif frame_part['type'] in ['S', 'S_INF', 'S_ING']:
+            s = ET.SubElement(syntax, frame_part['type'])
+            s.set('value', frame_part['role'])
+            # todo restr
+        else:
+            raise Exception('Unhandled {}.'.format(parsed_frame))
+
 
 def export_subclass(db_frameset, classname=None):
     global handled_frames, total_frames
@@ -191,6 +226,7 @@ def export_subclass(db_frameset, classname=None):
         print(example.text, file=output)
         try:
             parsed_frame = merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
+            add_to_syntax(parsed_frame, syntax)
             handled_frames += 1
         except Exception as e:
             print(output.getvalue())
