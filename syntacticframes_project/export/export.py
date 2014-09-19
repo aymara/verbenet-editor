@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 from syntacticframes.models import LevinClass, VerbNetFrameSet
 from role.parserole import ROLE_LIST
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF', 'S_ING']
 
 total_frames, handled_frames = 0, 0
 
@@ -103,7 +103,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
-        elif syntax_role in ['ADV', 'ADVP', 'Adj', 'se', 'CL-lui'] and phrase_type == syntax_role:
+        elif syntax_role in ['ADV', 'ADJ', 'se', 'CL-lui'] and phrase_type == syntax_role:
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 

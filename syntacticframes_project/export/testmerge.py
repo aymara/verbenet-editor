@@ -79,11 +79,11 @@ class TestFullMerge(SimpleTestCase):
 
     def test_adj_as_role(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP Adj', 'Pivot V Theme Adj', output=sys.stderr),
+            merge_primary_and_syntax('NP V NP ADJ', 'Pivot V Theme ADJ', output=sys.stderr),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'NP', 'role': 'Theme'},
-             {'type': 'Adj'}])
+             {'type': 'ADJ'}])
 
     def test_que(self):
         self.assertEqual(
