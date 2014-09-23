@@ -12,25 +12,27 @@ total_frames, handled_frames = 0, 0
 
 def split_syntax(syntax):
     mode = 'NORMAL'
-    current_part = []
+    current_part = set()
     final_list = []
 
     for syntax_part in syntax.split():
-        if syntax_part.startswith('{') and not syntax_part.endswith('}'):
+        if syntax_part[0] == '{' and syntax_part[-1] == '}' and syntax_part[1] != '{' and syntax_part[-2] != '}':
+            final_list.append({syntax_part.strip('{}')})
+        elif syntax_part.startswith('{') and not syntax_part.endswith('}'):
             assert mode == 'NORMAL' and not current_part
             mode = 'BRACE_LIST'
-            current_part = [syntax_part]
+            current_part = set(syntax_part.strip('{}'))
         elif syntax_part.endswith('}') and not syntax_part.startswith('{'):
             assert mode == 'BRACE_LIST'
-            current_part.append(syntax_part)
+            current_part.add(syntax_part.rstrip('{}'))
             mode = 'NORMAL'
             if current_part:
-                final_list.append(' '.join(current_part))
-                current_part = []
+                final_list.append(current_part)
+                current_part = set()
             else:
                 raise Exception('End of list but the list didn\'t start.')
         elif mode == 'BRACE_LIST':
-            current_part.append(syntax_part)
+            current_part.add(syntax_part)
         else:
             final_list.append(syntax_part)
 
@@ -57,6 +59,9 @@ def separate_phrasetype(primary_part):
 
 
 def separate_syntax(syntax_part):
+    if isinstance(syntax_part, set):
+        return syntax_part, None
+
     split = syntax_part.split('<')
     if len(split) == 1:
         return syntax_part, None
@@ -78,6 +83,7 @@ def merge_primary_and_syntax(primary, syntax, output):
     print(primary_parts, syntax_parts, file=output)
 
     i, j = 0, 0
+    found_prep = None
     while i < len(syntax_parts) and j < len(primary_parts):
         print(i, j, syntax_parts[i], primary_parts[j], file=output)
 
@@ -91,7 +97,13 @@ def merge_primary_and_syntax(primary, syntax, output):
         if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
             if primary_role is not None:
                 assert syntax_role == primary_role
+
             parsed_frame.append({'type': phrase_type, 'role': syntax_role})
+
+            if found_prep:
+                assert phrase_type == 'PP'
+                parsed_frame[-1]['prep'] = found_prep
+                found_prep = None
             i, j = i+1, j+1
 
         # Verbs, can also be neutral
@@ -130,8 +142,11 @@ def merge_primary_and_syntax(primary, syntax, output):
             i = i+1
 
         # Handle special syntax like {{+loc}} or {avec dans pour}
-        elif syntax_parts[i].startswith('{') and syntax_parts[i].endswith('}'):
-            parsed_frame.append({'type': 'special', 'content': syntax_parts[i]})
+        elif isinstance(syntax_parts[i], set):
+            found_prep = syntax_parts[i]
+            i += 1
+        elif syntax_parts[i].startswith('{{') and syntax_parts[i].endswith('}}'):
+            found_prep = syntax_parts[i]
             i += 1
 
         # We should have handled everything
@@ -147,16 +162,17 @@ def merge_primary_and_syntax(primary, syntax, output):
 
     return parsed_frame
 
-def add_to_syntax(parsed_frame, syntax):
-    syntax.text = ''
+def xml_of_syntax(parsed_frame):
+    syntax = ET.Element('SYNTAX')
     for frame_part in parsed_frame:
         if frame_part['type'] == 'NP':
             np = ET.SubElement(syntax, 'NP')
-            np.set('value', frame_part['role'])
+            np.set('role', frame_part['role'])
             synrestrs = ET.SubElement(np, 'SYNRESTRS')
         elif frame_part['type'] == 'PP':
             pp = ET.SubElement(syntax, 'PP')
-            pp.set('value', frame_part['role'])
+            pp.set('role', frame_part['role'])
+            pp.set('prep', ' - '.join(frame_part['prep']))
             synrestrs = ET.SubElement(pp, 'SYNRESTRS')
 
         # Goal is to remove this block
@@ -181,6 +197,8 @@ def add_to_syntax(parsed_frame, syntax):
             # todo restr
         else:
             raise Exception('Unhandled {}.'.format(parsed_frame))
+
+    return syntax
 
 
 def export_subclass(db_frameset, classname=None):
@@ -210,29 +228,34 @@ def export_subclass(db_frameset, classname=None):
     for db_frame in db_frameset.verbnetframe_set.filter(removed=False):
         frame = ET.SubElement(xml_frames, 'FRAME')
         frame.set('primary', db_frame.syntax)
+
         # Example
         examples = ET.SubElement(frame, 'EXAMPLES')
         example = ET.SubElement(examples, 'EXAMPLE')
         example.text = db_frame.example
+
         # Syntax
         syntax = ET.SubElement(frame, 'SYNTAX')
         syntax.text = db_frame.roles_syntax
-        # Semantics
-        semantics = ET.SubElement(frame, 'SEMANTICS')
-        semantics.text = db_frame.semantics
 
         total_frames += 1
         output = io.StringIO()
         print(example.text, file=output)
         try:
             parsed_frame = merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
-            add_to_syntax(parsed_frame, syntax)
+            syntax = xml_of_syntax(parsed_frame)
+            frame.remove(frame.find('SYNTAX'))
+            frame.append(syntax)
             handled_frames += 1
         except Exception as e:
             print(output.getvalue())
             print(e)
             print()
             pass
+
+        # Semantics
+        semantics = ET.SubElement(frame, 'SEMANTICS')
+        semantics.text = db_frame.semantics
 
     if db_frameset.children.filter(removed=False):
         xml_subclass_list = ET.SubElement(xml_vnclass, 'SUBCLASSES')
