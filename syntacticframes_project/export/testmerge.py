@@ -14,7 +14,7 @@ class TestSplitSyntax(SimpleTestCase):
         self.assertEqual(split_syntax('Agent V   Patient'), ['Agent', 'V', 'Patient'])
         self.assertEqual(split_syntax(
             'Agent V {{+loc}} Location'),
-            ['Agent', 'V', '{{+loc}}', 'Location'])
+            ['Agent', 'V', {'{{+loc}}'}, 'Location'])
 
     def test_preposition_list(self):
         self.assertEqual(split_syntax(
@@ -136,3 +136,10 @@ class TestExport(SimpleTestCase):
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
             '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PP prep="de" role="Patient"><SYNRESTRS /></PP></SYNTAX>')
+
+    def test_pp_category(self):
+        new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stderr)
+        xml = xml_of_syntax(new_syntax)
+        self.assertEqual(
+            ET.tostring(xml, encoding='unicode'),
+            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PP prep="{{+loc}}" role="Patient"><SYNRESTRS /></PP></SYNTAX>')

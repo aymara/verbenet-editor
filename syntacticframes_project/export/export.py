@@ -16,7 +16,9 @@ def split_syntax(syntax):
     final_list = []
 
     for syntax_part in syntax.split():
-        if syntax_part[0] == '{' and syntax_part[-1] == '}' and syntax_part[1] != '{' and syntax_part[-2] != '}':
+        if syntax_part.startswith('{{') and syntax_part.endswith('}}'):
+            final_list.append({syntax_part})
+        elif syntax_part[0] == '{' and syntax_part[-1] == '}':
             final_list.append({syntax_part.strip('{}')})
         elif syntax_part.startswith('{') and not syntax_part.endswith('}'):
             assert mode == 'NORMAL' and not current_part
