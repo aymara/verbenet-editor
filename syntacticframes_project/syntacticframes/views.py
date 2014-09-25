@@ -302,3 +302,22 @@ def show(request):
             
 
         return HttpResponse("ok")
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(label='Recherche', max_length=100)
+
+def search(request):
+    form = SearchForm(request.GET)
+    if not form.is_valid():
+        return HttpResponse('')
+
+    search = form.cleaned_data['search']
+
+    template = loader.get_template('search.html')
+    context = RequestContext(request, {
+        'verbs': VerbTranslation.objects.filter(verb=search),
+        'search': search
+    })
+    context.update(csrf(request))
+    return HttpResponse(template.render(context))

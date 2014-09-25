@@ -36,6 +36,10 @@
               {% endif %}
               </a></li>
             </ul>
+            <form method='get' action='/search/'>
+                <input name='search' type="text" value="{{search}}" size='10' />
+                <button type="submit" class='btn btn-small' value='go'><i class='icon-search'></i></button>
+            </form>
           </div>
           <span class="ajax-status brand">
                 <i id="ajax-ok" class="icon-ok icon-white" style="display:none" ></i>

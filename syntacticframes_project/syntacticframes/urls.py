@@ -8,10 +8,13 @@ admin.autodiscover()
 from syntacticframes import views
 
 urlpatterns = patterns('',
-    #url(r'^$', TemplateView.as_view(template_name='base.html')),
+    # admin:
+    url(r'^admin/', include(admin.site.urls)),
+
+    # Main page, levin class, class
     url(r'^$', views.index, name='index'),
     url(r'^class/(?P<class_number>\d+)/$', views.classe),
-    url(r'^vn_class/(?P<class_name>\w+-[\d\.]+)/$', views.vn_class),
+    url(r'^vn_class/(?P<class_name>\w+-[\d\.]+)/$', views.vn_class),  # for AJAX
 
     # Stats
     url(r'^stats/', include('stats.urls')),
@@ -26,13 +29,7 @@ urlpatterns = patterns('',
     url(r'^show/$', views.show),
     url(r'^validate/$', views.validate),
 
-    # Examples:
-    # url(r'^$', 'syntacticframes.views.home', name='home'),
-    # url(r'^syntacticframes/', include('syntacticframes.foo.urls')),
+    # Search
+    url(r'^search/$', views.search),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
 )

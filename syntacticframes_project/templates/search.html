@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block all %}
+
+<div class="container">
+    <h1>Résultats de la recherche</h1>
+    <table class='search_results table'>
+        {% for verb in verbs%}
+        <tr class="{{verb.category}}">
+            <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
+            <td>{{ verb.frameset.verbnet_class.name}}</td>
+            <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.name}}">{{ verb.frameset.name }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock all %}

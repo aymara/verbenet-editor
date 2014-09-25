@@ -10,10 +10,30 @@ body {
 .right { float: right }
 
 .sidebar-nav { padding: 9px 0 }
-.navbar [class^="icon-"] {
-    vertical-align: baseline;
-}
 .nav-list li { margin-top: 1px }
+
+/* Search */
+.navbar form {
+    float: right;
+    margin: 7px 0;
+}
+
+.navbar form input {
+    margin-bottom: 0;
+    padding: 2px 3px;
+    width: auto;
+}
+
+.navbar .btn {
+    margin: 0 5px;
+    padding: 2px 5px;
+}
+
+.search_results a {
+    color: inherit;
+}
+/* end search */
+
 
 li.selected > a {
     font-weight: bold;
