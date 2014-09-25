@@ -8,6 +8,9 @@
 <div class="container">
     <h1>Résultats de la recherche</h1>
     <table class='search_results table'>
+        <thead>
+            <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe (cliquable)</td></tr>
+        </thead>
         {% for verb in verbs%}
         <tr class="{{verb.category}}">
             <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
