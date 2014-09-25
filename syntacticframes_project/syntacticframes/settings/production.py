@@ -45,6 +45,7 @@ SERVER_EMAIL = "quentin.pradet@gmail.com"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ATOMIC_REQUESTS': True,
         'NAME': 'pradet_verbenet',
         'USER': 'pradet',
         'PASSWORD': get_env_setting('PG_PASSWORD'),

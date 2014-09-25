@@ -6,6 +6,7 @@ from .base import *
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
+        'ATOMIC_REQUESTS': True,
         "NAME": ":memory:",
         "USER": "",
         "PASSWORD": "",

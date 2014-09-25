@@ -55,6 +55,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
+        'ATOMIC_REQUESTS': True,
     }
 }
 ########## END DATABASE CONFIGURATION
@@ -200,9 +201,6 @@ TEMPLATE_DIRS = (
 ########## MIDDLEWARE CONFIGURATION
 LOGIN_URL = '/login/'
 
-# Will be a middleware in 1.6
-SEND_BROKEN_LINK_EMAILS = True
-
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#middleware-classes
 MIDDLEWARE_CLASSES = (
     # Default Django middleware.
@@ -212,9 +210,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',
     'reversion.middleware.RevisionMiddleware',
-#    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
