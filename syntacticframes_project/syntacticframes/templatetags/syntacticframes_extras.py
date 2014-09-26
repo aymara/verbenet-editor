@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
+from django.utils.html import mark_safe
 
 register = template.Library()
 
@@ -20,3 +21,7 @@ def version(path):
         path = rx.sub(r"\1.%d.\2" % mtime, path)
 
     return os.path.join(settings.STATIC_URL, path)
+
+@register.filter
+def highlight(text, word):
+    return mark_safe(text.replace(word, "<span class='highlight'>%s</span>" % word))

@@ -1,24 +1,47 @@
 {% extends "base.html" %}
 {% load static %}
+{% load syntacticframes_extras %}
 
 {% block title %}Recherche{% endblock %}
 
 {% block all %}
 
 <div class="container">
-    <h1>Résultats de la recherche</h1>
-    <table class='search_results table'>
-        <thead>
-            <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe (cliquable)</td></tr>
-        </thead>
-        {% for verb in verbs%}
-        <tr class="{{verb.category}}">
-            <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
-            <td>{{ verb.frameset.verbnet_class.name}}</td>
-            <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.name}}">{{ verb.frameset.name }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+    <h1>Recherche de "{{search}}"</h1>
+
+    <h2>Verbes</h2>
+    {% if verbs %}
+        <table class='search_results table'>
+            <thead>
+                <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe (cliquable)</td></tr>
+            </thead>
+            {% for verb in verbs %}
+            <tr class="{{verb.category}}">
+                <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
+                <td>{{ verb.frameset.verbnet_class.name}}</td>
+                <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.name}}">{{ verb.frameset.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        Pas de verbe.
+    {% endif %}
+
+    <h2>Commentaires</h2>
+    {% for levin in levin_comments %}
+        <h3>Classe de Levin {{levin.number}}: {{levin.name}}</h3>
+        <p>{{levin.comment|linebreaks|highlight:search }}</p>
+    {% endfor %}
+
+    {% for vn in vn_comments %}
+        <h3>Classe VerbNet {{vn.name}}</h3>
+        <p>{{vn.comment|linebreaks|highlight:search }}</p>
+    {% endfor %}
+
+    {% for frameset in frameset_comments %}
+        <h3>Sous-classe {{frameset.name}}</h3>
+        <p>{{frameset.comment|linebreaks|highlight:search }}</p>
+    {% endfor %}
 </div>
 
 {% endblock all %}

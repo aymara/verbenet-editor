@@ -313,8 +313,12 @@ def search(request):
 
     template = loader.get_template('search.html')
     context = RequestContext(request, {
+        'search': search,
         'verbs': VerbTranslation.objects.filter(verb=search),
-        'search': search
+
+        'levin_comments': LevinClass.objects.filter(comment__icontains=search),
+        'vn_comments': VerbNetClass.objects.filter(comment__icontains=search),
+        'frameset_comments': VerbNetFrameSet.objects.filter(comment__icontains=search),
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
