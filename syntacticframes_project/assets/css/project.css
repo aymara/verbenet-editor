@@ -129,6 +129,8 @@ textarea {
 /* Roles */
 .role a { visibility: hidden }
 .role a.visible { visibility: visible }
+.role i.icon-remove { vertical-align: -20% }
+.role i.icon-plus { vertical-align: -20% }
 
 /* Auth */
 .warning { color: red }
