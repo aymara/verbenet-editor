@@ -14,7 +14,7 @@ class ParsedRole(object):
     Stores role name and selection restrictions
     """
     def __init__(self, role_str):
-        match = re.match('(\w+)( )?(.+)?', role_str)
+        match = re.match('([\w-]+)( )?(.+)?', role_str)
         self.role, space, selrestrs_str = match.groups()
 
         assert self.role in ROLE_LIST

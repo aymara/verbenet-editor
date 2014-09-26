@@ -28,6 +28,14 @@ class TestRoleParses(TestCase):
             'logic': '|',
             'children': ['+animate', '+organization']})
 
+    def test_co_agent(self):
+        role = ParsedRole('Co-Agent [+concrete & -animate]')
+        self.assertEqual(role.role, 'Co-Agent')
+        self.assertEqual(role.selrestrs, {
+            'logic': '&',
+            'children': ['+concrete', '-animate']})
+
+
     def test_mixed_restr(self):
         role = ParsedRole('Destination [+animate | [+location & -region]]')
         self.assertEqual(role.role, 'Destination')
