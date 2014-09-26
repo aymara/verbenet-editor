@@ -149,11 +149,8 @@ def update(request):
             vn_class_name = post['vn_class']
             db_vnclass = VerbNetClass.objects.get(name__exact = vn_class_name)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
-            try:
-                db_rootframeset.update_translations()
-            except (UnknownClassException, SyntaxErrorException, UnknownErrorException, UnknownColumnException) as e:
-                transaction.rollback()
-                return HttpResponseForbidden(e)
+            # if throws, ATOMIC_REQUESTS will revert everything
+            db_rootframeset.update_translations()
                          
         return HttpResponse("ok")
 
