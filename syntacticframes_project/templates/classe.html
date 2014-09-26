@@ -177,8 +177,11 @@
                                 <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
                             </form>
                         </div>
-                        <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
                     {% endif %}
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
                 {% endif %}
 
                 {# Rinse and repeat with children #}
