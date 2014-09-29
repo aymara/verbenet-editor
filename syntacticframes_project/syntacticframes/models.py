@@ -282,12 +282,27 @@ class VerbTranslation(models.Model):
         'unknown': 4,
     }
 
+    STATUS_INFERRED = 'INFERRED'
+    STATUS_VALID = 'VALID'
+    STATUS_WRONG = 'WRONG'
+    VALIDATION_STATUS = (
+        (STATUS_INFERRED, 'Inferred'),
+        (STATUS_VALID, 'Valid'),
+        (STATUS_WRONG, 'Wrong'),
+    )
+
     frameset = models.ForeignKey(VerbNetFrameSet)
     verb = models.CharField(max_length=100)
+
     category = models.CharField(max_length=20, choices=TRANSLATION_CATEGORY)
+    # id, used for ordering
     category_id = models.PositiveSmallIntegerField()
     # english comma-separated verbs
     origin = models.CharField(max_length=500)
+    # has this verb been manually validated?
+    validation_status = models.CharField(
+        max_length=10, choices=VALIDATION_STATUS,
+        default=STATUS_INFERRED)
 
     def __str__(self):
         return "{} ({})".format(self.verb, self.category)

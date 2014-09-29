@@ -85,12 +85,23 @@
                         {% endif %}
                     </li>
 
-                    <li class="translations">Traductions :
+                    <li class="translations">
+                        Traductions :
                         {% if not node.verbtranslation_set.all %}
                             ∅
                         {% else %}
                             {% for word in node.verbtranslation_set.all%}
-                                <span {% if word.category == 'unknown' or word.category == 'dicovalence' %} style="display:none" {% endif %} class="{{word.category}}" data-origin="{{word.origin}}">{{word.verb}}</span>
+                            {% spaceless %}
+                                {% if word.validation_status == 'WRONG' %}<del>{% endif %}
+
+                                <span
+                                    {% if word.category == 'unknown' or word.category == 'dicovalence' %} style="display:none" {% endif %}
+                                    class="{{word.category}} {{word.validation_status}}"
+                                    data-origin="{{word.origin}}"
+                                >{{word.verb}}</span>
+
+                                {% if word.validation_status == 'WRONG' %}</del>{% endif %}
+                            {% endspaceless %}
                             {% endfor %}
                         {% endif %}
                     </li>

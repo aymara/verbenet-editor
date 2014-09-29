@@ -82,6 +82,11 @@ h2[name] a {
 .hover { background-color: black; color: white }
 h2 a { text-decoration: underline }
 
+.VALID {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 /* Subclass indentation */
 .subclass {
   margin-left: 4em;
