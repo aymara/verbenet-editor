@@ -1,4 +1,3 @@
-from functools import total_ordering
 from time import gmtime, strftime
 import logging
 

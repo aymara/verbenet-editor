@@ -6,11 +6,10 @@
 import unittest
 import xml.etree.ElementTree as ET
 import os
-import sys
 import copy
 
-from .framestructure import *
-import verbnet.verbnetprepclasses
+from .framestructure import VerbnetFrame
+from . import verbnetprepclasses
 
 class VerbnetReader:
 
@@ -94,7 +93,6 @@ class VerbnetReader:
         :type vnclass: str.
         
         """
-        syntax_data = xml_frame.find("SYNTAX")
         # Extract the structure
         base_structure = xml_frame.find("DESCRIPTION").attrib["primary"]
         #print(base_structure)

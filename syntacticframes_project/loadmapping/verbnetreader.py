@@ -7,7 +7,6 @@ import unittest
 import xml.etree.ElementTree as ET
 import os
 from os.path import join
-import sys
 
 from verbnetframe import VerbnetFrame
 import verbnetprepclasses

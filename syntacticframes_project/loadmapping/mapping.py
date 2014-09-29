@@ -2,14 +2,12 @@
 #-*- coding: utf-8 -*-
 
 from lxml.etree import ElementTree
-import pickle
 from os.path import join
 import csv
 
 from django.conf import settings
 
-from syntacticframes.models import \
-    LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, VerbTranslation
+from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet
 from .mappedverbs import translations_for_class
 
 
@@ -67,7 +65,7 @@ def import_mapping():
                 name=classe["classe"])
             v.save()
 
-            fs = VerbNetFrameSet(
+            VerbNetFrameSet(
                 verbnet_class=v,
                 name=classe["classe"].split('-')[1],
                 paragon=classe["paragon"],
@@ -77,7 +75,7 @@ def import_mapping():
 
             candidates[classe['classe']] = classe['candidates']
 
-        return candidates, verb_dict
+        return candidates
 
 
 if __name__ == '__main__':

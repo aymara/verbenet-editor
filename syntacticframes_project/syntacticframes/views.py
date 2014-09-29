@@ -4,20 +4,15 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
-from django.conf import settings
 from django import forms
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
-from django.db import transaction
 
 from distutils.version import LooseVersion
 import logging
 from time import gmtime, strftime
-import os.path
 
-from .models import LevinClass, VerbNetClass, VerbNetMember, VerbTranslation, VerbNetFrameSet, VerbNetFrame, VerbNetRole
-from parsecorrespondance.parse import UnknownClassException, SyntaxErrorException, UnknownErrorException
-from loadmapping.mappedverbs import UnknownColumnException
+from .models import LevinClass, VerbNetClass, VerbTranslation, VerbNetFrameSet, VerbNetFrame, VerbNetRole
 from role.parserole import ParsedRole
 
 logger = logging.getLogger('database')
@@ -91,8 +86,6 @@ def update(request):
         field, label, object_type = post["field"], post["label"], post["type"]
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-        frameset_fields = ['paragon', 'comment', 'ladl_string', 'lvf_string']
-        frame_fields = ['roles_syntax', 'syntax', 'semantics', 'example']
         refresh_fields = ['ladl_string', 'lvf_string']  # Verbs need to be updated
         emptyset_fields = ['ladl_string', 'lvf_string']  # '∅' becomes ''
 

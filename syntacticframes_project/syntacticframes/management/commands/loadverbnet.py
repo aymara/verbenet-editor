@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.db import transaction
 
 import verbnet.verbnetreader
@@ -9,9 +9,7 @@ from loadmapping.verbclasses import verb_classes
 from loadmapping import mapping
 
 from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, \
-    VerbNetMember, VerbNetRole, VerbNetFrame, VerbTranslation
-
-
+    VerbNetMember, VerbNetRole, VerbNetFrame
 
 
 def iprint(indent, stuff):

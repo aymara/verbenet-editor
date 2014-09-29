@@ -3,9 +3,9 @@
 
 from operator import itemgetter
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetFrame
+from syntacticframes.models import LevinClass
 
 
 class Command(BaseCommand):

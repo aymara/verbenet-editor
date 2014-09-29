@@ -3,7 +3,6 @@
 
 """Load VerbNet frames for each class"""
 
-from syntacticframes.models import VerbNetClass, VerbNetFrame
 from verbnet.verbnetreader import VerbnetReader
 
 reader = VerbnetReader('verbnet/verbnet-3.2/', False)

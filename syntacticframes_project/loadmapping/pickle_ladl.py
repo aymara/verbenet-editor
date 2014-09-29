@@ -41,7 +41,6 @@ def LADL_to_verbes():
             pronominal_marker = line[pronominal_index]
             if pronominal_marker != "<E>":
                 verbes[classe]['all'][-1] += " {}".format(pronominal_marker)
-            verb = verbes[classe]['all'][-1]
 
             # Store column information
             for i, col in enumerate(line):
