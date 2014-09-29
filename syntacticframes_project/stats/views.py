@@ -8,7 +8,7 @@ from parsecorrespondance.parse import UnknownErrorException
 
 
 def index(request):
-    num_members, unique_members, num_verbs, unique_verbs, num_classes, num_framesets = count_verbs()
+    num_members, unique_members, num_verbs, unique_verbs, num_validated_verbs, unique_validated_verbs, num_classes, num_framesets = count_verbs()
     empty_translations_errors = empty_translations()
 
     template = loader.get_template('stats.html')
@@ -17,6 +17,8 @@ def index(request):
         'unique_members': len(unique_members),
         'num_verbs': num_verbs,
         'unique_verbs': len(unique_verbs),
+        'num_validated_verbs': num_validated_verbs,
+        'unique_validated_verbs': len(unique_validated_verbs),
         'num_classes': num_classes,
         'num_framesets': num_framesets,
 
@@ -79,8 +81,8 @@ def chosen_verbs(vn_fs):
         return list(ladl_verbs | lvf_verbs)
     
 def count_verbs():
-    unique_verbs, unique_members = set(), set()
-    num_framesets, num_classes, num_verbs, num_members = 0, 0, 0, 0
+    unique_verbs, unique_validated_verbs, unique_members = set(), set(), set()
+    num_framesets, num_classes, num_verbs, num_validated_verbs, num_members = 0, 0, 0, 0, 0
     for vn_class in VerbNetClass.objects.all():
         num_classes += 1
         for vn_fs in vn_class.verbnetframeset_set.all():
@@ -88,10 +90,13 @@ def count_verbs():
             for t in chosen_verbs(vn_fs):
                unique_verbs.add(t.verb) 
                num_verbs += 1
+               if t.validation_status == VerbTranslation.STATUS_VALID:
+                   unique_validated_verbs.add(t.verb)
+                   num_validated_verbs += 1
             for m in vn_fs.verbnetmember_set.all():
                 unique_members.add(m.lemma)
                 num_members += 1
 
-    return num_members, unique_members, num_verbs, unique_verbs, num_classes, num_framesets
+    return num_members, unique_members, num_verbs, unique_verbs, num_validated_verbs, unique_validated_verbs, num_classes, num_framesets
 
 
