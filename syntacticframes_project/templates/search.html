@@ -16,11 +16,13 @@
                 <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe (cliquable)</td></tr>
             </thead>
             {% for verb in verbs %}
-            <tr class="{{verb.category}}">
-                <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
-                <td>{{ verb.frameset.verbnet_class.name}}</td>
-                <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.name}}">{{ verb.frameset.name }}</a></td>
-            </tr>
+                {% if not verb.frameset.removed %}
+                    <tr class="{{verb.category}} {{verb.validation_status}}">
+                        <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
+                        <td>{{ verb.frameset.verbnet_class.name}}</td>
+                        <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.name}}">{{ verb.frameset.name }}</a></td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
     {% else %}

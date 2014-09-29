@@ -343,7 +343,7 @@ def search(request):
 
         'levin_comments': LevinClass.objects.filter(comment__icontains=search),
         'vn_comments': VerbNetClass.objects.filter(comment__icontains=search),
-        'frameset_comments': VerbNetFrameSet.objects.filter(comment__icontains=search),
+        'frameset_comments': VerbNetFrameSet.objects.filter(comment__icontains=search, removed=False),
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
