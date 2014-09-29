@@ -268,6 +268,23 @@ def add(request):
             except:
                 return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
 
+        elif post['type'] == 'translation':
+            verb = post['label']
+            frameset = VerbNetFrameSet.objects.get(id=post['frameset_id'])
+            try:
+                existing_verb = frameset.verbtranslation_set.get(verb=verb)
+                existing_verb.validation_status = VerbTranslation.STATUS_VALID
+                existing_verb.save()
+            except VerbTranslation.DoesNotExist:
+                VerbTranslation(
+                    frameset=frameset,
+                    verb=verb,
+                    origin='',
+                    validation_status=VerbTranslation.STATUS_VALID,
+                    inherited_from=frameset,
+                    # if it was a known verb, we would have promoted it instead
+                    category='unknown', category_id=4).save()
+
         return HttpResponse("ok")
 
 

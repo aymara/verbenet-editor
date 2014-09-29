@@ -342,7 +342,7 @@ class VerbTranslation(models.Model):
     # id, used for ordering
     category_id = models.PositiveSmallIntegerField()
     # english comma-separated verbs
-    origin = models.CharField(max_length=500)
+    origin = models.CharField(max_length=500, blank=True)
     # has this verb been manually validated?
     validation_status = models.CharField(
         max_length=10, choices=VALIDATION_STATUS,

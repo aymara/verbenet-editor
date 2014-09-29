@@ -104,14 +104,24 @@
                                 {% if word.validation_status == 'WRONG' %}<del>{% endif %}
 
                                 <span
-                                    {% if word.category == 'unknown' or word.category == 'dicovalence' %} style="display:none" {% endif %}
-                                    class="{{word.category}} {{word.validation_status}}"
+                                    {% if word.category == 'unknown' or word.category == 'dicovalence' %}
+                                        {% if word.validation_status == 'INFERRED' %}
+                                            style="display:none" data-hidden='1'
+                                        {% endif %}
+                                    {% endif %}
+                                    class="translation {{word.category}} {{word.validation_status}}"
                                     data-verb_id="{{word.id}}" data-origin="{{word.origin}}"
                                 >{{word.verb}}</span>
 
                                 {% if word.validation_status == 'WRONG' %}</del>{% endif %}
                             {% endspaceless %}
                             {% endfor %}
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <span class='new_translation'>
+                                <span class='new_translation_editable'></span>
+                                <a class="new_translation_link" href="#"><i class="icon-plus"></i></a>
+                            </span>
                         {% endif %}
                     </li>
 

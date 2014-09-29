@@ -23,11 +23,17 @@ function linebreaks(value) {
 
 function show_plus() {
     // Show/hide verbs that are not interesting
-    var showLink = $('<a/>').attr('class', 'plus_link').text('[+]').prop('href', '#');
-    $('.translations a').remove();
+    var showLink = $('<a/>').attr('class', 'plus_link').text('[montrer]').prop('href', '#');
+    $('.translations a.pluslink').remove();
     $('.translations').each(function() {
         if ($(this).find('span').size() > 0) {
-            $(this).append(showLink.clone());
+            if (window._user_authenticated) {
+                // insert before the 'add a manual translation' link
+                showLink.clone().insertBefore($(this).find('span.new_translation'));
+            } else {
+                // insert at the end
+                $(this).append(showLink.clone());
+            }
         }
     });
 }
@@ -92,7 +98,7 @@ function toggleHighlightMembers() {
 /* Highlight origins */
 function toggleHighlightCandidates() {
     var origin = $(this).text();
-    $(this).parent().parent().find('.translations span').each(function() {
+    $(this).closest('.subclass').find('span.translation').each(function() {
         if ($(this).data('origin').split(',').indexOf(origin) != -1) {
             $(this).toggleClass('hover');
         }
@@ -102,9 +108,8 @@ function toggleHighlightCandidates() {
 /* Hide dark/gray translations */
 function toggleHideShow(e) {
     e.preventDefault();
-    $(this).parent().find('span.unknown').toggle();
-    $(this).parent().find('span.dicovalence').toggle();
-    $(this).text($(this).text() == '[+]' ? '[-]' : '[+]');
+    $(this).parent().find('[data-hidden=1]').toggle();
+    $(this).text($(this).text() == '[montrer]' ? '[cacher]' : '[montrer]');
 }
 
 // get a cookie using jQuery
@@ -261,10 +266,10 @@ function resize_textarea(textarea) {
 
 $(document).ready(function() {
     // Show relation between verbs and origin
-    $(document).on('mouseenter mouseleave', '.translations span', toggleHighlightMembers);
+    $(document).on('mouseenter mouseleave', 'span.translation', toggleHighlightMembers);
     $(document).on('mouseenter mouseleave', '.members span', toggleHighlightCandidates);
 
-    // Clicking on [+] always toggles verbs
+    // Clicking on [montrer] always toggles verbs
     $(document).on("click", ".plus_link", toggleHideShow);
 
     // Not 'toggle' to keep synchronised
@@ -327,7 +332,7 @@ $(document).ready(function() {
             var that = $(this);
             var category = that.data('verb-category');
 
-            var verbs = that.closest('.subclass').find('.translations span').filter('.' + category);
+            var verbs = that.closest('.subclass').find('span.translation').filter('.' + category);
             verbs.removeClass('INFERRED').addClass('VALID');
             verbs.each(function() {
                 if ($(this).parent().is("del")) {
@@ -349,7 +354,7 @@ $(document).ready(function() {
         });
 
         // unvalidate verbs
-        $(document).on('click', '.translations span', function() {
+        $(document).on('click', 'span.translation', function() {
             var that = $(this);
 
             that.removeClass('VALID').addClass('WRONG').wrap('<del></del>');
@@ -489,6 +494,28 @@ $(document).ready(function() {
 
         $(document).on('keyup', 'textarea', function(e) {
             resize_textarea(this);
+        });
+
+        // add translation
+        function added_translation(input_field, span) {
+            var that = span;
+            var request = $.ajax({
+                url: '/add/',
+                type: 'POST',
+                data: {
+                    type: 'translation',
+                    label: $(input_field).val(),
+                    frameset_id: $(span).closest('.subclass').attr('id'),
+                }
+            });
+            request.done(function() { update_class(that); });
+        }
+
+        $(document).on('click', '.new_translation_link', function() {
+            var span = $(this).parent().find('.new_translation_editable');
+            $(span).inedit($.extend({}, def_opts, {onEnd: added_translation, empty_text: ''}));
+            $(span).trigger('click');
+            return false;
         });
 
         // add role
