@@ -274,10 +274,23 @@ def add(request):
 @login_required
 def validate(request):
     if request.method == 'POST':
-        levin_class_id = request.POST['levin_class']
-        db_levin_class = LevinClass.objects.get(number=levin_class_id)
-        db_levin_class.is_translated = True
-        db_levin_class.save()
+        if request.POST['model'] == 'LevinClass':
+            levin_class_id = request.POST['levin_class']
+            db_levin_class = LevinClass.objects.get(number=levin_class_id)
+            db_levin_class.is_translated = True
+            db_levin_class.save()
+        elif request.POST['model'] == 'VerbNetFrameSetVerb':
+            category = request.POST['category']
+            frameset_name = request.POST['frameset_name']
+            VerbNetFrameSet.objects.get(name=frameset_name).validate_verbs(category)
+        return HttpResponse('ok')
+
+@login_required
+def invalidate(request):
+    if request.method == 'POST':
+        if request.POST['model'] == 'VerbTranslation':
+            verb_id = request.POST['verb_id']
+            VerbTranslation.objects.get(id=verb_id).invalidate()
         return HttpResponse('ok')
 
 

@@ -298,8 +298,11 @@ $(document).ready(function() {
             var is_vn_class = settings.url.indexOf("/vn_class/") == 0;
             var is_update = settings.url.indexOf("update") >= 0;
             var is_remove = settings.url.indexOf("remove") >= 0;
+            var is_validate_verbs = settings.url.indexOf("/validate/") == 0 && settings.data.indexOf('VerbNetFrameSetVerb') >= 0;
+            var is_invalidate_verb = settings.url.indexOf('/invalidate') == 0 && settings.data.indexOf('VerbTranslation') >= 0;
             var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
-            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove) {
+
+            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove || is_validate_verbs || is_invalidate_verb) {
                 $("#ajax-loading").hide();
                 $("#ajax-ok").show();
                 clearTimeout(previous_timeout);
@@ -319,6 +322,50 @@ $(document).ready(function() {
 
         editable_class_fields();
 
+        // validate verbs
+        $(document).on('click', '.validate_verbs > button', function() {
+            var that = $(this);
+            var category = that.data('verb-category');
+
+            var verbs = that.closest('.subclass').find('.translations span').filter('.' + category);
+            verbs.removeClass('INFERRED').addClass('VALID');
+            verbs.each(function() {
+                if ($(this).parent().is("del")) {
+                    $(this).unwrap();
+                }
+            });
+
+            var request = $.ajax({
+                url: '/validate/',
+                type: 'POST',
+                data: {
+                    model: 'VerbNetFrameSetVerb',
+                    frameset_name: that.data('frameset_id'),
+                    category: category,
+                }
+            });
+
+            return false;
+        });
+
+        // unvalidate verbs
+        $(document).on('click', '.translations span', function() {
+            var that = $(this);
+
+            that.removeClass('VALID').addClass('WRONG').wrap('<del></del>');
+
+            var request = $.ajax({
+                url: '/invalidate/',
+                type: 'POST',
+                data: {
+                    model: 'VerbTranslation',
+                    verb_id: that.data('verb_id')
+                }
+            });
+
+            return false;
+        });
+
         // validate Levin class
         $(document).on('click', '.validate_class', function() {
             var that = $(this);
@@ -326,7 +373,10 @@ $(document).ready(function() {
             var request = $.ajax({
                 url: '/validate/',
                 type: 'POST',
-                data: { levin_class: that.data('levinid') }
+                data: {
+                    model: 'LevinClass',
+                    levin_class: that.data('levinid')
+                }
             });
 
             request.done(function() { document.location.reload(true); });

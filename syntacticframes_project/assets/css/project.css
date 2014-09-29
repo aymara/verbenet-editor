@@ -75,9 +75,9 @@ h2[name] a {
 }
 
 /* Verbs display */
-.both { color: purple }
-.ladl, [data-field="ladl_string"] { color: green }
-.lvf, [data-field="lvf_string"] { color: red }
+.both, [data-verb-category='both'] { color: purple }
+.ladl, [data-field="ladl_string"], [data-verb-category='ladl'] { color: green }
+.lvf, [data-field="lvf_string"], [data-verb-category='lvf'] { color: red }
 .unknown { color: gray }
 .hover { background-color: black; color: white }
 h2 a { text-decoration: underline }

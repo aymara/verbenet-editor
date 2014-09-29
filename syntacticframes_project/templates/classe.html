@@ -39,6 +39,7 @@
                             <button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher</button>
                         {% endif %}
                     </h3>
+
                     {# LVF class: inline editing and links #}
                     <p class="frameset_editable" data-text="{{node.lvf_string}}" data-field="lvf_string">{% spaceless %}
                         {% for text, class_name in node.lvf_parts %}
@@ -58,6 +59,14 @@
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}</p>
+
+                    {% if user.is_authenticated %}
+                    <p class='validate_verbs'> Valider les verbes :
+                        <button class="btn ladl" data-verb-category="ladl" data-frameset_id="{{node.name}}"><i class="icon-ok"></i> LADL</button>
+                        <button class="btn lvf" data-verb-category="lvf" data-frameset_id="{{node.name}}"><i class="icon-ok"></i> LVF</button>
+                        <button class="btn both" data-verb-category="both" data-frameset_id="{{node.name}}"><i class="icon-ok"></i> Les deux</button>
+                    </p>
+                    {% endif %}
 
                     <div class="frameset_editable" data-field="comment" data-text="{{node.comment|default:"∅"}}">
                         {{ node.comment|default:"∅"|linebreaks }}
@@ -97,7 +106,7 @@
                                 <span
                                     {% if word.category == 'unknown' or word.category == 'dicovalence' %} style="display:none" {% endif %}
                                     class="{{word.category}} {{word.validation_status}}"
-                                    data-origin="{{word.origin}}"
+                                    data-verb_id="{{word.id}}" data-origin="{{word.origin}}"
                                 >{{word.verb}}</span>
 
                                 {% if word.validation_status == 'WRONG' %}</del>{% endif %}

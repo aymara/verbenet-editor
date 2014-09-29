@@ -42,6 +42,7 @@ class VerbNetClass(models.Model):
     def update_members_and_translations(self):
         root_frameset = self.verbnetframeset_set.get(parent=None)
         root_frameset.update_members(root_frameset)
+        root_frameset.update_manual_translations(root_frameset)
         root_frameset.update_translations()
 
 
@@ -82,6 +83,11 @@ class VerbNetFrameSet(MPTTModel):
         self.has_removed_frames = self.verbnetframe_set.filter(removed=True)
         self.save()
 
+    def validate_verbs(self, category):
+        for verb_translation in self.verbtranslation_set.filter(category=category):
+            verb_translation.validation_status = VerbTranslation.STATUS_VALID
+            verb_translation.save()
+
     def update_translations(self, ladl_string=None, lvf_string=None):
         """
         Updates translations given members in class and ladl_string/lvf_string parameters.
@@ -104,17 +110,23 @@ class VerbNetFrameSet(MPTTModel):
             new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
             translations_in_subclasses |= db_childrenfs.update_translations(ladl_string=new_ladl, lvf_string=new_lvf)
 
-        verbs = self.verbtranslation_set.all()
-        initial_set = {(v.verb, v.category) for v in verbs}
-        verbs.delete()
-        first_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+        initial_set = {(v.verb, v.category) for v in self.verbtranslation_set.all()}
+        inferred_verbs = self.verbtranslation_set.filter(validation_status=VerbTranslation.STATUS_INFERRED)
+        inferred_verbs.delete()
+        manually_validated_verbs = self.verbtranslation_set.exclude(validation_status=VerbTranslation.STATUS_INFERRED)
+        manually_validated_set = {v.verb for v in manually_validated_verbs}
+        when_deleted = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         members = [m.lemma for m in self.verbnetmember_set.all()]
         candidates = translations_for_class(members, ladl_string, lvf_string)
 
         for french, categoryname, categoryid, originlist in candidates:
             originset = set(originlist.split(','))
-            if set(members) & originset and french not in translations_in_subclasses:
+            if (set(members) & originset and  # is actually a translation
+                    # is not already somewhere down
+                    french not in translations_in_subclasses and
+                    # was not kept because manually validated
+                    french not in manually_validated_set):
                 VerbTranslation(
                     frameset=self,
                     verb=french,
@@ -122,7 +134,7 @@ class VerbNetFrameSet(MPTTModel):
                     category_id=VerbTranslation.CATEGORY_ID[categoryname],
                     origin=originlist).save()
 
-        last_when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+        when_added = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         verbs = self.verbtranslation_set.all()
         final_set = {(v.verb, v.category) for v in verbs}
@@ -131,39 +143,40 @@ class VerbNetFrameSet(MPTTModel):
         verb_logger = logging.getLogger('verbs')
         if initial_set - final_set:
             verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-                first_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set - final_set])))
+                when_deleted, self.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set - final_set])))
         if final_set - initial_set:
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-                last_when, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set - initial_set])))
+                when_added, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set - initial_set])))
 
         return translations_in_subclasses
 
+    def get_all_members_or_manual_translations(frameset, related_name, parent_fs):
+        """Recursively retrieve members from all subclasses"""
+        objects = getattr(frameset, related_name).all()
+
+        # We need to set this before putting members into a set
+        for o in objects:
+            o.inherited_from = frameset
+            o.frameset = parent_fs
+
+        objects = set(objects)
+
+        for child_fs in frameset.children.all():
+            objects |= VerbNetFrameSet.get_all_members_or_manual_translations(
+                child_fs, related_name, parent_fs)
+
+        return objects
+
 
     def update_members(self, frameset):
-        def get_all_members(frameset, parent_fs):
-            """Recursively retrieve members from all subclasses"""
-            members = frameset.verbnetmember_set.all()
-
-            # We need to set this before putting members into a set
-            for f in members:
-                f.inherited_from = frameset
-                f.frameset = parent_fs
-
-            members = set(members)
-
-            for child_fs in frameset.children.all():
-                members |= get_all_members(child_fs, parent_fs)
-
-            return members
-
-
-        existing_inherited_members = set(frameset.verbnetmember_set.filter(inherited_from__isnull=False))
-
+        existing_inherited_members = set(
+                frameset.verbnetmember_set.filter(inherited_from__isnull=False))
         real_inherited_members = set()
 
         for child_fs in frameset.children.all():
             if child_fs.removed:
-                real_inherited_members |= get_all_members(child_fs, frameset)
+                real_inherited_members |= VerbNetFrameSet.get_all_members_or_manual_translations(
+                    child_fs, 'verbnetmember_set', frameset)
             else:
                 self.update_members(child_fs)
 
@@ -181,6 +194,38 @@ class VerbNetFrameSet(MPTTModel):
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
                 verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
                     when, missing_inherited_member.lemma, missing_inherited_member.inherited_from, missing_inherited_member.frameset))
+
+
+    def update_manual_translations(self, frameset):
+        existing_inherited_translations = set(
+            frameset.verbtranslation_set.filter(inherited_from__isnull=False))
+        real_inherited_translations = set()
+
+        for child_fs in frameset.children.all():
+            if child_fs.removed:
+                new_inherited_translations = {
+                    v for v in VerbNetFrameSet.get_all_members_or_manual_translations(
+                        child_fs, 'verbtranslation_set', frameset)
+                    if v.validation_status != VerbTranslation.STATUS_INFERRED}
+                real_inherited_translations |= new_inherited_translations
+            else:
+                self.update_manual_translations(child_fs)
+
+        verb_logger = logging.getLogger('verbs')
+        if existing_inherited_translations != real_inherited_translations:
+            for extra_inherited_translation in existing_inherited_translations - real_inherited_translations:
+                extra_inherited_translation.delete()
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                verb_logger.info("{}: Removed {} (was inherited from {} in subclass {})".format(
+                    when, extra_inherited_translation.verb, extra_inherited_translation.inherited_from, extra_inherited_translation.frameset))
+
+            for missing_inherited_translation in real_inherited_translations - existing_inherited_translations:
+                missing_inherited_translation.pk = None
+                missing_inherited_translation.save()
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
+                    when, missing_inherited_translation.verb, missing_inherited_translation.inherited_from, missing_inherited_translation.frameset))
+
 
     def update_roles(self):
         role_list = self.verbnetrole_set.all()
@@ -302,9 +347,17 @@ class VerbTranslation(models.Model):
     validation_status = models.CharField(
         max_length=10, choices=VALIDATION_STATUS,
         default=STATUS_INFERRED)
+    # when hiding classes, manual translations and members can move: we want to
+    # keep track of their initial position
+    inherited_from = models.ForeignKey(VerbNetFrameSet, null=True,
+            related_name='inheritedmanualtranslation_set')
 
     def __str__(self):
         return "{} ({})".format(self.verb, self.category)
 
     class Meta:
         ordering = ['category_id', 'verb']
+
+    def invalidate(self):
+        self.validation_status = VerbTranslation.STATUS_WRONG
+        self.save()
