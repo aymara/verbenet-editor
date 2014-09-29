@@ -12,18 +12,21 @@ from distutils.version import LooseVersion
 import logging
 from time import gmtime, strftime
 
-from .models import LevinClass, VerbNetClass, VerbTranslation, VerbNetFrameSet, VerbNetFrame, VerbNetRole
+from .models import (LevinClass, VerbNetClass, VerbTranslation,
+                     VerbNetFrameSet, VerbNetFrame, VerbNetRole)
 from role.parserole import ParsedRole
 
 logger = logging.getLogger('database')
 
+
 @ensure_csrf_cookie
 def classe(request, class_number):
     levin_classes = list(LevinClass.objects.all())
-    levin_classes.sort(key = lambda l: LooseVersion(l.number))
+    levin_classes.sort(key=lambda l: LooseVersion(l.number))
 
-    active_class = LevinClass.objects.get(number = class_number)
-    verbnet_classes = VerbNetClass.objects.filter(levin_class__exact = active_class)
+    active_class = LevinClass.objects.get(number=class_number)
+    verbnet_classes = VerbNetClass.objects.filter(
+        levin_class__exact=active_class)
     verbnet_classes = verbnet_classes.prefetch_related(
         'verbnetframeset_set',
         'verbnetframeset_set__verbnetmember_set',
@@ -31,7 +34,8 @@ def classe(request, class_number):
         'verbnetframeset_set__verbnetrole_set',
         'verbnetframeset_set__verbnetframe_set',
     )
-    verbnet_classes = sorted(verbnet_classes, key = lambda v: LooseVersion(v.name.split('-')[1]))
+    verbnet_classes = sorted(
+        verbnet_classes, key=lambda v: LooseVersion(v.name.split('-')[1]))
 
     template = loader.get_template('index.html')
     context = RequestContext(request, {
@@ -41,6 +45,7 @@ def classe(request, class_number):
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
+
 
 @ensure_csrf_cookie
 def vn_class(request, class_name):
@@ -52,19 +57,23 @@ def vn_class(request, class_name):
     context.update(csrf(request))
     return HttpResponse(template.render(context))
 
+
 def index(request):
     # Hardcoding that the first class is 9
     return redirect('class/9/')
 
+
 class LoginForm(forms.Form):
     login = forms.CharField(required=True)
+
 
 @ensure_csrf_cookie
 def login(request):
     form = LoginForm()
 
     if request.method == 'POST':
-        user = authenticate(username=request.POST['login'], password='NO_PASSWORD')
+        user = authenticate(username=request.POST['login'],
+                            password='NO_PASSWORD')
         if user is not None:
             auth_login(request, user)
             return redirect('/')
@@ -79,6 +88,7 @@ def login(request):
     context.update(csrf(request))
     return HttpResponse(template.render(context))
 
+
 @login_required
 def update(request):
     if request.method == 'POST':
@@ -86,8 +96,10 @@ def update(request):
         field, label, object_type = post["field"], post["label"], post["type"]
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-        refresh_fields = ['ladl_string', 'lvf_string']  # Verbs need to be updated
-        emptyset_fields = ['ladl_string', 'lvf_string']  # '∅' becomes ''
+        # When these fields change, verbs translations need to be updated
+        refresh_fields = ['ladl_string', 'lvf_string']
+        # When these field change, '∅' becomes '' in database
+        emptyset_fields = ['ladl_string', 'lvf_string']
 
         if object_type == 'frame':
             vn_class_name = post['vn_class']
@@ -96,33 +108,34 @@ def update(request):
             old_label = getattr(frame, field)
             setattr(frame, field, label)
             frame.save()
-            logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'"
-                    .format(when, request.user.username, field, frame_id, vn_class_name, old_label, label))
+            logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'".format(
+                when, request.user.username, field, frame_id, vn_class_name, old_label, label))
         elif object_type == 'frameset':
             vn_class_name = post['vn_class']
             if field in emptyset_fields and label.strip() == '∅':
                 label = ''
-            db_frameset = VerbNetFrameSet.objects.get(id = int(post['frameset_id']))
+            db_frameset = VerbNetFrameSet.objects.get(id=int(post['frameset_id']))
             old_label = getattr(db_frameset, field)
             setattr(db_frameset, field, label)
             db_frameset.save()
-            logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'"
-                    .format(when, request.user.username, field, vn_class_name, db_frameset.name, old_label, label))
+            logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'".format(
+                when, request.user.username, field, vn_class_name, db_frameset.name,
+                old_label, label))
         elif object_type == 'vn_class':
             vn_class_name = post['vn_class']
             vn_class = VerbNetClass.objects.get(name=vn_class_name)
             old_label = getattr(vn_class, field)
             setattr(vn_class, field, label)
             vn_class.save()
-            logger.info("{}: {} updated {} in VN class {} from '{}' to '{}'"
-                    .format(when, request.user.username, field, vn_class_name, old_label, label))
+            logger.info("{}: {} updated {} in VN class {} from '{}' to '{}'".format(
+                when, request.user.username, field, vn_class_name, old_label, label))
         elif object_type == 'levin':
             levin_class = LevinClass.objects.get(number=post['levin_number'])
             old_label = getattr(levin_class, field)
             setattr(levin_class, field, label)
             levin_class.save()
-            logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'"
-                    .format(when, request.user.username, field, levin_class, old_label, label))
+            logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'".format(
+                when, request.user.username, field, levin_class, old_label, label))
         elif object_type == 'role':
             try:
                 ParsedRole(label)  # check if role is well-formed
@@ -130,22 +143,22 @@ def update(request):
                 old_label = role.name
                 role.name = label
                 role.save()
-                logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'"
-                        .format(when, request.user.username, post['frameset_id'], old_label, label))
+                logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'".format(
+                    when, request.user.username, post['frameset_id'], old_label, label))
             except:
                 return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
         else:
             raise Exception("Unknown object type {}".format(object_type))
 
-
         if field in refresh_fields:
             vn_class_name = post['vn_class']
-            db_vnclass = VerbNetClass.objects.get(name__exact = vn_class_name)
+            db_vnclass = VerbNetClass.objects.get(name__exact=vn_class_name)
             db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
             # if throws, ATOMIC_REQUESTS will revert everything
             db_rootframeset.update_translations()
-                         
+
         return HttpResponse("ok")
+
 
 @login_required
 def remove(request):
@@ -158,7 +171,7 @@ def remove(request):
             frame_id = int(post['frame_id'])
             vn_class = post['vn_class']
             db_frame = VerbNetFrame.objects.get(id=frame_id)
-            assert db_frame.removed == False
+            assert not db_frame.removed
             db_frame.removed = True
             db_frame.save()
             logger.info("{}: {} marked frame {}/{} as removed in class {}"
@@ -166,12 +179,13 @@ def remove(request):
         elif model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
-            assert db_frameset.removed == False
+            assert not db_frameset.removed
             db_frameset.removed = True
             db_frameset.save()
             db_frameset.verbnet_class.update_members_and_translations()
-            logger.info("{}: {} marked frameset {}/{} as removed in class {}"
-                        .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+            logger.info("{}: {} marked frameset {}/{} as removed in class {}".format(
+                when, request.user.username, frameset_id,
+                db_frameset.name, db_frameset.verbnet_class.name))
         elif model == 'VerbNetRole':
             role_id = post['role_id']
             frameset_id = post['frameset_id']
@@ -182,6 +196,7 @@ def remove(request):
                         .format(when, request.user.username, role_name, frameset_id))
 
         return HttpResponse("ok")
+
 
 @login_required
 def add(request):
@@ -233,7 +248,8 @@ def add(request):
                 parent=parent_subclass)
             subclass.save()
             logger.info("{}: {} added frameset {} in frameset {} from class {}".format(
-                when, request.user.username, subclass_id, parent_subclass.name, parent_subclass.verbnet_class.name))
+                when, request.user.username, subclass_id,
+                parent_subclass.name, parent_subclass.verbnet_class.name))
 
         elif post['type'] == 'role':
             label = post['label']
@@ -244,16 +260,16 @@ def add(request):
                 frameset = VerbNetFrameSet.objects.get(id=frameset_id)
                 next_position = frameset.update_roles()
                 VerbNetRole(
-                        name=label,
-                        position=next_position,
-                        frameset=frameset).save()
+                    name=label,
+                    position=next_position,
+                    frameset=frameset).save()
                 logger.info("{}: {} added role {} in frameset {}".format(
                     when, request.user.username, label, frameset_id))
             except:
                 return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
-            
 
         return HttpResponse("ok")
+
 
 @login_required
 def validate(request):
@@ -264,6 +280,7 @@ def validate(request):
         db_levin_class.save()
         return HttpResponse('ok')
 
+
 def show(request):
     if request.method == 'POST':
         post = request.POST
@@ -273,29 +290,31 @@ def show(request):
         if model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
-            assert db_frameset.removed == True
+            assert db_frameset.removed
             db_frameset.removed = False
             db_frameset.save()
             db_frameset.verbnet_class.update_members_and_translations()
-            logger.info("{}: {} marked frameset {}/{} as shown in class {}"
-                        .format(when, request.user.username, frameset_id, db_frameset.name, db_frameset.verbnet_class.name))
+
+            logger.info("{}: {} marked frameset {}/{} as shown in class {}".format(
+                when, request.user.username, frameset_id,
+                db_frameset.name, db_frameset.verbnet_class.name))
         elif model == 'VerbNetFrame':
             frame_id = post['frame_id']
             db_frame = VerbNetFrame.objects.get(id=frame_id)
-            assert db_frame.removed == True
+            assert db_frame.removed
             db_frame.removed = False
             db_frame.save()
 
-            logger.info("{}: {} marked frame {} ({}/{}) as shown in class {}"
-                        .format(when, request.user.username, frame_id, db_frame.syntax, db_frame.example,
-                                db_frame.frameset.name))
-            
+            logger.info("{}: {} marked frame {} ({}/{}) as shown in class {}".format(
+                when, request.user.username, frame_id,
+                db_frame.syntax, db_frame.example, db_frame.frameset.name))
 
         return HttpResponse("ok")
 
 
 class SearchForm(forms.Form):
     search = forms.CharField(label='Recherche', max_length=100)
+
 
 def search(request):
     form = SearchForm(request.GET)
