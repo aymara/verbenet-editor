@@ -303,11 +303,14 @@ def validate(request):
         return HttpResponse('ok')
 
 @login_required
-def invalidate(request):
+def togglevalidity(request):
     if request.method == 'POST':
-        if request.POST['model'] == 'VerbTranslation':
-            verb_id = request.POST['verb_id']
-            VerbTranslation.objects.get(id=verb_id).invalidate()
+        verb_id = request.POST['verb_id']
+        new_status = request.POST['new_status']
+        if new_status == 'IMPOSSIBLE':
+            raise Exception('Impossible status for verb {}'.format(verb_id))
+
+        VerbTranslation.objects.get(id=verb_id).togglevalidity(new_status)
         return HttpResponse('ok')
 
 

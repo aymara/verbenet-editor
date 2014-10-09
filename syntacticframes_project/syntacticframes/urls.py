@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^add/$', views.add),
     url(r'^show/$', views.show),
     url(r'^validate/$', views.validate),
-    url(r'^invalidate/$', views.invalidate),
+    url(r'^togglevalidity/$', views.togglevalidity),
 
     # Search
     url(r'^search/$', views.search),

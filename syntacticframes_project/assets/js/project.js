@@ -304,10 +304,10 @@ $(document).ready(function() {
             var is_update = settings.url.indexOf("update") >= 0;
             var is_remove = settings.url.indexOf("remove") >= 0;
             var is_validate_verbs = settings.url.indexOf("/validate/") == 0 && settings.data.indexOf('VerbNetFrameSetVerb') >= 0;
-            var is_invalidate_verb = settings.url.indexOf('/invalidate') == 0 && settings.data.indexOf('VerbTranslation') >= 0;
+            var is_toggle_verb_validity = settings.url.indexOf('/togglevalidity') == 0;
             var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
 
-            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove || is_validate_verbs || is_invalidate_verb) {
+            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove || is_validate_verbs || is_toggle_verb_validity) {
                 $("#ajax-loading").hide();
                 $("#ajax-ok").show();
                 clearTimeout(previous_timeout);
@@ -327,7 +327,7 @@ $(document).ready(function() {
 
         editable_class_fields();
 
-        // validate verbs
+        // validate all verbs
         $(document).on('click', '.validate_verbs > button', function() {
             var that = $(this);
             var category = that.data('verb-category');
@@ -353,18 +353,32 @@ $(document).ready(function() {
             return false;
         });
 
-        // unvalidate verbs
+        // toggle verb validity
         $(document).on('click', 'span.translation', function() {
             var that = $(this);
+            var new_status;
 
-            that.removeClass('VALID').addClass('WRONG').wrap('<del></del>');
+            if (that.hasClass('INFERRED') || that.hasClass('WRONG')) {
+                // validate
+                that.removeClass('INFERRED').removeClass('WRONG').addClass('VALID');
+                that.unwrap();
+                new_status = 'VALID';
+            } else if (that.hasClass('VALID')) {
+                // invalidate
+                that.removeClass('VALID').addClass('WRONG').wrap('<del></del>');
+                new_status = 'WRONG';
+            } else {
+                // notify bug
+                new_status = 'IMPOSSIBLE';
+            }
 
+            // send new status
             var request = $.ajax({
-                url: '/invalidate/',
+                url: '/togglevalidity/',
                 type: 'POST',
                 data: {
-                    model: 'VerbTranslation',
-                    verb_id: that.data('verb_id')
+                    verb_id: that.data('verb_id'),
+                    new_status: new_status,
                 }
             });
 

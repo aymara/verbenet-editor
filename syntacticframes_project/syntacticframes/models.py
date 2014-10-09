@@ -358,6 +358,7 @@ class VerbTranslation(models.Model):
     class Meta:
         ordering = ['category_id', 'verb']
 
-    def invalidate(self):
-        self.validation_status = VerbTranslation.STATUS_WRONG
+    def togglevalidity(self, new_status):
+        assert new_status in ['WRONG', 'VALID']
+        self.validation_status = new_status
         self.save()
