@@ -25,22 +25,20 @@
       <div class="navbar-inner">
         <div class="container">
           <span class="brand"><a href="/">VerbeNet</a></span>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="/stats/">Stats</a></li>
-              <li><a href="/login">
-              {% if user.is_authenticated %}
-                {{ user.username }}
-              {% else %}
-                 Login
-              {% endif %}
-              </a></li>
-            </ul>
-            <form method='get' action='/search/'>
-                <input name='search' type="text" value="{{search}}" size='10' />
-                <button type="submit" class='btn btn-small' value='go'><i class='icon-search'></i></button>
-            </form>
-          </div>
+          <ul class="nav">
+            <li><a href="/stats/">Stats</a></li>
+            <li><a href="/login">
+            {% if user.is_authenticated %}
+              {{ user.username }}
+            {% else %}
+               Login
+            {% endif %}
+            </a></li>
+          </ul>
+          <form method='get' action='/search/'>
+              <input name='search' type="text" value="{{search}}" size='10' />
+              <button type="submit" class='btn btn-small' value='go'><i class='icon-search'></i></button>
+          </form>
           <span class="ajax-status brand">
                 <i id="ajax-ok" class="icon-ok icon-white" style="display:none" ></i>
                 <img id="ajax-loading" class="icon-nothing" style="display:none" src="data:image/gif;base64,R0lGODlhEAAQAPIAAAAAAP///zw8PLy8vP///5ycnHx8fGxsbCH+GkNyZWF0ZWQgd2l0aCBhamF4bG9hZC5pbmZvACH5BAAKAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQACgABACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkEAAoAAgAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkEAAoAAwAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkEAAoABAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQACgAFACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQACgAGACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAAKAAcALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
