@@ -358,15 +358,18 @@ $(document).ready(function() {
             var that = $(this);
             var new_status;
 
-            if (that.hasClass('INFERRED') || that.hasClass('WRONG')) {
+            if (that.hasClass('INFERRED')) {
                 // validate
-                that.removeClass('INFERRED').removeClass('WRONG').addClass('VALID');
-                that.unwrap();
+                that.removeClass('INFERRED').addClass('VALID');
                 new_status = 'VALID';
             } else if (that.hasClass('VALID')) {
                 // invalidate
                 that.removeClass('VALID').addClass('WRONG').wrap('<del></del>');
                 new_status = 'WRONG';
+            } else if (that.hasClass('WRONG')) {
+                // get back to inferred
+                that.removeClass('WRONG').addClass('INFERRED').unwrap();
+                new_status = 'INFERRED';
             } else {
                 // notify bug
                 new_status = 'IMPOSSIBLE';

@@ -359,6 +359,6 @@ class VerbTranslation(models.Model):
         ordering = ['category_id', 'verb']
 
     def togglevalidity(self, new_status):
-        assert new_status in ['WRONG', 'VALID']
+        assert new_status in ['WRONG', 'VALID', 'INFERRED']
         self.validation_status = new_status
         self.save()
