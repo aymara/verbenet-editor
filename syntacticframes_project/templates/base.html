@@ -54,6 +54,11 @@
     {% endblock %}
 
     <!-- Le javascript -->
-    {% compressed_js 'syntacticframes' %}
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    {% if user.is_authenticated %}
+        {% compressed_js 'edit_syntacticframes' %}
+    {% else %}
+        {% compressed_js 'public_js' %}
+    {% endif %}
   </body>
 </html>

@@ -139,13 +139,17 @@ PIPELINE_CSS = {
 }
 
 PIPELINE_JS = {
-    'syntacticframes': {
+    'edit_syntacticframes': {
         'source_filenames': (
-            'js/jquery.min.js',
             'js/jquery.inedit.js',
+            'js/public.js',
             'js/project.js'
         ),
         'output_filename': 'js/syntacticframes.js',
+    },
+    'public_js': {
+        'source_filenames': ('js/public.js',),
+        'output_filename': 'js/verbenet_public.js'
     },
 }
 ########## END DJANGO-PIPELINE CONFIGURATION

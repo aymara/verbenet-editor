@@ -20,24 +20,6 @@ function linebreaks(value) {
     });
     return para_list.join('\n\r\n\r')
 }
-
-function show_plus() {
-    // Show/hide verbs that are not interesting
-    var showLink = $('<a/>').attr('class', 'plus_link').text('[montrer]').prop('href', '#');
-    $('.translations a.pluslink').remove();
-    $('.translations').each(function() {
-        if ($(this).find('span').size() > 0) {
-            if (window._user_authenticated) {
-                // insert before the 'add a manual translation' link
-                showLink.clone().insertBefore($(this).find('span.new_translation'));
-            } else {
-                // insert at the end
-                $(this).append(showLink.clone());
-            }
-        }
-    });
-}
-
 function editable_class_fields() {
     // Edit all editable fields
     $('.frame_editable').each(function() {
@@ -83,33 +65,6 @@ function update_class(here) {
         show_plus();
         editable_class_fields();
     });
-}
-
-/* Highlight translations */
-function toggleHighlightMembers() {
-    var origins = $(this).data('origin').split(',');
-    $('.members span').each(function() {
-        if (origins.indexOf($(this).text()) != -1) {
-            $(this).toggleClass('hover');
-        }
-    });
-}
-
-/* Highlight origins */
-function toggleHighlightCandidates() {
-    var origin = $(this).text();
-    $(this).closest('.subclass').find('span.translation').each(function() {
-        if ($(this).data('origin').split(',').indexOf(origin) != -1) {
-            $(this).toggleClass('hover');
-        }
-    });
-}
-
-/* Hide dark/gray translations */
-function toggleHideShow(e) {
-    e.preventDefault();
-    $(this).parent().find('[data-hidden=1]').toggle();
-    $(this).text($(this).text() == '[montrer]' ? '[cacher]' : '[montrer]');
 }
 
 // get a cookie using jQuery
@@ -265,19 +220,9 @@ function resize_textarea(textarea) {
 }
 
 $(document).ready(function() {
-    // Show relation between verbs and origin
-    $(document).on('mouseenter mouseleave', 'span.translation', toggleHighlightMembers);
-    $(document).on('mouseenter mouseleave', '.members span', toggleHighlightCandidates);
-
-    // Clicking on [montrer] always toggles verbs
-    $(document).on("click", ".plus_link", toggleHideShow);
-
     // Not 'toggle' to keep synchronised
     $(document).on("mouseenter", ".role", function() { $(this).find('a').addClass('visible'); });
     $(document).on("mouseleave", ".role", function() { $(this).find('a').removeClass('visible'); });
-
-    // Show dark/gray verbs
-    show_plus();
 
     if (window._user_authenticated) {
 
