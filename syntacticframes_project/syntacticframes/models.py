@@ -144,7 +144,6 @@ class VerbNetFrameSet(MPTTModel):
                 elif categoryname != manually_validated_set[french]:
                     verb_to_update = VerbTranslation.objects.get(
                         frameset=self, verb=french, origin=originlist,
-                        validation_status=VerbTranslation.STATUS_VALID,
                         category=manually_validated_set[french])
                     verb_to_update.category = categoryname
                     verb_to_update.category_id = VerbTranslation.CATEGORY_ID[categoryname]
