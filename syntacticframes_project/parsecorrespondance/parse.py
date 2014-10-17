@@ -72,9 +72,15 @@ class FrenchMapping(object):
                     token_list.append(c)  # [
 
                     j = i + 2
-                    while name[j] != ']':
+                    bracket_stack_len = 0
+                    while not(name[j] == ']' and bracket_stack_len == 0):
                         if len(name) <= j+1:
                             raise SyntaxErrorException('Crochet ] manquant', name)
+
+                        if name[j] == '[':
+                            bracket_stack_len += 1
+                        elif name[j] == ']':
+                            bracket_stack_len -= 1
                         j += 1
 
                     if ' et ' in name[i+1:j] and ' ou ' in name[i+1:j]:

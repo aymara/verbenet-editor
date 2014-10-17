@@ -82,6 +82,9 @@ class TestLADLColumns(unittest.TestCase):
         self.assertEqual(
             parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport (forme V-n) et +N0 V]'),
             ['38L', '[', '+', 'V-n transport (forme V-n)', 'and', '+', 'N0 V', ']'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '35L[+[extrap]]'),
+            ['35L', '[', '+', '[extrap]', ']'])
         with self.assertRaises(parse.SyntaxErrorException):
             parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou -N et +N0 V]'),
         with self.assertRaises(parse.SyntaxErrorException):
