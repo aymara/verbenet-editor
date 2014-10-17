@@ -114,25 +114,39 @@ class VerbNetFrameSet(MPTTModel):
         inferred_verbs = self.verbtranslation_set.filter(validation_status=VerbTranslation.STATUS_INFERRED)
         inferred_verbs.delete()
         manually_validated_verbs = self.verbtranslation_set.exclude(validation_status=VerbTranslation.STATUS_INFERRED)
-        manually_validated_set = {v.verb for v in manually_validated_verbs}
+        manually_validated_set = {v.verb: v.category for v in manually_validated_verbs}
         when_deleted = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         members = [m.lemma for m in self.verbnetmember_set.all()]
         candidates = translations_for_class(members, ladl_string, lvf_string)
 
-        for french, categoryname, categoryid, originlist in candidates:
+        for french, categoryname, category_id, originlist in candidates:
             originset = set(originlist.split(','))
             if (set(members) & originset and  # is actually a translation
                     # is not already somewhere down
-                    french not in translations_in_subclasses and
-                    # was not kept because manually validated
-                    french not in manually_validated_set):
-                VerbTranslation(
-                    frameset=self,
-                    verb=french,
-                    category=categoryname,
-                    category_id=VerbTranslation.CATEGORY_ID[categoryname],
-                    origin=originlist).save()
+                    french not in translations_in_subclasses):
+
+                # At this point we have three options.
+                #  1/ this translation was not manually validated at all: add it
+                if french not in manually_validated_set:
+                    VerbTranslation(
+                        frameset=self, verb=french, origin=originlist,
+                        category=categoryname,
+                        category_id=VerbTranslation.CATEGORY_ID[categoryname]).save()
+                #  2/ this translation was manually validated but with a different
+                #  status: change it
+                elif categoryname != manually_validated_set[french]:
+                    verb_to_update = VerbTranslation.objects.get(
+                        frameset=self, verb=french, origin=originlist,
+                        validation_status=VerbTranslation.STATUS_VALID,
+                        category=manually_validated_set[french])
+                    verb_to_update.category = categoryname
+                    verb_to_update.category_id = VerbTranslation.CATEGORY_ID[categoryname]
+                    verb_to_update.save()
+                #  3/ this translation was manually validated and already has
+                #  the correct color: do nothing
+                else:
+                    pass
 
         when_added = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
@@ -169,6 +183,12 @@ class VerbNetFrameSet(MPTTModel):
 
 
     def update_members(self, frameset):
+        """Moves members according to hidden/shown classes
+
+        If a subclass was hidden, all members should show up in the first
+        superclass that is not hidden. If a subclass was shown, any member that
+        was moved up should go down again."""
+
         existing_inherited_members = set(
                 frameset.verbnetmember_set.filter(inherited_from__isnull=False))
         real_inherited_members = set()
@@ -197,6 +217,14 @@ class VerbNetFrameSet(MPTTModel):
 
 
     def update_manual_translations(self, frameset):
+        """Moves manual translations according to hidden/shown classes
+
+        We treat manual translations exactly as members in self.update_members
+        here: they were manually validated and should not simply be deleted and
+        inferred again as automatic translation can be. (A "manual" translation
+        is a translation that was validated manually by clicking on a verb in
+        the interface."""
+
         existing_inherited_translations = set(
             frameset.verbtranslation_set.filter(inherited_from__isnull=False))
         real_inherited_translations = set()
