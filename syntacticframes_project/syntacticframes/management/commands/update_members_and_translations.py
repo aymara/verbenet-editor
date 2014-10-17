@@ -13,6 +13,7 @@ import logging
 from time import gmtime, strftime
 
 from django.core.management.base import BaseCommand
+from django.db import transaction
 
 from syntacticframes.models import VerbNetClass
 
@@ -23,9 +24,14 @@ class Command(BaseCommand):
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
         verb_logger.info("{}: Start full update of verbs (members and translations)".format(when))
 
-        for vn_class in VerbNetClass.objects.all():
-            print(vn_class.name)
-            vn_class.update_members_and_translations()
-
-        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-        verb_logger.info("{}: Ended full update of verbs (members and translations)".format(when))
+        try:
+            with transaction.commit_on_success():
+                for vn_class in VerbNetClass.objects.all():
+                    print(vn_class.name)
+                    vn_class.update_members_and_translations()
+        except:
+            when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+            verb_logger.info("{}: Exception, everything was backed out.".format(when))
+        else:
+            when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+            verb_logger.info("{}: Ended full update of verbs (members and translations)".format(when))
