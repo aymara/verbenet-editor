@@ -36,6 +36,10 @@ class VerbNetClass(models.Model):
 
         return class_number
 
+    class Meta:
+        # Order at least by Levin class and alphabetical order
+        ordering = ['levin_class', 'name']
+
     def __str__(self):
         return self.name
 
