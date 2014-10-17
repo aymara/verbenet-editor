@@ -110,7 +110,7 @@ class VerbNetFrameSet(MPTTModel):
             new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
             translations_in_subclasses |= db_childrenfs.update_translations(ladl_string=new_ladl, lvf_string=new_lvf)
 
-        initial_set = {(v.verb, v.category) for v in self.verbtranslation_set.all()}
+        initial_set = {(v.verb, v.category, v.validation_status) for v in self.verbtranslation_set.all()}
         inferred_verbs = self.verbtranslation_set.filter(validation_status=VerbTranslation.STATUS_INFERRED)
         inferred_verbs.delete()
         manually_validated_verbs = self.verbtranslation_set.exclude(validation_status=VerbTranslation.STATUS_INFERRED)
@@ -119,6 +119,8 @@ class VerbNetFrameSet(MPTTModel):
 
         members = [m.lemma for m in self.verbnetmember_set.all()]
         candidates = translations_for_class(members, ladl_string, lvf_string)
+
+        verb_logger = logging.getLogger('verbs')
 
         for french, categoryname, category_id, originlist in candidates:
             originset = set(originlist.split(','))
@@ -151,16 +153,15 @@ class VerbNetFrameSet(MPTTModel):
         when_added = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
         verbs = self.verbtranslation_set.all()
-        final_set = {(v.verb, v.category) for v in verbs}
+        final_set = {(v.verb, v.category, v.validation_status) for v in verbs}
         translations_in_subclasses |= {v[0] for v in final_set}
 
-        verb_logger = logging.getLogger('verbs')
         if initial_set - final_set:
             verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-                when_deleted, self.name, ", ".join(["{} ({})".format(v, c) for v, c in initial_set - final_set])))
+                when_deleted, self.name, ", ".join(["{} ({}, {})".format(v, c, s) for v, c, s in initial_set - final_set])))
         if final_set - initial_set:
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-                when_added, self.name, ", ".join(["{} ({})".format(v, c) for v, c in final_set - initial_set])))
+                when_added, self.name, ", ".join(["{} ({}, {})".format(v, c, s) for v, c, s in final_set - initial_set])))
 
         return translations_in_subclasses
 
@@ -381,7 +382,7 @@ class VerbTranslation(models.Model):
             related_name='inheritedmanualtranslation_set')
 
     def __str__(self):
-        return "{} ({})".format(self.verb, self.category)
+        return "{} ({}, {})".format(self.verb, self.category, self.validation_status)
 
     class Meta:
         ordering = ['category_id', 'verb']
