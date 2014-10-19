@@ -5,7 +5,7 @@
             {# Title: class name and LVF/LADL #}
             <h2 name="{{classe.name}}">
                 <a href="#{{ classe.name }}">{{ classe.name }}</a>
-                <a href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php" class="external"><i class="icon-share-alt"></i></a>
+                <a href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
             </h2>
 
             <div class="class_editable" data-text="{{classe.comment|default:"∅"}}">
@@ -19,7 +19,7 @@
                     <h3 id="{{node.name}}" name="{{node.name}}">
                         Classe {{node.name}} cachée
                         {% if user.is_authenticated %}
-                            <button class="btn show_subclass" data-frameset_id="{{node.name}}"><i class="icon-repeat"></i> Montrer</button>
+                            <button class="btn btn-default show_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-repeat"></span> Montrer</button>
                         {% endif %}
                     </h3>
 
@@ -36,7 +36,7 @@
                 {% else %}
                     <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}}
                         {% if user.is_authenticated %}
-                            <button class="btn remove_subclass" data-frameset_id="{{node.name}}"><i class="icon-remove"></i> Cacher</button>
+                            <button class="btn btn-default remove_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-remove"></span> Cacher</button>
                         {% endif %}
                     </h3>
 
@@ -45,7 +45,7 @@
                         {% for text, class_name in node.lvf_parts %}
                             {{ text }}
                             {% if class_name %}
-                                <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{class_name}}.html" class="external"><i class="icon-share-alt"></i></a>
+                                <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{class_name}}.html" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}</p>
@@ -55,16 +55,16 @@
                         {% for text, class_name in node.ladl_parts %}
                             {{ text }}
                             {% if class_name %}
-                                <a href="http://verbenet.pradet.me/verbes-html/V_{{class_name}}.lgt.html" class="external"><i class="icon-share-alt"></i></a>
+                                <a href="http://verbenet.pradet.me/verbes-html/V_{{class_name}}.lgt.html" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}</p>
 
                     {% if user.is_authenticated %}
                     <p class='validate_verbs'> Valider les verbes :
-                        <button class="btn ladl" data-verb-category="ladl" data-frameset_id="{{node.name}}"><i class="icon-ok"></i> LADL</button>
-                        <button class="btn lvf" data-verb-category="lvf" data-frameset_id="{{node.name}}"><i class="icon-ok"></i> LVF</button>
-                        <button class="btn both" data-verb-category="both" data-frameset_id="{{node.name}}"><i class="icon-ok"></i> Les deux</button>
+                        <button class="btn btn-default ladl" data-verb-category="ladl" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-ok"></span> LADL</button>
+                        <button class="btn btn-default lvf" data-verb-category="lvf" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-ok"></span> LVF</button>
+                        <button class="btn btn-default both" data-verb-category="both" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-ok"></span> Les deux</button>
                     </p>
                     {% endif %}
 
@@ -120,7 +120,7 @@
                         {% if user.is_authenticated %}
                             <span class='new_translation'>
                                 <span class='new_translation_editable'></span>
-                                <a class="new_translation_link" href="#"><i class="icon-plus"></i></a>
+                                <a class="new_translation_link" href="#"><span class="glyphicon glyphicon-plus"></span></a>
                             </span>
                         {% endif %}
                     </li>
@@ -135,7 +135,7 @@
                                 <span class="role">
                                     <span class="role_editable" data-role_id={{role.id}}>{{ role.name }}</span>
                                     {% if user.is_authenticated %}
-                                        <span> <a class="remove_role" href="#"><i class="icon-remove"></i></a></span>
+                                        <span> <a class="remove_role" href="#"><span class="glyphicon glyphicon-remove"></span></a></span>
                                     {% else %}
                                         {% if not forloop.last %}<span>,</span>{% endif %}
                                     {% endif %}
@@ -144,9 +144,9 @@
                             {% endfor %}
                         {% endif %}
                         {% if user.is_authenticated %}
-                            <span>
+                            <span class='form-new_role'>
                                 <span class='new_role_editable'></span>
-                                <a class="new_role" href="#"><i class="icon-plus"></i></a>
+                                <a class="new_role" href="#"><span class="glyphicon glyphicon-plus"></span></a>
                             </span>
                         {% endif %}
                     </li>
@@ -160,7 +160,7 @@
                                 class="{% if not frame.from_verbnet %}created_frame {% endif %} frame"
                                 data-frameid="{{frame.id}}">
                                 {% if user.is_authenticated %}
-                                    <a class="remove_frame" href="#"><i class="right icon-remove"></i></a>
+                                    <a class="remove_frame" href="#"><span class="right glyphicon glyphicon-remove"></span></a>
                                 {% endif %}
                                 <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
                                 <table class="table">
@@ -180,7 +180,7 @@
                             {% if frame.removed %}
                                 <li id="frame_{{frame.id}}">{{ frame.syntax }} ({{ frame.example }})
                                 {% if user.is_authenticated %}
-                                    <button class="btn show_frame" data-frame_id="{{ frame.id }}"><i class="icon-repeat"></i> Réintégrer</button></li>
+                                    <button class="btn btn-default show_frame" data-frame_id="{{ frame.id }}"><span class="glyphicon glyphicon-repeat"></span> Réintégrer</button></li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
@@ -189,20 +189,20 @@
 
                     {% if user.is_authenticated %}
                         <p>
-                          <button class="btn new_frame"><i class="icon-plus"></i> Ajouter une frame</button>
+                          <button class="btn btn-default new_frame"><span class="glyphicon glyphicon-plus"></span> Ajouter une frame</button>
                         </p>
                         <div class="frame" style="display:none">
                             <form action="/add/" class="new_frame" method="POST">{% csrf_token %}
                                 <p>
-                                    <input type="text" name="syntax" placeholder="NP V NP" />
+                                    <input type="text" class='form-control' name="syntax" placeholder="NP V NP" />
                                     <input type="hidden" name="type" value="frame" />
                                     <input type="hidden" name="frameset_id" value="{{node.id}}" />
                                     <input type="hidden" name="vn_class_id" value="{{classe.id}}" />
                                 </p>
                                 <table class="table">
-                                    <tr><td>Exemple</td><td><input type="text" name="example" /></td></tr>
-                                    <tr><td>Syntaxe</td><td><input type="text" name="roles_syntax" /></td></tr>
-                                    <tr><td>Sémantique</td><td><input type="text" name="semantics" /></td></tr>
+                                    <tr><td>Exemple</td><td><input class='form-control' type="text" name="example" /></td></tr>
+                                    <tr><td>Syntaxe</td><td><input class='form-control' type="text" name="roles_syntax" /></td></tr>
+                                    <tr><td>Sémantique</td><td><input class='form-control' type="text" name="semantics" /></td></tr>
                                 </table>
                                 <p><button type="submit" value="Envoyer" class="btn btn-primary">Envoyer</button></p>
                             </form>
@@ -211,7 +211,7 @@
                 {% endif %}
 
                 {% if user.is_authenticated %}
-                <p><button class="btn new_subclass" data-frameset_id="{{node.name}}"><i class="icon-chevron-right"></i> Ajouter une sous-classe</button></p>
+                <p><button class="btn btn-default new_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-chevron-right"></span> Ajouter une sous-classe</button></p>
                 {% endif %}
 
                 {# Rinse and repeat with children #}
