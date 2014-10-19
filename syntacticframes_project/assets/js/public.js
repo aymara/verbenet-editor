@@ -1,7 +1,7 @@
 function show_plus() {
     // Show/hide verbs that are not interesting
     var showLink = $('<a/>').attr('class', 'plus_link').text('[montrer]').prop('href', '#');
-    $('.translations a.pluslink').remove();
+    $('.translations a.plus_link').remove();
     $('.translations').each(function() {
         if ($(this).find('span').size() > 0) {
             if (window._user_authenticated) {
