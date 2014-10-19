@@ -264,6 +264,8 @@ THIRD_PARTY_APPS = (
     'reversion',
     # asset packaging
     'pipeline',
+    # bootstrap
+    'twitter_bootstrap',
 )
 
 # Apps specific for this project go here.
