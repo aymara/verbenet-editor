@@ -9,7 +9,7 @@ from sys import path
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
-# Absolute filesystem path to the top-level project folder:
+# Absolute filesystem path to syntacticframes_project/
 SITE_ROOT = dirname(DJANGO_ROOT)
 
 # Site name:
@@ -127,12 +127,25 @@ PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_COMPILERS = ('pipeline.compilers.less.LessCompiler',)
 
+import os
+custom_less_dir = os.path.join(SITE_ROOT, 'assets', 'less')
+import twitter_bootstrap
+bootstrap_less = os.path.join(os.path.dirname(twitter_bootstrap.__file__), 'static')
+print(bootstrap_less)
+PIPELINE_LESS_ARGUMENTS = '--include-path={}'.format(os.pathsep.join([
+    bootstrap_less, custom_less_dir]))
+print(PIPELINE_LESS_ARGUMENTS)
+
+
+
 PIPELINE_CSS = {
     'syntacticframes': {
         'source_filenames': (
-            'less/bootstrap.less',
+            'twitter_bootstrap/less/bootstrap.less',
+            'twitter_bootstrap/less/theme.less',
+            'less/custom.less',
             'css/project.css',
-            'less/responsive.less',
+            'twitter-bootstrap/less/responsive.less',
         ),
         'output_filename': 'css/syntacticframes.css',
     },
@@ -251,6 +264,8 @@ THIRD_PARTY_APPS = (
     'reversion',
     # asset packaging
     'pipeline',
+    # bootstrap
+    'twitter_bootstrap',
 )
 
 # Apps specific for this project go here.

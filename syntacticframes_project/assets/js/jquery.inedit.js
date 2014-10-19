@@ -50,8 +50,8 @@
 
         // define input elements
         inputElement = [
-            jQuery('<input />', {'class': options.style, 'type': 'text'}),
-            jQuery('<textarea />', {'class': options.style }),
+            jQuery('<input />', {'class': options.style + ' form-control', 'type': 'text'}),
+            jQuery('<textarea />', {'class': options.style + ' form-control' }),
         ]
 
         options.clickStarted = false;
