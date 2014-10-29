@@ -47,36 +47,3 @@ def read_csv(filename):
 def get_levin(c):
     # TODO regex
     return c.split('-')[1].split('.')[0]
-
-from django.db import transaction
-
-def import_mapping():
-    verbnet = read_csv(join(settings.SITE_ROOT, 'loadmapping/resources/Correspondances.csv'))
-
-
-    with transaction.commit_on_success():
-        candidates = {}
-
-        for classe in verbnet:
-            print("Saving root class {}".format(classe["classe"]))
-            v = VerbNetClass(
-                levin_class=LevinClass.objects.get(
-                    number=get_levin(classe["classe"])),
-                name=classe["classe"])
-            v.save()
-
-            VerbNetFrameSet(
-                verbnet_class=v,
-                name=classe["classe"].split('-')[1],
-                paragon=classe["paragon"],
-                comment=classe["commentaire"],
-                lvf_string=classe["lvf_orig"],
-                ladl_string=classe["ladl_orig"]).save()
-
-            candidates[classe['classe']] = classe['candidates']
-
-        return candidates
-
-
-if __name__ == '__main__':
-    import_mapping()
