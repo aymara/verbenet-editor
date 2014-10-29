@@ -2,7 +2,9 @@
 
 
 from os.path import abspath, basename, dirname, join, normpath
+from os import pathsep
 from sys import path
+import twitter_bootstrap
 
 
 ########## PATH CONFIGURATION
@@ -127,14 +129,10 @@ PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_COMPILERS = ('pipeline.compilers.less.LessCompiler',)
 
-import os
-custom_less_dir = os.path.join(SITE_ROOT, 'assets', 'less')
-import twitter_bootstrap
-bootstrap_less = os.path.join(os.path.dirname(twitter_bootstrap.__file__), 'static')
-print(bootstrap_less)
-PIPELINE_LESS_ARGUMENTS = '--include-path={}'.format(os.pathsep.join([
+custom_less_dir = join(SITE_ROOT, 'assets', 'less')
+bootstrap_less = join(dirname(twitter_bootstrap.__file__), 'static')
+PIPELINE_LESS_ARGUMENTS = '--include-path={}'.format(pathsep.join([
     bootstrap_less, custom_less_dir]))
-print(PIPELINE_LESS_ARGUMENTS)
 
 
 
