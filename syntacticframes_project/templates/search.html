@@ -9,24 +9,44 @@
 <div class="container">
     <h1>Recherche de "{{search}}"</h1>
 
-    <h2>Verbes</h2>
+    <h2>Traductions</h2>
     {% if verbs %}
         <table class='search_results table'>
             <thead>
-                <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe (cliquable)</td></tr>
+                <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe</td></tr>
             </thead>
             {% for verb in verbs %}
                 {% if not verb.frameset.removed %}
                     <tr class="{{verb.category}} {{verb.validation_status}}">
-                        <td>{{ verb.frameset.verbnet_class.levin_class.name }}</td>
-                        <td>{{ verb.frameset.verbnet_class.name}}</td>
+                        <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/">{{ verb.frameset.verbnet_class.levin_class.name }}</a></td>
+                        <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.verbnet_class.name}}">{{ verb.frameset.verbnet_class.name }}</a></td>
                         <td><a href="/class/{{verb.frameset.verbnet_class.levin_class.number}}/#{{verb.frameset.name}}">{{ verb.frameset.name }}</a></td>
                     </tr>
                 {% endif %}
             {% endfor %}
         </table>
     {% else %}
-        Pas de verbe.
+        Pas de traductions.
+    {% endif %}
+
+    <h2>Membres anglais</h2>
+    {% if members %}
+        <table class='search_results table'>
+            <thead>
+                <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe</td></tr>
+            </thead>
+            {% for member in members %}
+                {% if not member.frameset.removed %}
+                    <tr>
+                        <td><a href="/class/{{member.frameset.verbnet_class.levin_class.number}}/">{{ member.frameset.verbnet_class.levin_class.name }}</a></td>
+                        <td><a href="/class/{{member.frameset.verbnet_class.levin_class.number}}/#{{member.frameset.verbnet_class.name}}">{{ member.frameset.verbnet_class.name }}</a></td>
+                        <td><a href="/class/{{member.frameset.verbnet_class.levin_class.number}}/#{{member.frameset.name}}">{{ member.frameset.name }}</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% else %}
+        Pas de membre anglais.
     {% endif %}
 
     <h2>Commentaires</h2>

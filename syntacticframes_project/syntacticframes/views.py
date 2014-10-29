@@ -13,7 +13,8 @@ import logging
 from time import gmtime, strftime
 
 from .models import (LevinClass, VerbNetClass, VerbTranslation,
-                     VerbNetFrameSet, VerbNetFrame, VerbNetRole)
+                     VerbNetFrameSet, VerbNetFrame, VerbNetRole,
+                     VerbNetMember)
 from role.parserole import ParsedRole
 
 logger = logging.getLogger('database')
@@ -360,6 +361,7 @@ def search(request):
     context = RequestContext(request, {
         'search': search,
         'verbs': VerbTranslation.objects.filter(verb=search),
+        'members': VerbNetMember.objects.filter(lemma=search),
 
         'levin_comments': LevinClass.objects.filter(comment__icontains=search),
         'vn_comments': VerbNetClass.objects.filter(comment__icontains=search),
