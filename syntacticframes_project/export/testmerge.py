@@ -70,14 +70,25 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V PP', 'Agent V {lol} Patient', output=sys.stderr),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'type': 'PP', 'role': 'Patient', 'prep': {'lol'}}])
+             {'type': 'PREP', 'Value': 'lol'},
+             {'type': 'PP', 'role': 'Patient'}])
 
     def test_preposition_list(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V PP', 'Agent V {à dans pour} Patient', output=sys.stderr),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'type': 'PP', 'role': 'Patient', 'prep': {'à', 'dans', 'pour'}}])
+             {'Value': 'à dans pour', 'type': 'PREP'},
+             {'role': 'Patient', 'type': 'PP'}])
+
+    def test_preposition_class(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stderr),
+            [{'type': 'NP', 'role': 'Agent'},
+             {'type': 'V'},
+             {'type': 'PREP', 'type_': 'loc', 'Value': '+'},
+             {'type': 'PP', 'role': 'Patient'}])
+
 
     def test_neutral_verb(self):
         self.assertEqual(
@@ -135,11 +146,11 @@ class TestExport(SimpleTestCase):
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
-            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PP prep="de" role="Patient"><SYNRESTRS /></PP></SYNTAX>')
+            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP><NP role="Patient"><SYNRESTRS /></NP></SYNTAX>')
 
     def test_pp_category(self):
         new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stderr)
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
-            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PP prep="{{+loc}}" role="Patient"><SYNRESTRS /></PP></SYNTAX>')
+            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="+" type="loc" /></SELRESTRS></PREP><NP role="Patient"><SYNRESTRS /></NP></SYNTAX>')

@@ -1,5 +1,6 @@
 import io
 import os
+import locale
 from xml.etree import ElementTree as ET
 
 from syntacticframes.models import LevinClass, VerbNetFrameSet
@@ -85,7 +86,6 @@ def merge_primary_and_syntax(primary, syntax, output):
     print(primary_parts, syntax_parts, file=output)
 
     i, j = 0, 0
-    found_prep = None
     while i < len(syntax_parts) and j < len(primary_parts):
         print(i, j, syntax_parts[i], primary_parts[j], file=output)
 
@@ -101,11 +101,6 @@ def merge_primary_and_syntax(primary, syntax, output):
                 assert syntax_role == primary_role
 
             parsed_frame.append({'type': phrase_type, 'role': syntax_role})
-
-            if found_prep:
-                assert phrase_type == 'PP'
-                parsed_frame[-1]['prep'] = found_prep
-                found_prep = None
             i, j = i+1, j+1
 
         # Verbs, can also be neutral
@@ -143,17 +138,25 @@ def merge_primary_and_syntax(primary, syntax, output):
             j = j+2
             i = i+1
 
-        # Handle special syntax like {{+loc}} or {avec dans pour}
         elif isinstance(syntax_parts[i], set):
-            found_prep = syntax_parts[i]
-            i += 1
-        elif syntax_parts[i].startswith('{{') and syntax_parts[i].endswith('}}'):
-            found_prep = syntax_parts[i]
+            restr = syntax_parts[i]
+            # {{+loc}}
+            if len(restr) == 1 and next(iter(restr)).startswith('{{') and next(iter(restr)).endswith('}}'):
+                class_restr = next(iter(restr))
+                print('{{ ', phrase_type, class_restr, file=output)
+                value = class_restr[2]
+                assert value in ['+', '-']
+                type_ = class_restr[3:-2]
+                parsed_frame.append({'type': 'PREP', 'type_': type_, 'Value': value})
+            # {avec dans pour}
+            else:
+                print('set ', phrase_type, syntax_parts[i], file=output)
+                parsed_frame.append({'type': 'PREP', 'Value': ' '.join(sorted(syntax_parts[i], key=locale.strxfrm))})
             i += 1
 
         # We should have handled everything
         else:
-            raise Exception('Didn\'t expect {} and {}'.format(primary_parts[j], syntax_parts[i]))
+            raise Exception('Didn\'t expect |{}| and |{}|'.format(primary_parts[j], syntax_parts[i]))
 
         print(parsed_frame, file=output)
 
@@ -167,15 +170,17 @@ def merge_primary_and_syntax(primary, syntax, output):
 def xml_of_syntax(parsed_frame):
     syntax = ET.Element('SYNTAX')
     for frame_part in parsed_frame:
-        if frame_part['type'] == 'NP':
+        if frame_part['type'] in ['NP', 'PP']:
             np = ET.SubElement(syntax, 'NP')
             np.set('role', frame_part['role'])
             synrestrs = ET.SubElement(np, 'SYNRESTRS')
-        elif frame_part['type'] == 'PP':
-            pp = ET.SubElement(syntax, 'PP')
-            pp.set('role', frame_part['role'])
-            pp.set('prep', ' - '.join(frame_part['prep']))
-            synrestrs = ET.SubElement(pp, 'SYNRESTRS')
+        elif frame_part['type'] == 'PREP':
+            prep = ET.SubElement(syntax, 'PREP')
+            selrestr_list = ET.SubElement(prep, 'SELRESTRS')
+            selrestr = ET.SubElement(selrestr_list, 'SELRESTR')
+            if 'type_' in frame_part:
+                selrestr.set('type', frame_part['type_'])
+            selrestr.set('Value', frame_part['Value'])
 
         # Goal is to remove this block
         elif frame_part['type'] == 'special':
@@ -198,7 +203,7 @@ def xml_of_syntax(parsed_frame):
             s.set('value', frame_part['role'])
             # todo restr
         else:
-            raise Exception('Unhandled {}.'.format(parsed_frame))
+            raise Exception('Unhandled {} in {}.'.format(frame_part, parsed_frame))
 
     return syntax
 
@@ -229,7 +234,7 @@ def export_subclass(db_frameset, classname=None):
     xml_frames = ET.SubElement(xml_vnclass, 'FRAMES')
     for db_frame in db_frameset.verbnetframe_set.filter(removed=False):
         frame = ET.SubElement(xml_frames, 'FRAME')
-        frame.set('primary', db_frame.syntax)
+        ET.SubElement(frame, 'DESCRIPTION', primary=db_frame.syntax)
 
         # Example
         examples = ET.SubElement(frame, 'EXAMPLES')
@@ -250,6 +255,7 @@ def export_subclass(db_frameset, classname=None):
             frame.append(syntax)
             handled_frames += 1
         except Exception as e:
+            print('Oops')
             print(output.getvalue())
             print(e)
             print()
@@ -286,4 +292,4 @@ def export_all_vn_classes():
             xml_vnclass = export_subclass(db_rootframeset, classname=db_vnclass.name)
             ET.ElementTree(xml_vnclass).write('export/verbenet/{}.xml'.format(db_vnclass.name))
 
-    print('Handled {:.2%} of frames'.format(handled_frames/total_frames))
+    print('Handled {:.2%} of {} frames'.format(handled_frames/total_frames, total_frames))
