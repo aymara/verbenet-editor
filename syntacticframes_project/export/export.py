@@ -172,7 +172,7 @@ def xml_of_syntax(parsed_frame):
     for frame_part in parsed_frame:
         if frame_part['type'] in ['NP', 'PP']:
             np = ET.SubElement(syntax, 'NP')
-            np.set('role', frame_part['role'])
+            np.set('value', frame_part['role'])
             synrestrs = ET.SubElement(np, 'SYNRESTRS')
         elif frame_part['type'] == 'PREP':
             prep = ET.SubElement(syntax, 'PREP')
