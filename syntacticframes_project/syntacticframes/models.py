@@ -50,7 +50,7 @@ class VerbNetClass(models.Model):
         root_frameset.update_translations()
 
 
-# Subclass (9.1-2)
+# Subclass (9.1, 9.1-2, ...)
 class VerbNetFrameSet(MPTTModel):
     """
     FrameSet which will contain sub-classes.
@@ -63,6 +63,10 @@ class VerbNetFrameSet(MPTTModel):
     verbnet_class = models.ForeignKey(VerbNetClass)
     name = models.CharField(max_length=100)
 
+    # instead of relying on the primary key, storing a tree id lets us correct
+    # issues with trees.
+    tree_id = models.PositiveSmallIntegerField(null=False)
+
     has_removed_frames = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
 
@@ -72,7 +76,7 @@ class VerbNetFrameSet(MPTTModel):
     lvf_string = models.TextField(blank=True)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['tree_id']
 
     def __str__(self):
         return 'VerbNetFrameSet: {}'.format(self.name)
