@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Index inversé des tables du LADL{% endblock %}
+
+{% block all %}
+
+<div class="container">
+
+    <h2>Index inversé des tables du LADL</h2>
+
+    <table class="table">
+        {% for ladl, frameset in inversed_ladl_pairs %}
+        <tr><td>{{ ladl }}</td><td>{{ frameset|join:" - " }}</td></tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock all %}
