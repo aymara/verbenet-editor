@@ -13,7 +13,7 @@
     {% if verbs %}
         <table class='search_results table'>
             <thead>
-                <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe</td></tr>
+                <tr><td>Classe de Levin</td><td>Classe Verb∋Net</td><td>Sous-classe</td></tr>
             </thead>
             {% for verb in verbs %}
                 {% if not verb.frameset.removed %}
@@ -33,7 +33,7 @@
     {% if members %}
         <table class='search_results table'>
             <thead>
-                <tr><td>Classe de Levin</td><td>Classe VerbNet</td><td>Sous-classe</td></tr>
+                <tr><td>Classe de Levin</td><td>Classe Verb∋Net</td><td>Sous-classe</td></tr>
             </thead>
             {% for member in members %}
                 {% if not member.frameset.removed %}
@@ -56,7 +56,7 @@
     {% endfor %}
 
     {% for vn in vn_comments %}
-        <h3>Classe VerbNet {{vn.name}}</h3>
+        <h3>Classe Verb∋Net {{vn.name}}</h3>
         <p>{{vn.comment|linebreaks|highlight:search }}</p>
     {% endfor %}
 
