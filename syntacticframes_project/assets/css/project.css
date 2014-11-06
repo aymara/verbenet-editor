@@ -115,6 +115,7 @@ h2 {
 /* Verbs display */
 .both, [data-verb-category='both'] { color: purple }
 .ladl, [data-field="ladl_string"], [data-verb-category='ladl'] { color: green }
+.ladlindex .ladl { font-weight: bold; }
 .lvf, [data-field="lvf_string"], [data-verb-category='lvf'] { color: red }
 .unknown { color: gray }
 .hover { background-color: black; color: white }

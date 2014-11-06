@@ -9,9 +9,20 @@
 
     <h2>Index inversé des tables du LADL</h2>
 
-    <table class="table">
-        {% for ladl, frameset in inversed_ladl_pairs %}
-        <tr><td>{{ ladl }}</td><td>{{ frameset|join:" - " }}</td></tr>
+    <table class="table ladlindex">
+        <tr><th>Classe LADL</th><th>Classe Verb∋Net</th></tr>
+        {% for ladl, group in inversed_ladl.items %}
+        <tr>
+            <td><p class="ladl">{{ladl}} <a class="external" href="http://verbenet.pradet.me/verbes-html/V_{{ladl}}.lgt.html"><span class="glyphicon glyphicon-share-alt"></span></a></p></td>
+            <td>
+            {% for ladl_number, ladl_fs_list in group.items %}
+                    {% for frameset in ladl_fs_list %}
+                    <a href="/class/{{ladl_number}}/#{{frameset}}">{{frameset}}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+            {% if not forloop.last %} &mdash; {% endif %}
+            {% endfor %}
+            </td>
+        </tr>
         {% endfor %}
     </table>
 
