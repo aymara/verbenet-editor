@@ -38,7 +38,7 @@ def empty_translations():
     last_lvf = None
     last_ladl = None
 
-    for db_fs in VerbNetFrameSet.objects.filter(removed=False):
+    for db_fs in VerbNetFrameSet.objects.prefetch_related('verbnetmember_set').filter(removed=False):
         if db_fs.lvf_string:
             lvf = db_fs.lvf_string
         else:
@@ -83,7 +83,7 @@ def chosen_verbs(vn_fs):
 def count_verbs():
     unique_verbs, unique_validated_verbs, unique_members = set(), set(), set()
     num_framesets, num_classes, num_verbs, num_validated_verbs, num_members = 0, 0, 0, 0, 0
-    for vn_class in VerbNetClass.objects.all():
+    for vn_class in VerbNetClass.objects.prefetch_related('verbnetframeset_set', 'verbnetframeset_set__verbnetmember_set').all():
         num_classes += 1
         for vn_fs in vn_class.verbnetframeset_set.all():
             num_framesets += 1
