@@ -16,9 +16,7 @@
             {% if class.number == active_class.number %}
               selected
             {% endif %}
-            {% if class.is_translated %}
-              accepted
-            {% endif %}
+            {{ class.translation_status }}
             ">
 
             <a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
@@ -30,9 +28,9 @@
     <div class="col-md-9">
 
 
-      <h1 class="{{ active_class.is_translated }}">
+        <h1 class="{{ active_class.translation_status }} {{ active_class }}">
         <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
-        {% if user.is_authenticated and not active_class.is_translated %}
+        {% if user.is_authenticated and not active_class.translation_status == 'TRANSLATED' %}
           <button data-levinid="{{active_class.number}}" class="btn validate_class"><i class="icon-ok"></i> Valider</button>
         {% endif %}
       </h1>

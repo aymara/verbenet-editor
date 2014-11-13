@@ -294,7 +294,7 @@ def validate(request):
         if request.POST['model'] == 'LevinClass':
             levin_class_id = request.POST['levin_class']
             db_levin_class = LevinClass.objects.get(number=levin_class_id)
-            db_levin_class.is_translated = True
+            db_levin_class.translation_status = LevinClass.STATUS_TRANSLATED
             db_levin_class.save()
         elif request.POST['model'] == 'VerbNetFrameSetVerb':
             category = request.POST['category']

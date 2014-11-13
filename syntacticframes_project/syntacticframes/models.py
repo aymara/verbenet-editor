@@ -10,10 +10,22 @@ from parsecorrespondance.parse import FrenchMapping
 
 # Levin class 9..104
 class LevinClass(models.Model):
+    STATUS_TRANSLATED = 'TRANSLATED'
+    STATUS_REMOVED = 'REMOVED'
+    STATUS_INPROGRESS = 'INPROGRESS' # default status: not translated yet
+
+    TRANSLATION_STATUS = (
+        (STATUS_TRANSLATED, 'Translated'),
+        (STATUS_REMOVED, 'Removed'),
+        (STATUS_INPROGRESS, 'In progress'),
+    )
+
     number = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
-    is_translated = models.BooleanField(default=False)
     comment = models.TextField(max_length=100000, blank=True)
+    translation_status = models.CharField(
+        max_length=10, choices=TRANSLATION_STATUS,
+        default=STATUS_INPROGRESS)
 
     class Meta:
         ordering = ['number']

@@ -277,7 +277,7 @@ def export_subclass(db_frameset, classname=None):
 
 def export_all_vn_classes():
     os.makedirs('export/verbenet', exist_ok=True)
-    for db_levinclass in LevinClass.objects.filter(is_translated=True):
+    for db_levinclass in LevinClass.objects.filter(translation_status=LevinClass.STATUS_TRANSLATED):
         for db_vnclass in db_levinclass.verbnetclass_set.all():
             if db_vnclass.name in ['hold-15.1']:
                 continue
