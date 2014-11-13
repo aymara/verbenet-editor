@@ -7,6 +7,7 @@ from django.core.context_processors import csrf
 from django import forms
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
+from django.db import transaction
 
 from distutils.version import LooseVersion
 import logging
@@ -16,6 +17,7 @@ from .models import (LevinClass, VerbNetClass, VerbTranslation,
                      VerbNetFrameSet, VerbNetFrame, VerbNetRole,
                      VerbNetMember)
 from role.parserole import ParsedRole
+from parsecorrespondance.parse import ParseErrorException
 
 logger = logging.getLogger('database')
 
@@ -91,75 +93,80 @@ def login(request):
 
 
 @login_required
+@transaction.non_atomic_requests
 def update(request):
-    if request.method == 'POST':
-        post = request.POST
-        field, label, object_type = post["field"], post["label"], post["type"]
-        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+    try:
+        with transaction.atomic():
+            if request.method == 'POST':
+                post = request.POST
+                field, label, object_type = post["field"], post["label"], post["type"]
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-        # When these fields change, verbs translations need to be updated
-        refresh_fields = ['ladl_string', 'lvf_string']
-        # When these field change, '∅' becomes '' in database
-        emptyset_fields = ['ladl_string', 'lvf_string']
+                # When these fields change, verbs translations need to be updated
+                refresh_fields = ['ladl_string', 'lvf_string']
+                # When these field change, '∅' becomes '' in database
+                emptyset_fields = ['ladl_string', 'lvf_string']
 
-        if object_type == 'frame':
-            vn_class_name = post['vn_class']
-            frame_id = int(post["frame_id"])
-            frame = VerbNetFrame.objects.get(id=frame_id)
-            old_label = getattr(frame, field)
-            setattr(frame, field, label)
-            frame.save()
-            logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'".format(
-                when, request.user.username, field, frame_id, vn_class_name, old_label, label))
-        elif object_type == 'frameset':
-            vn_class_name = post['vn_class']
-            if field in emptyset_fields and label.strip() == '∅':
-                label = ''
-            db_frameset = VerbNetFrameSet.objects.get(id=int(post['frameset_id']))
-            old_label = getattr(db_frameset, field)
-            setattr(db_frameset, field, label)
-            db_frameset.save()
-            logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'".format(
-                when, request.user.username, field, vn_class_name, db_frameset.name,
-                old_label, label))
-        elif object_type == 'vn_class':
-            vn_class_name = post['vn_class']
-            vn_class = VerbNetClass.objects.get(name=vn_class_name)
-            old_label = getattr(vn_class, field)
-            setattr(vn_class, field, label)
-            vn_class.save()
-            logger.info("{}: {} updated {} in VN class {} from '{}' to '{}'".format(
-                when, request.user.username, field, vn_class_name, old_label, label))
-        elif object_type == 'levin':
-            levin_class = LevinClass.objects.get(number=post['levin_number'])
-            old_label = getattr(levin_class, field)
-            setattr(levin_class, field, label)
-            levin_class.save()
-            logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'".format(
-                when, request.user.username, field, levin_class, old_label, label))
-        elif object_type == 'role':
-            try:
-                ParsedRole(label)  # check if role is well-formed
-                role = VerbNetRole.objects.get(id=post['vn_role_id'])
-                old_label = role.name
-                role.name = label
-                role.save()
-                logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'".format(
-                    when, request.user.username, post['frameset_id'], old_label, label))
-            except:
-                return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
-        else:
-            raise Exception("Unknown object type {}".format(object_type))
+                if object_type == 'frame':
+                    vn_class_name = post['vn_class']
+                    frame_id = int(post["frame_id"])
+                    frame = VerbNetFrame.objects.get(id=frame_id)
+                    old_label = getattr(frame, field)
+                    setattr(frame, field, label)
+                    frame.save()
+                    logger.info("{}: {} updated {} in frame {} of {} from '{}' to '{}'".format(
+                        when, request.user.username, field, frame_id, vn_class_name, old_label, label))
+                elif object_type == 'frameset':
+                    vn_class_name = post['vn_class']
+                    if field in emptyset_fields and label.strip() == '∅':
+                        label = ''
+                    db_frameset = VerbNetFrameSet.objects.get(id=int(post['frameset_id']))
+                    old_label = getattr(db_frameset, field)
+                    setattr(db_frameset, field, label)
+                    db_frameset.save()
+                    logger.info("{}: {} updated {} in {}/{} from '{}' to '{}'".format(
+                        when, request.user.username, field, vn_class_name, db_frameset.name,
+                        old_label, label))
+                elif object_type == 'vn_class':
+                    vn_class_name = post['vn_class']
+                    vn_class = VerbNetClass.objects.get(name=vn_class_name)
+                    old_label = getattr(vn_class, field)
+                    setattr(vn_class, field, label)
+                    vn_class.save()
+                    logger.info("{}: {} updated {} in VN class {} from '{}' to '{}'".format(
+                        when, request.user.username, field, vn_class_name, old_label, label))
+                elif object_type == 'levin':
+                    levin_class = LevinClass.objects.get(number=post['levin_number'])
+                    old_label = getattr(levin_class, field)
+                    setattr(levin_class, field, label)
+                    levin_class.save()
+                    logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'".format(
+                        when, request.user.username, field, levin_class, old_label, label))
+                elif object_type == 'role':
+                    try:
+                        ParsedRole(label)  # check if role is well-formed
+                        role = VerbNetRole.objects.get(id=post['vn_role_id'])
+                        old_label = role.name
+                        role.name = label
+                        role.save()
+                        logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'".format(
+                            when, request.user.username, post['frameset_id'], old_label, label))
+                    except:
+                        return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
+                else:
+                    raise Exception("Unknown object type {}".format(object_type))
 
-        if field in refresh_fields:
-            vn_class_name = post['vn_class']
-            db_vnclass = VerbNetClass.objects.get(name__exact=vn_class_name)
-            db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
-            # if throws, ATOMIC_REQUESTS will revert everything
-            db_rootframeset.update_translations()
+                if field in refresh_fields:
+                    vn_class_name = post['vn_class']
+                    db_vnclass = VerbNetClass.objects.get(name__exact=vn_class_name)
+                    db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None)
+                    # if throws, transaction.atomic will revert everything (this + change above)
+                    db_rootframeset.update_translations()
 
-        return HttpResponse("ok")
+                return HttpResponse("ok")
 
+    except ParseErrorException as e:
+        return HttpResponseForbidden(str(e))
 
 @login_required
 def remove(request):

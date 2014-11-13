@@ -2,14 +2,17 @@ import traceback
 
 from django.core.mail import mail_managers
 
-class UnknownClassException(Exception):
+class ParseErrorException(Exception):
+    pass
+
+class UnknownClassException(ParseErrorException):
     def __init__(self, partial_name):
         self.partial_name = partial_name
 
     def __str__(self):
         return 'L\'entrée "{}" n\'existe pas.'.format(self.partial_name)
 
-class SyntaxErrorException(Exception):
+class SyntaxErrorException(ParseErrorException):
     def __init__(self, error, name):
         self.error = error
         self.name = name
@@ -17,7 +20,7 @@ class SyntaxErrorException(Exception):
     def __str__(self):
         return '{} : {}'.format(self.name, self.error)
 
-class UnknownErrorException(Exception):
+class UnknownErrorException(ParseErrorException):
     """
     Errors that were not identified precisely. They make FrenchMapping.__init__ fail.
     """

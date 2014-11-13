@@ -19,7 +19,7 @@ with open(join(settings.SITE_ROOT, 'loadmapping/data/DICOVALENCE_VERBS'), 'rb') 
 with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), 'rb') as f:
     verb_dict = pickle.load(f)
 
-class UnknownColumnException(Exception):
+class UnknownColumnException(parse.ParseErrorException):
     def __init__(self, column, class_name):
         # Remove + or -
         self.column = column[1:]
