@@ -36,9 +36,6 @@ def ladl_sort_key(ladl):
 
     return digit1, letter, digit2
 
-def vn_sort_key(vn):
-    return LooseVersion(vn)
-
 def index(request):
     inversed_ladl = {ladl: defaultdict(list) for ladl in parse.ladl_list if not ladl.startswith('C_')}
 
@@ -46,13 +43,13 @@ def index(request):
         ladl_list = get_ladl_classes(parse.FrenchMapping('LADL', fs.ladl_string).parse_tree)
         for ladl in ladl_list:
             levin_number = fs.verbnet_class.levin_class.number
-            inversed_ladl[ladl][levin_number].append(fs.name)
+            inversed_ladl[ladl][levin_number].append(fs)
 
     # Sort LADL tables, Levin groups, and framesets
-    for key in inversed_ladl:
-        for group in inversed_ladl[key]:
-            inversed_ladl[key][group] = sorted(inversed_ladl[key][group], key=vn_sort_key)
-        inversed_ladl[key] = OrderedDict(sorted(inversed_ladl[key].items(), key=lambda kv: vn_sort_key(kv[0])))
+    for ladl in inversed_ladl:
+        for levin_group in inversed_ladl[ladl]:
+            inversed_ladl[ladl][levin_group] = sorted(inversed_ladl[ladl][levin_group], key=lambda fs: LooseVersion(fs.name))
+        inversed_ladl[ladl] = OrderedDict(sorted(inversed_ladl[ladl].items(), key=lambda kv: LooseVersion(kv[0])))
 
     inversed_ladl = OrderedDict(sorted(inversed_ladl.items(), key=lambda kv: ladl_sort_key(kv[0])))
 

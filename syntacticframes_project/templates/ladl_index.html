@@ -17,7 +17,7 @@
             <td>
             {% for ladl_number, ladl_fs_list in group.items %}
                     {% for frameset in ladl_fs_list %}
-                    <a href="/class/{{ladl_number}}/#{{frameset}}">{{frameset}}</a>{% if not forloop.last %}, {% endif %}
+                    <a class="fs_removed_{{frameset.removed}}" href="/class/{{ladl_number}}/#{{frameset.name}}">{{frameset.name}}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
             {% if not forloop.last %} &mdash; {% endif %}
             {% endfor %}

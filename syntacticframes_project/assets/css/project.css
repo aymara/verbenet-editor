@@ -154,6 +154,8 @@ textarea {
     height: 4em;
 }
 
+.fs_removed_True { text-decoration: line-through; }
+
 /* Frame display */
 .frame {
   border: 1px solid black;
