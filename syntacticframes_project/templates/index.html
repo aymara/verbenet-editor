@@ -28,10 +28,11 @@
     <div class="col-md-9">
 
 
-        <h1 class="{{ active_class.translation_status }} {{ active_class }}">
+      <h1 class="{{ active_class.translation_status }}">
         <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
-        {% if user.is_authenticated and not active_class.translation_status == 'TRANSLATED' %}
-          <button data-levinid="{{active_class.number}}" class="btn validate_class"><i class="icon-ok"></i> Valider</button>
+        {% if user.is_authenticated and active_class.translation_status == 'INPROGRESS' %}
+            <button data-levinid="{{active_class.number}}" class="btn btn-default validate_class"><span class="glyphicon glyphicon-ok"></span> Valider</button>
+            <button data-levinid="{{active_class.number}}" class="btn btn-default remove_class"><span class="glyphicon glyphicon-remove"></span> Cacher</button>
         {% endif %}
       </h1>
 

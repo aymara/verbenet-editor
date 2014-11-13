@@ -70,6 +70,9 @@ h1.TRANSLATED > .text {
     text-shadow: 0 -1px 0 rgba(0,0,0,.2);
     color: white;
 }
+.REMOVED {
+    text-decoration: line-through;
+}
 
 /* Subclass title */
 h2 form { display: inline }

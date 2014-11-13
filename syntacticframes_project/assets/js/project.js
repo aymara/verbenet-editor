@@ -247,7 +247,7 @@ $(document).ready(function() {
         $(document).ajaxSuccess(function(e, request, settings) {
             var is_vn_class = settings.url.indexOf("/vn_class/") == 0;
             var is_update = settings.url.indexOf("update") >= 0;
-            var is_remove = settings.url.indexOf("remove") >= 0;
+            var is_remove = settings.url.indexOf("remove") >= 0 && settings.data.indexOf('LevinClass') == -1;
             var is_validate_verbs = settings.url.indexOf("/validate/") == 0 && settings.data.indexOf('VerbNetFrameSetVerb') >= 0;
             var is_toggle_verb_validity = settings.url.indexOf('/togglevalidity') == 0;
             var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
@@ -343,6 +343,23 @@ $(document).ready(function() {
                 data: {
                     model: 'LevinClass',
                     levin_class: that.data('levinid')
+                }
+            });
+
+            request.done(function() { document.location.reload(true); });
+            return false;
+        });
+
+        // remove Levin class
+        $(document).on('click', '.remove_class', function() {
+            var that = $(this);
+
+            var request = $.ajax({
+                url: '/remove/',
+                type: 'POST',
+                data: {
+                    model: 'LevinClass',
+                    levin_number: that.data('levinid')
                 }
             });
 

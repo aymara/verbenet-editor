@@ -168,7 +168,12 @@ def remove(request):
         model = post['model']
         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
 
-        if model == 'VerbNetFrame':
+        if model == 'LevinClass':
+            levin_number = int(post['levin_number'])
+            levin_class = LevinClass.objects.get(number=levin_number)
+            levin_class.translation_status = LevinClass.STATUS_REMOVED
+            levin_class.save()
+        elif model == 'VerbNetFrame':
             frame_id = int(post['frame_id'])
             vn_class = post['vn_class']
             db_frame = VerbNetFrame.objects.get(id=frame_id)
