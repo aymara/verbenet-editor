@@ -213,14 +213,14 @@ class VerbNetFrameSet(MPTTModel):
             for extra_inherited_member in existing_inherited_members - real_inherited_members:
                 extra_inherited_member.delete()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Removed {} (was inherited from {} in subclass {})".format(
+                verb_logger.info("{}: Removed member {} (was inherited from {} in subclass {})".format(
                     when, extra_inherited_member.lemma, extra_inherited_member.inherited_from, extra_inherited_member.frameset))
 
             for missing_inherited_member in real_inherited_members - existing_inherited_members:
                 missing_inherited_member.pk = None
                 missing_inherited_member.save()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
+                verb_logger.info("{}: Added member {} (is inherited from {} in subclass {})".format(
                     when, missing_inherited_member.lemma, missing_inherited_member.inherited_from, missing_inherited_member.frameset))
 
 
@@ -228,10 +228,12 @@ class VerbNetFrameSet(MPTTModel):
         """Moves manual translations according to hidden/shown classes
 
         We treat manual translations exactly as members in self.update_members
-        here: they were manually validated and should not simply be deleted and
-        inferred again as automatic translation can be. (A "manual" translation
-        is a translation that was validated manually by clicking on a verb in
-        the interface."""
+        here: they were manually validated or added and should not simply be
+        deleted and inferred again as automatic translation can be. (A "manual"
+        translation is a translation that was validated manually by clicking on
+        a verb in the interface OR that was added by clicking on the "plus"
+        link).
+        """
 
         existing_inherited_translations = set(
             frameset.verbtranslation_set.filter(inherited_from__isnull=False))
@@ -252,14 +254,14 @@ class VerbNetFrameSet(MPTTModel):
             for extra_inherited_translation in existing_inherited_translations - real_inherited_translations:
                 extra_inherited_translation.delete()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Removed {} (was inherited from {} in subclass {})".format(
+                verb_logger.info("{}: Removed manual translation {} (was inherited from {} in subclass {})".format(
                     when, extra_inherited_translation.verb, extra_inherited_translation.inherited_from, extra_inherited_translation.frameset))
 
             for missing_inherited_translation in real_inherited_translations - existing_inherited_translations:
                 missing_inherited_translation.pk = None
                 missing_inherited_translation.save()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Added {} (is inherited from {} in subclass {})".format(
+                verb_logger.info("{}: Added manual translation {} (is inherited from {} in subclass {})".format(
                     when, missing_inherited_translation.verb, missing_inherited_translation.inherited_from, missing_inherited_translation.frameset))
 
 

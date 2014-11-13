@@ -282,8 +282,7 @@ def add(request):
                     verb=verb,
                     origin='',
                     validation_status=VerbTranslation.STATUS_VALID,
-                    inherited_from=frameset,
-                    # if it was a known verb, we would have promoted it instead
+                    inherited_from=None,
                     category='unknown', category_id=4).save()
 
         return HttpResponse("ok")
