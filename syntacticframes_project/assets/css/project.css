@@ -129,6 +129,10 @@ h2 a { text-decoration: underline }
     text-decoration: underline;
 }
 
+.WRONG {
+    text-decoration: line-through;
+}
+
 /* Subclass indentation */
 .subclass {
   margin-left: 4em;
