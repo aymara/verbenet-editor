@@ -32,6 +32,7 @@ admin.site.register(VerbNetFrameSet, VerbNetFrameSetAdmin)
 
 
 class VerbNetMemberAdmin(reversion.VersionAdmin):
+    search_fields = ("lemma",)
     pass
 
 admin.site.register(VerbNetMember, VerbNetMemberAdmin)
@@ -44,12 +45,14 @@ admin.site.register(VerbNetFrame, VerbNetFrameAdmin)
 
 
 class VerbNetRoleAdmin(reversion.VersionAdmin):
+    search_fields = ("name",)
     pass
 
 admin.site.register(VerbNetRole, VerbNetRoleAdmin)
 
 
 class VerbTranslationAdmin(reversion.VersionAdmin):
+    search_fields = ("verb",)
     pass
 
 admin.site.register(VerbTranslation, VerbTranslationAdmin)
