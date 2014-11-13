@@ -141,6 +141,7 @@ class FrenchMapping(object):
         else:
             parse_tree = {'children': []}
             i = 0
+            last_token = None
             while i < len(token_list):
                 if token_list[i] in ['and', 'or']:
                     if 'operator' in parse_tree and parse_tree['operator'] != token_list[i]:
@@ -173,8 +174,11 @@ class FrenchMapping(object):
 
                     parse_tree['children'][-1]['leaf'] = (class_name, restr_op_list)
                 else:
-                    parse_tree['children'].append(FrenchMapping._parse(token_list[i:i+1], reference_list))
+                    if last_token not in [None, 'and', 'or', '(']:
+                        raise SyntaxErrorException('Opérateur manquant.', ' '.join(token_list))
+                    parse_tree['children'].append(FrenchMapping._parse([token_list[i]], reference_list))
 
+                last_token =  token_list[i]
                 i += 1
 
             if 'children' in parse_tree and not 'operator' in parse_tree:

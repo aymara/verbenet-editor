@@ -36,6 +36,10 @@ class TestParsingFunctions(unittest.TestCase):
         self.assertEqual(parse.FrenchMapping('LVF', 'L3b ou X4a.2').infix(), '(or L3b X4a.2)')
         self.assertEqual(parse.FrenchMapping('LADL', '37M2 et 32A').infix(), '(and 37M2 32A)')
 
+    def test_missing_operator(self):
+        with self.assertRaises(parse.SyntaxErrorException):
+            parse.FrenchMapping('LVF', 'S3c ou S3b S3a')
+
     def test_nestedoperators(self):
         self.assertEqual(
             parse.FrenchMapping('LVF', 'L3b ou (X4a.2 et X4a.1)').infix(),
