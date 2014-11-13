@@ -139,18 +139,18 @@ class TestExport(SimpleTestCase):
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
-            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><NP role="Patient"><SYNRESTRS /></NP></SYNTAX>')
+            '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><NP value="Patient"><SYNRESTRS /></NP></SYNTAX>')
 
     def test_pp(self):
         new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {de} Patient', output=sys.stderr)
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
-            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP><NP role="Patient"><SYNRESTRS /></NP></SYNTAX>')
+            '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP><NP value="Patient"><SYNRESTRS /></NP></SYNTAX>')
 
     def test_pp_category(self):
         new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stderr)
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
-            '<SYNTAX><NP role="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="+" type="loc" /></SELRESTRS></PREP><NP role="Patient"><SYNRESTRS /></NP></SYNTAX>')
+            '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="+" type="loc" /></SELRESTRS></PREP><NP value="Patient"><SYNRESTRS /></NP></SYNTAX>')
