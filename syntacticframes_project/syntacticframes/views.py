@@ -21,6 +21,16 @@ from parsecorrespondance.parse import ParseErrorException
 
 logger = logging.getLogger('database')
 
+from collections import defaultdict
+
+def find_duplicate_translations(active_class):
+    translation_dict = defaultdict(list)
+    for translation in VerbTranslation.objects.select_related('frameset').filter(frameset__verbnet_class__levin_class=active_class):
+        if translation.validation_status == VerbTranslation.STATUS_VALID or translation.category == 'both':
+            if not translation.frameset.removed:
+                translation_dict[translation.verb].append(translation.frameset)
+
+    return filter(lambda kv: len(kv[1]) > 1, translation_dict.items())
 
 @ensure_csrf_cookie
 def classe(request, class_number):
@@ -45,6 +55,7 @@ def classe(request, class_number):
         'levin_classes': levin_classes,
         'active_class': active_class,
         'verbnet_classes': verbnet_classes,
+        'duplicate_translations': sorted(find_duplicate_translations(active_class)),
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))

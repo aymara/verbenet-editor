@@ -36,11 +36,25 @@
         {% endif %}
       </h1>
 
+      {% if duplicate_translations %}
+        <div class="well duplicatetranslations">
+            <p>Attention ! Voici les verbes validés dans plusieurs classes :</p>
+            <ul>
+            {% for translation, frameset_list in duplicate_translations %}
+                <li>{{ translation }} :
+                    {% for frameset in frameset_list %}
+                    <a href="#{{frameset.name}}">{{ frameset.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+      {% endif %}
+
       <div class="levin_editable" data-levinnumber="{{active_class.number}}" data-text="{{ active_class.comment|default:"∅" }}">
             {{ active_class.comment|default:"∅"|linebreaks }}
       </div>
 
- 
       {% block content %}
         {% for classe in verbnet_classes %}
             {% include "classe.html" %}

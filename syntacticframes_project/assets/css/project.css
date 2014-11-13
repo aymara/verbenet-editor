@@ -198,3 +198,19 @@ input.inedit[type='text'] { margin-bottom: 0 }
 
 /* Search */
 .highlight { font-weight: bold }
+
+/* Duplicated translations */
+.duplicatetranslations {
+    margin-top: 2em;
+}
+.duplicatetranslations ul {
+    column-count: auto;
+    column-width: 12em;
+    column-gap: 20px;
+    -webkit-column-count: auto;
+    -webkit-column-width: 12em;
+    -webkit-column-gap: 20px;
+    -moz-column-count: auto;
+    -moz-column-width: 12em;
+    -moz-column-gap: 20px;
+}
