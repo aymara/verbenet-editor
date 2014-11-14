@@ -36,9 +36,9 @@
         {% endif %}
       </h1>
 
-      {% if duplicate_translations %}
+      {% if user.is_authenticated and duplicate_translations %}
         <div class="well duplicatetranslations">
-            <p>Attention ! Voici les verbes validés dans plusieurs classes :</p>
+            <p>Voici les verbes validés dans plusieurs classes :</p>
             <ul>
             {% for translation, frameset_list in duplicate_translations %}
                 <li>{{ translation }} :
