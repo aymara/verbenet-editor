@@ -76,7 +76,7 @@ class VerbNetFrameSet(MPTTModel):
     name = models.CharField(max_length=100)
 
     # instead of relying on the primary key, storing a tree id lets us correct
-    # issues with trees.
+    # issues with trees ordering.
     tree_id = models.PositiveSmallIntegerField(null=False)
 
     has_removed_frames = models.BooleanField(default=False)
@@ -102,6 +102,18 @@ class VerbNetFrameSet(MPTTModel):
     def check_has_removed_frames(self):
         self.has_removed_frames = self.verbnetframe_set.filter(removed=True)
         self.save()
+
+    def mark_as_removed(self):
+        assert not self.removed
+        self.removed = True
+        self.save()
+        self.verbnet_class.update_members_and_translations()
+
+    def mark_as_shown(self):
+        assert self.removed
+        self.removed = False
+        self.save()
+        self.verbnet_class.update_members_and_translations()
 
     def validate_verbs(self, category):
         for verb_translation in self.verbtranslation_set.filter(category=category):

@@ -203,10 +203,7 @@ def remove(request):
         elif model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
-            assert not db_frameset.removed
-            db_frameset.removed = True
-            db_frameset.save()
-            db_frameset.verbnet_class.update_members_and_translations()
+            db_frameset.mark_as_removed()
             logger.info("{}: {} marked frameset {}/{} as removed in class {}".format(
                 when, request.user.username, frameset_id,
                 db_frameset.name, db_frameset.verbnet_class.name))
@@ -346,11 +343,7 @@ def show(request):
         if model == 'VerbNetFrameSet':
             frameset_id = post['frameset_id']
             db_frameset = VerbNetFrameSet.objects.get(name=frameset_id)
-            assert db_frameset.removed
-            db_frameset.removed = False
-            db_frameset.save()
-            db_frameset.verbnet_class.update_members_and_translations()
-
+            db_frameset.mark_as_shown()
             logger.info("{}: {} marked frameset {}/{} as shown in class {}".format(
                 when, request.user.username, frameset_id,
                 db_frameset.name, db_frameset.verbnet_class.name))
