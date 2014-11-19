@@ -51,17 +51,17 @@
 
     <h2>Commentaires</h2>
     {% for levin in levin_comments %}
-        <h3>Classe de Levin {{levin.number}}: {{levin.name}}</h3>
+        <h3>Classe de Levin <a href="/class/{{levin.number}}">{{levin.number}}: {{levin.name}}</a></h3>
         <p>{{levin.comment|linebreaks|highlight:search }}</p>
     {% endfor %}
 
     {% for vn in vn_comments %}
-        <h3>Classe Verb∋Net {{vn.name}}</h3>
+        <h3>Classe Verb∋Net <a href="/class/{{vn.levin_class.number}}#{{vn.name}}">{{vn.name}}</a></h3>
         <p>{{vn.comment|linebreaks|highlight:search }}</p>
     {% endfor %}
 
     {% for frameset in frameset_comments %}
-        <h3>Sous-classe {{frameset.name}}</h3>
+        <h3>Sous-classe <a href="/class/{{frameset.verbnet_class.levin_class.number}}#{{frameset.name}}">{{frameset.name}}</a> dans <a href="/class/{{frameset.verbnet_class.levin_class.number}}#{{frameset.verbnet_class.name}}">{{frameset.verbnet_class.name}}</a></h3>
         <p>{{frameset.comment|linebreaks|highlight:search }}</p>
     {% endfor %}
 </div>

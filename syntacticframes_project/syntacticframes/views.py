@@ -379,8 +379,8 @@ def search(request):
         'members': VerbNetMember.objects.filter(lemma=search),
 
         'levin_comments': LevinClass.objects.filter(comment__icontains=search),
-        'vn_comments': VerbNetClass.objects.filter(comment__icontains=search),
-        'frameset_comments': VerbNetFrameSet.objects.filter(comment__icontains=search, removed=False),
+        'vn_comments': VerbNetClass.objects.select_related('levin_class').filter(comment__icontains=search),
+        'frameset_comments': VerbNetFrameSet.objects.select_related('verbnet_class', 'verbnet_class__levin_class').filter(comment__icontains=search, removed=False),
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
