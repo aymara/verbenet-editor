@@ -196,20 +196,20 @@ class VerbNetFrameSet(MPTTModel):
 
         return translations_in_subclasses
 
-    def get_all_members_or_manual_translations(frameset, related_name, parent_fs):
+    def get_all_members_or_manual_translations(self, related_name, parent_fs):
         """Recursively retrieve members from all subclasses"""
-        objects = getattr(frameset, related_name).all()
+        objects = getattr(self, related_name).all()
 
         # We need to set this before putting members into a set
         for o in objects:
-            o.inherited_from = frameset
+            o.inherited_from = self
             o.frameset = parent_fs
 
         objects = set(objects)
 
-        for child_fs in frameset.children.all():
-            objects |= VerbNetFrameSet.get_all_members_or_manual_translations(
-                child_fs, related_name, parent_fs)
+        for child_fs in self.children.all():
+            objects |= child_fs.get_all_members_or_manual_translations(
+                related_name, parent_fs)
 
         return objects
 
@@ -227,8 +227,8 @@ class VerbNetFrameSet(MPTTModel):
 
         for child_fs in frameset.children.all():
             if child_fs.removed:
-                real_inherited_members |= VerbNetFrameSet.get_all_members_or_manual_translations(
-                    child_fs, 'verbnetmember_set', frameset)
+                real_inherited_members |= child_fs.get_all_members_or_manual_translations(
+                    'verbnetmember_set', frameset)
             else:
                 self.update_members(child_fs)
 
@@ -266,8 +266,8 @@ class VerbNetFrameSet(MPTTModel):
         for child_fs in frameset.children.all():
             if child_fs.removed:
                 new_inherited_translations = {
-                    v for v in VerbNetFrameSet.get_all_members_or_manual_translations(
-                        child_fs, 'verbtranslation_set', frameset)
+                    v for v in child_fs.get_all_members_or_manual_translations(
+                        'verbtranslation_set', frameset)
                     if v.validation_status != VerbTranslation.STATUS_INFERRED}
                 real_inherited_translations |= new_inherited_translations
             else:
