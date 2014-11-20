@@ -214,37 +214,31 @@ class VerbNetFrameSet(MPTTModel):
         If a subclass was hidden, all members should show up in the first
         superclass that is not hidden. If a subclass was shown, any member that
         was moved up should go down again."""
-
-        existing_inherited_members = set(
-                frameset.verbnetmember_set.filter(inherited_from__isnull=False))
-        real_inherited_members = set()
-
-        for child_fs in frameset.children.all():
-            if child_fs.removed:
-                new_inherited_members = child_fs.get_all_verbs(VerbNetMember)
-                for m in new_inherited_members:
-                    m.inherited_from = child_fs
-                    m.frameset = frameset
-                real_inherited_members |= new_inherited_members
-
-            else:
-                self.update_members(child_fs)
-
         verb_logger = logging.getLogger('verbs')
-        if existing_inherited_members != real_inherited_members:
-            for extra_inherited_member in existing_inherited_members - real_inherited_members:
-                extra_inherited_member.delete()
-                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Removed member {} (was inherited from {} in subclass {})".format(
-                    when, extra_inherited_member.lemma, extra_inherited_member.inherited_from, extra_inherited_member.frameset))
 
-            for missing_inherited_member in real_inherited_members - existing_inherited_members:
-                missing_inherited_member.pk = None
-                missing_inherited_member.save()
-                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Added member {} (is inherited from {} in subclass {})".format(
-                    when, missing_inherited_member.lemma, missing_inherited_member.inherited_from, missing_inherited_member.frameset))
+        child_members = set()
 
+        # Children that should get moved up
+        for child_fs in frameset.children.all():
+            for child_member in child_fs.get_all_verbs(VerbNetMember):
+                wanted_frameset = frameset if child_fs.removed else child_member.inherited_from
+                child_members.add((child_member, wanted_frameset, child_member.frameset))
+
+        # Ex-children that should get moved down again
+        for member in frameset.verbnetmember_set.all():
+            if member.inherited_from is not None and member.inherited_from.removed is False:
+                child_members.add((member, member.inherited_from, None))
+
+        for member, wanted_frameset, wanted_inherited_from in child_members:
+            if member.frameset != wanted_frameset:
+                previous_frameset = member.frameset
+
+                member.frameset = wanted_frameset
+                member.inherited_from = wanted_inherited_from
+                member.save()
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                verb_logger.info("{}: Moved member {} from {} to {}".format(
+                    when, member.lemma, previous_frameset, member.frameset))
 
     def update_manual_translations(self, frameset):
         """Moves manual translations according to hidden/shown classes
@@ -256,38 +250,33 @@ class VerbNetFrameSet(MPTTModel):
         a verb in the interface OR that was added by clicking on the "plus"
         link).
         """
-
-        existing_inherited_translations = set(
-            frameset.verbtranslation_set.filter(inherited_from__isnull=False))
-        real_inherited_translations = set()
-
-        for child_fs in frameset.children.all():
-            if child_fs.removed:
-                new_inherited_translations = {
-                    v for v in child_fs.get_all_verbs(VerbTranslation)
-                    if v.validation_status != VerbTranslation.STATUS_INFERRED}
-                for t in new_inherited_translations:
-                    t.inherited_from = child_fs
-                    t.frameset = frameset
-                real_inherited_translations |= new_inherited_translations
-            else:
-                self.update_manual_translations(child_fs)
-
         verb_logger = logging.getLogger('verbs')
-        if existing_inherited_translations != real_inherited_translations:
-            for extra_inherited_translation in existing_inherited_translations - real_inherited_translations:
-                extra_inherited_translation.delete()
-                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Removed manual translation {} (was inherited from {} in subclass {})".format(
-                    when, extra_inherited_translation.verb, extra_inherited_translation.inherited_from, extra_inherited_translation.frameset))
+        child_translations = set()
 
-            for missing_inherited_translation in real_inherited_translations - existing_inherited_translations:
-                missing_inherited_translation.pk = None
-                missing_inherited_translation.save()
-                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Added manual translation {} (is inherited from {} in subclass {})".format(
-                    when, missing_inherited_translation.verb, missing_inherited_translation.inherited_from, missing_inherited_translation.frameset))
+        # Children that should get moved up
+        for child_fs in frameset.children.all():
+            for child_translation in child_fs.get_all_verbs(VerbTranslation):
+                if child_translation.validation_status != VerbTranslation.STATUS_INFERRED:
+                    wanted_frameset = frameset if child_fs.removed else child_translation.inherited_from
+                    child_translations.add((child_translation, wanted_frameset, child_translation.frameset))
 
+        # Ex-children that should get moved down again
+        for translation in frameset.verbtranslation_set.all():
+            if translation.validation_status != VerbTranslation.STATUS_INFERRED:
+                if translation.inherited_from is not None and translation.inherited_from.removed is False:
+                    child_translations.add((translation, translation.inherited_from, None))
+
+        for translation, wanted_frameset, wanted_inherited_from in child_translations:
+            if translation.frameset != wanted_frameset:
+                previous_frameset = translation.frameset
+
+                translation.frameset = wanted_frameset
+                translation.inherited_from = wanted_inherited_from
+                translation.save()
+
+                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                verb_logger.info("{}: Moved translation {} from {} to {}".format(
+                    when, translation.verb, previous_frameset, translation.frameset))
 
     def update_roles(self):
         role_list = self.verbnetrole_set.all()
