@@ -196,8 +196,9 @@ class VerbNetFrameSet(MPTTModel):
 
         return translations_in_subclasses
 
-    def get_all_members_or_manual_translations(self, related_name, parent_fs):
+    def get_all_verbs(self, VerbModule, parent_fs):
         """Recursively retrieve members from all subclasses"""
+        related_name = '{}_set'.format(VerbModule._meta.model_name)
         objects = getattr(self, related_name).all()
 
         # We need to set this before putting members into a set
@@ -208,8 +209,7 @@ class VerbNetFrameSet(MPTTModel):
         objects = set(objects)
 
         for child_fs in self.children.all():
-            objects |= child_fs.get_all_members_or_manual_translations(
-                related_name, parent_fs)
+            objects |= child_fs.get_all_verbs(VerbModule, parent_fs)
 
         return objects
 
@@ -227,8 +227,7 @@ class VerbNetFrameSet(MPTTModel):
 
         for child_fs in frameset.children.all():
             if child_fs.removed:
-                real_inherited_members |= child_fs.get_all_members_or_manual_translations(
-                    'verbnetmember_set', frameset)
+                real_inherited_members |= child_fs.get_all_verbs(VerbNetMember, frameset)
             else:
                 self.update_members(child_fs)
 
@@ -266,8 +265,7 @@ class VerbNetFrameSet(MPTTModel):
         for child_fs in frameset.children.all():
             if child_fs.removed:
                 new_inherited_translations = {
-                    v for v in child_fs.get_all_members_or_manual_translations(
-                        'verbtranslation_set', frameset)
+                    v for v in child_fs.get_all_verbs(VerbTranslation, frameset)
                     if v.validation_status != VerbTranslation.STATUS_INFERRED}
                 real_inherited_translations |= new_inherited_translations
             else:
