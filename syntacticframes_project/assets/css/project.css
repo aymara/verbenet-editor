@@ -107,6 +107,18 @@ h2 {
     color: black;
 }
 
+/* Send to another frameset display */
+.send_verbs {
+    margin-bottom: 1em;
+}
+.send_verbs form {
+    display: inline;
+    font-size: 1.5rem;
+}
+.send_verbs form label {
+    font-weight: normal;
+}
+
 /* Mapping display */
 [data-field="ladl_string"], [data-field="lvf_string"] {
     font-weight: bold;

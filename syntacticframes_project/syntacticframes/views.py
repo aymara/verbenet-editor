@@ -50,12 +50,17 @@ def classe(request, class_number):
     verbnet_classes = sorted(
         verbnet_classes, key=lambda v: LooseVersion(v.name.split('-')[1]))
 
+    all_framesets = []
+    for vn_class in verbnet_classes:
+        all_framesets.extend(vn_class.verbnetframeset_set.all())
+
     template = loader.get_template('index.html')
     context = RequestContext(request, {
         'levin_classes': levin_classes,
         'active_class': active_class,
         'verbnet_classes': verbnet_classes,
         'duplicate_translations': sorted(find_duplicate_translations(active_class)),
+        'all_framesets': all_framesets,
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
@@ -333,7 +338,7 @@ def togglevalidity(request):
         VerbTranslation.objects.get(id=verb_id).togglevalidity(new_status)
         return HttpResponse('ok')
 
-
+@login_required
 def show(request):
     if request.method == 'POST':
         post = request.POST
@@ -360,6 +365,18 @@ def show(request):
 
         return HttpResponse("ok")
 
+@login_required
+def send(request):
+    if request.method == 'POST':
+        post = request.POST
+        origin_frameset_name = post['origin_frameset_name']
+        destination_frameset_name = post['destination_frameset_name']
+
+        origin_frameset = VerbNetFrameSet.objects.get(name=origin_frameset_name)
+        destination_frameset = VerbNetFrameSet.objects.get(name=destination_frameset_name)
+        origin_frameset.move_members_and_verbs_to(destination_frameset)
+
+        return HttpResponse("ok")
 
 class SearchForm(forms.Form):
     search = forms.CharField(label='Recherche', max_length=100)

@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^show/$', views.show),
     url(r'^validate/$', views.validate),
     url(r'^togglevalidity/$', views.togglevalidity),
+    url(r'^send/$', views.send),
 
     # Search
     url(r'^search/$', views.search),

@@ -211,6 +211,27 @@
                 {% endif %}
 
                 {% if user.is_authenticated %}
+
+                <div class="send_verbs">
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-default send_verbs_to" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-share"></span> Envoyer les verbes</button>
+                    {% endif %}
+
+                    <form action="/send/" role="form" method="POST" style="display:none">{% csrf_token %}
+                        <input type="hidden" name="origin_frameset_name" value="{{node.name}}" />
+                        <label>Vers la classe :
+                        <select name="destination_frameset_name">
+                            {% for frameset in all_framesets %}
+                                {% if frameset.name != node.name %}
+                                    <option value="{{frameset.name}}">{{frameset.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        </label>
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Confirmer</button>
+                    </form>
+                </div>
+
                 <p><button class="btn btn-default new_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-chevron-right"></span> Ajouter une sous-classe</button></p>
                 {% endif %}
 

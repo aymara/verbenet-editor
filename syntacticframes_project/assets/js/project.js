@@ -20,6 +20,7 @@ function linebreaks(value) {
     });
     return para_list.join('\n\r\n\r')
 }
+
 function editable_class_fields() {
     // Edit all editable fields
     $('.frame_editable').each(function() {
@@ -251,8 +252,9 @@ $(document).ready(function() {
             var is_validate_verbs = settings.url.indexOf("/validate/") == 0 && settings.data.indexOf('VerbNetFrameSetVerb') >= 0;
             var is_toggle_verb_validity = settings.url.indexOf('/togglevalidity') == 0;
             var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
+            var is_send = settings.url.indexOf("send") >= 0;
 
-            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove || is_validate_verbs || is_toggle_verb_validity) {
+            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove || is_validate_verbs || is_toggle_verb_validity || is_send) {
                 $("#ajax-loading").hide();
                 $("#ajax-ok").show();
                 clearTimeout(previous_timeout);
@@ -404,6 +406,21 @@ $(document).ready(function() {
             return false;
         });
 
+        // send verbs to another frameset
+        $(document).on('click', 'button.send_verbs_to', function() {
+            $(this).parent().find('form').slideDown();
+        });
+
+        $(document).on('submit', '.send_verbs form', function() {
+            var that = this;
+            var data = $(this).serialize();
+            var request = $.post($(this).attr('action'), data);
+
+            request.done(function() { document.location.reload(true); });
+
+            return false;
+        });
+
         // new subclass
         $(document).on('click', 'button.new_subclass', function() {
             var that = this;
@@ -540,6 +557,5 @@ $(document).ready(function() {
         });
 
     }
-
 });
 

@@ -115,6 +115,33 @@ class VerbNetFrameSet(MPTTModel):
         self.save()
         self.verbnet_class.update_members_and_translations()
 
+    def move_members_and_verbs_to(self, other_frameset):
+        # We don't want to have received_from = self, so prevent moving frames
+        # to onself
+        assert self.name != other_frameset.name
+
+        # Move all members
+        for member in self.get_all_verbs(VerbNetMember):
+            member.inherited_from = None
+            member.received_from = self
+            member.frameset = other_frameset
+            member.save()
+
+        # Move all validated or invalidated translations
+        for translation in self.get_all_verbs(VerbTranslation):
+            translation.inherited_from = None
+            translation.received_from = self
+            translation.frameset = other_frameset
+            if translation.validation_status != VerbTranslation.STATUS_INFERRED:
+                # We keep all invalidated translations, even if they no longer
+                # have a color in the target frameset
+                translation.save()
+
+        # Ensure left-over inferred translations are removed
+        self.verbnet_class.update_members_and_translations()
+        # Ensure new translations are added
+        other_frameset.verbnet_class.update_members_and_translations()
+
     def validate_verbs(self, category):
         for verb_translation in self.verbtranslation_set.filter(category=category):
             verb_translation.validation_status = VerbTranslation.STATUS_VALID
@@ -171,8 +198,7 @@ class VerbNetFrameSet(MPTTModel):
                 #  status: change it
                 elif categoryname != manually_validated_set[french]:
                     verb_to_update = VerbTranslation.objects.get(
-                        frameset=self, verb=french, origin=originlist,
-                        category=manually_validated_set[french])
+                        frameset=self, verb=french, category=manually_validated_set[french])
                     verb_to_update.category = categoryname
                     verb_to_update.category_id = VerbTranslation.CATEGORY_ID[categoryname]
                     verb_to_update.save()
@@ -216,25 +242,31 @@ class VerbNetFrameSet(MPTTModel):
         was moved up should go down again."""
         verb_logger = logging.getLogger('verbs')
 
-        child_members = set()
+        child_members = []
 
         # Children that should get moved up
         for child_fs in frameset.children.all():
             for child_member in child_fs.get_all_verbs(VerbNetMember):
-                wanted_frameset = frameset if child_fs.removed else child_member.inherited_from
-                child_members.add((child_member, wanted_frameset, child_member.frameset))
+                if child_fs.removed:
+                    child_members.append({
+                        'member': child_member,
+                        'wanted_frameset': frameset,
+                        'inherited_from': child_member.frameset})
 
         # Ex-children that should get moved down again
         for member in frameset.verbnetmember_set.all():
             if member.inherited_from is not None and member.inherited_from.removed is False:
-                child_members.add((member, member.inherited_from, None))
+                child_members.append({
+                    'member': member,
+                    'wanted_frameset': member.inherited_from,
+                    'inherited_from': None})
 
-        for member, wanted_frameset, wanted_inherited_from in child_members:
-            if member.frameset != wanted_frameset:
+        for add_member in child_members:
+            member = add_member['member']
+            if member.frameset != add_member['wanted_frameset']:
                 previous_frameset = member.frameset
-
-                member.frameset = wanted_frameset
-                member.inherited_from = wanted_inherited_from
+                member.frameset = add_member['wanted_frameset']
+                member.inherited_from = add_member['inherited_from']
                 member.save()
                 when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
                 verb_logger.info("{}: Moved member {} from {} to {}".format(
@@ -251,20 +283,20 @@ class VerbNetFrameSet(MPTTModel):
         link).
         """
         verb_logger = logging.getLogger('verbs')
-        child_translations = set()
+        child_translations = []
 
         # Children that should get moved up
         for child_fs in frameset.children.all():
             for child_translation in child_fs.get_all_verbs(VerbTranslation):
-                if child_translation.validation_status != VerbTranslation.STATUS_INFERRED:
+                if child_fs.removed and child_translation.validation_status != VerbTranslation.STATUS_INFERRED:
                     wanted_frameset = frameset if child_fs.removed else child_translation.inherited_from
-                    child_translations.add((child_translation, wanted_frameset, child_translation.frameset))
+                    child_translations.append((child_translation, wanted_frameset, child_translation.frameset))
 
         # Ex-children that should get moved down again
         for translation in frameset.verbtranslation_set.all():
             if translation.validation_status != VerbTranslation.STATUS_INFERRED:
                 if translation.inherited_from is not None and translation.inherited_from.removed is False:
-                    child_translations.add((translation, translation.inherited_from, None))
+                    child_translations.append((translation, translation.inherited_from, None))
 
         for translation, wanted_frameset, wanted_inherited_from in child_translations:
             if translation.frameset != wanted_frameset:
@@ -294,7 +326,10 @@ class VerbNetFrameSet(MPTTModel):
 class VerbNetMember(models.Model):
     """An english member"""
     frameset = models.ForeignKey(VerbNetFrameSet)
+    # Members that were inherited from another *hidden* frameset
     inherited_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='inheritedmember_set')
+    # Members that were sent from another frameset
+    received_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='receivedmember_set')
     lemma = models.CharField(max_length=1000)
 
     def __str__(self):
@@ -304,8 +339,10 @@ class VerbNetMember(models.Model):
         return self.frameset == other.frameset and self.inherited_from == other.inherited_from and self.lemma == other.lemma
 
     def __repr__(self):
-        return "VerbNetMember: {} ({}/{})".format(self.lemma, self.frameset.name,
-            self.inherited_from.name if self.inherited_from else "None")
+        inherited_from_name = self.inherited_from.name if self.inherited_from else "None"
+        received_from_name = self.received_from.name if self.received_from else "None"
+        return "VerbNetMember: {} ({}) i{}, r{})".format(self.lemma, self.frameset.name,
+                inherited_from_name, received_from_name)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -402,6 +439,9 @@ class VerbTranslation(models.Model):
     # keep track of their initial position
     inherited_from = models.ForeignKey(VerbNetFrameSet, null=True,
             related_name='inheritedmanualtranslation_set')
+    # It's also possible for a frameset to send manually validated verbs
+    # (including translations) to another one: we keep track of it here.
+    received_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='receivedtranslation_set')
 
     def __str__(self):
         return "{} ({}, {})".format(self.verb, self.category, self.validation_status)
