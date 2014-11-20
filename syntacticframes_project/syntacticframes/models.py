@@ -123,14 +123,16 @@ class VerbNetFrameSet(MPTTModel):
         # Move all members
         for member in self.get_all_verbs(VerbNetMember):
             member.inherited_from = None
-            member.received_from = self
+            if member.received_from is None:
+                member.received_from = self
             member.frameset = other_frameset
             member.save()
 
         # Move all validated or invalidated translations
         for translation in self.get_all_verbs(VerbTranslation):
             translation.inherited_from = None
-            translation.received_from = self
+            if translation.received_from is None:
+                translation.received_from = self
             translation.frameset = other_frameset
             if translation.validation_status != VerbTranslation.STATUS_INFERRED:
                 # We keep all invalidated translations, even if they no longer
