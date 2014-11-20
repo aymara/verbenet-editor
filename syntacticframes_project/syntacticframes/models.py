@@ -196,20 +196,14 @@ class VerbNetFrameSet(MPTTModel):
 
         return translations_in_subclasses
 
-    def get_all_verbs(self, VerbModule, parent_fs):
+    def get_all_verbs(self, VerbModule):
         """Recursively retrieve members from all subclasses"""
         related_name = '{}_set'.format(VerbModule._meta.model_name)
-        objects = getattr(self, related_name).all()
 
-        # We need to set this before putting members into a set
-        for o in objects:
-            o.inherited_from = self
-            o.frameset = parent_fs
-
-        objects = set(objects)
+        objects = set(getattr(self, related_name).all())
 
         for child_fs in self.children.all():
-            objects |= child_fs.get_all_verbs(VerbModule, parent_fs)
+            objects |= child_fs.get_all_verbs(VerbModule)
 
         return objects
 
@@ -227,7 +221,12 @@ class VerbNetFrameSet(MPTTModel):
 
         for child_fs in frameset.children.all():
             if child_fs.removed:
-                real_inherited_members |= child_fs.get_all_verbs(VerbNetMember, frameset)
+                new_inherited_members = child_fs.get_all_verbs(VerbNetMember)
+                for m in new_inherited_members:
+                    m.inherited_from = child_fs
+                    m.frameset = frameset
+                real_inherited_members |= new_inherited_members
+
             else:
                 self.update_members(child_fs)
 
@@ -265,8 +264,11 @@ class VerbNetFrameSet(MPTTModel):
         for child_fs in frameset.children.all():
             if child_fs.removed:
                 new_inherited_translations = {
-                    v for v in child_fs.get_all_verbs(VerbTranslation, frameset)
+                    v for v in child_fs.get_all_verbs(VerbTranslation)
                     if v.validation_status != VerbTranslation.STATUS_INFERRED}
+                for t in new_inherited_translations:
+                    t.inherited_from = child_fs
+                    t.frameset = frameset
                 real_inherited_translations |= new_inherited_translations
             else:
                 self.update_manual_translations(child_fs)
