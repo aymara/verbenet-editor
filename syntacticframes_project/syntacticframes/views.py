@@ -376,6 +376,10 @@ def send(request):
         destination_frameset = VerbNetFrameSet.objects.get(name=destination_frameset_name)
         origin_frameset.move_members_and_verbs_to(destination_frameset)
 
+        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+        logger.info("{}: {} moved verbs from frameset {} to frameset {}".format(
+            when, request.user.username, origin_frameset.name, destination_frameset.name))
+
         return HttpResponse("ok")
 
 class SearchForm(forms.Form):
