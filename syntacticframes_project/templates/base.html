@@ -1,6 +1,6 @@
 {% load staticfiles %}<!DOCTYPE html>
 {% load syntacticframes_extras %}
-{% load compressed %}
+{% load pipeline %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
 
     <!-- Le styles -->
 
-    {% compressed_css 'syntacticframes' %}
+    {% stylesheet 'syntacticframes' %}
 
     <script>
         {% comment %} lower is used to switch from True to true {% endcomment %}
@@ -57,9 +57,9 @@
     <!-- Le javascript -->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     {% if user.is_authenticated %}
-        {% compressed_js 'edit_syntacticframes' %}
+        {% javascript 'edit_syntacticframes' %}
     {% else %}
-        {% compressed_js 'public_js' %}
+        {% javascript 'public_js' %}
     {% endif %}
   </body>
 </html>
