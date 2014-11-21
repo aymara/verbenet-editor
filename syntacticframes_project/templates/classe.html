@@ -14,7 +14,7 @@
 
             {# Recursive display of frame sets #}
             {% recursetree classe.verbnetframeset_set.all %}
-            <div class="subclass" id="{{node.id}}">
+            <div class="subclass removed_{{node.removed}}" id="{{node.id}}">
                 {% if node.removed %}
                     <h3 id="{{node.name}}" name="{{node.name}}">
                         Classe {{node.name}} cachée
@@ -23,16 +23,18 @@
                         {% endif %}
                     </h3>
 
-                    <p>Frames :</p>
-                    <ul>
-                    {% for frame in node.verbnetframe_set.all %}
-                        <li id="frame_{{frame.id}}">
-                            {% if frame.removed %}<del>{% endif %}
-                            {{ frame.syntax }} ({{ frame.example }})
-                            {% if frame.removed %}</del>{% endif %}
-                        </li>
-                    {% endfor %}
-                    </ul>
+                    {% if node.verbnetframe_set.all %}
+                        <p>Frames :</p>
+                        <ul>
+                        {% for frame in node.verbnetframe_set.all %}
+                            <li id="frame_{{frame.id}}">
+                                {% if frame.removed %}<del>{% endif %}
+                                {{ frame.syntax }} ({{ frame.example }})
+                                {% if frame.removed %}</del>{% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
                 {% else %}
                     <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}}
                         {% if user.is_authenticated %}
@@ -211,6 +213,7 @@
                 {% endif %}
 
                 {% if user.is_authenticated %}
+                <p class="new_subclass"><button class="btn btn-default" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-chevron-right"></span> Ajouter une sous-classe</button></p>
 
                 <div class="send_verbs">
                     {% if user.is_authenticated %}
@@ -231,8 +234,6 @@
                         <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Confirmer</button>
                     </form>
                 </div>
-
-                <p><button class="btn btn-default new_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-chevron-right"></span> Ajouter une sous-classe</button></p>
                 {% endif %}
 
                 {# Rinse and repeat with children #}

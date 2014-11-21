@@ -107,6 +107,15 @@ h2 {
     color: black;
 }
 
+/* Display buttons on one line */
+.subclass .send_verbs, .subclass .new_subclass {
+    display: inline;
+}
+.subclass {
+    padding-top: 1em;
+}
+
+
 /* Send to another frameset display */
 .send_verbs {
     margin-bottom: 1em;

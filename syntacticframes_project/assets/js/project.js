@@ -422,7 +422,7 @@ $(document).ready(function() {
         });
 
         // new subclass
-        $(document).on('click', 'button.new_subclass', function() {
+        $(document).on('click', '.new_subclass button', function() {
             var that = this;
 
             var request = $.ajax({
