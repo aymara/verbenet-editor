@@ -32,6 +32,15 @@ def find_duplicate_translations(active_class):
 
     return filter(lambda kv: len(kv[1]) > 1, translation_dict.items())
 
+
+def levin_class_framesets(verbnet_classes):
+    all_framesets = []
+    for vn_class in verbnet_classes:
+        all_framesets.extend(vn_class.verbnetframeset_set.all())
+
+    return all_framesets
+
+
 @ensure_csrf_cookie
 def classe(request, class_number):
     levin_classes = list(LevinClass.objects.all())
@@ -50,17 +59,13 @@ def classe(request, class_number):
     verbnet_classes = sorted(
         verbnet_classes, key=lambda v: LooseVersion(v.name.split('-')[1]))
 
-    all_framesets = []
-    for vn_class in verbnet_classes:
-        all_framesets.extend(vn_class.verbnetframeset_set.all())
-
     template = loader.get_template('index.html')
     context = RequestContext(request, {
         'levin_classes': levin_classes,
         'active_class': active_class,
         'verbnet_classes': verbnet_classes,
         'duplicate_translations': sorted(find_duplicate_translations(active_class)),
-        'all_framesets': all_framesets,
+        'all_framesets': levin_class_framesets(verbnet_classes),
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
@@ -69,9 +74,16 @@ def classe(request, class_number):
 @ensure_csrf_cookie
 def vn_class(request, class_name):
     verbnet_class = VerbNetClass.objects.get(name=class_name)
+    active_class = verbnet_class.levin_class
+    verbnet_classes = active_class.verbnetclass_set.all().prefetch_related('verbnetframeset_set')
+    verbnet_classes = sorted(
+        verbnet_classes, key=lambda v: LooseVersion(v.name.split('-')[1]))
+
     template = loader.get_template('classe.html')
     context = RequestContext(request, {
         'classe': verbnet_class,
+        'duplicate_translations': sorted(find_duplicate_translations(active_class)),
+        'all_framesets': levin_class_framesets(verbnet_classes),
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
