@@ -455,3 +455,7 @@ class VerbTranslation(models.Model):
         assert new_status in ['WRONG', 'VALID', 'INFERRED']
         self.validation_status = new_status
         self.save()
+
+    def is_valid(self):
+        return self.validation_status == VerbTranslation.STATUS_VALID or (
+            self.category == 'both' and self.validation_status == VerbTranslation.STATUS_INFERRED)

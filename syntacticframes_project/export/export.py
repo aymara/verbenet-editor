@@ -219,7 +219,7 @@ def export_subclass(db_frameset, classname=None):
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
     for db_translation in db_frameset.verbtranslation_set.all():
-        if db_translation.category == 'both':
+        if db_translation.is_valid():
             ET.SubElement(xml_members, 'MEMBER', {'name': db_translation.verb})
 
     # Roles

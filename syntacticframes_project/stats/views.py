@@ -94,7 +94,7 @@ def count_verbs():
             for t in chosen_verbs(vn_fs):
                unique_verbs.add(t.verb) 
                num_verbs += 1
-               if t.validation_status == VerbTranslation.STATUS_VALID:
+               if t.is_valid():
                    unique_validated_verbs.add(t.verb)
                    num_validated_verbs += 1
             for m in vn_fs.verbnetmember_set.all():
