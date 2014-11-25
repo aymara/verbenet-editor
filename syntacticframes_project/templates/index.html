@@ -9,8 +9,9 @@
 <div class="row">
 
 <div class="col-md-3">
-  <div class="well sidebar-nav">
-    <ul class="nav nav-list">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="{% if not active_class %}selected{% endif %}"><a href="/"><span class="glyphicon glyphicon-home"></span> Présentation</a></li>
         {% for class in levin_classes %}
             <li class="
             {% if class.number == active_class.number %}
@@ -22,46 +23,64 @@
             <a href="/class/{{class.number}}/">{{ class.number }}: {{ class.name }}</a></li>
         {% endfor %}
         </ul>
-      </div>
     </div>
+</div>
 
-    <div class="col-md-9">
+<div class="col-md-9">
+    {% if not active_class %}
+        <h1>Présentation de Verb∋Net</h1>
 
+        <p>Verb∋Net (ou VerbeNet, en insistant sur le "e" à l'oral) est une traduction de <a href="http://verbs.colorado.edu/verb-index/">VerbNet</a> vers le français.</p>
 
-      <h1 class="{{ active_class.translation_status }}">
-        <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
-        {% if user.is_authenticated and active_class.translation_status == 'INPROGRESS' %}
-            <button data-levinid="{{active_class.number}}" class="btn btn-default validate_class"><span class="glyphicon glyphicon-ok"></span> Valider</button>
-            <button data-levinid="{{active_class.number}}" class="btn btn-default remove_class"><span class="glyphicon glyphicon-remove"></span> Cacher</button>
+        <p>La hiérarchie de VerbNet a été respectée autant que possible.
+        Verb∋Net est lié à deux lexiques verbaux français : le <a
+        href="http://fr.wikipedia.org/wiki/Lexique-grammaire">Lexique-Grammaire</a>
+    et <a href="http://rali.iro.umontreal.ca/rali/?q=fr/lvf">Les Verbes
+        Français</a>. Les <em>frames</em> syntaxiques de VerbNet ont été adaptées vers le français, et les classes ont été réorganisées quand cela s'est avéré nécessaire.</p>
+
+        <h2>Publications</h2>
+        <ul>
+            <li>Laurence Danlos, Takuya Nakamura and Quentin Pradet. July 2014. <strong>Vers la création d’un Verb∋Net du français</strong>. Atelier FondamenTAL, TALN 2014, Marseille, France. <a href="http://quentin.pradet.me/articles/2014vers/danlos2014vers.bib">[bib]</a> <a href="http://quentin.pradet.me/articles/2014vers/danlos2014vers.pdf">[pdf]</a></li>
+            <li>Quentin Pradet, Laurence Danlos and Gaël de Chalendar. May 2014. <strong>Adapting VerbNet to French using existing resources</strong>. LREC 2014, Reykjavík, Iceland. <a href="http://quentin.pradet.me/articles/2014adapting/pradet2014adapting.bib">[bib]</a> <a href="http://quentin.pradet.me/articles/2014adapting/pradet2014adapting.pdf">[pdf]</a></li>
+        </ul>
+
+    {% else %}
+        <h1 class="{{ active_class.translation_status }}">
+            <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
+            {% if user.is_authenticated and active_class.translation_status == 'INPROGRESS' %}
+                <button data-levinid="{{active_class.number}}" class="btn btn-default validate_class"><span class="glyphicon glyphicon-ok"></span> Valider</button>
+                <button data-levinid="{{active_class.number}}" class="btn btn-default remove_class"><span class="glyphicon glyphicon-remove"></span> Cacher</button>
+            {% endif %}
+        </h1>
+
+        {% if user.is_authenticated and duplicate_translations %}
+            <div class="well duplicatetranslations">
+                <p>Voici les verbes validés dans plusieurs classes :</p>
+                <ul>
+                {% for translation, frameset_list in duplicate_translations %}
+                    <li>{{ translation }} :
+                        {% for frameset in frameset_list %}
+                        <a href="#{{frameset.name}}">{{ frameset.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
         {% endif %}
-      </h1>
 
-      {% if user.is_authenticated and duplicate_translations %}
-        <div class="well duplicatetranslations">
-            <p>Voici les verbes validés dans plusieurs classes :</p>
-            <ul>
-            {% for translation, frameset_list in duplicate_translations %}
-                <li>{{ translation }} :
-                    {% for frameset in frameset_list %}
-                    <a href="#{{frameset.name}}">{{ frameset.name }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-      {% endif %}
-
-      <div class="levin_editable" data-levinnumber="{{active_class.number}}" data-text="{{ active_class.comment|default:"∅" }}">
+        <div class="levin_editable" data-levinnumber="{{active_class.number}}" data-text="{{ active_class.comment|default:"∅" }}">
             {{ active_class.comment|default:"∅"|linebreaks }}
-      </div>
+        </div>
 
-      {% block content %}
-        {% for classe in verbnet_classes %}
-            {% include "classe.html" %}
-        {% endfor %}
-      {% endblock content %}
-    </div>
-  </div>
+        {% block content %}
+            {% for classe in verbnet_classes %}
+                {% include "classe.html" %}
+            {% endfor %}
+        {% endblock content %}
 
-</div> <!-- /container-fluid -->
+      {% endif %}
+</div>
+
+</div>
+</div>
 {% endblock all %}

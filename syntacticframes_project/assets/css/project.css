@@ -21,7 +21,7 @@ body {
 
 .sidebar-nav { padding: 9px 0 }
 .nav-list li { margin-top: 1px }
-.sidebar-nav .nav li a { padding: 5px 8px }
+.sidebar-nav .nav li a { padding: 5px 5px 5px 15px }
 
 /* Search */
 .navbar form {
@@ -54,7 +54,7 @@ body {
 /* align with h1 */
 .col-md-3 { margin-top: 20px; }
 
-li.selected > a {
+.sidebar-nav .nav li.selected > a {
     font-weight: bold;
     border-left: 5px solid black;
     padding-left: 10px;

@@ -32,6 +32,18 @@ def find_duplicate_translations(active_class):
 
     return filter(lambda kv: len(kv[1]) > 1, translation_dict.items())
 
+def index(request):
+    levin_classes = list(LevinClass.objects.all())
+    levin_classes.sort(key=lambda l: LooseVersion(l.number))
+
+    template = loader.get_template('index.html')
+    context = RequestContext(request, {
+        'levin_classes': levin_classes,
+    })
+    context.update(csrf(request))
+    return HttpResponse(template.render(context))
+    
+
 @ensure_csrf_cookie
 def classe(request, class_number):
     levin_classes = list(LevinClass.objects.all())
@@ -75,11 +87,6 @@ def vn_class(request, class_name):
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
-
-
-def index(request):
-    # Hardcoding that the first class is 9
-    return redirect('class/9/')
 
 
 class LoginForm(forms.Form):
