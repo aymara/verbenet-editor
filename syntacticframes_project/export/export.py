@@ -207,6 +207,40 @@ def xml_of_syntax(parsed_frame):
 
     return syntax
 
+def role_selrestr(selrestr_split):
+    def tokenize(selrestr_split):
+        for selrestr in selrestr_split:
+            while selrestr.startswith('['):
+                selrestr = selrestr[1:]
+                yield '['
+            yield selrestr.strip(']')
+            while selrestr.endswith(']'):
+                selrestr = selrestr[:-1]
+                yield ']'
+
+    # Shunting-yard algorithm
+    operand_list = []
+    operator_list  = []
+    for token in tokenize(selrestr_split):
+        if token in ['[', '&', '|']:
+            operator_list.append(token)
+        elif token.startswith('+') or token.startswith('-'):
+            operand_list.append(ET.Element('SELRESTR', {'Value': token[0], 'type': token[1:]}))
+        elif token == ']':
+            operator = operator_list.pop()
+            if operator != '[':
+                assert operator_list.pop() == '['
+                selrestr_combination = ET.Element('SELRESTRS', logic='or' if operator == '|' else 'and')
+                selrestr_combination.append(operand_list.pop())
+                selrestr_combination.append(operand_list.pop())
+                operand_list.append(selrestr_combination)
+        else:
+            raise Exception('Unknown token {}'.format(token))
+
+    assert len(operand_list) == 1
+    assert len(operator_list) == 0
+    return operand_list[0]
+
 
 def export_subclass(db_frameset, classname=None):
     global handled_frames, total_frames
@@ -223,12 +257,12 @@ def export_subclass(db_frameset, classname=None):
             ET.SubElement(xml_members, 'MEMBER', {'name': db_translation.verb})
 
     # Roles
-    xml_roles = ET.SubElement(xml_vnclass, 'THEMROLES')
+    xml_role_list = ET.SubElement(xml_vnclass, 'THEMROLES')
     for db_role in db_frameset.verbnetrole_set.all():
-        role, *selrestrs = db_role.name.split(' ')
-        ET.SubElement(
-            xml_roles, 'THEMROLE',
-            {'type': role, 'selrestrs': ' '.join(selrestrs)})
+        role, *selrestr_split = db_role.name.split(' ')
+        xml_role = ET.SubElement(xml_role_list, 'THEMROLE', {'type': role})
+        if selrestr_split:
+            xml_role.append(role_selrestr(selrestr_split))
 
     # Frames
     xml_frames = ET.SubElement(xml_vnclass, 'FRAMES')
