@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ active_class.number }} : {{ active_class.name }}{% endblock %}
+{% block title %}
+{% if active_class %}
+    {{ active_class.number }} : {{ active_class.name }}
+{% else %}
+    Présentation
+{% endif %}
+{% endblock %}
 
 {% block all %}
 

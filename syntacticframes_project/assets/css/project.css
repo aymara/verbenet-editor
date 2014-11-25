@@ -19,7 +19,7 @@ body {
 .left { float: left }
 .right { float: right }
 
-.sidebar-nav { padding: 9px 0 }
+.sidebar-nav { padding: 2px 0 }
 .nav-list li { margin-top: 1px }
 .sidebar-nav .nav li a { padding: 5px 5px 5px 15px }
 
