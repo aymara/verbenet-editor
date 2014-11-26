@@ -11,6 +11,7 @@ class TestParsingFunctions(unittest.TestCase):
             parse.FrenchMapping._tokenize('LVF', 'L3b ou(L3c)'),
             ['L3b', 'or', '(', 'L3c', ')'])
         self.assertEqual(parse.FrenchMapping._tokenize('LVF', '(L3b'), ['(', 'L3b'])
+        self.assertEqual(parse.FrenchMapping._tokenize('LADL', '(37M2 ou 37M3 ou 37M4) et 32A)'), ['(', '37M2', 'or', '37M3', 'or', '37M4', ')', 'and', '32A', ')'])
 
     def test_nothing(self):
         self.assertEqual(parse.FrenchMapping('LADL', '-').infix(), '')
@@ -47,6 +48,9 @@ class TestParsingFunctions(unittest.TestCase):
         self.assertEqual(
             parse.FrenchMapping('LADL', '32A et (37M2 ou 37M3 ou 37M4)').infix(),
             '(and 32A (or 37M2 37M3 37M4))')
+        self.assertEqual(
+            parse.FrenchMapping('LADL', '(37M2 ou 37M3 ou 37M4) et 32A)').infix(),
+            '(and (or 37M2 37M3 37M4) 32A)')
 
     def test_flatparse(self):
         self.assertEqual(
