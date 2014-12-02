@@ -456,6 +456,14 @@ class VerbTranslation(models.Model):
         self.validation_status = new_status
         self.save()
 
-    def is_valid(self):
-        return self.validation_status == VerbTranslation.STATUS_VALID or (
-            self.category == 'both' and self.validation_status == VerbTranslation.STATUS_INFERRED)
+    @staticmethod
+    def all_valid(queryset):
+        translation_list = list(queryset)
+        manually_validated = {v for v in translation_list if v.validation_status == VerbTranslation.STATUS_VALID}
+        purple_verbs = {v for v in translation_list if v.category == 'both' and v.validation_status == VerbTranslation.STATUS_INFERRED}
+        if purple_verbs:
+            inferred = purple_verbs
+        else:
+            inferred = {v for v in translation_list if v.category in ['ladl', 'lvf'] and v.validation_status == VerbTranslation.STATUS_INFERRED}
+
+        return manually_validated | inferred

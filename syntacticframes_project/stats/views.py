@@ -91,12 +91,13 @@ def count_verbs():
         num_classes += 1
         for vn_fs in vn_class.verbnetframeset_set.all():
             num_framesets += 1
-            for t in chosen_verbs(vn_fs):
+            chosen_verb_list = chosen_verbs(vn_fs)
+            for t in chosen_verb_list:
                unique_verbs.add(t.verb) 
                num_verbs += 1
-               if t.is_valid():
-                   unique_validated_verbs.add(t.verb)
-                   num_validated_verbs += 1
+            for t in VerbTranslation.all_valid(chosen_verb_list):
+                unique_validated_verbs.add(t.verb)
+                num_validated_verbs += 1
             for m in vn_fs.verbnetmember_set.all():
                 unique_members.add(m.lemma)
                 num_members += 1

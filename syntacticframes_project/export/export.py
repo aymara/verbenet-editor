@@ -3,7 +3,7 @@ import os
 import locale
 from xml.etree import ElementTree as ET
 
-from syntacticframes.models import LevinClass, VerbNetFrameSet
+from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from role.parserole import ROLE_LIST
 
 PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF', 'S_ING']
@@ -252,9 +252,8 @@ def export_subclass(db_frameset, classname=None):
 
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
-    for db_translation in db_frameset.verbtranslation_set.all():
-        if db_translation.is_valid():
-            ET.SubElement(xml_members, 'MEMBER', {'name': db_translation.verb})
+    for db_translation in VerbTranslation.all_valid(db_frameset.verbtranslation_set.all()):
+        ET.SubElement(xml_members, 'MEMBER', {'name': db_translation.verb})
 
     # Roles
     xml_role_list = ET.SubElement(xml_vnclass, 'THEMROLES')

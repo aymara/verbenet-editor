@@ -129,3 +129,40 @@ class TestUpdateTranslations(TestCase):
     def tearDown(self):
         # Tear down does not appear to be useful: no objects stay anyway
         pass
+
+class TestAllValid(TestCase):
+    def setUp(self):
+        levin_class = LevinClass(number=4, name='Imaginary class')
+        levin_class.save()
+        verbnet_class = VerbNetClass(levin_class=levin_class, name='imagine-4')
+        verbnet_class.save()
+        self.frameset = VerbNetFrameSet(verbnet_class=verbnet_class, name='4', tree_id=1)
+        self.frameset.save()
+
+    def test_purple(self):
+        VerbTranslation(frameset=self.frameset, verb='translation_child-1',
+                        category_id=0, category='both',
+                        validation_status=VerbTranslation.STATUS_VALID).save()
+        VerbTranslation(frameset=self.frameset, verb='translation_child-2',
+                        category_id=0, category='both',
+                        validation_status=VerbTranslation.STATUS_INFERRED).save()
+
+        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 2)
+
+    def test_red(self):
+        VerbTranslation(frameset=self.frameset, verb='translation_child-1',
+                        category_id=1, category='ladl',
+                        validation_status=VerbTranslation.STATUS_VALID).save()
+        VerbTranslation(frameset=self.frameset, verb='translation_child-2',
+                        category_id=1, category='ladl',
+                        validation_status=VerbTranslation.STATUS_INFERRED).save()
+        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 2)
+
+    def test_black(self):
+        VerbTranslation(frameset=self.frameset, verb='translation_child-1',
+                        category_id=3, category='dicovalence',
+                        validation_status=VerbTranslation.STATUS_VALID).save()
+        VerbTranslation(frameset=self.frameset, verb='translation_child-2',
+                        category_id=3, category='dicovalence',
+                        validation_status=VerbTranslation.STATUS_INFERRED).save()
+        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 1)

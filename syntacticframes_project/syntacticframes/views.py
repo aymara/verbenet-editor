@@ -37,10 +37,8 @@ def index(request):
 
 def find_duplicate_translations(active_class):
     translation_dict = defaultdict(list)
-    for translation in VerbTranslation.objects.select_related('frameset').filter(frameset__verbnet_class__levin_class=active_class):
-        if translation.is_valid():
-            if not translation.frameset.removed:
-                translation_dict[translation.verb].append(translation.frameset)
+    for translation in VerbTranslation.all_valid(VerbTranslation.objects.select_related('frameset').filter(frameset__verbnet_class__levin_class=active_class, frameset__removed=False)):
+        translation_dict[translation.verb].append(translation.frameset)
 
     return filter(lambda kv: len(kv[1]) > 1, translation_dict.items())
 
