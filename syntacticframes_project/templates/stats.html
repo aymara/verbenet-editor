@@ -8,12 +8,12 @@
 <div class="container">
 
 <h2>Statistiques</h2>
-<p>Verb∋Net contient {{ num_classes }} classes et {{ num_framesets }} (sous-)classes contenant en tout {{ num_members }} membres anglais ({{ unique_members }} uniques) pour {{ num_verbs }} verbes français ({{unique_verbs}} uniques) et {{ num_validated_verbs }} verbs validés ({{unique_validated_verbs}} uniques) .</p>
+<p>Verb∋Net contient {{ num_classes }} classes et {{ num_framesets }} (sous-)classes contenant en tout {{ num_members }} membres VerbNet ({{ unique_members }} uniques) pour {{ num_verbs }} membres Verb∋Net ({{unique_verbs}} uniques) et {{ num_validated_verbs }} membres Verb∋Net validés ({{unique_validated_verbs}} uniques) .</p>
 
 <h2>Annotations sans traductions</h2>
 <table class="table emptytranslations">
 <thead>
-    <tr><th>Classe</th><th class="entry">Entrée</th><th>Membres</th></tr>
+    <tr><th>Classe</th><th class="entry">Entrée</th><th>VerbNet members</th></tr>
 </thead>
 <tbody>
 {% for fs, url, resource, entry, members in empty_translations_errors %}
