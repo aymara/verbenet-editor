@@ -457,13 +457,28 @@ class VerbTranslation(models.Model):
         self.save()
 
     @staticmethod
-    def all_valid(queryset):
-        translation_list = list(queryset)
-        manually_validated = {v for v in translation_list if v.validation_status == VerbTranslation.STATUS_VALID}
-        purple_verbs = {v for v in translation_list if v.category == 'both' and v.validation_status == VerbTranslation.STATUS_INFERRED}
+    def all_valid(translation_qs):
+        """Returns the list of all valid VerbTranslation
+
+        At some point, the "valid" translation will only be manually validated
+        verbs. However, when no valid translation exist, we want to use the
+        purple, red or green list."""
+
+        translation_list = list(translation_qs)
+        manually_validated = {
+            v for v in translation_list
+            if v.validation_status == VerbTranslation.STATUS_VALID}
+        purple_verbs = {
+            v for v in translation_list
+            if v.category == 'both'
+            and v.validation_status == VerbTranslation.STATUS_INFERRED}
+
         if purple_verbs:
             inferred = purple_verbs
         else:
-            inferred = {v for v in translation_list if v.category in ['ladl', 'lvf'] and v.validation_status == VerbTranslation.STATUS_INFERRED}
+            inferred = {
+                v for v in translation_list
+                if v.category in ['ladl', 'lvf']
+                and v.validation_status == VerbTranslation.STATUS_INFERRED}
 
         return manually_validated | inferred
