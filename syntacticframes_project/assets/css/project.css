@@ -238,3 +238,19 @@ input.inedit[type='text'] { margin-bottom: 0 }
     -moz-column-width: 12em;
     -moz-column-gap: 20px;
 }
+
+/* Member index */
+.letter_list > tbody > tr > td {
+    border-bottom: 1px solid #DDD;
+    text-align: center;
+}
+.letter_list {
+    margin-bottom: 40px;
+}
+.active_letter {
+    font-weight: bold;
+    background-color: black;
+}
+.active_letter a {
+    color: white;
+}

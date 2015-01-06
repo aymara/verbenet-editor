@@ -17,8 +17,8 @@ urlpatterns = patterns('',
 
     # Stats
     url(r'^stats/', include('stats.urls')),
-    # LADL index
-    url(r'^ladlindex/', include('ladlindex.urls')),
+    # Indexes
+    url(r'^index/', include('indexes.urls')),
 
     # Auth
     url(r'^login/$', views.login),

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Index inversé des membres français de Verb∋Net{% endblock %}
+
+{% block all %}
+
+<div class="container">
+
+    <h2>Index inversé des membres français de Verb∋Net</h2>
+
+    <table class="table letter_list">
+    <tr>
+    {% for letter in letter_list %}
+    <td {% if letter == active_letter %}class="active_letter"{% endif %}><a href="/index/members/{{letter}}/">{{ letter|upper }}</a></td>
+    {% endfor %}
+    </tr>
+    </table>
+
+    <table class="table ladlindex">
+        <tr><th>Membre</th><th>Classe Verb∋Net</th></tr>
+        {% for member, levin_list in member_index.items %}
+        <tr>
+            <td>{{member}}</td>
+            <td>
+            {% for levin, frameset_list in levin_list.items %}
+                {% for fs in frameset_list %}
+                <a class="fs_removed_{{fs.removed}}" href="/class/{{levin}}/#{{fs.name}}">{{ fs.name }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% if not forloop.last %} &mdash; {% endif %}
+            {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock all %}
+
