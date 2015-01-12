@@ -6,6 +6,29 @@ import reversion
 from .models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, \
     VerbNetFrame, VerbNetRole, VerbTranslation
 
+
+# Inline models
+class InlineEditLinkMixin(object):
+    readonly_fields = ['edit_details']
+    edit_label = "Edit"
+
+    def edit_details(self, obj):
+        if obj.id:
+            opts = self.model._meta
+            return "<a href='%s' target='_blank'>%s</a>" % (reverse(
+                'admin:%s_%s_change' % (opts.app_label, opts.object_name.lower()),
+                args=[obj.id]
+            ), self.edit_label)
+        else:
+            return "(save to edit details)"
+    edit_details.allow_tags = True
+
+
+class VerbNetMemberInline(InlineEditLinkMixin, admin.TabularInline):
+    fk_name = 'frameset'
+    model = VerbNetMember
+    extra = 0
+
 admin.site.register(LevinClass)
 
 
@@ -27,6 +50,7 @@ admin.site.register(VerbNetClass, VerbNetClassAdmin)
 
 class VerbNetFrameSetAdmin(reversion.VersionAdmin):
     search_fields = ('name',)
+    inlines = [VerbNetMemberInline]
 
 admin.site.register(VerbNetFrameSet, VerbNetFrameSetAdmin)
 
@@ -39,7 +63,7 @@ admin.site.register(VerbNetMember, VerbNetMemberAdmin)
 
 
 class VerbNetFrameAdmin(reversion.VersionAdmin):
-    search_fields = ('syntax', 'example',) 
+    search_fields = ('syntax', 'example',)
 
 admin.site.register(VerbNetFrame, VerbNetFrameAdmin)
 

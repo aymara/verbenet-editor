@@ -117,7 +117,8 @@ class VerbNetFrameSet(MPTTModel):
 
     def move_members_and_verbs_to(self, other_frameset):
         # We don't want to have received_from = self, so prevent moving frames
-        # to onself
+        # to ourself. With normal users this shouldn't happen anyway as the UI
+        # doesn't allow this.
         assert self.name != other_frameset.name
 
         # Move all members
