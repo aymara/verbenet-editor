@@ -339,6 +339,9 @@ class VerbNetMember(models.Model):
         return self.lemma
 
     def __eq__(self, other):
+        if other is None:
+            return False
+
         return self.frameset == other.frameset and self.inherited_from == other.inherited_from and self.lemma == other.lemma
 
     def __repr__(self):
