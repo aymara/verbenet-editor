@@ -8,11 +8,12 @@ from mptt.models import MPTTModel, TreeForeignKey
 from loadmapping.mappedverbs import translations_for_class
 from parsecorrespondance.parse import FrenchMapping
 
+
 # Levin class 9..104
 class LevinClass(models.Model):
     STATUS_TRANSLATED = 'TRANSLATED'
     STATUS_REMOVED = 'REMOVED'
-    STATUS_INPROGRESS = 'INPROGRESS' # default status: not translated yet
+    STATUS_INPROGRESS = 'INPROGRESS'  # default status: not translated yet
 
     TRANSLATION_STATUS = (
         (STATUS_TRANSLATED, 'Translated'),
@@ -236,7 +237,6 @@ class VerbNetFrameSet(MPTTModel):
 
         return objects
 
-
     def update_members(self, frameset):
         """Moves members according to hidden/shown classes
 
@@ -330,16 +330,18 @@ class VerbNetMember(models.Model):
     """An english member"""
     frameset = models.ForeignKey(VerbNetFrameSet)
     # Members that were inherited from another *hidden* frameset
-    inherited_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='inheritedmember_set')
+    inherited_from = models.ForeignKey(VerbNetFrameSet, null=True, blank=True,
+                                       related_name='inheritedmember_set')
     # Members that were sent from another frameset
-    received_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='receivedmember_set')
+    received_from = models.ForeignKey(VerbNetFrameSet, null=True, blank=True,
+                                      related_name='receivedmember_set')
     lemma = models.CharField(max_length=1000)
 
     def __str__(self):
         return self.lemma
 
     def __eq__(self, other):
-        if other is None:
+        if not isinstance(other, self.__class__):
             return False
 
         return self.frameset == other.frameset and self.inherited_from == other.inherited_from and self.lemma == other.lemma
@@ -348,7 +350,7 @@ class VerbNetMember(models.Model):
         inherited_from_name = self.inherited_from.name if self.inherited_from else "None"
         received_from_name = self.received_from.name if self.received_from else "None"
         return "VerbNetMember: {} ({}) i{}, r{})".format(self.lemma, self.frameset.name,
-                inherited_from_name, received_from_name)
+                                                         inherited_from_name, received_from_name)
 
     def __hash__(self):
         return hash(self.__repr__())
@@ -381,7 +383,6 @@ class VerbNetFrame(models.Model):
     def save(self, *args, **kwargs):
         super(VerbNetFrame, self).save(*args, **kwargs)
         self.frameset.check_has_removed_frames()
-
 
     class Meta:
         ordering = ['position']
@@ -443,11 +444,12 @@ class VerbTranslation(models.Model):
         default=STATUS_INFERRED)
     # when hiding classes, manual translations and members can move: we want to
     # keep track of their initial position
-    inherited_from = models.ForeignKey(VerbNetFrameSet, null=True,
-            related_name='inheritedmanualtranslation_set')
+    inherited_from = models.ForeignKey(VerbNetFrameSet, null=True, blank=True,
+                                       related_name='inheritedmanualtranslation_set')
     # It's also possible for a frameset to send manually validated verbs
     # (including translations) to another one: we keep track of it here.
-    received_from = models.ForeignKey(VerbNetFrameSet, null=True, related_name='receivedtranslation_set')
+    received_from = models.ForeignKey(VerbNetFrameSet, null=True, blank=True,
+                                      related_name='receivedtranslation_set')
 
     def __str__(self):
         return "{} ({}, {})".format(self.verb, self.category, self.validation_status)
