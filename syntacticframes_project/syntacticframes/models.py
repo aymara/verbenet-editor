@@ -358,6 +358,38 @@ class VerbNetMember(models.Model):
     class Meta:
         ordering = ['lemma']
 
+        # We want to prevent accidental members duplications here and are using
+        # SQL UNIQUE to do so. To explain why the unique constraints are laid
+        # this way, let's talk about an hypothetical scenario that this doesn't
+        # cover.
+
+        # 1/ Say you have a class A with children A.1 and A.2 and say both
+        # children have the same member (same WordNet and OntoNotes sense).
+        # This does happen in VerbNet 3.2, see incorporate in
+        # amalgamate-22.2-2.
+        # 2/ Say you hide both A.1 and A.2 because they don't fit in your
+        # target language: you now receive two *different* `incorporate` since
+        # they come from different classes. You should of course keep the two
+        # versions, should you decide to unhide the classes one day. However,
+        # you should only show one of them at display time, eg. by using a
+        # Python set to send the verb classes to the template. So far so good.
+        # 3/ You send the verbs of class A to class B, including `incorporate`.
+        # At this point, you have two `incorporate` with the same received_from
+        # field (A) but different inherited_from field (A.1 and A.2). They're
+        # different, and we want to allow that in PostgreSQL.
+
+        # To accept this scenario, we first define unique_together as ('lemma',
+        # 'inherited_from', 'received_from'). However, with only this, many
+        # incorrect situations will be incorrectly accepted. Indeed, null
+        # values are not considered equal
+        # (http://www.postgresql.org/docs/9.4/static/indexes-unique.html). This
+        # is why we're also setting two other constraints, each one handling
+        # the possibility that the left-out column be null.
+
+        unique_together = (
+            ('lemma', 'inherited_from', 'received_from'),
+            ('lemma', 'inherited_from'), ('lemma', 'received_from'))
+
 
 # Frame: NP V, Agent V, Pred(Agent, E)
 class VerbNetFrame(models.Model):
