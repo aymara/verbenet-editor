@@ -1,4 +1,3 @@
-===============
 Verb∋Net editor
 ===============
 
@@ -20,8 +19,8 @@ development files, libxml2 and libxslt1 development files, PostgreSQL
 contrib modules and development files, and Node.js:
 
     sudo apt-get install python3-dev libxslt1-dev libxml2-dev \
-    postgresql-contrib postgresql-server-dev-all \
-    libapache2-mod-wsgi-py3 npm
+        postgresql-contrib postgresql-server-dev-all \
+        libapache2-mod-wsgi-py3 npm
 
 Install Node.js dependencies:
 
@@ -63,4 +62,4 @@ Contact
 =======
 
 Feel free to open a GitHub issue or to contact me
-(email is in https://github.com/pquentin)
+(email is at https://github.com/pquentin)
