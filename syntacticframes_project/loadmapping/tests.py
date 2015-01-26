@@ -2,7 +2,7 @@ from django.test import SimpleTestCase
 
 from loadmapping import mappedverbs
 from parsecorrespondance import parse
-from loadmapping.savelvf import normalize_verb
+from loadmapping.management.commands.savelvf import normalize_verb
 
 
 class TestNormalize(SimpleTestCase):
