@@ -19,7 +19,9 @@ Make sure all dependencies are installed. That means Python 3 and
 development files, libxml2 and libxslt1 development files, PostgreSQL
 contrib modules and development files, and Node.js:
 
-    sudo apt-get install python3-dev libxslt1-dev libxml2-dev postgresql-contrib postgresql-server-dev-all libapache2-mod-wsgi-py3 npm
+    sudo apt-get install python3-dev libxslt1-dev libxml2-dev \
+    postgresql-contrib postgresql-server-dev-all \
+    libapache2-mod-wsgi-py3 npm
 
 Install Node.js dependencies:
 
@@ -52,10 +54,10 @@ ask a PostgreSQL dump.
 Acknowledgements
 ================
 
-    - Laurence Danlos and Takuya Nakamura for their feedback
-    - Many thanks to the "Two Scoops of Django" book which got me
-      started
-    - Thanks to Django and its community: I never got blocked long
+  - Laurence Danlos and Takuya Nakamura for their feedback
+  - Many thanks to the "Two Scoops of Django" book which got me
+    started
+  - Thanks to Django and its community: I never got blocked long
 
 Contact
 =======
