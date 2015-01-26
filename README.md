@@ -34,6 +34,13 @@ requirements:
 
     pip install -r requirements/local.txt
 
+Make sure the PostgreSQL database supports the UNACCENT function
+
+    sudo -u postgres psql syntacticframes
+
+    CREATE EXTENSION UNACCENT;
+    CREATE TEXT SEARCH CONFIGURATION fr ( COPY = french );
+
 Data
 ----
 
