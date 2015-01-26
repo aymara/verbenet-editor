@@ -16,22 +16,23 @@ Code and dependencies
 --------------------
 
 Make sure all dependencies are installed. That means Python 3 and
-development files, libxml2PostgreSQL contrib modules and development files: 
+development files, libxml2 and libxslt1 development files, PostgreSQL
+contrib modules and development files, and Node.js:
 
-  sudo apt-get install python3-dev libxslt1-dev libxml2-dev postgresql-contrib postgresql-server-dev-all libapache2-mod-wsgi-py3
+    sudo apt-get install python3-dev libxslt1-dev libxml2-dev postgresql-contrib postgresql-server-dev-all libapache2-mod-wsgi-py3 npm
 
-Also install node and npm, then:
+Install Node.js dependencies:
 
-  npm install less yuglify
+    npm install less yuglify
 
-Then, the code:
+Then, get the code:
 
-  git clone https://github.com/aymara/verbenet-editor.git
+    git clone https://github.com/aymara/verbenet-editor.git
 
 Create a virtualenv, activate it, then install the Python
 requirements:
 
-  pip install -r requirements/local.txt
+    pip install -r requirements/local.txt
 
 Data
 ----
