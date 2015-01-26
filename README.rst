@@ -1,12 +1,56 @@
 ===============
-syntacticframes
+Verb∋Net editor
 ===============
 
-A website to ease annotation to translate VerbNet to French.
+A web-based tool to ease the translation from VerbNet to the French Verb∋Net.
 
+https://verbenet.inria.fr/
+
+Installation
+============
+
+We're going to assume Ubuntu when showing instructions, but this
+should work anywhere, even though it was only tested on GNU/Linux.
+
+Code and dependencies
+--------------------
+
+Make sure all dependencies are installed. That means Python 3 and
+development files, libxml2PostgreSQL contrib modules and development files: 
+
+  sudo apt-get install python3-dev libxslt1-dev libxml2-dev postgresql-contrib postgresql-server-dev-all libapache2-mod-wsgi-py3
+
+Also install node and npm, then:
+
+  npm install less yuglify
+
+Then, the code:
+
+  git clone https://github.com/aymara/verbenet-editor.git
+
+Create a virtualenv, activate it, then install the Python
+requirements:
+
+  pip install -r requirements/local.txt
+
+Data
+----
+
+Run `./manage.py migrate` from `syntacticframes_projects`. This will
+set up initial data, but you will still need to import VerbNet or
+VerbeNet afterwards. This is not currently possible: for now, simply
+ask a PostgreSQL dump.
 
 Acknowledgements
 ================
 
-    - Many thanks to the "Two Scoops of Django" book
-    - Laurence Danlos for her constructive criticism
+    - Laurence Danlos and Takuya Nakamura for their feedback
+    - Many thanks to the "Two Scoops of Django" book which got me
+      started
+    - Thanks to Django and its community: I never got blocked long
+
+Contact
+=======
+
+Feel free to open a GitHub issue or to contact me
+(email is in https://github.com/pquentin)
