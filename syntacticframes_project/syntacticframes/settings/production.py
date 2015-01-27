@@ -28,10 +28,7 @@ ALLOWED_HOSTS = []
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host
-EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.alwaysdata.com')
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#email-port
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = '[%s] ' % SITE_NAME
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-use-tls
@@ -46,10 +43,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ATOMIC_REQUESTS': True,
-        'NAME': 'pradet_verbenet',
-        'USER': 'pradet',
+        'NAME': 'verbenet',
+        'USER': 'qpradet',
         'PASSWORD': get_env_setting('PG_PASSWORD'),
-        'HOST': 'postgresql.alwaysdata.com',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -65,5 +62,5 @@ SECRET_KEY = get_env_setting('SECRET_KEY')
 ########## SITE CONFIGURATION
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['verbenet.pradet.me']
+ALLOWED_HOSTS = ['verbenet.inria.fr']
 ########## END SITE CONFIGURATION
