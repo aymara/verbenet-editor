@@ -30,7 +30,7 @@ Then, get the code:
 
     git clone https://github.com/aymara/verbenet-editor.git
 
-Create a virtualenv, activate it, then install the Python
+Create a Python 3 virtualenv, activate it, then install the Python
 requirements:
 
     pip install -r requirements/local.txt
