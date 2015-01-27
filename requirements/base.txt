@@ -1,6 +1,6 @@
 Django>=1.7.1
 bpython==0.13
-django-mptt==0.6.noorder
+--editable git+https://github.com/pquentin/django-mptt.git@0.6.x-noorder#egg=django_mptt
 psycopg2==2.5
 lxml==3.2.3
 django-reversion==1.8.5
