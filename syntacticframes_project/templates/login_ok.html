@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block all %}
+
+<div class="container">
+    <h1>Login</h1>
+
+    <p>Bienvnue, {{ user.username }} ! Vous êtes déjà connecté(e).
+        <form action="/logout/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Se déconnecter" />
+        </form>
+    </p>
+</div>
+        
+
+{% endblock all %}

@@ -22,6 +22,7 @@ urlpatterns = patterns('',
 
     # Auth
     url(r'^login/$', views.login),
+    url(r'^logout/$', views.logout),
 
     # JS API
     url(r'^update/$', views.update),

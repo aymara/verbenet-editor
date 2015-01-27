@@ -5,7 +5,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django import forms
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
 from django.db import transaction
 
@@ -101,6 +101,14 @@ def vn_class(request, class_name):
 
 class LoginForm(forms.Form):
     login = forms.CharField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
+@ensure_csrf_cookie
+def logout(request):
+    if request.method == 'POST' and request.user.is_authenticated():
+        auth_logout(request)
+        return redirect('/login/')
 
 
 @ensure_csrf_cookie
@@ -109,7 +117,7 @@ def login(request):
 
     if request.method == 'POST':
         user = authenticate(username=request.POST['login'],
-                            password='NO_PASSWORD')
+                            password=request.POST['password'])
         if user is not None:
             auth_login(request, user)
             return redirect('/')
@@ -117,10 +125,15 @@ def login(request):
             messages.warning(request, 'Login invalide, merci de réessayer !')
             form = LoginForm(request.POST)
 
-    template = loader.get_template('login.html')
-    context = RequestContext(request, {
-        'form': form,
-    })
+    if request.user.is_authenticated():
+         template = loader.get_template('login_ok.html')
+         context = RequestContext(request, {})
+    else:
+         template = loader.get_template('login_form.html')
+         context = RequestContext(request, {
+             'form': form,
+         })
+
     context.update(csrf(request))
     return HttpResponse(template.render(context))
 
