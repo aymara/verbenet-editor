@@ -22,3 +22,4 @@ syntacticframes_project/export/verbenet/
 syntacticframes_project/assets/less/custom.css
 syntacticframes_project/public/
 syntacticframes_project/cache/
+node_modules
