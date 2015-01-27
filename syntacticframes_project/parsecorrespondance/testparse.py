@@ -65,10 +65,10 @@ class TestLVFColumns(unittest.TestCase):
     def test_parse(self):
         self.assertEqual(
             parse.FrenchMapping('LVF', 'L3b[+T1300]').parse_tree,
-            {'leaf': ('L3b', [None, '+T1300'])})
+            {'leaf': ('L3b', [None, {'column': 'T1300', 'value': '+'}])})
         self.assertEqual(
             parse.FrenchMapping('LVF', 'P1i.2[-T14b0]').parse_tree,
-            {'leaf': ('P1i.2', [None, '-T14b0'])})
+            {'leaf': ('P1i.2', [None, {'column': 'T14b0', 'value': '-'}])})
 
 class TestLADLColumns(unittest.TestCase):
     def test_tokenize(self):
@@ -93,10 +93,23 @@ class TestLADLColumns(unittest.TestCase):
         self.assertEqual(
             parse.FrenchMapping._tokenize('LADL', '35L[+[extrap]]'),
             ['35L', '[', '+', '[extrap]', ']'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '38R[Prép2=par]'),
+            ['38R', '[', '=', 'Prép2', 'par', ']'])
+
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '38R[Prép2=par et +N0 V]'),
+            ['38R', '[', '=', 'Prép2', 'par', 'and', '+', 'N0 V', ']'])
+
         with self.assertRaises(parse.SyntaxErrorException):
             parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou -N et +N0 V]'),
         with self.assertRaises(parse.SyntaxErrorException):
             parse.FrenchMapping._tokenize('LADL', '38L[+V-n transport ou N]'),
+        with self.assertRaises(parse.SyntaxErrorException):
+            parse.FrenchMapping._tokenize('LADL', '38R[Prép2 = par]'),
+        with self.assertRaises(parse.SyntaxErrorException):
+            parse.FrenchMapping._tokenize('LADL', '38R[Prép2= par]'),
+            parse.FrenchMapping._tokenize('LADL', '38R[Prép2 =par]'),
 
     def test_infix(self):
         self.assertEqual(parse.FrenchMapping('LADL', '38LD[+A ou +B]').infix(), '38LD[+A ou +B]')
@@ -104,10 +117,14 @@ class TestLADLColumns(unittest.TestCase):
     def test_parse(self):
         self.assertEqual(
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire]').parse_tree,
-            {'leaf': ('36DT', [None, '+N2 détrimentaire'])})
+            {'leaf': ('36DT', [None, {'column': 'N2 détrimentaire', 'value': '+'}])})
         self.assertEqual(
             parse.FrenchMapping('LADL', '36DT[+N2 détrimentaire ou -N2 être V-n]').parse_tree,
-            {'leaf': ('36DT', ['or', '+N2 détrimentaire', '-N2 être V-n']), })
+            {'leaf': ('36DT', ['or', {'column': 'N2 détrimentaire', 'value': '+'}, {'column': 'N2 être V-n', 'value': '-'}]), })
+
+        self.assertEqual(
+            parse.FrenchMapping('LADL', '38R[Prép2=par]').parse_tree,
+            {'leaf': ('38R', [None, {'column': 'Prép2', 'value': 'par'}]), })
 
     def test_flatparse(self):
         self.assertEqual(

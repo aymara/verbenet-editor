@@ -21,12 +21,12 @@ with open(join(settings.SITE_ROOT, 'loadmapping/data/verb_dictionary.pickle'), '
 
 class UnknownColumnException(parse.ParseErrorException):
     def __init__(self, column, class_name):
-        # Remove + or -
-        self.column = column[1:]
+        self.column = column
         self.class_name = class_name
 
     def __str__(self):
-        return 'La classe {} n\'a pas de colonne {}'.format(self.class_name, self.column)
+        return 'La classe {} n\'a pas de valeur {} dans la colonne {}'.format(
+            self.class_name, self.column['value'], self.column['column'])
 
 def parse_path(specific_class):
     path = []
@@ -69,32 +69,35 @@ def verbs_for_one_class(resource, wanted_class):
         if column_list is None:
             return set(ladl_dict[specific_class]['all'])
         else:
-            if len(column_list) > 2:
-                assert column_list[0] in ['and', 'or']
+            if column_list[0] == '=':
+                pass
+            else:
+                if column_list[0] in ['and', 'or']:
+                    assert len(column_list) > 2
 
-            for column in column_list[1:]:
-                if not column in ladl_dict[specific_class]:
-                    raise UnknownColumnException(column, specific_class)
+                for column in column_list[1:]:
+                    if not column['column'] in ladl_dict[specific_class] or not column['value'] in ladl_dict[specific_class][column['column']]:
+                        raise UnknownColumnException(column, specific_class)
 
-            ladl_verbs = set(ladl_dict[specific_class][column_list[1]])
-            for column in column_list[2:]:
-                if column_list[0] == 'or':
-                    ladl_verbs |= set(ladl_dict[specific_class][column])
-                elif column_list[0] == 'and':
-                    ladl_verbs &= set(ladl_dict[specific_class][column])
-            return ladl_verbs
+                ladl_verbs = set(ladl_dict[specific_class][column_list[1]['column']][column_list[1]['value']])
+                for column in column_list[2:]:
+                    if column_list[0] == 'or':
+                        ladl_verbs |= set(ladl_dict[specific_class][column['column']][column['value']])
+                    elif column_list[0] == 'and':
+                        ladl_verbs &= set(ladl_dict[specific_class][column['column']][column['value']])
+                return ladl_verbs
 
     elif resource == 'LVF':
         lvf_verbs_qs = LVFVerb.objects.filter(lvf_class__startswith=specific_class)
         if column_list is not None:
             if len(column_list) == 2:
                 restriction = column_list[1]
-                if restriction[0] == '+':
+                if restriction['value'] == '+':
                     lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.filter(
-                        construction__contains=restriction[1:])
+                        construction__contains=restriction['column'])
                 else:
                     lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.exclude(
-                        construction__contains=restriction[1:])
+                        construction__contains=restriction['column'])
             else:
                 assert column_list[0] in ['and', 'or']
 
@@ -102,17 +105,17 @@ def verbs_for_one_class(resource, wanted_class):
                     if column_list[0] == 'and':
                         if column[0] == '+':
                             lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.filter(
-                                construction__contains=column[1:])
+                                construction__contains=column['column'])
                         elif column[0] == '-':
                             lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.exclude(
-                                construction__contains=column[1:])
+                                construction__contains=column['column'])
                     elif column_list[0] == 'or':
                         if column[0] == '+':
                             lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.filter(
-                                construction__contains=column[1:])
+                                construction__contains=column['column'])
                         elif column[0] == '-':
                             lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.exclude(
-                                construction__contains=column[1:])
+                                construction__contains=column['column'])
 
         # group entries with the same lemma (eg. amortir 1 and amortir 2 -> amortir)
         return {v.lemma for v in lvf_verbs_qs}

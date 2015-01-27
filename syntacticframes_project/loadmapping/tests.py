@@ -97,3 +97,23 @@ class TestLADLMappedVerbsFunctions(SimpleTestCase):
         self.assertIn('voler', verbs)
         self.assertNotIn('vouer', verbs)
         self.assertIn('chiper', verbs)
+
+    def test_restrict_on_value(self):
+        verbs = set(mappedverbs.verbs_for_class_mapping(
+            parse.FrenchMapping('LADL', '38R[Prép2=par]')))
+        self.assertEqual(verbs, {'achever', 'allégoriser', 'amorcer', 'amuser',
+            'appeler', 'assurer', 'attaquer', 'atteindre', 'boucler',
+            'chiffrer', 'clore', 'clôturer', 'commencer', 'compenser',
+            'conclure', 'concrétiser', 'continuer', 'contrebalancer',
+            'débuter', 'définir', 'démarquer se', 'démarrer', 'désigner',
+            'diviser', 'doubler', 'embrayer', 'embrouiller', 'entamer',
+            'équilibrer', 'exemplifier', 'expier', 'expliquer', 'exprimer',
+            'fermer', 'figurer', 'finir', 'imiter', 'inaugurer', 'initier',
+            'interrompre', 'introduire', 'marquer', 'matérialiser', 'motiver',
+            'neutraliser', 'ouvrir', 'pallier', 'parachever', 'paraphraser',
+            'périphraser', 'perpétuer', 'personnifier', 'prévenir', 'rappeler',
+            'rattraper', 'réaliser', 'redoubler', 'régler', 'relayer',
+            'relever', 'remplacer', 'rendre', 'réparer', 'répéter',
+            'reprendre', 'représenter', 'reproduire', 'retraduire',
+            'schématiser', 'sigler', 'simuler', 'suppléer', 'symboliser',
+            'tenir', 'terminer', 'traduire', 'valoriser'})

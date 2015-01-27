@@ -61,59 +61,79 @@ class FrenchMapping(object):
         while i < len(name):
             c = name[i]
 
+            # When allowed, spaces form a new token
             if c == ' ':
                 if current_token:
                     token_list.append(current_token)
                     current_token = ''
+            # Column restrictions
             elif c == '[':
                 if name[i-1] == ' ':
                     raise SyntaxErrorException('Pas d\'espace après {}'.format(token_list[-1]), name)
+
+                if current_token:
+                    token_list.append(current_token)
+                    current_token = ''
+
+                token_list.append(c)  # [
+
+                # Get the whole restriction, even for 35L[+[extrap]]
+                j = i + 2
+                bracket_stack_len = 0
+                while not(name[j] == ']' and bracket_stack_len == 0):
+                    if len(name) <= j+1:
+                        raise SyntaxErrorException('Crochet ] manquant', name)
+
+                    if name[j] == '[':
+                        bracket_stack_len += 1
+                    elif name[j] == ']':
+                        bracket_stack_len -= 1
+                    j += 1
+
+                # Cut the restriction in operands
+                if ' et ' in name[i+1:j] and ' ou ' in name[i+1:j]:
+                    raise SyntaxErrorException('Combinaison de "ou" et "et" dans la restriction {}', name[i+1:j])
+                elif ' et ' in name[i+1:j]:
+                    restriction_list = name[i+1:j].split(' et ')
+                    restriction_operator = 'et'
+                elif ' ou ' in name[i+1:j]:
+                    restriction_list = name[i+1:j].split(' ou ')
+                    restriction_operator = 'ou'
                 else:
-                    if current_token:
-                        token_list.append(current_token)
-                        current_token = ''
+                    restriction_list = [name[i+1:j]]
+                    restriction_operator = None
 
-                    token_list.append(c)  # [
-
-                    j = i + 2
-                    bracket_stack_len = 0
-                    while not(name[j] == ']' and bracket_stack_len == 0):
-                        if len(name) <= j+1:
-                            raise SyntaxErrorException('Crochet ] manquant', name)
-
-                        if name[j] == '[':
-                            bracket_stack_len += 1
-                        elif name[j] == ']':
-                            bracket_stack_len -= 1
-                        j += 1
-
-                    if ' et ' in name[i+1:j] and ' ou ' in name[i+1:j]:
-                        raise SyntaxErrorException('Combinaison de "ou" et "et" dans la restriction {}', name[i+1:j])
-                    elif ' et ' in name[i+1:j]:
-                        restriction_list = name[i+1:j].split(' et ')
-                        restriction_operator = 'et'
-                    elif ' ou ' in name[i+1:j]:
-                        restriction_list = name[i+1:j].split(' ou ')
-                        restriction_operator = 'ou'
-                    else:
-                        restriction_list = [name[i+1:j]]
-                        restriction_operator = None
-
-                    for part in restriction_list:
-                            if part[0] not in ['-', '+']:
-                                raise SyntaxErrorException('+ ou - requis après un crochet', name)
+                # Handle each operand
+                for part in restriction_list:
+                        if part[0] in ['-', '+']:
                             token_list.append(part[0])
                             token_list.append(part[1:])
                             token_list.append(restriction_operator)
-                    token_list.pop()
+                        elif '=' in part:
+                            if ' ' in part:
+                                raise SyntaxErrorException("Pas d'espace autour du égal", name)
 
-                    token_list.append(name[j])  # ]
-                    i = j + 1
+                            column, value = part.split('=')
+                            token_list.append('=')
+                            token_list.append(column)
+                            token_list.append(value)
+                            token_list.append(restriction_operator)
+                        else:
+                            # It's true that it could be an issue with =, but
+                            # mentioning that would make the error less clear
+                            raise SyntaxErrorException('+ ou - requis après un crochet', name)
+                token_list.pop()
+
+                token_list.append(name[j])  # ]
+                i = j + 1
+
+            # Parens affect and/or priority
             elif c in ['(', ')']:
                 if current_token:
                     token_list.append(current_token)
                     current_token = ''
                 token_list.append(c)
+            # Everything else is a simple token
             else:
                 current_token += c
 
@@ -172,9 +192,14 @@ class FrenchMapping(object):
                         if token_list[i] in ['and', 'or']:
                             operator = token_list[i]
                             i += 1
-                        else:
-                            restr_op_list.append(token_list[i] + token_list[i+1])
+                        elif token_list[i] in ['+', '-']:
+                            restr_op_list.append({'column': token_list[i+1], 'value': token_list[i]})
                             i += 2
+                        elif token_list[i] == '=':
+                            restr_op_list.append({'column': token_list[i+1], 'value': token_list[i+2]})
+                            i += 3
+                        else:
+                            raise SyntaxErrorException("Ni = ni + ni -.", ' '.join_token_list)
 
                     restr_op_list = [operator] + restr_op_list
 
@@ -193,6 +218,14 @@ class FrenchMapping(object):
 
             return parse_tree
 
+    @staticmethod
+    def restr_to_string(restr):
+        if restr['value'] in ['-', '+']:
+            return '{}{}'.format(restr['value'], restr['column'])
+        else:
+            return '{}={}'.format(restr['column'], restr['value'])
+
+
     def infix(self):
         def infix_aux(parse_tree):
             french_operators = {'or': 'ou', 'and': 'et'}
@@ -202,7 +235,7 @@ class FrenchMapping(object):
                 class_name, restr = parse_tree['leaf']
                 if restr is not None:
                     if restr[0]:
-                        restr_string = ' {} '.format(french_operators[restr[0]]).join(restr[1:])
+                        restr_string = ' {} '.format(french_operators[restr[0]]).join([FrenchMapping.restr_to_string(r) for r in restr[1:]])
                     else:
                         assert len(restr) == 2
                         restr_string = restr[1]
@@ -229,11 +262,13 @@ class FrenchMapping(object):
                 class_name, restr = parse_tree['leaf']
                 if restr is not None:
                     if restr[0]:
-                        space_french_operator = ' {} '.format(french_operators[restr[0]])
-                        restr_string = space_french_operator.join(restr[1:])
+                        space_french_operator = ' {} '.format(
+                            french_operators[restr[0]])
+                        restr_string = space_french_operator.join(
+                            [FrenchMapping.restr_to_string(r) for r in restr[1:]])
                     else:
                         assert len(restr) == 2
-                        restr_string = restr[1]
+                        restr_string = FrenchMapping.restr_to_string(restr[1])
                     return [('{}[{}]'.format(class_name, restr_string), class_name)]
                 else:
                     return [(class_name, class_name)]

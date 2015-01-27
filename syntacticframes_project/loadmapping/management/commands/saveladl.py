@@ -50,12 +50,23 @@ class Command(BaseCommand):
 
                 # Store column information
                 for i, col in enumerate(line):
-                    # Make sure lists for - and + exist, even if empty
-                    if col in ['-', '+', '~', '<E>']:
-                        for possible in ['-', '+']:
-                            col_name = '{}{}'.format(possible, first_line[i])
-                            if not col_name in verbes[classe]:
-                                verbes[classe][col_name] = []
+                    # Make sure lists exist in each dictionary value
+                    col_name = first_line[i]
+
+                    # We want 32C[+V-n instrument (forme V-n)] to work, that is
+                    # also consider verbs as a '+'
+                    col_value_list = ['-' if col in ['-', '<E>'] else col]
+                    if col_value_list[0] not in ['-', '+', '~']:
+                        col_value_list.append('+')
+
+
+                    if col_name.startswith('<'):
+                        continue
+                    if not col_name in verbes[classe]:
+                        verbes[classe][col_name] = {}
+                    for col_value in col_value_list:
+                        if not col_value in verbes[classe][col_name]:
+                            verbes[classe][col_name][col_value] = []
 
             csvfile = open(f)
             ladlreader = csv.reader(csvfile, delimiter=';', quotechar='"')
@@ -70,13 +81,17 @@ class Command(BaseCommand):
                         continue
 
                     col_name = first_line[i]
-                    if '+{}'.format(col_name) in verbes[classe]:
-                        if col in ['-', '<E>']:
-                            col = '-'
-                        else:
-                            col = '+'
-                        col_name = '{}{}'.format(col, first_line[i])  # '+N2 détrimentaire'
-                        verbes[classe][col_name].append(verbes[classe]['all'][verb_id])
+                    if col_name.startswith('<'):
+                        continue
+
+                    # We want 32C[+V-n instrument (forme V-n)] to work, that is
+                    # also consider verbs as a '+'
+                    col_value_list = ['-' if col in ['-', '<E>'] else col]
+                    if col_value_list[0] not in ['-', '+', '~']:
+                        col_value_list.append('+')
+
+                    for col_value in col_value_list:
+                        verbes[classe][col_name][col_value].append(verbes[classe]['all'][verb_id])
 
             print(f)
 
