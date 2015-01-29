@@ -103,17 +103,17 @@ def verbs_for_one_class(resource, wanted_class):
 
                 for column in column_list[1:]:
                     if column_list[0] == 'and':
-                        if column[0] == '+':
+                        if column['value'] == '+':
                             lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.filter(
                                 construction__contains=column['column'])
-                        elif column[0] == '-':
+                        elif column['value'] == '-':
                             lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.exclude(
                                 construction__contains=column['column'])
-                    elif column_list[0] == 'or':
+                    elif column_list['value'] == 'or':
                         if column[0] == '+':
                             lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.filter(
                                 construction__contains=column['column'])
-                        elif column[0] == '-':
+                        elif column['value'] == '-':
                             lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.exclude(
                                 construction__contains=column['column'])
 
