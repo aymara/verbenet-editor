@@ -109,8 +109,8 @@ def verbs_for_one_class(resource, wanted_class):
                         elif column['value'] == '-':
                             lvf_verbs_qs = lvf_verbs_qs & LVFVerb.objects.exclude(
                                 construction__contains=column['column'])
-                    elif column_list['value'] == 'or':
-                        if column[0] == '+':
+                    elif column_list[0] == 'or':
+                        if column['value'] == '+':
                             lvf_verbs_qs = lvf_verbs_qs | LVFVerb.objects.filter(
                                 construction__contains=column['column'])
                         elif column['value'] == '-':
