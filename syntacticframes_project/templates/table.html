@@ -28,7 +28,8 @@
             }
 
             /* My styles */
-            h1 { text-align: center }
+            h1, h2 { text-align: center }
+            h2 { font-size: 1.3em; }
 
             table { margin-top: 2em; margin-bottom: 2em }
             table { border-collapse: collapse }
@@ -42,6 +43,8 @@
             <div class="row-fluid">
                 <div class="span12">
                     <h1>Classe {{classe}}</h1>
+
+                    <h2>{{ formule.construction }} {{ formule.conjonction }}</h2>
 
                     <table>
                         <thead><tr>

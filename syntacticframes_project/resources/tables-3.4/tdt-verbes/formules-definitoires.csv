@@ -19,12 +19,31 @@ Paul prétexte une maladie auprès de Luc pour ne pas venir"
 Ida a volé une fleur à Luc
 Ida a reçu une fleur de Luc"
 "(N0 V N1 Prép N2)";"(N0 V N1 et N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: V0-inf W) et non (Prép2 =: <E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V0-inf W) et non (N2 =: V1-inf W)";"((N2 lieu source de N1) ou (N2 lieu de destination de N1))";"((Prép2 =: avec) ou (Prép2 =: d'avec) ou (Prép2 =: de))";"36SL";"Luc colle la fiche bleue sur la fiche jaune"
-"(N0 V N1 Prép N2)";"(N0 V N1 et N2)
-";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: V0-inf W) et non (Prép2 =: <E>) et non (N2 lieu source de N1) et non (N2 lieu de destination de N1) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V0-inf W) et non (N2 =: V1-inf W)";;"((Prép2 =: avec) ou (Prép2 =: d'avec) ou (Prép2 =: à) ou (Prép2 =: de))";"36S";"Luc compare Guy (à+avec+et) Louis"
+"(N0 V N1 Prép N2)";"(N0 V N1 et N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: V0-inf W) et non (Prép2 =: <E>) et non (N2 lieu source de N1) et non (N2 lieu de destination de N1) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V0-inf W) et non (N2 =: V1-inf W)";;"((Prép2 =: avec) ou (Prép2 =: d'avec) ou (Prép2 =: à) ou (Prép2 =: de))";"36S";"Luc compare Guy (à+avec+et) Louis"
 "(N0 V N1 à N2)";;"non (N0 V N1 et N2) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: V0-inf W) et non (N1 lieu de destination de N0) et non (N2 lieu source de N1) et non (N2 lieu de destination de N1) et non (N2 lieu statique de N1) et non (Prép2 # à) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V0-inf W) et non (N2 =: V1-inf W) et non (N2 =: Npl obl)";;;"36R";"Luc conjugue le verbe au futur"
 "(N0 V N1 de N2)";" ";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V0-inf W) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 lieu source de N1) et non (N2 lieu de destination de N1) et non (N2 lieu statique de N1) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";"((N1 lieu source de N2) ou (N1 détrimentaire))";"Col. N0 V N2 Loc N1source";"37E";"Luc débarrasse le salon de tous les meubles"
 "(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 bénéficiaire)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 lieu source de N1) et non (N2 lieu de destination de N1) et non (N2 lieu statique de N1) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";"En fait de nombreuses entrées (La nature a loti Luc d'un solide appétit) s'analysent mieux en considérant N2 comme un nom prédicatif et N1 comme un de ses arguments.";"37M1";"L'héritage a nanti Luc d'une fortune"
-"(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 lieu de destination de N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";" ";"37M2, 37M3, 37M4, 37M5, 37M6";"Luc a hachuré la feuille de traits rouges
+"(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 lieu de destination de N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";" ";"37M2";"Luc a hachuré la feuille de traits rouges
+Luc a labouré le terrain de profonds sillons
+Luc a jonché le sol de papiers gras
+On a goudronné la route d'une épaisse couche de goudron
+On a gainé le fil d'une gaine de plastique rouge"
+"(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 lieu de destination de N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";" ";"37M3";"Luc a hachuré la feuille de traits rouges
+Luc a labouré le terrain de profonds sillons
+Luc a jonché le sol de papiers gras
+On a goudronné la route d'une épaisse couche de goudron
+On a gainé le fil d'une gaine de plastique rouge"
+"(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 lieu de destination de N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";" ";"37M4";"Luc a hachuré la feuille de traits rouges
+Luc a labouré le terrain de profonds sillons
+Luc a jonché le sol de papiers gras
+On a goudronné la route d'une épaisse couche de goudron
+On a gainé le fil d'une gaine de plastique rouge"
+"(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 lieu de destination de N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";" ";"37M5";"Luc a hachuré la feuille de traits rouges
+Luc a labouré le terrain de profonds sillons
+Luc a jonché le sol de papiers gras
+On a goudronné la route d'une épaisse couche de goudron
+On a gainé le fil d'une gaine de plastique rouge"
+"(N0 V N1 Prép N2)";"(Prép2 =: de) et (N1 lieu de destination de N2)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (Prép2 =: à+<E>) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 lieu source de N0) et non (N2 bénéficiaire) et non (N2 détrimentaire) et non (N0 V N1 et N2)";" ";" ";"37M6";"Luc a hachuré la feuille de traits rouges
 Luc a labouré le terrain de profonds sillons
 Luc a jonché le sol de papiers gras
 On a goudronné la route d'une épaisse couche de goudron
@@ -69,48 +88,27 @@ N1 =: Nabs métaphore
 "(N0 V N1)";"(N1 =: Nabs) et (N0 V (N1 de N1c) = N0 V (N1c) (Prép N1)) et [passif par]";"non (N0 =: Qu P) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: combien P) et non (N1 =: V0-inf W) et non (thèmeN1) et non (N1 apparition) et non (N1 disparition) et non (N1 =: Npl obl) et non (N0 lieu source de N1) et non (N0 lieu de destination de N1) et non (N0 lieu statique de N1) et non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0) et non (N1 lieu de passage de N0) et non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";" ";"Les Nabs sont des N-hum";"32R1";"Luc singe (les attitudes de Léa+Léa dans ses attitudes)"
 "(N0 V N1)";"(N1 =: Nabs) et [passif par]";"non (N0 =: Qu P) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: combien P) et non (N1 =: V0-inf W) et non (thèmeN1) et non (N1 apparition) et non (N1 disparition) et non (N1 =: Npl obl) et non (N0 lieu source de N1) et non (N0 lieu de destination de N1) et non (N0 lieu statique de N1) et non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0) et non (N1 lieu de passage de N0) et non (N0 V (N1 de N1c) = N0 V (N1c) (Prép N1)) et non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";" ";;"32R2";"Luc brandit le livre - Luc copie un texte"
 "Structure N0 V Prép N1 ";;;;;;
-"(N0 V Prép V0-inf W)
-
-";;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: combien P)";" ";"N0 V V0-inf W possible (si Prép1 =: E)";"1";"Paul cesse de travailler
+"(N0 V Prép V0-inf W)";;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: combien P)";" ";"N0 V V0-inf W possible (si Prép1 =: E)";"1";"Paul cesse de travailler
 Paul cesse le travail
 * Paul cesse que Marie travaille"
-"(N0 V Prép N1)
-
-";"(N0 =: Qu P) et [extrap]";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";" ";"N0 V N1 possible (si Prép1 =: E)";"5";"Que Marie vienne importe à Paul
+"(N0 V Prép N1)";"(N0 =: Qu P) et [extrap]";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";" ";"N0 V N1 possible (si Prép1 =: E)";"5";"Que Marie vienne importe à Paul
 Il importe à Paul que Marie vienne"
-"(N0 V à N1)
-
-";" ";"non (Prép1 # à)";"((N1 =: Qu Pind) ou (N1 =: Qu Psubj))";;"7";"Paul consent à ce que Marie fasse ça"
-"(N0 V de N1)
-
-";" ";"non (Prép1 # de)";"((N1 =: Qu Pind) ou (N1 =: Qu Psubj))";;"8";"Paul s'insurge de ce que Marie ait fait ça"
+"(N0 V à N1)";" ";"non (Prép1 # à)";"((N1 =: Qu Pind) ou (N1 =: Qu Psubj))";;"7";"Paul consent à ce que Marie fasse ça"
+"(N0 V de N1)";" ";"non (Prép1 # de)";"((N1 =: Qu Pind) ou (N1 =: Qu Psubj))";;"8";"Paul s'insurge de ce que Marie ait fait ça"
 "(N0 V à N1)
 ";;"non (Prép1 # à) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N1 = où) et non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0)";"(non (N0 =: Qu P) ou non [extrap])";;"33";"Paul compatit à mes problèmes"
-"(N0 V Prép N1)
-
-";"(Prép1 =: avec) et (N0 et N1 V)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W)";"(non (N0 =: Qu P) ou non [extrap])";"N0 V N1 possible (si Prép1 =: E). Parfois sens locatif.
+"(N0 V Prép N1)";"(Prép1 =: avec) et (N0 et N1 V)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W)";"(non (N0 =: Qu P) ou non [extrap])";"N0 V N1 possible (si Prép1 =: E). Parfois sens locatif.
 ((Prép1 =: dans) ou (Prép1 =: à) ou (Prép1 =: contre) ou (Prép1 =: de) ou (Prép1 =: d'avec))";"35S";"Paul flirte avec Marie.
 Paul et Marie flirtent"
-"(N0 V Prép N1)
-
-";"(Prép1 # à+<E>)";"non (N1 = où) et non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0) et non (N0 et N1 V)";"(non (N0 =: Qu P) ou non [extrap]) et ((non (N1 =: Qu Pind) et non (N1 =: Qu Psubj)) ou ((Prép1 # à) et (Prép1 # de))) et ((N1 =: Qu Pind) ou (N1 =: Qu Psubj) ou non (N1 =: V0-inf W))";"Prép1 vide possible si autre Prép1 possible : ""Luc entame (le + du) roi de pique"" ; ""Léa parle (E+de) chiffons"". La condition ""((non (N1 =: Qu Pind) et non (N1 =: Qu Psubj)) ou ((Prép1 # à) et (Prép1 # de)) exclut 7 et 8. La condition ((N1 =: Qu Pind) ou (N1 =: Qu Psubj) ou non (N1 =: V0-inf W))"" exclut 1.";"35R";"Ça a dégénéré en bagarre.
+"(N0 V Prép N1)";"(Prép1 # à+<E>)";"non (N1 = où) et non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0) et non (N0 et N1 V)";"(non (N0 =: Qu P) ou non [extrap]) et ((non (N1 =: Qu Pind) et non (N1 =: Qu Psubj)) ou ((Prép1 # à) et (Prép1 # de))) et ((N1 =: Qu Pind) ou (N1 =: Qu Psubj) ou non (N1 =: V0-inf W))";"Prép1 vide possible si autre Prép1 possible : ""Luc entame (le + du) roi de pique"" ; ""Léa parle (E+de) chiffons"". La condition ""((non (N1 =: Qu Pind) et non (N1 =: Qu Psubj)) ou ((Prép1 # à) et (Prép1 # de)) exclut 7 et 8. La condition ((N1 =: Qu Pind) ou (N1 =: Qu Psubj) ou non (N1 =: V0-inf W))"" exclut 1.";"35R";"Ça a dégénéré en bagarre.
 Paul dîne d'une salade"
-"(N0 V Loc N1 source)
-";"(N1 lieu source de N0)";"non (N0 =: Qu P) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V) et non (N1 V de N0)";;"Prép1 peut être vide mais une Prép1 non vide est possible";"35LS";"Ce vin provient de Carnas"
-"(N0 V Loc N1 destination)
-";"(N1 lieu de destination de N0)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V)";"(non (N0 =: Qu P) ou non [extrap])";"Prép1 peut être vide mais une Prép1 non vide est possible";"35LD";"Le bateau accoste au quai"
-"(N0 V Loc N1)
-";"(N1 V de N0)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V)";"(non (N0 =: Qu P) ou non [extrap]) et ((N1 lieu source de N0) ou (N1 lieu statique de N0))";" ";"34L0";"Les abeilles grouillent dans le jardin =
+"(N0 V Loc N1 source)";"(N1 lieu source de N0)";"non (N0 =: Qu P) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V) et non (N1 V de N0)";;"Prép1 peut être vide mais une Prép1 non vide est possible";"35LS";"Ce vin provient de Carnas"
+"(N0 V Loc N1 destination)";"(N1 lieu de destination de N0)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V)";"(non (N0 =: Qu P) ou non [extrap])";"Prép1 peut être vide mais une Prép1 non vide est possible";"35LD";"Le bateau accoste au quai"
+"(N0 V Loc N1)";"(N1 V de N0)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V)";"(non (N0 =: Qu P) ou non [extrap]) et ((N1 lieu source de N0) ou (N1 lieu statique de N0))";" ";"34L0";"Les abeilles grouillent dans le jardin =
 Le jardin grouille d'abeilles"
-"(N0 V Loc N1)
-";"(N1 lieu statique de N0)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V) et non (N1 V de N0)";"(non (N0 =: Qu P) ou non [extrap])";"Prép1 peut être vide mais une Prép1 non vide est possible";"35ST";"Le pieu sort de l'eau
+"(N0 V Loc N1)";"(N1 lieu statique de N0)";"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V) et non (N1 V de N0)";"(non (N0 =: Qu P) ou non [extrap])";"Prép1 peut être vide mais une Prép1 non vide est possible";"35ST";"Le pieu sort de l'eau
 Le chemin aboutit chez moi"
-"(N0 V Loc N1)
-
-";"(N1 = où)";"non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V) et non (N1 V de N0)";"(non (N0 =: Qu P) ou non [extrap])";"Prép1 peut être vide mais une Prép1 non vide est possible";"35LR";"Paul farfouille dans le sac"
+"(N0 V Loc N1)";"(N1 = où)";"non (N1 lieu source de N0) et non (N1 lieu de destination de N0) et non (N1 lieu statique de N0) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W) et non (N0 et N1 V) et non (N1 V de N0)";"(non (N0 =: Qu P) ou non [extrap])";"Prép1 peut être vide mais une Prép1 non vide est possible";"35LR";"Paul farfouille dans le sac"
 "Structure N0 V";;;;;;
-"(N0 V)";"(N0 =: Nhum)";"non (N0 =: N-hum)";;"Col. N0 =: N-hum métaphore
-Col. N0hum V W sur ce point";"31H";"Paul patiente"
-"(N0 V)";"(N0 =: N-hum)";" ";;"Col. N0 =: Nhum";"31R";"(Paul+la terre) tremble
-Un accident s'est produit"
-
+"(N0 V)";"(N0 =: Nhum)";"non (N0 =: N-hum)";;"Col. N0 =: N-hum métaphore Col. N0hum V W sur ce point";"31H";"Paul patiente"
+"(N0 V)";"(N0 =: N-hum)";" ";;"Col. N0 =: Nhum";"31R";"(Paul+la terre) tremble Un accident s'est produit"
