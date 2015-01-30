@@ -1,0 +1,268 @@
+"4 arguments"
+"(N3 =: Qu Pind) ou (N3 =: Qu Psubj)";;;;;;;;;;
+;;;;;;;;;;"18"
+"non (N3 =: Qu Pind) et non (N3 =: Qu Psubj) et non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (Prép1 # <E>)";;;;;;;;;;
+;"Prép3 =: <E>";;;;;;;;;
+;;"non (Prép1 # <E>) et (N3 =: V1-inf W)";;;;;;;;
+;;;;;;;;;;"3"
+;"non (Prép3 =: <E>) et non (Prép2 =: <E>)";;;;;;;;;
+;;"(N2 lieu source de N1) et (N3 lieu de destination de N1)";;;;;;;;
+;;;"N1 =: N-hum";;;;;;;
+;;;;;;;;;;"38L"
+;;;"non (N1 =: N-hum)";;;;;;;
+;;;;;;;;;;"38LH"
+;;"non (N2 lieu source de N1) ou non (N3 lieu de destination de N1)";;;;;;;;
+;;;;;;;;;;"38RR"
+;;;;;;;;;;
+"3 arguments"
+"Prép1 =: <E>";;;;;;;;;;
+;"Prép2 =: <E>";;;;;;;;;
+;;"N2 =: V0-inf W";;;;;;;;
+;;;;;;;;;;"2T"
+;;"non (N2 =: V0-inf W)";;;;;;;;
+;;;"non (N1 =: V0-inf W) et non (Prép2 # <E>+comme)";;;;;;;
+;;;;;;;;;;"39"
+;"non (Prép2 =: <E>)";;;;;;;;;
+;;"(N2 =: Qu Pind) ou (N2 =: Qu Psubj) ou (N2 =: V1-inf W) ou (N2 =: V0-inf W)";;;;;;;;
+;;;"(N1 =: Qu Pind) ou (N1 =: Qu Psubj)";;;;;;;
+;;;;;;;;;;"16 pro parte"
+;;;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V0-inf W)";;;;;;;
+;;;;"(Prép2 # à) et (Prép2 # de)";;;;;;
+;;;;;;;;;;"16 pro parte"
+;;;;"non (Prép2 # à)";;;;;;
+;;;;;;;;;;"11"
+;;;;"non (Prép2 # de)";;;;;;
+;;;;;;;;;;"13"
+;;"non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 =: V0-inf W)";;;;;;;;
+;;;"(N1 =: Qu Pind) ou (N1 =: Qu Psubj) ou (N1 =: si P ou si P)";;;;;;;
+;;;;"Prép2 # à";;;;;;
+;;;;;;;;;;"10 pro parte"
+;;;;"non (Prép2 # à)";;;;;;
+;;;;;"N2 =: Nhum";;;;;
+;;;;;;;;;;"9"
+;;;;;"non (N2 =: Nhum)";;;;;
+;;;;;;;;;;"10 pro parte"
+;;;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: si P ou si P) et non (N1 =: V0-inf W)";;;;;;;
+;;;;"N0 V N1 et N2";;;;;;
+;;;;;"(N2 lieu source de N1) ou (N2 lieu de destination de N1)";;;;;
+;;;;;;;;;;"36SL"
+;;;;;"non (N2 lieu source de N1) et non (N2 lieu de destination de N1)";;;;;
+;;;;;;;;;;"36S"
+;;;;"non (N0 V N1 et N2)";;;;;;
+;;;;" ";"Prép2 # (en+entre)";;;;;
+;;;;;;"N2 lieu de destination de N1";;;;
+;;;;;;;"N1 =: N-hum";;;
+;;;;;;;;;;"38LD"
+;;;;;;;"non (N1 =: N-hum)";;;
+;;;;;;;;;;"38LHD"
+;;;;;;"N2 lieu source de N1";;;;
+;;;;;;;"N1 =: N-hum";;;
+;;;;;;;;;;"38LS"
+;;;;;;;"non (N1 =: N-hum)";;;
+;;;;;;;;;;"38LHS"
+;;;;;;"N2 lieu statique de N1";;;;
+;;;;;;;"N1 =: N-hum";;;
+;;;;;;;;;;"38LR"
+;;;;;;;"non (N1 =: N-hum)";;;
+;;;;;;;;;;"38LHR"
+;;;;;;"non (N2 lieu de N1)";;;;
+;;;;;;;"(N2 bénéficiaire) ou (N2 détrimentaire)";;;
+;;;;;;;;"non (Prép2 # à+de)";;
+;;;;;;;;;;"36DT"
+;;;;;;;"non (N2 bénéficiaire) et non (N2 détrimentaire)";;;
+;;;;;;;;;;"voir groupe 1"
+;;;;" ";"non (Prép2 # en+entre)";;;;;
+;;;;;;"Prép2 =: en";;;;
+;;;;;;;"N2 =: Npl obl";;;
+;;;;;;;;;;"38PL"
+;;;;;;;"non (N2 =: Npl obl)";;;
+;;;;;;;;"N2 être V-n";;
+;;;;;;;;;"non (Prép2 # en)";
+;;;;;;;;;;"32CV"
+;;;;;;;;"non (N2 être V-n)";;
+;;;;;;;;;;"38R pro parte"
+;;;;;;"non (Prép2 =: en)";;;;
+;;;;;;;;;;"38R pro parte"
+"non(Prép1 =: <E>)";;;;;;;;;;
+;"(N2 =: Qu Pind) ou (N2 =: Qu Psubj) ou (N2 =: V1-inf W)";;;;;;;;;
+;;"(N1 =: Qu Pind) ou (N1 =: Qu Psubj)";;;;;;;;
+;;;"non (Prép2 =: <E>)";;;;;;;
+;;;;;;;;;;"16 pro parte"
+;;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj)";;;;;;;;
+;;;"(Prép1 # avec+pour) ou (Prép2 # à)";;;;;;;
+;;;;"non (Prép2 =: <E>)";;;;;;
+;;;;;;;;;;"16 pro parte"
+;;;"non (Prép1 # avec+pour) et non (Prép2 # à)";;;;;;;
+;;;;;;;;;;"14 pro parte"
+;"non (N2 =: Qu Pind) et non (N2 =: Qu Psubj) et non (N2 =: V1-inf W) et non (N2 =: si P ou si P)";;;;;;;;;
+;;"(N1 =: Qu Pind) ou (N1 =: Qu Psubj)";;;;;;;;
+;;;"non (Prép1 # à)";;;;;;;
+;;;;"non (Prép2 # avec+pour)";;;;;;
+;;;;;;;;;;"14 pro parte"
+;;;"non (Prép1 # de)";;;;;;;
+;;;;"non (Prép2 =: <E>)";;;;;;
+;;;;;;;;;;"15 "
+;;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =: V2-inf W)";;;;;;;;
+;;;"(N2 =: V0-inf W)";;;;;;;
+;;;;"non (Prép2 # <E>)";;;;;;
+;;;;;;;;;;"2"
+;;;"non (N2 =: V0-inf W)";;;;;;;
+;;" ";;"(N1 lieu source de N0) et (N2 lieu de destination de N0)";;;;;;
+;;" ";;;"non (N1 =: V0-inf W) et non (N0 V N1 et N2)";;;;;
+;;;;;;;;;;"35L"
+;;" ";;"non (N1 lieu source de N0) ou non (N2 lieu de destination de N0)";;;;;;
+;;" ";;;"non (Prép2 =: <E>)";;;;;
+;;;;;;;;;;"35RR"
+"3 arguments, groupe 1"
+;"Prép2 # à";;;;;;;;;
+;;"N1 lieu de destination de N2";;;;;;;;
+;;;"Prép2 =: de";;;;;;;" "
+;;;" ";;;;;;;"37M2-6"
+;;"N1 bénéficiaire";;;;;;;;
+;;;"Prép2 =: de";;;;;;;" "
+;;;" ";;;;;;;"37M1"
+;;"(N1 lieu source de N2) ou (N1 détrimentaire)";;;;;;;;
+;;;"Prép2 =: de";;;;;;;" "
+;;;;;;;;;;"37E"
+;;"non (N1 lieu de destination de N2) et non (N1 lieu source de N2) et non (N1 bénéficiaire) et non (N1 détrimentaire)";;;;;;;;
+;;;;;;;;;;"38R pro parte"
+;"non (Prép2 # à)";;;;;;;;;
+;;;;;;;;;;"36R"
+"2 arguments"
+"Prép1 # <E>";;;;;;;;;;
+;"(N1 =: Qu Pind) ou (N1 =: Qu Psubj)";;;;;;;;;
+;;"(Prép1 # à) et (Prép1 # de)";;;;;;;;
+;;;"non (N1 = où) et non (N1 lieu de N0) et non (N0 et N1 V)";;;;;;;
+;;;;;;;;;;"35R pro parte"
+;;"non (Prép1 # à)";;;;;;;;
+;;;;;;;;;;"7"
+;;"non (Prép1 # de)";;;;;;;;
+;;;;;;;;;;"8"
+;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj)";;;;;;;;;
+;;"N1 =: V0-inf W";;;;;;;;
+;;;"non (N1 =:si P ou si P) et non (N1 =: combien P)";;;;;;;
+;;;;;;;;;;"1 pro parte"
+;;"non (N1 =: V0-inf W)";;;;;;;;
+;;;"(N0 =: Qu P) et [extrap]";;;;;;;
+;;;;"non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";;;;;;
+;;;;;;;;;;"5 pro parte"
+;;;"non (N0 =: Qu P) ou non [extrap]";;;;;;;
+;;;;"N1 = où";;;;;;
+;;;;;"N0 et N1 V";;;;;
+;;;;;;"Prép1 =: avec";;;;
+;;;;;;;;;;"35S pro parte"
+;;;;;"non (N0 et N1 V)";;;;;
+;;;;;;"N1 lieu de destination de N0";;;;
+;;;;;;;;;;"35LD"
+;;;;;;"(N1 lieu source de N0) ou (N1 lieu statique de N0)";;;;
+;;;;;;;"N1 V de N0";;;
+;;;;;;;;;;"34L0"
+;;;;;;;"non (N1 V de N0)";;;
+;;;;;;;;"N1 lieu source de N0";;
+;;;;;;;;;;"35LS"
+;;;;;;;;"N1 lieu statique de N0";;
+;;;;;;;;;;"35ST"
+;;;;;;"non (N1 lieu de N0)";;;;
+;;;;;;;"non (N1 V de N0)";;;
+;;;;;;;;;;"35LR"
+;;;;"non (N1 = où) et non (N1 lieu de N0)";;;;;;
+;;;;;"Prép1 # à+<E>";;;;;
+;;;;;;"N0 et N1 V";;;;
+;;;;;;;"Prép1 =: avec";;;
+;;;;;;;;;;"35S pro parte"
+;;;;;;"non (N0 et N1 V)";;;;
+;;;;;;;;;;"35R pro parte"
+;;;;;"non (Prép1 # à)";;;;;
+;;;;;;;;;;"33"
+"non (Prép1 # <E>)";;;;;;;;;;
+;"(N1 =: Qu Pind) ou (N1 =: Qu Psubj) ou (N1 =:si P ou si P) ou (N1 =: combien P)";;;;;;;;;
+;;"(N1 =: Qu Psubj) et (Qu Psubj =: Qu Ni Vsubj W = (Ni) (de Vi-inf W))";;;;;;;;
+;;;;;;;;;;"12"
+;;"non (Qu Psubj =: Qu Ni Vsubj W = (Ni) (de Vi-inf W))";;;;;;;;
+;;;"N0 =: V1-inf W";;;;;;;
+;;;;"(N0 =: Qu P) et (N1 =: Nhum) et non (N1 =: Nconc) et non (N1 =: V0-inf W) et non [extrap]";;;;;;
+;;;;;;;;;;"4 pro parte"
+;;;"non (N0 =: V1-inf W)";;;;;;;
+;;;;;;;;;;"6"
+;"non (N1 =: Qu Pind) et non (N1 =: Qu Psubj) et non (N1 =:si P ou si P) et non (N1 =: combien P)";;;;;;;;;
+;;"N1 =: V0-inf W";;;;;;;;
+;;;;;;;;;;"1 pro parte"
+;;"non (N1 =: V0-inf W)";;;;;;;;
+;;;"N0 =: Qu P";;;;;;;
+;;;;"(N0 rendre N1 V-adj) ou (N0 rendre N1 plus V-adj)";;;;;;
+;;;;;"(N1 =: Nhum) et non (N1 =: Nconc)";;;;;
+;;;;;;"non [extrap]";;;;
+;;;;;;;;;;"4 pro parte"
+;;;;;"non (N1 =: Nhum) ou (N1 =: Nconc)";;;;;
+;;;;;;"[passif par]";;;;
+;;;;;;;;;;"32RA pro parte"
+;;;;"non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";;;;;;
+;;;;;"[extrap]";;;;;
+;;;;;;;;;;"5 pro parte"
+;;;;;"non [extrap]";;;;;
+;;;;;;"(N1 =: Nhum) et non (N1 =: Nconc)";;;;
+;;;;;;;;;;"4 pro parte"
+;;;"non (N0 =: Qu P)";;;;;;;
+;;;;"[passif par]";;;;;;
+;;;;;"thème N1";;;;;
+;;;;;;"(N0 lieu source de N1) ou (N0 lieu de destination de N1) ou (N0 lieu statique de N1)";;;;
+;;;;;;;;;;"38L0 pro parte"
+;;;;;;"(N1 lieu source de N0) ou (N1 lieu de destination de N0) ou (N1 lieu statique de N0) ou (N1 lieu de passage de N0)";;;;
+;;;;;;;;;;"38L1 pro parte"
+;;;;;;"non (N0 lieu de N1) et non (N1 lieu de N0)";;;;
+;;;;;;;;;;"32R3"
+;;;;;"non (thème N1)";;;;;
+;;;;;;"N1 apparition";;;;
+;;;;;;;;;;"32A"
+;;;;;;"N1 disparition";;;;
+;;;;;;;;;;"32D"
+;;;;;;"non (N1 apparition) et non (N1 disparition)";;;;" "
+;;;;;;;"N1 =: Npl obl";;;
+;;;;;;;;;;"32PL"
+;;;;;;;"non (N1 =: Npl obl)";;;
+;;;;;;;;;;"voir groupe 2"
+;;;;"non [passif par]";;;;;;
+;;;;;"(N0 lieu source de N1) ou (N0 lieu de destination de N1) ou (N0 lieu statique de N1)";;;;;
+;;;;;;"N1 =: N-hum";;;;
+;;;;;;;;;;"38L0 pro parte"
+;;;;;"(N1 lieu source de N0) ou (N1 lieu de destination de N0) ou (N1 lieu statique de N0) ou (N1 lieu de passage de N0)";;;;;
+;;;;;;"N1 =: N-hum";;;;
+;;;;;;;;;;"38L1 pro parte"
+;;;;;"non (N0 lieu de N1) et non (N1 lieu de N0)";;;;;
+;;;;;;;;;;"32NM"
+"2 arguments, groupe 2"
+;"(N0 lieu source de N1) ou (N0 lieu de destination de N1) ou (N0 lieu statique de N1)";;;;;;;;;
+;;"N1 =: N-hum";;;;;;;;
+" ";;;;;;;;;;"38L0 pro parte"
+" ";;"non (N1 =: N-hum)";;;;;;;;
+;;;"(N1 =: Nhum) et non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";;;;;;;
+;;;;;;;;;;"32H pro parte"
+;"(N1 lieu source de N0) ou (N1 lieu de destination de N0) ou (N1 lieu statique de N0) ou (N1 lieu de passage de N0)";;;;;;;;;
+;;"(N0 V N1 Loc N1pc W) et (N1 =: Npc) et non (N1 être Vpp (statique))";;;;;;;;
+;;;"non (N1 =: Nabs) et non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";;;;;;;
+;;;;;;;;;;"32CL pro parte"
+;;"non (N0 V N1 Loc N1pc W) ou non (N1 =: Npc) ou (N1 être Vpp (statique))";;;;;;;;
+;;;;;;;;;;"38L1 pro parte"
+;"non (N0 lieu de N1) et non (N1 lieu de N0)";;;;;;;;;
+;;"(N0 rendre N1 V-adj) ou (N0 rendre N1 plus V-adj)";;;;;;;;
+;;;;;;;;;;"32RA pro parte"
+;;"non (N0 rendre N1 V-adj) et non (N0 rendre N1 plus V-adj)";;;;;;;;
+;;;"N1 =: N-hum";;;;;;;
+;;;;"N1 =: Nabs";;;;;;
+;;;;;"N0 V (N1 de N1c) = N0 V (N1c) (Prép N1)";;;;;
+;;;;;;;;;;"32R1"
+;;;;;"non (N0 V (N1 de N1c) = N0 V (N1c) (Prép N1))";;;;;
+;;;;;;;;;;"32R2"
+;;;;"non (N1 =: Nabs)";;;;;;
+;;;;;"(N0 V N1 Loc N1pc W) et (N1 =: Npc) et non (N1 être Vpp W (statique))";;;;;
+;;;;;;;;;;"32CL pro parte"
+;;;;;"non (N0 V N1 Loc N1pc W) ou non (N1 =: Npc) ou (N1 être Vpp W (statique))";;;;;
+;;;;;;;;;;"32C"
+;;;"non (N1 =: N-hum)";;;;;;;
+;;;;;;;;;;"32H pro parte"
+"1 argument"
+"N0 =: N-hum";;;;;;;;;;
+;;;;;;;;;;"31R"
+"non (N0 =: N-hum) et N0 =: Nhum";;;;;;;;;;
+" ";;;;;;;;;;"31H"
+
