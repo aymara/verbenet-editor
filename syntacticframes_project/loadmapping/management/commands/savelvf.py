@@ -40,7 +40,7 @@ def normalize_verb(verb):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         with transaction.atomic():
-            with open(join(settings.SITE_ROOT, 'loadmapping/resources/LVF+1/LVF+1.csv')) as lvfp1:
+            with open(join(settings.SITE_ROOT, 'resources/LVF+1/LVF+1.csv')) as lvfp1:
                 lvfp1reader = csv.reader(lvfp1, delimiter=',', quotechar='"')
                 next(lvfp1reader)
                 for i, row in enumerate(lvfp1reader):

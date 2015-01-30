@@ -15,8 +15,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         verbes = defaultdict(dict)
 
-        for f in (glob(join(settings.SITE_ROOT, 'loadmapping/resources/tables-3.4/verbes/*.csv')) +
-                glob(join(settings.SITE_ROOT, 'loadmapping/resources/tables-3.4/figees/*.csv'))):
+        for f in (glob(join(settings.SITE_ROOT, 'resources/tables-3.4/verbes/*.csv')) +
+                glob(join(settings.SITE_ROOT, 'resources/tables-3.4/figees/*.csv'))):
             csvfile = open(f)
             # Si pas verbe, alors figée
             try:
