@@ -275,6 +275,7 @@ LOCAL_APPS = (
     'stats',
     'export',
     'role',
+    'resources'
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

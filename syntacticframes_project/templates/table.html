@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{classe}}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Le styles -->
+        <link href="/public/css/syntacticframes.css" rel="stylesheet">
+        <style>
+            /* Styles for rotateTableCellContent plugin*/
+            table div.rotated {
+                -webkit-transform: rotate(270deg);
+                -moz-transform: rotate(270deg);
+                -ms-transform: rotate(270deg);
+                -o-transform: rotate(270deg);
+                transform: rotate(270deg);
+                writing-mode:tb-rl;
+                white-space: nowrap;
+            }
+
+            thead th {
+                vertical-align: bottom;
+            }
+
+            table .vertical {
+                white-space: nowrap;
+            }
+
+            /* My styles */
+            h1 { text-align: center }
+
+            table { margin-top: 2em; margin-bottom: 2em }
+            table { border-collapse: collapse }
+
+            thead th, .a { text-align: center }
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h1>Classe {{classe}}</h1>
+
+                    <table>
+                        <thead><tr>
+                        {% for column_name in header %}
+                            <th class='vertical'>{{ column_name }}</th>
+                        {% endfor %}
+                        </tr></thead>
+                        <tbody>
+                        {% for line in verb_lines %}
+                            <tr>
+                                {% for elem in line %}
+                                    {% if elem in toalign %}
+                                        <td class='a'>{{elem}}</td> {#
+                                        align it, shortened to a to shorten
+                                        page size#}
+                                    {% else %}
+                                        <td>{{elem}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="/public/js/jquery.min.js"></script>
+        <script>
+            (function ($) {
+                $.fn.rotateTableCellContent = function (options) {
+                    /*
+                    Version 1.0
+                    7/2011
+                    Written by David Votrubec (davidjs.com) and
+                    Michal Tehnik (@Mictech) for ST-Software.com
+                    */
+
+                    var cssClass = ((options) ? options.className : false) || "vertical";
+
+                    var cellsToRotate = $('.' + cssClass, this);
+
+                    var betterCells = [];
+                    cellsToRotate.each(function () {
+                        var cell = $(this)
+                        , newText = cell.text()
+                        , height = cell.height()
+                        , width = cell.width()
+                        , newDiv = $('<div>', { height: width, width: height })
+                            , newInnerDiv = $('<div>', { text: newText, 'class': 'rotated' });
+
+                                newInnerDiv.css('-webkit-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-moz-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-ms-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('-o-transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newInnerDiv.css('transform-origin', (width / 2) + 'px ' + (width / 2) + 'px');
+                                newDiv.append(newInnerDiv);
+
+                                betterCells.push(newDiv);
+                            });
+
+                            cellsToRotate.each(function (i) {
+                                $(this).html(betterCells[i]);
+                            });
+                        };
+                    })(jQuery);
+
+            $(document).ready(function() {
+                $('table').rotateTableCellContent();
+            });
+        </script>
+    </body>
+</html>
