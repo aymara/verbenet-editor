@@ -144,7 +144,6 @@ PIPELINE_CSS = {
             'twitter_bootstrap/less/theme.less',
             'less/custom.less',
             'css/project.css',
-            'twitter-bootstrap/less/responsive.less',
         ),
         'output_filename': 'css/syntacticframes.css',
     },
