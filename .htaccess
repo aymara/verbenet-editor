@@ -1,3 +1,0 @@
-# deny access to the top-level git repository:
-RewriteEngine On
-RewriteRule \.git - [F,L]
