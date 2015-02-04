@@ -28,7 +28,7 @@ Install Node.js dependencies:
 
 Then, get the code:
 
-    git clone https://github.com/aymara/verbenet-editor.git
+    git clone --recursive https://github.com/aymara/verbenet-editor.git
 
 Create a Python 3 virtualenv, activate it, then install the Python
 requirements:

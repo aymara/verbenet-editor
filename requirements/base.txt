@@ -1,9 +1,7 @@
 Django>=1.7.1
-bpython==0.13
 --editable git+https://github.com/pquentin/django-mptt.git@0.6.x-noorder#egg=django_mptt
 psycopg2==2.5
-lxml==3.2.3
+lxml>=3.4
 django-reversion==1.8.5
-pytz==2014.7
-django-pipeline>=1.4.2
-django-twitter-bootstrap==3.3.0
+pytz==2014.9
+django-pipeline>=1.4.3
