@@ -1,0 +1,4 @@
+[submodule "syntacticframes_project/vendor/bootstrap"]
+	path = syntacticframes_project/vendor/bootstrap
+	url = https://github.com/twbs/bootstrap.git
+	branch = v3.3.0

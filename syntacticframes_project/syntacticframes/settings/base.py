@@ -131,17 +131,13 @@ PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 PIPELINE_COMPILERS = ('pipeline.compilers.less.LessCompiler',)
 
 custom_less_dir = join(SITE_ROOT, 'assets', 'less')
-bootstrap_less = join(dirname(twitter_bootstrap.__file__), 'static')
-PIPELINE_LESS_ARGUMENTS = '--include-path={}'.format(pathsep.join([
-    bootstrap_less, custom_less_dir]))
-
-
+PIPELINE_LESS_ARGUMENTS = '--include-path={}'.format(custom_less_dir)
 
 PIPELINE_CSS = {
     'syntacticframes': {
         'source_filenames': (
-            'twitter_bootstrap/less/bootstrap.less',
-            'twitter_bootstrap/less/theme.less',
+            'bootstrap/bootstrap.less',
+            'bootstrap/theme.less',
             'less/custom.less',
             'css/project.css',
         ),
