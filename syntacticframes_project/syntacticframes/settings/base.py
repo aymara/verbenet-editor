@@ -4,7 +4,6 @@
 from os.path import abspath, basename, dirname, join, normpath
 from os import pathsep
 from sys import path
-import twitter_bootstrap
 
 
 ########## PATH CONFIGURATION
@@ -258,8 +257,6 @@ THIRD_PARTY_APPS = (
     'reversion',
     # asset packaging
     'pipeline',
-    # bootstrap
-    'twitter_bootstrap',
 )
 
 # Apps specific for this project go here.
