@@ -104,6 +104,11 @@ def merge_primary_and_syntax(primary, syntax, output):
                 assert syntax_role == primary_role
 
             parsed_frame.append({'type': phrase_type, 'role': syntax_role})
+
+            if i+1 < len(syntax_parts) and type(syntax_parts[i+1]) == str and syntax_parts[i+1].startswith('<') and syntax_parts[i+1].endswith('>') and syntax_parts[i+1][1] in ['+', '-']:
+                parsed_frame[-1]['modifier'] = syntax_parts[i+1][1:-1]
+                i += 1
+
             i, j = i+1, j+1
 
         # Verbs, can also be neutral

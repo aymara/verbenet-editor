@@ -126,6 +126,12 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'V'},
              {'type': 'V-inf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'Vinf'}])
 
+    def test_plural(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V', 'Patient <+plural> V', output=sys.stderr),
+            [{'type': 'NP', 'role': 'Patient', 'modifier': '+plural'},
+             {'type': 'V'}])
+
     def test_comment(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V comment S', 'Experiencer V Stimulus<+comment_extract>', output=sys.stdout),
