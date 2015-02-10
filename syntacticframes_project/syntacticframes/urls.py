@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^stats/', include('stats.urls')),
     # Indexes
     url(r'^index/', include('indexes.urls')),
+    # Tools
+    url(r'^tools/', include('tools.urls')),
 
     # Auth
     url(r'^login/$', views.login),

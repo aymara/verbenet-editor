@@ -8,6 +8,9 @@ from role.parserole import ROLE_LIST
 
 PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF', 'S_ING']
 
+class WrongFrameException(Exception):
+    pass
+
 total_frames, handled_frames = 0, 0
 
 
@@ -33,14 +36,14 @@ def split_syntax(syntax):
                 final_list.append(current_part)
                 current_part = set()
             else:
-                raise Exception('End of list but the list didn\'t start.')
+                raise WrongFrameException('End of list but the list didn\'t start.')
         elif mode == 'BRACE_LIST':
             current_part.add(syntax_part)
         else:
             final_list.append(syntax_part)
 
     if current_part:
-        raise Exception('Start of list but the list didn\'t end.')
+        raise WrongFrameException('Start of list but the list didn\'t end.')
 
     return final_list
 
@@ -70,7 +73,7 @@ def separate_syntax(syntax_part):
         return syntax_part, None
 
     if not split[1].endswith('>'):
-        raise Exception('Unknown modifier {}.'.format(syntax_part))
+        raise WrongFrameException('Unknown modifier {}.'.format(syntax_part))
 
     role = split[0]
     restr = '<{}'.format(split[1])
@@ -156,7 +159,7 @@ def merge_primary_and_syntax(primary, syntax, output):
 
         # We should have handled everything
         else:
-            raise Exception('Didn\'t expect |{}| and |{}|'.format(primary_parts[j], syntax_parts[i]))
+            raise WrongFrameException('Didn\'t expect |{}| and |{}|'.format(primary_parts[j], syntax_parts[i]))
 
         print(parsed_frame, file=output)
 
@@ -203,7 +206,7 @@ def xml_of_syntax(parsed_frame):
             s.set('value', frame_part['role'])
             # todo restr
         else:
-            raise Exception('Unhandled {} in {}.'.format(frame_part, parsed_frame))
+            raise WrongFrameException('Unhandled {} in {}.'.format(frame_part, parsed_frame))
 
     return syntax
 
@@ -235,7 +238,7 @@ def role_selrestr(selrestr_split):
                 selrestr_combination.append(operand_list.pop())
                 operand_list.append(selrestr_combination)
         else:
-            raise Exception('Unknown token {}'.format(token))
+            raise WrongFrameException('Unknown token {}'.format(token))
 
     assert len(operand_list) == 1
     assert len(operator_list) == 0
@@ -312,9 +315,6 @@ def export_all_vn_classes():
     os.makedirs('export/verbenet', exist_ok=True)
     for db_levinclass in LevinClass.objects.filter(translation_status=LevinClass.STATUS_TRANSLATED):
         for db_vnclass in db_levinclass.verbnetclass_set.all():
-            if db_vnclass.name in ['hold-15.1']:
-                continue
-
             try:
                 db_rootframeset = db_vnclass.verbnetframeset_set.get(parent=None, removed=False)
             except VerbNetFrameSet.DoesNotExist:

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Erreurs d'analyse des frames Verb∋Net{% endblock %}
+
+{% block all %}
+
+<div class="container">
+
+    <h2>Erreurs d'analyse des frames Verb∋Net</h2>
+
+    <p>Cette page liste les erreurs d'analyse des frames. Deux raisons
+    possibles : soit il faut changer la frame, soit il faut changer
+    l'analyse elle-même.</p>
+
+    <ul>
+    {% for issue, frame_list in issues.items %}
+        <li>{{ issue }}</li>
+        <ul>
+        {% for frame in frame_list %}
+            <li>{{frame.syntax}}, {{frame.roles_syntax}}</li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+    </ul>
+
+
+</div>
+
+{% endblock all %}
+
