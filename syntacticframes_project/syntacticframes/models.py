@@ -511,7 +511,9 @@ class VerbTranslation(models.Model):
             if v.category == 'both'
             and v.validation_status == VerbTranslation.STATUS_INFERRED}
 
-        if purple_verbs:
+        if manually_validated:
+            inferred = set()
+        elif purple_verbs:
             inferred = purple_verbs
         else:
             inferred = {
