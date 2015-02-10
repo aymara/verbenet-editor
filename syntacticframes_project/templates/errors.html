@@ -9,9 +9,12 @@
 
     <h2>Erreurs d'analyse des frames Verb∋Net</h2>
 
-    <p>Cette page liste les erreurs d'analyse des frames. Deux raisons
-    possibles : soit il faut changer la frame, soit il faut changer
-    l'analyse elle-même.</p>
+    <p>Cette page liste les erreurs d'analyse des frames.
+    Deux raisons possibles : soit il faut changer la
+    frame, soit il faut changer l'analyse elle-même.
+    {{ ratio }} des frames ont été traitées correctement
+    ({{frames_ok}} / {{frames_total}}). Le reste a donné
+    lieu à des erreurs : </p>
 
     <ul>
     {% for issue, frame_list in issues.items %}

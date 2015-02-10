@@ -12,11 +12,14 @@ from export.export import merge_primary_and_syntax
 
 def errors(request):
     issues = defaultdict(list)
+    frames_ok, frames_total = 0, 0
 
     for db_frame in VerbNetFrame.objects.filter(removed=False):
+        frames_total += 1
         output = io.StringIO()
         try:
             merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
+            frames_ok += 1
         except AssertionError as e:
             _,_,tb = sys.exc_info()
             tbInfo = traceback.extract_tb(tb)
@@ -28,7 +31,10 @@ def errors(request):
 
     template = loader.get_template('errors.html')
     context = RequestContext(request, {
-        'issues': OrderedDict(sorted(issues.items(), reverse=True, key=lambda kv: len(kv[1])))
+        'issues': OrderedDict(sorted(issues.items(), reverse=True, key=lambda kv: len(kv[1]))),
+        'frames_ok': frames_ok,
+        'frames_total': frames_total,
+        'ratio': '{:.1%}'.format(frames_ok / frames_total),
     })
 
     return HttpResponse(template.render(context))
