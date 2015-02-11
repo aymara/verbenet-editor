@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 
 from syntacticframes.models import VerbNetFrame
-from export.export import merge_primary_and_syntax
+from export.export import merge_primary_and_syntax, WrongFrameException
 
 
 def errors(request):
@@ -20,13 +20,13 @@ def errors(request):
         try:
             merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
             frames_ok += 1
-        except AssertionError as e:
+        except WrongFrameException as e:
+            issues[e.args[0]].append(db_frame)
+        except Exception as e:
             _,_,tb = sys.exc_info()
             tbInfo = traceback.extract_tb(tb)
             filename,line,func,text = tbInfo[-1]
             issues['{}:{}'.format(text, line)].append(db_frame)
-        except Exception as e:
-            issues[e.args[0]].append(db_frame)
 
 
     template = loader.get_template('errors.html')
