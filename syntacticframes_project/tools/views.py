@@ -23,10 +23,11 @@ def errors(request):
         except WrongFrameException as e:
             issues[e.args[0]].append(db_frame)
         except Exception as e:
-            _,_,tb = sys.exc_info()
-            tbInfo = traceback.extract_tb(tb)
-            filename,line,func,text = tbInfo[-1]
-            issues['{}:{}'.format(text, line)].append(db_frame)
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            tb_info = traceback.extract_tb(exc_tb)
+            filename, line, func, text = tb_info[-1]
+            exception = traceback.format_exception_only(exc_type, exc_value)[0]
+            issues['{} (ligne {})'.format(exception, line)].append(db_frame)
 
 
     template = loader.get_template('errors.html')
