@@ -4,24 +4,39 @@ import xml.etree.ElementTree as ET
 from django.test import SimpleTestCase
 
 from export.export import (
-    split_syntax, separate_phrasetype, separate_syntax,
+    tokenize_syntax, separate_syntax_part,
+    separate_phrasetype,
     merge_primary_and_syntax, xml_of_syntax)
 
-
-class TestSplitSyntax(SimpleTestCase):
-    def test_normal_split(self):
-        self.assertEqual(split_syntax('Agent V Patient'), ['Agent', 'V', 'Patient'])
-        self.assertEqual(split_syntax('Agent V   Patient'), ['Agent', 'V', 'Patient'])
-        self.assertEqual(split_syntax(
-            'Agent V {{+loc}} Location'),
-            ['Agent', 'V', {'{{+loc}}'}, 'Location'])
+class TestTokenizeSyntax(SimpleTestCase):
+    def test_simple(self):
+        self.assertEqual(list(tokenize_syntax('Agent V Patient')),
+                         ['Agent', 'V', 'Patient'])
+        self.assertEqual(list(tokenize_syntax('Agent V  Patient')),
+                         'Agent V   Patient'.split())
 
     def test_preposition_list(self):
-        self.assertEqual(split_syntax(
-            'Agent V {à dans verbs} Location'),
+        self.assertEqual(list(tokenize_syntax('Agent V {{+loc}} Location')),
+                         ['Agent', 'V', {'+loc'}, 'Location'])
+        self.assertEqual(list(tokenize_syntax('Agent V {pour à de} Patient')),
+                         ['Agent', 'V', {'pour', 'à', 'de'}, 'Patient'])
+
+        self.assertEqual(
+            list(tokenize_syntax('Agent V {à dans verbs} Location')),
             ['Agent', 'V', {'à', 'dans', 'verbs'}, 'Location'])
-        self.assertEqual(split_syntax('Agent V {à} Location'), ['Agent', 'V', {'à'}, 'Location'])
-        self.assertEqual(split_syntax('Agent V {de} Location'), ['Agent', 'V', {'de'}, 'Location'])
+        self.assertEqual(list(tokenize_syntax('Agent V {à} Location')), ['Agent', 'V', {'à'}, 'Location'])
+        self.assertEqual(list(tokenize_syntax('Agent V {de} Location')), ['Agent', 'V', {'de'}, 'Location'])
+
+        self.assertEqual(list(tokenize_syntax('Agent V {pour/de la part de} Patient')),
+                         ['Agent', 'V', {'pour', 'de la part de'}, 'Patient'])
+
+    def test_restriction(self):
+        self.assertEqual(
+            list(tokenize_syntax('Agent V Theme <+de_Vinf>')),
+            ['Agent', 'V', 'Theme<+de_Vinf>'])
+        self.assertEqual(
+            list(tokenize_syntax('Agent V Theme <+de_Vinf>')),
+            list(tokenize_syntax('Agent V Theme<+de_Vinf>')))
 
 
 class TestSeparatePhraseType(SimpleTestCase):
@@ -46,15 +61,15 @@ class TestSeparatePhraseType(SimpleTestCase):
 
 class TestSeparateSyntax(SimpleTestCase):
     def test_no_role(self):
-        self.assertEqual(separate_syntax('NP'), ('NP', None))
-        self.assertEqual(separate_syntax('V'), ('V', None))
-        self.assertEqual(separate_syntax('V<+neutre>'), ('V', '<+neutre>'))
+        self.assertEqual(separate_syntax_part('NP'), ('NP', None))
+        self.assertEqual(separate_syntax_part('V'), ('V', None))
+        self.assertEqual(separate_syntax_part('V<+neutre>'), ('V', '<+neutre>'))
 
     def test_simple_role(self):
-        self.assertEqual(separate_syntax('Agent'), ('Agent', None))
+        self.assertEqual(separate_syntax_part('Agent'), ('Agent', None))
 
     def test_modified_role(self):
-        self.assertEqual(separate_syntax('Instrument<+Plural>'), ('Instrument', '<+Plural>'))
+        self.assertEqual(separate_syntax_part('Instrument<+Plural>'), ('Instrument', '<+Plural>'))
 
 
 class TestFullMerge(SimpleTestCase):
@@ -67,10 +82,10 @@ class TestFullMerge(SimpleTestCase):
 
     def test_single_preposition(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V PP', 'Agent V {lol} Patient', output=sys.stdout),
+            merge_primary_and_syntax('NP V PP', 'Agent V {foo} Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'type': 'PREP', 'Value': 'lol'},
+             {'type': 'PREP', 'Value': {'foo'}},
              {'type': 'PP', 'role': 'Patient'}])
 
     def test_preposition_list(self):
@@ -78,7 +93,14 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V PP', 'Agent V {à dans pour} Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'Value': 'à dans pour', 'type': 'PREP'},
+             {'Value': {'à', 'dans', 'pour'}, 'type': 'PREP'},
+             {'role': 'Patient', 'type': 'PP'}])
+
+        self.assertEqual(
+            merge_primary_and_syntax('NP V PP', 'Agent V {pour/de la part de} Patient', output=sys.stdout),
+            [{'type': 'NP', 'role': 'Agent'},
+             {'type': 'V'},
+             {'Value': {'pour', 'de la part de'}, 'type': 'PREP'},
              {'role': 'Patient', 'type': 'PP'}])
 
     def test_preposition_class(self):

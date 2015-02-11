@@ -13,40 +13,44 @@ class WrongFrameException(Exception):
 
 total_frames, handled_frames = 0, 0
 
+def tokenize_syntax(syntax):
+    def part_between_braces(syntax, i):
+        j = i + 1
+        while syntax[j] != '}':
+            j += 1
+        return syntax[i:j+2]
 
-def split_syntax(syntax):
-    mode = 'NORMAL'
-    current_part = set()
-    final_list = []
+    current_word = ''
 
-    for syntax_part in syntax.split():
-        if syntax_part.startswith('{{') and syntax_part.endswith('}}'):
-            final_list.append({syntax_part})
-        elif syntax_part[0] == '{' and syntax_part[-1] == '}':
-            final_list.append({syntax_part.strip('{}')})
-        elif syntax_part.startswith('{') and not syntax_part.endswith('}'):
-            assert mode == 'NORMAL' and not current_part
-            mode = 'BRACE_LIST'
-            current_part = set(syntax_part.strip('{}'))
-        elif syntax_part.endswith('}') and not syntax_part.startswith('{'):
-            assert mode == 'BRACE_LIST'
-            current_part.add(syntax_part.rstrip('{}'))
-            mode = 'NORMAL'
-            if current_part:
-                final_list.append(current_part)
-                current_part = set()
+    i = 0
+    while i < len(syntax):
+        c = syntax[i]
+        if c == ' ':
+            if current_word:
+                if syntax[i+1] == '<':
+                    i += 1
+                    continue
+                else:
+                    yield current_word
+            current_word = ''
+        elif c == '{':
+            assert current_word == ''
+            syntax_part = part_between_braces(syntax, i)
+            if syntax_part.startswith('{{') and syntax_part.endswith('}}'):
+                yield set([syntax_part[2:-2]])
+            elif '/' in syntax_part:
+                yield set(syntax_part[1:-2].split('/'))
             else:
-                raise WrongFrameException('End of list but the list didn\'t start.')
-        elif mode == 'BRACE_LIST':
-            current_part.add(syntax_part)
+                yield set(syntax_part[1:-2].split(' '))
+
+            i += len(syntax_part) - 1
         else:
-            final_list.append(syntax_part)
+            current_word += c
 
-    if current_part:
-        raise WrongFrameException('Start of list but the list didn\'t end.')
+        i += 1
 
-    return final_list
-
+    if current_word:
+        yield current_word
 
 def separate_phrasetype(primary_part):
     try:
@@ -64,7 +68,7 @@ def separate_phrasetype(primary_part):
     return primary_part, None
 
 
-def separate_syntax(syntax_part):
+def separate_syntax_part(syntax_part):
     if isinstance(syntax_part, set):
         return syntax_part, None
 
@@ -78,12 +82,15 @@ def separate_syntax(syntax_part):
     role = split[0]
     restr = '<{}'.format(split[1])
 
-    return role, restr
+    if not role:
+        return restr, None
+    else:
+        return role, restr
 
 
 def merge_primary_and_syntax(primary, syntax, output):
     print('{:<40} {}'.format(primary, syntax), file=output)
-    primary_parts, syntax_parts = primary.split(), split_syntax(syntax)
+    primary_parts, syntax_parts = primary.split(), list(tokenize_syntax(syntax))
     parsed_frame = []
 
     print(primary_parts, syntax_parts, file=output)
@@ -92,7 +99,7 @@ def merge_primary_and_syntax(primary, syntax, output):
     while i < len(syntax_parts) and j < len(primary_parts):
         print(i, j, syntax_parts[i], primary_parts[j], file=output)
 
-        syntax_role, restr = separate_syntax(syntax_parts[i])
+        syntax_role, restr = separate_syntax_part(syntax_parts[i])
         phrase_type, primary_role = separate_phrasetype(primary_parts[j])
 
         print('   |{}| |{}|'.format(syntax_role, restr), file=output)
@@ -105,9 +112,8 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             parsed_frame.append({'type': phrase_type, 'role': syntax_role})
 
-            if i+1 < len(syntax_parts) and type(syntax_parts[i+1]) == str and syntax_parts[i+1].startswith('<') and syntax_parts[i+1].endswith('>') and syntax_parts[i+1][1] in ['+', '-']:
-                parsed_frame[-1]['modifier'] = syntax_parts[i+1][1:-1]
-                i += 1
+            if restr is not None:
+                parsed_frame[-1]['modifier'] = restr[1:-1]
 
             i, j = i+1, j+1
 
@@ -125,7 +131,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
-        elif primary_parts[j] in ['que', 'de', 'comment']:
+        elif primary_parts[j] in ['que', 'de', 'comment', 'that']:
             primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
@@ -149,17 +155,16 @@ def merge_primary_and_syntax(primary, syntax, output):
         elif isinstance(syntax_parts[i], set):
             restr = syntax_parts[i]
             # {{+loc}}
-            if len(restr) == 1 and next(iter(restr)).startswith('{{') and next(iter(restr)).endswith('}}'):
+            if len(restr) == 1 and next(iter(restr))[0] in ['+', '-']:
                 class_restr = next(iter(restr))
                 print('{{ ', phrase_type, class_restr, file=output)
-                value = class_restr[2]
-                assert value in ['+', '-']
-                type_ = class_restr[3:-2]
+                value = class_restr[0]
+                type_ = class_restr[1:]
                 parsed_frame.append({'type': 'PREP', 'type_': type_, 'Value': value})
             # {avec dans pour}
             else:
                 print('set ', phrase_type, syntax_parts[i], file=output)
-                parsed_frame.append({'type': 'PREP', 'Value': ' '.join(sorted(syntax_parts[i], key=locale.strxfrm))})
+                parsed_frame.append({'type': 'PREP', 'Value': syntax_parts[i]})
             i += 1
 
         # We should have handled everything
@@ -188,7 +193,8 @@ def xml_of_syntax(parsed_frame):
             selrestr = ET.SubElement(selrestr_list, 'SELRESTR')
             if 'type_' in frame_part:
                 selrestr.set('type', frame_part['type_'])
-            selrestr.set('Value', frame_part['Value'])
+            joined_values = ';'.join(sorted(frame_part['Value'], key=locale.strxfrm))
+            selrestr.set('Value', joined_values)
 
         # Goal is to remove this block
         elif frame_part['type'] == 'special':
