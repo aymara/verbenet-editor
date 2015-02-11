@@ -182,10 +182,13 @@ def merge_primary_and_syntax(primary, syntax, output):
 
 def xml_of_syntax(parsed_frame):
     syntax = ET.Element('SYNTAX')
+
     for frame_part in parsed_frame:
         if frame_part['type'] in ['NP', 'PP']:
             np = ET.SubElement(syntax, 'NP')
             np.set('value', frame_part['role'])
+            if 'modifier' in frame_part:
+                np.set('modifier', frame_part['modifier'])
             synrestrs = ET.SubElement(np, 'SYNRESTRS')
         elif frame_part['type'] == 'PREP':
             prep = ET.SubElement(syntax, 'PREP')
@@ -215,7 +218,8 @@ def xml_of_syntax(parsed_frame):
         elif frame_part['type'] in ['S', 'S_INF', 'S_ING']:
             s = ET.SubElement(syntax, frame_part['type'])
             s.set('value', frame_part['role'])
-            # todo restr
+            if 'modifier' in frame_part:
+                s.set('modifier', frame_part['modifier'])
         else:
             raise WrongFrameException('Unhandled {} in {}.'.format(frame_part, parsed_frame))
 
