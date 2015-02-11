@@ -15,6 +15,9 @@ def errors(request):
     frames_ok, frames_total = 0, 0
 
     for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
+        if db_frame.removed or db_frame.frameset.removed:
+            continue
+
         frames_total += 1
         output = io.StringIO()
         try:
