@@ -160,7 +160,8 @@
                         {% if not frame.removed %}
                             <div
                                 class="{% if not frame.from_verbnet %}created_frame {% endif %} frame"
-                                data-frameid="{{frame.id}}">
+                                data-frameid="{{frame.id}}"
+                                id="frame_{{frame.id}}">
                                 {% if user.is_authenticated %}
                                     <a class="remove_frame" href="#"><span class="right glyphicon glyphicon-remove"></span></a>
                                 {% endif %}

@@ -21,7 +21,7 @@
         <li>{{ issue }}</li>
         <ul>
         {% for frame in frame_list %}
-            <li>{{frame.syntax}}, {{frame.roles_syntax}}</li>
+            <li><a href="/class/{{frame.frameset.verbnet_class.levin_class.number}}/#frame_{{frame.id}}">#</a> {{frame.syntax}}, {{frame.roles_syntax}}</li>
         {% endfor %}
         </ul>
     {% endfor %}

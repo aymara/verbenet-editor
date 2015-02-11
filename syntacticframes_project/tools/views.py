@@ -14,7 +14,7 @@ def errors(request):
     issues = defaultdict(list)
     frames_ok, frames_total = 0, 0
 
-    for db_frame in VerbNetFrame.objects.filter(removed=False):
+    for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
         frames_total += 1
         output = io.StringIO()
         try:
