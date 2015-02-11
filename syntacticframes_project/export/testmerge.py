@@ -60,14 +60,14 @@ class TestSeparateSyntax(SimpleTestCase):
 class TestFullMerge(SimpleTestCase):
     def test_simple_sentence(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stderr),
+            merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'type': 'NP', 'role': 'Patient'}])
 
     def test_single_preposition(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V PP', 'Agent V {lol} Patient', output=sys.stderr),
+            merge_primary_and_syntax('NP V PP', 'Agent V {lol} Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'type': 'PREP', 'Value': 'lol'},
@@ -75,7 +75,7 @@ class TestFullMerge(SimpleTestCase):
 
     def test_preposition_list(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V PP', 'Agent V {à dans pour} Patient', output=sys.stderr),
+            merge_primary_and_syntax('NP V PP', 'Agent V {à dans pour} Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'Value': 'à dans pour', 'type': 'PREP'},
@@ -83,7 +83,7 @@ class TestFullMerge(SimpleTestCase):
 
     def test_preposition_class(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stderr),
+            merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'type': 'PREP', 'type_': 'loc', 'Value': '+'},
@@ -92,21 +92,21 @@ class TestFullMerge(SimpleTestCase):
 
     def test_neutral_verb(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient', output=sys.stderr),
+            merge_primary_and_syntax('NP V NP', 'Agent V<+neutre> Patient', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V', 'restr': 'neutre'},
              {'type': 'NP', 'role': 'Patient'}])
 
     def test_adverb_as_role(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV', output=sys.stderr),
+            merge_primary_and_syntax('NP V ADV-Middle', 'Patient V ADV', output=sys.stdout),
             [{'type': 'NP', 'role': 'Patient'},
              {'type': 'V'},
              {'type': 'ADV'}])
 
     def test_adj_as_role(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V NP ADJ', 'Pivot V Theme ADJ', output=sys.stderr),
+            merge_primary_and_syntax('NP V NP ADJ', 'Pivot V Theme ADJ', output=sys.stdout),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'NP', 'role': 'Theme'},
@@ -114,21 +114,21 @@ class TestFullMerge(SimpleTestCase):
 
     def test_que(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>', output=sys.stderr),
+            merge_primary_and_syntax('NP V que S', 'Agent V Theme<+que_comp>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'type': 'S', 'role': 'Theme', 'introduced_by': 'que', 'restr': 'comp'}])
 
     def test_de(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de_Vinf>', output=sys.stderr),
+            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de_Vinf>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'V-inf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'Vinf'}])
 
     def test_plural(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V', 'Patient <+plural> V', output=sys.stderr),
+            merge_primary_and_syntax('NP V', 'Patient <+plural> V', output=sys.stdout),
             [{'type': 'NP', 'role': 'Patient', 'modifier': '+plural'},
              {'type': 'V'}])
 
@@ -141,21 +141,21 @@ class TestFullMerge(SimpleTestCase):
 
 class TestExport(SimpleTestCase):
     def test_simple_sentence(self):
-        new_syntax = merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stderr)
+        new_syntax = merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stdout)
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
             '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><NP value="Patient"><SYNRESTRS /></NP></SYNTAX>')
 
     def test_pp(self):
-        new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {de} Patient', output=sys.stderr)
+        new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {de} Patient', output=sys.stdout)
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
             '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP><NP value="Patient"><SYNRESTRS /></NP></SYNTAX>')
 
     def test_pp_category(self):
-        new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stderr)
+        new_syntax = merge_primary_and_syntax('NP V PP', 'Agent V {{+loc}} Patient', output=sys.stdout)
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
