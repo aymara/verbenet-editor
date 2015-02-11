@@ -165,7 +165,7 @@
                                 {% if user.is_authenticated %}
                                     <a class="remove_frame" href="#"><span class="right glyphicon glyphicon-remove"></span></a>
                                 {% endif %}
-                                <p><span class="frame_editable" data-field="syntax">{{ frame.syntax }}</span></p>
+                                <p><span class="frame_editable" data-field="syntax">{% if frame.syntax %}{{ frame.syntax }}{% else %}∅{% endif %}</span></p>
                                 <table class="table">
                                     <tr><td>Exemple</td><td><span class="frame_editable" data-field="example">{% if frame.example %}{{ frame.example }}{% else %}∅{% endif %}</span></td></tr>
                                     <tr><td>Syntaxe</td><td><span class="frame_editable" data-field="roles_syntax">{% if frame.roles_syntax %}{{ frame.roles_syntax }}{% else %}∅{% endif %}</span></td></tr>
