@@ -1,6 +1,7 @@
 import io
 import sys
 import traceback
+from pathlib import Path
 from collections import defaultdict, OrderedDict
 
 from django.http import HttpResponse
@@ -28,9 +29,10 @@ def errors(request):
         except Exception as e:
             exc_type, exc_value, exc_tb = sys.exc_info()
             tb_info = traceback.extract_tb(exc_tb)
-            filename, line, func, text = tb_info[-1]
+            path, line, func, text = tb_info[-1]
             exception = traceback.format_exception_only(exc_type, exc_value)[0]
-            issues['{} (ligne {})'.format(exception, line)].append(db_frame)
+            filename = Path(path).name
+            issues['{} ({}:{})'.format(exception, filename, line)].append(db_frame)
 
 
     template = loader.get_template('errors.html')
