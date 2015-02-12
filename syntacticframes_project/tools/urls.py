@@ -4,5 +4,6 @@ from tools import views
 
 urlpatterns = patterns('',
     url(r'^errors/$', views.errors),
+    url(r'^distributions/$', views.distributions),
 )
 

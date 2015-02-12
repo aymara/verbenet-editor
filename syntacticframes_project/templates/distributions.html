@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Distribution des rôles, prépositions et restrictions{% endblock %}
+
+{% block all %}
+
+<div class="container">
+
+    <h2>Distribution des rôles, prépositions et restrictions</h2>
+
+    <p>Cette page liste les distributions des rôles, prépositions et et
+    restrictions présentes dans les frames VerbNet. L'objectif est de
+    pouvoir harmoniser plus facilement ces informations.</p>
+
+    {% for name, dist_dict in distributions.items %}
+
+    <h3>{{ name }}</h3>
+
+    <ul>
+    {% for restr, frame_list in dist_dict.items %}
+        <li>
+            {{ restr }}
+            {% for frame in frame_list %}
+                <a href="/class/{{frame.frameset.verbnet_class.levin_class.number}}/#frame_{{frame.id}}">#</a>
+            {% endfor %}
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% endfor %}
+
+</div>
+
+{% endblock all %}
+

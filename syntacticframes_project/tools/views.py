@@ -1,6 +1,7 @@
 import io
 import sys
 import traceback
+import re
 from pathlib import Path
 from collections import defaultdict, OrderedDict
 
@@ -43,4 +44,68 @@ def errors(request):
         'ratio': '{:.1%}'.format(frames_ok / frames_total),
     })
 
+    return HttpResponse(template.render(context))
+
+def get_prep(roles_syntax):
+    prep_list = re.findall(r"{[-\w/ +']+}", roles_syntax)
+    for prep in prep_list:
+        if '/' in prep or ' ' in prep:
+            split_char = '/' if '/' in prep else ' '
+            for prep_part in prep.strip('{}').split(split_char):
+                yield prep_part
+        else:
+            yield prep.strip('{}')
+
+def get_restr(roles_syntax):
+    restr_list = re.findall(r'<.+?>', roles_syntax)
+    for restr in restr_list:
+        yield restr
+
+def get_roles(roles_syntax):
+    split_list = re.findall('[a-zA-Z-]+', roles_syntax)
+    for split in split_list:
+        if split == 'V':
+            continue
+        elif split.lower() == split or split.upper() == split:
+            continue
+        elif '-' in split and not split.startswith('Co-'):
+            continue
+        elif split in ['Psubj', 'Vinf', 'Il', 'Pr', 'Qu', 'Que', 'Loc', 'Adv', 'Co']:
+            continue
+        else:
+            yield split
+
+
+def distributions(request):
+    role_dict, restriction_dict, preposition_dict = defaultdict(list), defaultdict(list), defaultdict(list)
+
+    for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
+        if db_frame.removed or db_frame.frameset.removed:
+            continue
+
+        for role in get_roles(db_frame.roles_syntax):
+            role_dict[role].append(db_frame)
+
+        for prep in get_prep(db_frame.roles_syntax):
+            preposition_dict[prep].append(db_frame)
+
+        prep_list = list(get_restr(db_frame.roles_syntax))
+        if ('<' in db_frame.roles_syntax or '>' in db_frame.roles_syntax) and not prep_list:
+            print('{} -> {}'.format(db_frame.roles_syntax, prep_list))
+        for restr in get_restr(db_frame.roles_syntax):
+            restriction_dict[restr].append(db_frame)
+
+    distribution_dict = OrderedDict([
+        ('Restrictions', restriction_dict),
+        ('Prépositions', preposition_dict),
+        ('Rôles', role_dict)
+    ])
+
+    for distribution in distribution_dict:
+        distribution_dict[distribution] = OrderedDict(sorted(distribution_dict[distribution].items(), key=lambda kv: (len(kv[1]), kv[0]), reverse=True))
+
+    template = loader.get_template('distributions.html')
+    context = RequestContext(request, {
+        'distributions': distribution_dict
+    })
     return HttpResponse(template.render(context))
