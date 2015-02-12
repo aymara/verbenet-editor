@@ -13,8 +13,7 @@ body {
     background-image: linear-gradient(to bottom, black 60%, #2a2a2a 100%)
 }
 
-.navbar-inverse .navbar-header a { color: white }
-.navbar-inverse .nav.navbar-nav li a { color: #ccc }
+.navbar-inverse .navbar-header a { color: #eee}
 
 .left { float: left }
 .right { float: right }

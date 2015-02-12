@@ -135,8 +135,8 @@ PIPELINE_LESS_ARGUMENTS = '--include-path={}'.format(custom_less_dir)
 PIPELINE_CSS = {
     'syntacticframes': {
         'source_filenames': (
-            'bootstrap/bootstrap.less',
-            'bootstrap/theme.less',
+            'less/bootstrap/bootstrap.less',
+            'less/bootstrap/theme.less',
             'less/custom.less',
             'css/project.css',
         ),
@@ -148,13 +148,14 @@ PIPELINE_JS = {
     'edit_syntacticframes': {
         'source_filenames': (
             'js/jquery.inedit.js',
+            'js/bootstrap/dropdown.js',
             'js/public.js',
             'js/project.js'
         ),
         'output_filename': 'js/syntacticframes.js',
     },
     'public_js': {
-        'source_filenames': ('js/public.js',),
+        'source_filenames': ('js/public.js', 'js/bootstrap/dropdown.js'),
         'output_filename': 'js/verbenet_public.js'
     },
 }

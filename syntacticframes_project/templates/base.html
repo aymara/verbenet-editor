@@ -28,9 +28,6 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/stats/">Stats</a></li>
-            <li><a href="/index/ladl/">Index LADL</a></li>
-            <li><a href="/index/members/">Membres</a></li>
             <li><a href="/login/">
             {% if user.is_authenticated %}
               {{ user.username }}
@@ -38,6 +35,28 @@
                Login
             {% endif %}
             </a></li>
+            <li><a href="/stats/">Stats</a></li>
+            <li class="dropdown">
+              <a id="dropoutils" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                Index
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropoutils">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/index/ladl">LADL</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/index/members">Membres français</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a id="dropoutils" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                Outils
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropoutils">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/tools/distributions">Distributions</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/tools/errors">Erreurs d'analyse</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="/tools/emptytranslations">Mappings inutiles</a></li>
+              </ul>
+            </li>
           </ul>
           <form method='get' action='/search/'>
               <input class='form-control' name='search' type="text" value="{{search}}" size='15' />

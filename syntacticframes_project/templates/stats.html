@@ -15,18 +15,6 @@
     <li>{{ num_validated_verbs }} membres Verb∋Net validés ({{unique_validated_verbs}} uniques).</li>
 </ul>
 
-<h2>Annotations sans traductions</h2>
-<table class="table emptytranslations">
-<thead>
-    <tr><th>Classe</th><th class="entry">Entrée</th><th>VerbNet members</th></tr>
-</thead>
-<tbody>
-{% for fs, url, resource, entry, members in empty_translations_errors %}
-    <tr><td><a href="{{url}}">{{ fs }}</a></td><td class="entry {{resource}}">{{ entry }}</td><td>{{ members }}</td></tr>
-{% endfor %}
-</tbody>
-</table>
-
 </div>
 
 {% endblock all %}
