@@ -147,7 +147,8 @@ class TestAllValid(TestCase):
                         category_id=0, category='both',
                         validation_status=VerbTranslation.STATUS_INFERRED).save()
 
-        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 2)
+        # When validated verbs exist, the inferred one are not consider valid
+        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 1)
 
     def test_red(self):
         VerbTranslation(frameset=self.frameset, verb='translation_child-1',
@@ -156,7 +157,9 @@ class TestAllValid(TestCase):
         VerbTranslation(frameset=self.frameset, verb='translation_child-2',
                         category_id=1, category='ladl',
                         validation_status=VerbTranslation.STATUS_INFERRED).save()
-        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 2)
+
+        # When validated verbs exist, the inferred one are not consider valid
+        self.assertEqual(len(VerbTranslation.all_valid(self.frameset.verbtranslation_set.all())), 1)
 
     def test_black(self):
         VerbTranslation(frameset=self.frameset, verb='translation_child-1',
