@@ -90,7 +90,7 @@ h2[name] a {
  text-decoration: none;
 }
 
-h2 {
+h2.classe {
     font-weight: bold;
 }
 
