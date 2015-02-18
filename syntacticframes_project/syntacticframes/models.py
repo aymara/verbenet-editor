@@ -164,14 +164,14 @@ class VerbNetFrameSet(MPTTModel):
         the current node's string is unset but his parent's string is set.
 
         If you're modifying this function, look at tools.views.errors_for_class
-        too, which duplicated the ladl/lvf inheritance logic."""
+        too which also uses the ladl/lvf inheritance logic."""
 
-        translations_in_subclasses = set()
+        translations_in_subclasses = []
 
         for db_childrenfs in self.children.filter(removed=False):
             new_ladl = ladl_string if not db_childrenfs.ladl_string else db_childrenfs.ladl_string
             new_lvf = lvf_string if not db_childrenfs.lvf_string else db_childrenfs.lvf_string
-            translations_in_subclasses |= db_childrenfs.update_translations_aux(ladl_string=new_ladl, lvf_string=new_lvf)
+            translations_in_subclasses.extend(db_childrenfs.update_translations_aux(ladl_string=new_ladl, lvf_string=new_lvf))
 
         initial_set = {(v.verb, v.category, v.validation_status) for v in self.verbtranslation_set.all()}
         inferred_verbs = self.verbtranslation_set.filter(validation_status=VerbTranslation.STATUS_INFERRED)
@@ -187,26 +187,45 @@ class VerbNetFrameSet(MPTTModel):
 
         for french, categoryname, category_id, originlist in candidates:
             originset = set(originlist.split(','))
-            if (set(members) & originset and  # is actually a translation
-                    # is not already somewhere down
-                    french not in translations_in_subclasses):
+            if set(members) & originset:  # is actually a translation
 
-                # At this point we have three options.
-                #  1/ this translation was not manually validated at all: add it
-                if french not in manually_validated_set:
+                # At this point we have four options.
+                #  1/ this translation was added below but hidden: we can show
+                #  it here unhidden, which is better.
+                same_verb_below_list = [v for v in translations_in_subclasses if v.verb == french]
+
+                if same_verb_below_list:
+                    for same_verb_below in same_verb_below_list:
+                        # Don't touch validated verbs
+                        if same_verb_below.validation_status != VerbTranslation.STATUS_INFERRED:
+                            continue
+
+                        if categoryname in ['ladl', 'lvf', 'both'] and same_verb_below.category in ['dicovalence', 'unknown']:
+                            previous_subclass = same_verb_below.frameset
+                            previous_category = same_verb_below.category
+                            same_verb_below.frameset = self
+                            same_verb_below.category = categoryname
+                            same_verb_below.category_id = VerbTranslation.CATEGORY_ID[categoryname]
+                            same_verb_below.save()
+                            translations_in_subclasses = [v for v in translations_in_subclasses if v.verb != french]
+                            verb_logger.info("{}: Moved {} up from subclass {} to subclass {} ({} -> {}).".format(
+                                when_deleted, french, previous_subclass.name, self.name, previous_category, categoryname))
+
+                #  2/ this translation was not manually validated at all: add it
+                elif french not in manually_validated_set:
                     VerbTranslation(
                         frameset=self, verb=french, origin=originlist,
                         category=categoryname,
                         category_id=VerbTranslation.CATEGORY_ID[categoryname]).save()
-                #  2/ this translation was manually validated but with a different
-                #  status: change it
+                #  3/ this translation was manually validated but with a different
+                #  status: change the status
                 elif categoryname != manually_validated_set[french]:
                     verb_to_update = VerbTranslation.objects.get(
                         frameset=self, verb=french, category=manually_validated_set[french])
                     verb_to_update.category = categoryname
                     verb_to_update.category_id = VerbTranslation.CATEGORY_ID[categoryname]
                     verb_to_update.save()
-                #  3/ this translation was manually validated and already has
+                #  4/ this translation was manually validated and already has
                 #  the correct color: do nothing
                 else:
                     pass
@@ -215,16 +234,15 @@ class VerbNetFrameSet(MPTTModel):
 
         verbs = self.verbtranslation_set.all()
         final_set = {(v.verb, v.category, v.validation_status) for v in verbs}
-        translations_in_subclasses |= {v[0] for v in final_set}
 
         if initial_set - final_set:
             verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-                when_deleted, self.name, ", ".join(["{} ({}, {})".format(v, c, s) for v, c, s in initial_set - final_set])))
+                when_deleted, self.name, ", ".join(sorted(["{} ({}, {})".format(v, c, s) for v, c, s in initial_set - final_set], key=lambda vcs: vcs[0]))))
         if final_set - initial_set:
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-                when_added, self.name, ", ".join(["{} ({}, {})".format(v, c, s) for v, c, s in final_set - initial_set])))
+                when_added, self.name, ", ".join(sorted(["{} ({}, {})".format(v, c, s) for v, c, s in final_set - initial_set], key=lambda vcs: vcs[0]))))
 
-        return translations_in_subclasses
+        return list(verbs) + translations_in_subclasses
 
     def get_all_verbs(self, VerbModule):
         """Recursively retrieve members from all subclasses"""

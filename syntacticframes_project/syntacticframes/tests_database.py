@@ -4,7 +4,7 @@ from syntacticframes.models import (LevinClass, VerbNetClass, VerbNetFrameSet,
                                     VerbNetMember, VerbTranslation)
 
 
-class TestUpdateTranslations(TestCase):
+class TestHideAndMove(TestCase):
     def setUp(self):
         """Adds a class and a subclass that will get hidden: we'll see how
         things are moved around."""
@@ -129,6 +129,162 @@ class TestUpdateTranslations(TestCase):
     def tearDown(self):
         # Tear down does not appear to be useful: no objects stay anyway
         pass
+
+
+class TestUpdateTranslations(TestCase):
+    def setUp(self):
+        """
+        Tests syntacticframes.models.VerbNetFrameSet.update_translations.
+
+        Add three framesets with one English member each: we want everyone of
+        those verbs to have at least one French translation in common. We will
+        then see, depending on the LVF/LADL mappings, what will be the
+        different colors of the French translation.
+        """
+        # VerbNet class with its parent Levin class
+        levin_class = LevinClass(number=3, name='Another imaginary class')
+        levin_class.save()
+        self.verbnet_class = VerbNetClass(levin_class=levin_class, name='another-3')
+        self.verbnet_class.save()
+
+        # A frameset and its child with verbs in both
+        self.root_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
+                                             name='3', tree_id=1, lvf_string='L1a')
+        self.child_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
+                                              parent=self.root_frameset,
+                                              name='3.1', tree_id=1)
+        self.grandchild1_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
+                                                   parent=self.child_frameset,
+                                                   name='3.1.1', tree_id=1)
+        self.grandchild2_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
+                                                   parent=self.child_frameset,
+                                                   name='3.1.2', tree_id=1)
+        self.root_frameset.save()
+        self.child_frameset.save()
+        self.grandchild1_frameset.save()
+        self.grandchild2_frameset.save()
+
+        VerbNetMember(frameset=self.root_frameset, lemma='live').save()
+        VerbNetMember(frameset=self.child_frameset, lemma='stay').save()
+        VerbNetMember(frameset=self.grandchild1_frameset, lemma='stop').save()
+        VerbNetMember(frameset=self.grandchild2_frameset, lemma='remain').save()
+
+        self.verbnet_class.update_members_and_translations()
+
+    def test_translations_goes_down_in_hierarchy(self):
+        # Test that rester (a translation of settle, stay and stop) is only in
+        # the most specific class (grand child)
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.root_frameset.verbtranslation_set.get, verb='rester')
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.child_frameset.verbtranslation_set.get, verb='rester')
+        rester_grandchild1 = self.grandchild1_frameset.verbtranslation_set.get(verb='rester')
+        self.assertEqual(rester_grandchild1.verb, 'rester')
+        self.assertEqual(rester_grandchild1.category, 'lvf')
+
+    def test_manually_validated_translations(self):
+        # Validate 'rester'
+        manual_verb = self.grandchild1_frameset.verbtranslation_set.get(verb='rester')
+        manual_verb.validation_status = VerbTranslation.STATUS_VALID
+        manual_verb.save()
+
+        # Change mapping: rester should go up but won't since it has been
+        # validated.
+        self.grandchild1_frameset.lvf_string = 'L1b'  # does not contain 'rester'
+        self.grandchild1_frameset.save()
+        self.verbnet_class.update_members_and_translations()
+
+        manual_verb = self.grandchild1_frameset.verbtranslation_set.get(verb='rester')
+        self.assertEqual(manual_verb.frameset, self.grandchild1_frameset)
+        self.assertEqual(manual_verb.validation_status, VerbTranslation.STATUS_VALID)
+        self.assertEqual(manual_verb.category, 'dicovalence')
+
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.root_frameset.verbtranslation_set.get, verb='rester')
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.child_frameset.verbtranslation_set.get, verb='rester')
+        self.assertEqual(self.grandchild1_frameset.verbtranslation_set.get(verb='rester').verb, 'rester')
+
+    def test_colored_translations_go_higher_in_hierarchy(self):
+        """
+        Tests that colored translations go higher in hierarchy.
+
+        By design, VerbNet verbs only appear in the most specific subclasses
+        they can belong in. Often, paragons accept more frames. Since
+        subclasses *add* frames, those paragons are often deep in the
+        hierarchy.
+
+        The same thing should happen for translations, and this is what
+        update_translation does: it only adds verbs that wouldn't go in
+        subclasses. However, there's one caveat. Verb translations can have
+        many statuses: purple, red, green, black and gray. So when we choose
+        the lowest possible position, we risk choosing a black or gray verb
+        which will be hidden, while a colored verbs could have been added to
+        our translation!
+
+        So, if a translation is black or gray in a subclass and purple or red
+        or green in a higher class, this translation should go in the higher
+        class. This is what we're testing here.
+
+        Other notes:
+          * When we have to decide between purple and red/green however, we
+          still want to choose the lower class: this will be less surprising
+          and the verb will be visible anyway
+          * While this is an issue that was considered some time ago, we never
+          expected it to change a lot of things: maybe a position change or
+          two. Moreover, the French verb validation has advanced a lot, and we
+          are more conservative about moving validated verbs. Still, we're
+          doing this to ensure our update translation code is principled.
+        """
+
+        self.grandchild1_frameset.lvf_string = 'L1b'  # does not contain 'rester'
+        self.grandchild1_frameset.save()
+        self.grandchild2_frameset.lvf_string = 'L1b'  # does not contain 'rester'
+        self.grandchild2_frameset.save()
+        self.verbnet_class.update_members_and_translations()
+
+        # Test that rester (a translation of settle, stay and stop) is only in
+        # the most specific class (child, no longer grand child)
+        for rester_child in self.child_frameset.verbtranslation_set.filter(verb='rester'):
+            self.assertEqual(rester_child.verb, 'rester')
+            self.assertEqual(rester_child.category, 'lvf')
+
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.root_frameset.verbtranslation_set.get, verb='rester')
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.grandchild1_frameset.verbtranslation_set.get, verb='rester')
+
+        # Go back to normal
+        self.grandchild1_frameset.lvf_string = ''
+        self.grandchild1_frameset.save()
+        self.grandchild2_frameset.lvf_string = ''
+        self.grandchild2_frameset.save()
+        self.verbnet_class.update_members_and_translations()
+
+        rester_grandchild1 = self.grandchild1_frameset.verbtranslation_set.get(verb='rester')
+        self.assertEqual(rester_grandchild1.verb, 'rester')
+        self.assertEqual(rester_grandchild1.category, 'lvf')
+        rester_grandchild2 = self.grandchild2_frameset.verbtranslation_set.get(verb='rester')
+        self.assertEqual(rester_grandchild2.verb, 'rester')
+        self.assertEqual(rester_grandchild2.category, 'lvf')
+
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.root_frameset.verbtranslation_set.get, verb='rester')
+        self.assertRaises(
+            VerbTranslation.DoesNotExist,
+            self.child_frameset.verbtranslation_set.get, verb='rester')
+
+    def tearDown(self):
+        # Nothing to do, the entries get removed from the database
+        pass
+
 
 class TestAllValid(TestCase):
     def setUp(self):

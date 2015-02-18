@@ -163,7 +163,6 @@ def translations_for_class(verbs, ladl, lvf):
             color, id_color = 'unknown', 4
         final.append((c, color, id_color, ",".join(sorted(candidates[c]))))
 
-    final = sorted(final, key=lambda c: locale.strxfrm(c[0]))
-    final.sort(key=itemgetter(2))
+    final = sorted(final, key=lambda c: (c[2], locale.strxfrm(c[0])))
 
     return final
