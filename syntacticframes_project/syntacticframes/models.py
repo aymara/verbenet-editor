@@ -349,7 +349,7 @@ class VerbNetMember(models.Model):
     def __repr__(self):
         inherited_from_name = self.inherited_from.name if self.inherited_from else "None"
         received_from_name = self.received_from.name if self.received_from else "None"
-        return "VerbNetMember: {} ({}) i{}, r{})".format(self.lemma, self.frameset.name,
+        return "VerbNetMember({} ({}) i{}, r{})".format(self.lemma, self.frameset.name,
                                                          inherited_from_name, received_from_name)
 
     def __hash__(self):

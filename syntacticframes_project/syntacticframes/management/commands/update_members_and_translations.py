@@ -17,7 +17,7 @@ from time import gmtime, strftime
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from syntacticframes.models import VerbNetClass, VerbTranslation
+from syntacticframes.models import VerbNetClass, VerbTranslation, VerbNetMember
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -29,7 +29,8 @@ class Command(BaseCommand):
         try:
             with transaction.atomic():
                 for vn_class in VerbNetClass.objects.all():
-                    print(vn_class.name)
+                    when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                    verb_logger.info('{}: {}'.format(when, vn_class.name))
 
                     # Remove duplicates (O(n²) !)
                     for frameset in vn_class.verbnetframeset_set.all():
@@ -42,6 +43,22 @@ class Command(BaseCommand):
                                     when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
                                     verb_logger.info("{}: Removed duplicate {} in {}".format(when, verb, frameset.name))
 
+                    # Remove members that were not moved but copied to parent frameset when actual frameset got hidden
+                    for frameset in vn_class.verbnetframeset_set.all():
+
+                        all_child_members = set()
+                        for child_frameset in frameset.children.all():
+                            all_child_members |= child_frameset.get_all_verbs(VerbNetMember)
+
+                        for member in frameset.verbnetmember_set.filter(inherited_from__isnull=False):
+                            possible_duplicated_list = [m for m in all_child_members if m.lemma == member.lemma]
+                            assert len(possible_duplicated_list) <= 1
+
+                            if len(possible_duplicated_list) == 1:
+
+                                possible_duplicated_list[0].delete()
+                                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                                verb_logger.info("{}: Removed member {} which was already present as {}".format(when, repr(possible_duplicated_list[0]), repr(member)))
 
                     # Update everything
                     vn_class.update_members_and_translations()
