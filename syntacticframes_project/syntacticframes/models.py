@@ -174,6 +174,7 @@ class VerbNetFrameSet(MPTTModel):
             translations_in_subclasses.extend(db_childrenfs.update_translations_aux(ladl_string=new_ladl, lvf_string=new_lvf))
 
         initial_set = {(v.verb, v.category, v.validation_status) for v in self.verbtranslation_set.all()}
+        moved_set = set()
         inferred_verbs = self.verbtranslation_set.filter(validation_status=VerbTranslation.STATUS_INFERRED)
         inferred_verbs.delete()
         manually_validated_verbs = self.verbtranslation_set.exclude(validation_status=VerbTranslation.STATUS_INFERRED)
@@ -207,6 +208,7 @@ class VerbNetFrameSet(MPTTModel):
                             same_verb_below.category = categoryname
                             same_verb_below.category_id = VerbTranslation.CATEGORY_ID[categoryname]
                             same_verb_below.save()
+                            moved_set.add((same_verb_below.verb, same_verb_below.category, same_verb_below.validation_status))
                             translations_in_subclasses = [v for v in translations_in_subclasses if v.verb != french]
                             verb_logger.info("{}: Moved {} up from subclass {} to subclass {} ({} -> {}).".format(
                                 when_deleted, french, previous_subclass.name, self.name, previous_category, categoryname))
@@ -238,7 +240,7 @@ class VerbNetFrameSet(MPTTModel):
         if initial_set - final_set:
             verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
                 when_deleted, self.name, ", ".join(sorted(["{} ({}, {})".format(v, c, s) for v, c, s in initial_set - final_set], key=lambda vcs: vcs[0]))))
-        if final_set - initial_set:
+        if (final_set - initial_set) - moved_set:  # parens for clarity only
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
                 when_added, self.name, ", ".join(sorted(["{} ({}, {})".format(v, c, s) for v, c, s in final_set - initial_set], key=lambda vcs: vcs[0]))))
 
