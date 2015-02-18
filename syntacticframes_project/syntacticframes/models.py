@@ -166,6 +166,22 @@ class VerbNetFrameSet(MPTTModel):
         If you're modifying this function, look at tools.views.errors_for_class
         too which also uses the ladl/lvf inheritance logic."""
 
+        def in_parents(frameset, french, categoryname):
+            # I can't get `get_ancestors` to work, so here's the slow way
+            def get_parents(current_frameset):
+                while current_frameset.parent is not None:
+                    yield current_frameset.parent
+                    current_frameset = current_frameset.parent
+
+            for parent_frameset in get_parents(frameset):
+                for translation in parent_frameset.verbtranslation_set.all():
+                    if translation.verb == french:
+                        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+                        assert categoryname in ['unknown', 'dicovalence'] and translation.category in ['ladl', 'lvf', 'both']
+                        return True
+
+            return False
+
         translations_in_subclasses = []
 
         for db_childrenfs in self.children.filter(removed=False):
@@ -215,10 +231,13 @@ class VerbNetFrameSet(MPTTModel):
 
                 #  2/ this translation was not manually validated at all: add it
                 elif french not in manually_validated_set:
-                    VerbTranslation(
-                        frameset=self, verb=french, origin=originlist,
-                        category=categoryname,
-                        category_id=VerbTranslation.CATEGORY_ID[categoryname]).save()
+                    # Make sure not to add a verb that was already moved up to
+                    # parents in a previous run
+                    if not in_parents(self, french, categoryname):
+                        VerbTranslation(
+                            frameset=self, verb=french, origin=originlist,
+                            category=categoryname,
+                            category_id=VerbTranslation.CATEGORY_ID[categoryname]).save()
                 #  3/ this translation was manually validated but with a different
                 #  status: change the status
                 elif categoryname != manually_validated_set[french]:
@@ -239,10 +258,10 @@ class VerbNetFrameSet(MPTTModel):
 
         if initial_set - final_set:
             verb_logger.info("{}: Removed verbs in subclass {}: {}".format(
-                when_deleted, self.name, ", ".join(sorted(["{} ({}, {})".format(v, c, s) for v, c, s in initial_set - final_set], key=lambda vcs: vcs[0]))))
+                when_deleted, self.name, ", ".join(["{} ({}, {})".format(v, c, s) for v, c, s in sorted(initial_set - final_set, key=lambda vcs: vcs[0])])))
         if (final_set - initial_set) - moved_set:  # parens for clarity only
             verb_logger.info("{}: Added verbs in subclass {}: {}".format(
-                when_added, self.name, ", ".join(sorted(["{} ({}, {})".format(v, c, s) for v, c, s in final_set - initial_set], key=lambda vcs: vcs[0]))))
+                when_deleted, self.name, ", ".join(["{} ({}, {})".format(v, c, s) for v, c, s in sorted(final_set - initial_set, key=lambda vcs: vcs[0])])))
 
         return list(verbs) + translations_in_subclasses
 
@@ -268,7 +287,7 @@ class VerbNetFrameSet(MPTTModel):
         child_members = []
 
         # Children that should get moved up
-        for child_fs in frameset.children.all():
+        for child_fs in frameset.get_descendants():
             for child_member in child_fs.get_all_verbs(VerbNetMember):
                 if child_fs.removed:
                     child_members.append({
@@ -309,7 +328,7 @@ class VerbNetFrameSet(MPTTModel):
         child_translations = []
 
         # Children that should get moved up
-        for child_fs in frameset.children.all():
+        for child_fs in frameset.get_descendants():
             for child_translation in child_fs.get_all_verbs(VerbTranslation):
                 if child_fs.removed and child_translation.validation_status != VerbTranslation.STATUS_INFERRED:
                     wanted_frameset = frameset if child_fs.removed else child_translation.inherited_from

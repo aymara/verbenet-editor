@@ -70,3 +70,4 @@ class Command(BaseCommand):
         else:
             when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
             verb_logger.info("{}: Ended full update of verbs (members and translations)".format(when))
+        verb_logger.info('')
