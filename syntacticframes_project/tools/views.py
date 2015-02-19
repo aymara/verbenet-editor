@@ -4,10 +4,11 @@ import traceback
 import re
 from pathlib import Path
 from collections import defaultdict, OrderedDict
+from distutils.version import LooseVersion
 
 from django.shortcuts import render
 
-from syntacticframes.models import VerbNetFrame, VerbNetClass
+from syntacticframes.models import VerbNetClass, VerbNetFrameSet, VerbNetFrame, VerbTranslation
 from export.export import merge_primary_and_syntax, WrongFrameException
 from parsecorrespondance.parse import UnknownErrorException
 from loadmapping.mappedverbs import translations_for_class
@@ -153,7 +154,7 @@ def get_empty_translations():
     last_lvf = None
     last_ladl = None
 
-    for vn_class in VerbNetClass.objects.prefetch_related('verbnetframeset_set', 'verbnetframeset_set__verbnetmember_set'):
+    for vn_class in VerbNetClass.objects.prefetch_related('verbnetframeset_set', 'verbnetframeset_set__verbnetmember_set').all():
         root_frameset = vn_class.verbnetframeset_set.get(parent=None)
         errors.extend(errors_for_class(root_frameset, root_frameset.ladl_string, root_frameset.lvf_string))
 
@@ -162,4 +163,31 @@ def get_empty_translations():
 def emptytranslations(request):
     return render(request, 'emptytranslations.html', {
         'empty_translations_errors': get_empty_translations(),
+    })
+
+def verbvalidationstatus(request):
+    partially_validated, not_validated = defaultdict(list), defaultdict(list)
+
+    for frameset in VerbNetFrameSet.objects.select_related('verbnet_class', 'verbnet_class__levin_class').prefetch_related('verbtranslation_set').all():
+        if frameset.removed:
+            continue
+
+        translation_list = frameset.verbtranslation_set.all()
+        manually_validated = [t for t in translation_list if t.validation_status != VerbTranslation.STATUS_INFERRED and t.category in ['ladl', 'lvf', 'both']]
+        inferred           = [t for t in translation_list if t.validation_status == VerbTranslation.STATUS_INFERRED and t.category in ['ladl', 'lvf', 'both']]
+
+        if manually_validated and inferred:
+            partially_validated[frameset.verbnet_class.levin_class].append(frameset.name)
+        if inferred and not manually_validated:
+            not_validated[frameset.verbnet_class.levin_class].append(frameset.name)
+
+    for levin in partially_validated:
+        partially_validated[levin] = sorted(partially_validated[levin], key=lambda k: LooseVersion(k))
+
+    for levin in not_validated:
+        not_validated[levin] = sorted(not_validated[levin], key=lambda k: LooseVersion(k))
+
+    return render(request, 'verbvalidationstatus.html', {
+        'partially_validated': OrderedDict(sorted(partially_validated.items(), key=lambda lv: LooseVersion(lv[0].number))),
+        'not_validated': OrderedDict(sorted(not_validated.items(), key=lambda lv: LooseVersion(lv[0].number))),
     })

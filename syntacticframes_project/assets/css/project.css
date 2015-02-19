@@ -253,3 +253,8 @@ input.inedit[type='text'] { margin-bottom: 0 }
 .active_letter a {
     color: white;
 }
+
+/* Verb validation status */
+.unvalidatedverbs td.levin {
+    width: 30%;
+}

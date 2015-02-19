@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Classes et sous-classes où les verbes ont étés partiellement validés{% endblock %}
+
+{% block all %}
+
+<div class="container">
+
+    <h2>Classes et sous-classes où les verbes ont étés partiellement
+        validés</h2>
+
+    <table class="table unvalidatedverbs">
+        <tr><th>Classe de Levin</th><th>Sous-classes Verb∋Net</th></tr>
+        {% for levin, fs_list in partially_validated.items %}
+        <tr>
+            <td class="levin"><a href="/class/{{levin.number}}/">{{levin}}</a></td>
+            <td>
+                {% for frameset in fs_list %}
+                <a href="/class/{{levin.number}}/#{{frameset}}">{{frameset}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Classes et sous-classes où les verbes n'ont pas été validés du tout</h2>
+
+    <table class="table unvalidatedverbs">
+        <tr><th>Classe de Levin</th><th>Sous-classes Verb∋Net</th></tr>
+        {% for levin, fs_list in not_validated.items %}
+        <tr>
+            <td class="levin"><a href="/class/{{levin.number}}/">{{levin}}</a></td>
+            <td>
+                {% for frameset in fs_list %}
+                <a href="/class/{{levin.number}}/#{{frameset}}">{{frameset}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock all %}
+
