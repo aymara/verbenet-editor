@@ -28,7 +28,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/login/">
+            <li><a href="/login/{% if not user.is_authenticated %}?next={{request.path}}{% endif %}">
             {% if user.is_authenticated %}
               {{ user.username }}
             {% else %}

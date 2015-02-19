@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseForbidden
 from django.template import RequestContext, loader
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
@@ -120,22 +120,22 @@ def login(request):
                             password=request.POST['password'])
         if user is not None:
             auth_login(request, user)
-            return redirect('/')
+            if 'next' in request.GET:
+                return redirect(request.GET['next'])
+            else:
+                return redirect('/')
         else:
             messages.warning(request, 'Login invalide, merci de réessayer !')
             form = LoginForm(request.POST)
 
     if request.user.is_authenticated():
-         template = loader.get_template('login_ok.html')
-         context = RequestContext(request, {})
+        return render(request, 'login_ok.html', {})
     else:
-         template = loader.get_template('login_form.html')
-         context = RequestContext(request, {
-             'form': form,
-         })
+        context = {'form': form}
+        if 'next' in request.GET:
+            context['next'] = request.GET['next']
 
-    context.update(csrf(request))
-    return HttpResponse(template.render(context))
+        return render(request, 'login_form.html', context)
 
 
 @login_required
