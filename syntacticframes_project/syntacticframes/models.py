@@ -58,8 +58,8 @@ class VerbNetClass(models.Model):
 
     def update_members_and_translations(self):
         root_frameset = self.verbnetframeset_set.get(parent=None)
-        root_frameset.update_members(root_frameset)
-        root_frameset.update_manual_translations(root_frameset)
+        root_frameset.update_members()
+        root_frameset.update_manual_translations()
         root_frameset.update_translations()
 
 
@@ -116,6 +116,17 @@ class VerbNetFrameSet(MPTTModel):
         self.save()
         self.verbnet_class.update_members_and_translations()
 
+    # I can't get `get_ancestors` to work, so here's the slow way
+    def get_parents(self, include_self=False):
+        current_frameset = self
+
+        if include_self:
+            yield self
+
+        while current_frameset.parent is not None:
+            yield current_frameset.parent
+            current_frameset = current_frameset.parent
+
     def move_members_and_verbs_to(self, other_frameset):
         # We don't want to have received_from = self, so prevent moving frames
         # to ourself. With normal users this shouldn't happen anyway as the UI
@@ -167,13 +178,7 @@ class VerbNetFrameSet(MPTTModel):
         too which also uses the ladl/lvf inheritance logic."""
 
         def in_parents(frameset, french, categoryname):
-            # I can't get `get_ancestors` to work, so here's the slow way
-            def get_parents(current_frameset):
-                while current_frameset.parent is not None:
-                    yield current_frameset.parent
-                    current_frameset = current_frameset.parent
-
-            for parent_frameset in get_parents(frameset):
+            for parent_frameset in frameset.get_parents():
                 for translation in parent_frameset.verbtranslation_set.all():
                     if translation.verb == french:
                         when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
@@ -276,7 +281,7 @@ class VerbNetFrameSet(MPTTModel):
 
         return objects
 
-    def update_members(self, frameset):
+    def update_members(self):
         """Moves members according to hidden/shown classes
 
         If a subclass was hidden, all members should show up in the first
@@ -284,37 +289,36 @@ class VerbNetFrameSet(MPTTModel):
         was moved up should go down again."""
         verb_logger = logging.getLogger('verbs')
 
-        child_members = []
+        members_to_move = []
+        for member in self.get_all_verbs(VerbNetMember):
+            inherited_from = member.inherited_from if member.inherited_from else member.frameset
 
-        # Children that should get moved up
-        for child_fs in frameset.get_descendants():
-            for child_member in child_fs.get_all_verbs(VerbNetMember):
-                if child_fs.removed:
-                    child_members.append({
-                        'member': child_member,
-                        'wanted_frameset': frameset,
-                        'inherited_from': child_member.frameset})
+            best_frameset = None
+            for parent in inherited_from.get_parents(include_self=True):
+                if not parent.removed:
+                    best_frameset = parent
+                    break
 
-        # Ex-children that should get moved down again
-        for member in frameset.verbnetmember_set.all():
-            if member.inherited_from is not None and member.inherited_from.removed is False:
-                child_members.append({
+            if best_frameset is not None and member.frameset != best_frameset:
+                members_to_move.append({
                     'member': member,
-                    'wanted_frameset': member.inherited_from,
-                    'inherited_from': None})
+                    'inherited_from': inherited_from,
+                    'wanted_frameset': best_frameset})
 
-        for add_member in child_members:
+        for add_member in members_to_move:
             member = add_member['member']
-            if member.frameset != add_member['wanted_frameset']:
-                previous_frameset = member.frameset
-                member.frameset = add_member['wanted_frameset']
+            previous_frameset = member.frameset
+            member.frameset = add_member['wanted_frameset']
+            if member.frameset == add_member['inherited_from']:
+                member.inherited_from = None
+            else:
                 member.inherited_from = add_member['inherited_from']
-                member.save()
-                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Moved member {} from {} to {}".format(
-                    when, member.lemma, previous_frameset, member.frameset))
+            member.save()
+            when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+            verb_logger.info("{}: Moved member {} from {} to {}".format(
+                when, member.lemma, previous_frameset, member.frameset))
 
-    def update_manual_translations(self, frameset):
+    def update_manual_translations(self):
         """Moves manual translations according to hidden/shown classes
 
         We treat manual translations exactly as members in self.update_members
@@ -325,32 +329,35 @@ class VerbNetFrameSet(MPTTModel):
         link).
         """
         verb_logger = logging.getLogger('verbs')
-        child_translations = []
 
-        # Children that should get moved up
-        for child_fs in frameset.get_descendants():
-            for child_translation in child_fs.get_all_verbs(VerbTranslation):
-                if child_fs.removed and child_translation.validation_status != VerbTranslation.STATUS_INFERRED:
-                    wanted_frameset = frameset if child_fs.removed else child_translation.inherited_from
-                    child_translations.append((child_translation, wanted_frameset, child_translation.frameset))
+        translations_to_move = []
+        for translation in self.get_all_verbs(VerbTranslation):
+            if translation.validation_status == VerbTranslation.STATUS_INFERRED:
+                continue
 
-        # Ex-children that should get moved down again
-        for translation in frameset.verbtranslation_set.all():
-            if translation.validation_status != VerbTranslation.STATUS_INFERRED:
-                if translation.inherited_from is not None and translation.inherited_from.removed is False:
-                    child_translations.append((translation, translation.inherited_from, None))
+            inherited_from = translation.inherited_from if translation.inherited_from else translation.frameset
 
-        for translation, wanted_frameset, wanted_inherited_from in child_translations:
-            if translation.frameset != wanted_frameset:
-                previous_frameset = translation.frameset
+            best_frameset = None
+            for parent in inherited_from.get_parents(include_self=True):
+                if not parent.removed:
+                    best_frameset = parent
+                    break
 
-                translation.frameset = wanted_frameset
-                translation.inherited_from = wanted_inherited_from
-                translation.save()
+            if best_frameset is not None and translation.frameset != best_frameset:
+                translations_to_move.append({
+                    'translation': translation,
+                    'inherited_from': inherited_from,
+                    'wanted_frameset': best_frameset})
 
-                when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                verb_logger.info("{}: Moved translation {} from {} to {}".format(
-                    when, translation.verb, previous_frameset, translation.frameset))
+        for add_translation in translations_to_move:
+            translation = add_translation['translation']
+            previous_frameset = translation.frameset
+            translation.frameset = add_translation['wanted_frameset']
+            translation.inherited_from = add_translation['inherited_from']
+            translation.save()
+            when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
+            verb_logger.info("{}: Moved translation {} from {} to {}".format(
+                when, translation.verb, previous_frameset, translation.frameset))
 
     def update_roles(self):
         role_list = self.verbnetrole_set.all()
