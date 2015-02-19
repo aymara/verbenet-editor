@@ -47,7 +47,7 @@
                         {% for text, class_name in node.lvf_parts %}
                             {{ text }}
                             {% if class_name %}
-                                <a href="http://rali.iro.umontreal.ca/LVF+1/classe/{{class_name}}.html" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
+                                <a href="{{class_name|lvf_link}}" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
                             {% endif %}
                         {% endfor %}
                     {% endspaceless %}</p>

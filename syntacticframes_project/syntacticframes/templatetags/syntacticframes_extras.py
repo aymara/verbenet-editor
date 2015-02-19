@@ -25,3 +25,13 @@ def version(path):
 @register.filter
 def highlight(text, word):
     return mark_safe(text.replace(word, "<span class='highlight'>%s</span>" % word))
+
+@register.filter
+def lvf_link(lvf_class):
+    base_url = 'http://rali.iro.umontreal.ca/LVF+1/classe'
+    if len(lvf_class) in [1, 2]:
+        return '{}/index.html#{}'.format(base_url, lvf_class)
+    elif len(lvf_class) == 3:
+        return '{}/{}.html'.format(base_url, lvf_class)
+    elif len(lvf_class) == 5:
+        return '{}/{}.html#{}_{}'.format(base_url, lvf_class[0:3], lvf_class[0:3], lvf_class[4])
