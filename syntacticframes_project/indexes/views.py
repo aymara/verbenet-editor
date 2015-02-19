@@ -43,6 +43,9 @@ def ladl(request):
     inversed_ladl = {ladl: defaultdict(list) for ladl in parse.ladl_list if not ladl.startswith('C_')}
 
     for fs in VerbNetFrameSet.objects.select_related('verbnet_class', 'verbnet_class__levin_class').all():
+        if fs.removed:
+            continue
+
         ladl_list = get_ladl_classes(parse.FrenchMapping('LADL', fs.ladl_string).parse_tree)
         for ladl in ladl_list:
             levin_number = fs.verbnet_class.levin_class.number
@@ -70,6 +73,9 @@ def members_letter(request, letter):
     member_index = defaultdict(lambda: defaultdict(list))
 
     for fs in VerbNetFrameSet.objects.prefetch_related('verbnet_class', 'verbnet_class__levin_class', Prefetch('verbtranslation_set', queryset=VerbTranslation.objects.filter(verb__istartswith=letter), to_attr='filtered_verbs')):
+        if fs.removed:
+            continue
+
         for verbtranslation in VerbTranslation.all_valid(fs.filtered_verbs):
             member_index[verbtranslation.verb][fs.verbnet_class.levin_class.number].append(fs)
 

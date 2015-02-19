@@ -25,7 +25,7 @@
             <td>
             {% for levin, frameset_list in levin_list.items %}
                 {% for fs in frameset_list %}
-                <a class="fs_removed_{{fs.removed}}" href="/class/{{levin}}/#{{fs.name}}">{{ fs.name }}</a>{% if not forloop.last %}, {% endif %}
+                <a href="/class/{{levin}}/#{{fs.name}}">{{ fs.name }}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             {% if not forloop.last %} &mdash; {% endif %}
             {% endfor %}
