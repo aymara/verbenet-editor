@@ -59,9 +59,15 @@
             {% endif %}
         </h1>
 
+        <p>Accès rapide :
+        {% for classe in verbnet_classes %}
+            <a href="#{{classe.name}}">{{classe.name}}</a> {% if not forloop.last %}&mdash;{% endif %}
+        {% endfor %}
+        </p>
+
         {% if user.is_authenticated and duplicate_translations %}
             <div class="well duplicatetranslations">
-                <p>Voici les verbes validés dans plusieurs classes :</p>
+                <p>Verbes validés dans plusieurs classes :</p>
                 <ul>
                 {% for translation, frameset_list in duplicate_translations %}
                     <li>{{ translation }} :

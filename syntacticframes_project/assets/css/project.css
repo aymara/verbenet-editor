@@ -65,6 +65,7 @@ article { padding-top: 1em; }
 /* Levin class display */
 h1 {
     text-align: center;
+    margin-bottom: 1em;
 }
 h1.TRANSLATED > .text {
     padding: 0 0.5em;
@@ -222,7 +223,7 @@ input.inedit[type='text'] { margin-bottom: 0 }
 
 /* Duplicated translations */
 .duplicatetranslations {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 .duplicatetranslations ul {
     column-count: auto;
