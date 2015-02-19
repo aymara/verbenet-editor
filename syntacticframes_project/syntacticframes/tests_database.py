@@ -247,8 +247,9 @@ class TestUpdateTranslations(TestCase):
         self.grandchild2_frameset.save()
         self.verbnet_class.update_members_and_translations()
 
-        # Test that rester (a translation of settle, stay and stop) is only in
-        # the most specific class (child, no longer grand child)
+        # Test that the two translations of rester (a translation of settle,
+        # stay, stop and remain) are only in the most specific class (child, no
+        # longer the two grand children)
         for rester_child in self.child_frameset.verbtranslation_set.filter(verb='rester'):
             self.assertEqual(rester_child.verb, 'rester')
             self.assertEqual(rester_child.category, 'lvf')

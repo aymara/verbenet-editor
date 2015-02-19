@@ -181,8 +181,7 @@ class VerbNetFrameSet(MPTTModel):
             for parent_frameset in frameset.get_parents():
                 for translation in parent_frameset.verbtranslation_set.all():
                     if translation.verb == french:
-                        when = strftime("%d/%m/%Y %H:%M:%S", gmtime())
-                        assert categoryname in ['unknown', 'dicovalence'] and translation.category in ['ladl', 'lvf', 'both']
+                        #assert categoryname in ['unknown', 'dicovalence'] and translation.category in ['ladl', 'lvf', 'both']
                         return True
 
             return False
@@ -238,7 +237,7 @@ class VerbNetFrameSet(MPTTModel):
                 elif french not in manually_validated_set:
                     # Make sure not to add a verb that was already moved up to
                     # parents in a previous run
-                    if not in_parents(self, french, categoryname):
+                    if not (in_parents(self, french, categoryname) and categoryname in ['unknown', 'dicovalence']):
                         VerbTranslation(
                             frameset=self, verb=french, origin=originlist,
                             category=categoryname,
