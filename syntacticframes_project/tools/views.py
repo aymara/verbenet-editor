@@ -5,8 +5,7 @@ import re
 from pathlib import Path
 from collections import defaultdict, OrderedDict
 
-from django.http import HttpResponse
-from django.template import RequestContext, loader
+from django.shortcuts import render
 
 from syntacticframes.models import VerbNetFrame, VerbNetClass
 from export.export import merge_primary_and_syntax, WrongFrameException
@@ -38,15 +37,13 @@ def errors(request):
             issues['{} ({}:{})'.format(exception, filename, line)].append(db_frame)
 
 
-    template = loader.get_template('errors.html')
-    context = RequestContext(request, {
+    return render(request, 'errors.html', {
         'issues': OrderedDict(sorted(issues.items(), reverse=True, key=lambda kv: len(kv[1]))),
         'frames_ok': frames_ok,
         'frames_total': frames_total,
         'ratio': '{:.1%}'.format(frames_ok / frames_total),
     })
 
-    return HttpResponse(template.render(context))
 
 def get_prep(roles_syntax):
     prep_list = re.findall(r"{[-\w/ +']+}", roles_syntax)
@@ -58,10 +55,12 @@ def get_prep(roles_syntax):
         else:
             yield prep.strip('{}')
 
+
 def get_restr(roles_syntax):
     restr_list = re.findall(r'<.+?>', roles_syntax)
     for restr in restr_list:
         yield restr
+
 
 def get_roles(roles_syntax):
     split_list = re.findall('[a-zA-Z-]+', roles_syntax)
@@ -106,11 +105,9 @@ def distributions(request):
     for distribution in distribution_dict:
         distribution_dict[distribution] = OrderedDict(sorted(distribution_dict[distribution].items(), key=lambda kv: (len(kv[1]), kv[0]), reverse=True))
 
-    template = loader.get_template('distributions.html')
-    context = RequestContext(request, {
+    return render(request, 'distributions.html', {
         'distributions': distribution_dict
     })
-    return HttpResponse(template.render(context))
 
 
 def url_of_fs(fs):
@@ -151,7 +148,7 @@ def errors_for_class(frameset, ladl, lvf):
     return errors
 
 
-def empty_translations():
+def get_empty_translations():
     errors = []
     last_lvf = None
     last_ladl = None
@@ -163,11 +160,6 @@ def empty_translations():
     return errors
 
 def emptytranslations(request):
-    empty_translations_errors = empty_translations()
-
-    template = loader.get_template('emptytranslations.html')
-    context = RequestContext(request, {
-        'empty_translations_errors': empty_translations_errors,
+    return render(request, 'emptytranslations.html', {
+        'empty_translations_errors': get_empty_translations(),
     })
-
-    return HttpResponse(template.render(context))
