@@ -35,3 +35,7 @@ def lvf_link(lvf_class):
         return '{}/{}.html'.format(base_url, lvf_class)
     elif len(lvf_class) == 5:
         return '{}/{}.html#{}_{}'.format(base_url, lvf_class[0:3], lvf_class[0:3], lvf_class[4])
+
+@register.filter
+def paragon(vn_class):
+    return vn_class.split('-')[0]

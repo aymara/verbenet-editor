@@ -14,7 +14,6 @@ body {
 }
 
 .navbar-inverse .navbar-header a { color: #eee}
-
 .left { float: left }
 .right { float: right }
 
@@ -256,4 +255,26 @@ input.inedit[type='text'] { margin-bottom: 0 }
 /* Verb validation status */
 .unvalidatedverbs td.levin {
     width: 30%;
+}
+
+/* Hierarchy */
+.hierarchy li {
+    list-style-type: disc;
+}
+.hierarchy ul {
+    margin: 0;
+}
+
+.hierarchy_content {
+    -moz-column-width: 250px;
+    -webkit-column-width: 250px;
+    margin-bottom: 1em;
+}
+.hierarchy_content .levin_class {
+    display: inline-block;
+    min-width: 250px;
+    padding: 0 1em;
+}
+.hierarchy_content .levin_class h3 a {
+    color: black;
 }

@@ -4,11 +4,11 @@ from collections import defaultdict, OrderedDict
 import locale
 
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template import RequestContext, loader
 from django.db.models import Prefetch
 
-from syntacticframes.models import VerbNetFrameSet, VerbTranslation
+from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from parsecorrespondance import parse
 
 def ladl(request):
@@ -96,3 +96,9 @@ def members_letter(request, letter):
     })
 
     return HttpResponse(template.render(context))
+
+def hierarchy(request):
+    levin_class_list = LevinClass.objects.prefetch_related('verbnetclass_set', 'verbnetclass_set__verbnetframeset_set')
+    return render(request, 'hierarchy.html', {
+        'levin_class_list': sorted(levin_class_list, key=lambda l: LooseVersion(l.number)),
+    })

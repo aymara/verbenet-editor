@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load syntacticframes_extras %}
+{% load mptt_tags %}
+
+{% block title %}Hiérarchie{% endblock %}
+
+{% block all %}
+
+<div class="container hierarchy">
+    <h2>Hiérarchie</h2>
+
+    <div class="hierarchy_content">
+    {% for levin_class in levin_class_list %}
+        <div class="levin_class">
+        <h3><a href="/class/{{levin_class.number}}">{{ levin_class }}</a></h3>
+            {% for verbnet_class in levin_class.verbnetclass_set.all %}
+                {% recursetree verbnet_class.verbnetframeset_set.all %}
+                <ul>
+                    <li><a href="/class/{{levin_class.number}}#{{node.name}}">{{verbnet_class.name|paragon}}-{{node.name}}</a></li>
+
+                    {# Rinse and repeat with children #}
+                    {% if not node.is_leaf_node %}
+                        {{ children }}
+                    {% endif %}
+                </ul>
+                {% endrecursetree %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock all %}
