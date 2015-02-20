@@ -104,24 +104,19 @@ def hierarchy(request):
 
 
 def verbnettoladl(request):
-    verbnet_ladl_string_dict = defaultdict(set)
+    verbnet_ladl_parts_list = []
     for vn_class in VerbNetClass.objects.prefetch_related(
             'verbnetframeset_set', 'levin_class').all():
+        frameset_set = set()
         for frameset in vn_class.verbnetframeset_set.all():
             if not frameset.ladl_string:
                 continue
 
-            verbnet_ladl_string_dict[vn_class].add(frameset.ladl_string)
+            frameset_set.add(frameset.ladl_string)
 
-    verbnet_ladl_parts_dict = {}
-    for vn_class in verbnet_ladl_string_dict:
-        strings = verbnet_ladl_string_dict[vn_class]
-        verbnet_ladl_parts_dict[vn_class] = [parse.FrenchMapping('LADL', ladl).flat_parse()
-                                             for ladl in strings]
-
-    verbnet_ladl_parts_dict = OrderedDict(sorted(
-        verbnet_ladl_parts_dict.items(),
-        key=lambda kv: LooseVersion(kv[0].name.split('-')[1])))
+        frameset_parts_list = [parse.FrenchMapping('LADL', ladl).flat_parse()
+                               for ladl in frameset_set]
+        verbnet_ladl_parts_list.append((vn_class, frameset_parts_list))
 
     return render(request, 'verbnettoladl.html', {
-        'verbnet_ladl_dict': verbnet_ladl_parts_dict})
+        'verbnet_ladl_dict': OrderedDict(verbnet_ladl_parts_list)})

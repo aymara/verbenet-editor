@@ -41,6 +41,7 @@ class VerbNetClass(models.Model):
     levin_class = models.ForeignKey(LevinClass)
     name = models.CharField(max_length=100)
     comment = models.TextField(max_length=100000, blank=True)
+    position = models.PositiveSmallIntegerField()
 
     def number(self):
         class_number = self.name.split('-')[1]
@@ -51,7 +52,7 @@ class VerbNetClass(models.Model):
 
     class Meta:
         # Order at least by Levin class and alphabetical order
-        ordering = ['levin_class', 'name']
+        ordering = ['position']
 
     def __str__(self):
         return self.name

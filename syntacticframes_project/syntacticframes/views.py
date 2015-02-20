@@ -67,8 +67,6 @@ def classe(request, class_number):
         'verbnetframeset_set__verbnetrole_set',
         'verbnetframeset_set__verbnetframe_set',
     )
-    verbnet_classes = sorted(
-        verbnet_classes, key=lambda v: LooseVersion(v.name.split('-')[1]))
 
     template = loader.get_template('index.html')
     context = RequestContext(request, {
@@ -87,8 +85,6 @@ def vn_class(request, class_name):
     verbnet_class = VerbNetClass.objects.get(name=class_name)
     active_class = verbnet_class.levin_class
     verbnet_classes = active_class.verbnetclass_set.all().prefetch_related('verbnetframeset_set')
-    verbnet_classes = sorted(
-        verbnet_classes, key=lambda v: LooseVersion(v.name.split('-')[1]))
 
     template = loader.get_template('classe.html')
     context = RequestContext(request, {
