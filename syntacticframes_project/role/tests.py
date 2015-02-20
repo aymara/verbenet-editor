@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from role.parserole import ParsedRole
+from role.parserole import ParsedRole, BadRoleException
 
 
 class TestRoleParses(TestCase):
@@ -71,7 +71,7 @@ class TestRoleParses(TestCase):
         with self.assertRaises(AttributeError):
             ParsedRole('  ')
 
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(BadRoleException):
             ParsedRole('Agent[+b]')
 
         with self.assertRaises(AssertionError):

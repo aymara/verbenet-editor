@@ -9,6 +9,15 @@ ROLE_LIST = ['Agent', 'Asset', 'Attribute', 'Beneficiary', 'Cause', 'Co-Agent',
 'Source', 'Stimulus', 'Theme', 'Time', 'Topic', 'Trajectory', 'Value']
 
 
+class BadRoleException(Exception):
+    def __init__(self, error, role):
+        self.error = error
+        self.role = role
+
+    def __str__(self):
+        return '{} : {}'.format(self.role, self.error)
+
+
 class ParsedRole(object):
     """
     Stores role name and selection restrictions
@@ -23,7 +32,8 @@ class ParsedRole(object):
             assert space is None
             self.selrestrs = {}
         else:
-            assert space == ' '
+            if not space:
+                raise BadRoleException("Il manque un espace entre le rôle ({}) et la restriction ({})".format(self.role, selrestrs_str), role_str)
             self.selrestrs = self.selrestrs_tree(selrestrs_str)
 
     def split_selrestr(self, selrestrs_str):
