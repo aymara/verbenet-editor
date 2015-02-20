@@ -157,10 +157,13 @@ class VerbNetFrameSet(MPTTModel):
         # Ensure new translations are added
         other_frameset.verbnet_class.update_members_and_translations()
 
-    def validate_verbs(self, category):
+    def change_status(self, category, new_status):
         for verb_translation in self.verbtranslation_set.filter(category=category):
-            verb_translation.validation_status = VerbTranslation.STATUS_VALID
+            verb_translation.validation_status = new_status
             verb_translation.save()
+
+    def validate_verbs(self, category):
+        self.change_status(category, VerbTranslation.STATUS_VALID)
 
     def update_translations(self):
         self.update_translations_aux(self.ladl_string, self.lvf_string)

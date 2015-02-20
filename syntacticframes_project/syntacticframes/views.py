@@ -380,8 +380,14 @@ def validate(request):
             db_levin_class.save()
         elif request.POST['model'] == 'VerbNetFrameSetVerb':
             category = request.POST['category']
+            new_status = request.POST['new_status']
             frameset_name = request.POST['frameset_name']
-            VerbNetFrameSet.objects.get(name=frameset_name).validate_verbs(category)
+            js_to_enum = {
+                'VALID': VerbTranslation.STATUS_VALID,
+                'WRONG': VerbTranslation.STATUS_WRONG,
+                'INFERRED': VerbTranslation.STATUS_INFERRED
+            }
+            VerbNetFrameSet.objects.get(name=frameset_name).change_status(category, js_to_enum[new_status])
         return HttpResponse('ok')
 
 @login_required

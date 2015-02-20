@@ -253,7 +253,7 @@ $(document).ready(function() {
             var is_toggle_verb_validity = settings.url.indexOf('/togglevalidity') == 0;
             var is_lvf_or_ladl = settings.data != undefined && (settings.data.indexOf("lvf_string") >= 0 || settings.data.indexOf("ladl_string") >= 0);
 
-            if(is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove_role || is_validate_verbs || is_toggle_verb_validity) {
+            if (is_vn_class || (is_update && !is_lvf_or_ladl) || is_remove_role || is_validate_verbs || is_toggle_verb_validity) {
                 $("#ajax-loading").hide();
                 $("#ajax-ok").show();
                 clearTimeout(previous_timeout);
@@ -279,10 +279,37 @@ $(document).ready(function() {
             var category = that.data('verb-category');
 
             var verbs = that.closest('.subclass').find('span.translation').filter('.' + category);
-            verbs.removeClass('INFERRED').addClass('VALID');
+            statuses = {'VALID': 0, 'INFERRED': 0, 'WRONG': 0};
+            verbs.each(function() {
+                var class_list = $(this).attr('class').split(' ');
+                for(var i = 0; i < class_list.length; i++) {
+                    if (['VALID', 'INFERRED', 'WRONG'].indexOf(class_list[i]) >= 0) {
+                        statuses[class_list[i]] += 1;
+                    }
+                }
+            });
+
+            var new_status = '';
+            if (statuses['VALID'] > 0 && statuses['WRONG'] === 0 && statuses['INFERRED'] === 0) {
+                new_status = 'WRONG';
+            } else if (statuses['WRONG'] > 0 && statuses['INFERRED'] == 0 && statuses['VALID'] == 0) {
+                new_status = 'INFERRED';
+            } else if (statuses['INFERRED'] > 0 && statuses['VALID'] == 0 && statuses['WRONG'] == 0) {
+                new_status = 'VALID';
+            } else {
+                new_status = 'VALID';
+            }
+
             verbs.each(function() {
                 if ($(this).parent().is("del")) {
                     $(this).unwrap();
+                }
+                $(this).removeClass('VALID');
+                $(this).removeClass('WRONG');
+                $(this).removeClass('INFERRED');
+                $(this).addClass(new_status);
+                if (new_status == 'WRONG') {
+                    $(this).wrap('<del></del>');
                 }
             });
 
@@ -293,6 +320,7 @@ $(document).ready(function() {
                     model: 'VerbNetFrameSetVerb',
                     frameset_name: that.data('frameset_id'),
                     category: category,
+                    new_status: new_status,
                 }
             });
 
