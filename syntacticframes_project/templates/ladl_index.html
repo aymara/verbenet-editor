@@ -10,10 +10,10 @@
     <h2>Index inversé des tables du LADL</h2>
 
     <table class="table ladlindex">
-        <tr><th>Classe LADL</th><th>Classe Verb∋Net</th></tr>
+        <tr><th>Table LADL</th><th>Classe Verb∋Net</th></tr>
         {% for ladl, group in inversed_ladl.items %}
         <tr>
-            <td><p class="ladl">{{ladl}} <a class="external" href="/public/verbes-html/V_{{ladl}}.lgt.html"><span class="glyphicon glyphicon-share-alt"></span></a></p></td>
+            <td class="ladl">{{ladl}} <a class="external" href="/public/verbes-html/V_{{ladl}}.lgt.html"><span class="glyphicon glyphicon-share-alt"></span></a></td>
             <td>
             {% for ladl_number, ladl_fs_list in group.items %}
                     {% for frameset in ladl_fs_list %}

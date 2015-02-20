@@ -3,13 +3,12 @@ from distutils.version import LooseVersion
 from collections import defaultdict, OrderedDict
 import locale
 
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.template import RequestContext, loader
 from django.db.models import Prefetch
 
 from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from parsecorrespondance import parse
+
 
 def ladl(request):
     def get_ladl_classes(parse_tree):
@@ -59,20 +58,23 @@ def ladl(request):
 
     inversed_ladl = OrderedDict(sorted(inversed_ladl.items(), key=lambda kv: ladl_sort_key(kv[0])))
 
-    template = loader.get_template('ladl_index.html')
-    context = RequestContext(request, {
+    return render(request, 'ladl_index.html', {
         'inversed_ladl': inversed_ladl,
     })
 
-    return HttpResponse(template.render(context))
 
 def members(request):
     return redirect('/index/members/a')
 
+
 def members_letter(request, letter):
     member_index = defaultdict(lambda: defaultdict(list))
 
-    for fs in VerbNetFrameSet.objects.prefetch_related('verbnet_class', 'verbnet_class__levin_class', Prefetch('verbtranslation_set', queryset=VerbTranslation.objects.filter(verb__istartswith=letter), to_attr='filtered_verbs')):
+    for fs in VerbNetFrameSet.objects.prefetch_related(
+            'verbnet_class', 'verbnet_class__levin_class',
+            Prefetch('verbtranslation_set',
+                     queryset=VerbTranslation.objects.filter(verb__istartswith=letter),
+                     to_attr='filtered_verbs')):
         if fs.removed:
             continue
 
@@ -85,17 +87,14 @@ def members_letter(request, letter):
         member_index[verb] = OrderedDict(sorted(member_index[verb].items(), key=lambda kv: LooseVersion(kv[0])))
     member_index = OrderedDict(sorted(member_index.items(), key=lambda kv: locale.strxfrm(kv[0])))
 
-    template = loader.get_template('member_index.html')
-    context = RequestContext(request, {
+    return render(request, 'member_index.html', {
         'member_index': member_index,
         'active_letter': letter,
-        'letter_list': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-            'y', 'z']
-
+        'letter_list': [
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     })
 
-    return HttpResponse(template.render(context))
 
 def hierarchy(request):
     levin_class_list = LevinClass.objects.prefetch_related('verbnetclass_set', 'verbnetclass_set__verbnetframeset_set')
