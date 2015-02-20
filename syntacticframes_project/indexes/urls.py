@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^members/$', views.members),
     url(r'^members/(?P<letter>\w)/$', views.members_letter),
     url(r'^hierarchy/$', views.hierarchy),
+    url(r'^verbnettoladl/$', views.verbnettoladl),
 )

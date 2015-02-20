@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Index Verb∋Net → LADL{% endblock %}
+
+{% block all %}
+
+<div class="container hierarchy">
+    <h2>Index Verb∋Net → LADL</h2>
+
+    <table class="table">
+        <tr><th>Classe VerbNet</th><th>Table LADL</th></tr>
+        {% for vn_class, ladl_list in verbnet_ladl_dict.items %}
+        <tr>
+            <td><a href="/class/{{ vn_class.levin_class.number }}#{{ vn_class.name }}">{{ vn_class.name }}</a></td>
+            <td class="ladl">
+            {% for ladl_parts in ladl_list %}
+                {% for text, class_name in ladl_parts %}
+                    {{ text }}
+                    {% if class_name %}
+                        <a href="/public/verbes-html/V_{{class_name}}.lgt.html" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
+                    {% endif %}
+                {% endfor %}
+                {% if not forloop.last %} &mdash; {% endif %}
+            {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock all %}
+

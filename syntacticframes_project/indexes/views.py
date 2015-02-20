@@ -6,7 +6,7 @@ import locale
 from django.shortcuts import redirect, render
 from django.db.models import Prefetch
 
-from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
+from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbTranslation
 from parsecorrespondance import parse
 
 
@@ -101,3 +101,27 @@ def hierarchy(request):
     return render(request, 'hierarchy.html', {
         'levin_class_list': sorted(levin_class_list, key=lambda l: LooseVersion(l.number)),
     })
+
+
+def verbnettoladl(request):
+    verbnet_ladl_string_dict = defaultdict(set)
+    for vn_class in VerbNetClass.objects.prefetch_related(
+            'verbnetframeset_set', 'levin_class').all():
+        for frameset in vn_class.verbnetframeset_set.all():
+            if not frameset.ladl_string:
+                continue
+
+            verbnet_ladl_string_dict[vn_class].add(frameset.ladl_string)
+
+    verbnet_ladl_parts_dict = {}
+    for vn_class in verbnet_ladl_string_dict:
+        strings = verbnet_ladl_string_dict[vn_class]
+        verbnet_ladl_parts_dict[vn_class] = [parse.FrenchMapping('LADL', ladl).flat_parse()
+                                             for ladl in strings]
+
+    verbnet_ladl_parts_dict = OrderedDict(sorted(
+        verbnet_ladl_parts_dict.items(),
+        key=lambda kv: LooseVersion(kv[0].name.split('-')[1])))
+
+    return render(request, 'verbnettoladl.html', {
+        'verbnet_ladl_dict': verbnet_ladl_parts_dict})
