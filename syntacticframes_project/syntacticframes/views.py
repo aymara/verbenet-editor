@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
+from django.core.mail import mail_managers
 from django import forms
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
@@ -17,7 +18,7 @@ from time import gmtime, strftime
 from .models import (LevinClass, VerbNetClass, VerbTranslation,
                      VerbNetFrameSet, VerbNetFrame, VerbNetRole,
                      VerbNetMember)
-from role.parserole import ParsedRole
+from role import parserole
 from parsecorrespondance.parse import ParseErrorException
 
 logger = logging.getLogger('database')
@@ -138,6 +139,33 @@ def login(request):
         return render(request, 'login_form.html', context)
 
 
+def label_forbidden(role_label, frameset_id=None, role_id=None):
+    assert frameset_id is None or role_id is None
+    message = None
+
+    try:
+        parserole.ParsedRole(role_label)  # check if role is well-formed
+    except parserole.BadRoleException as e:
+        message = str(e)
+    except (AssertionError, AttributeError) as e:
+        message = '"{}" n\'est pas un rôle valide.'.format(role_label)
+
+    if message is not None:
+        mail_message = message
+        if frameset_id:
+            frameset_name = VerbNetFrameSet.objects.get(id=frameset_id).name
+            mail_message = 'To add to VerbNetFrameSet {} (id: {})\n{}'.format(
+                frameset_name, frameset_id, mail_message)
+        elif role_id:
+            frameset_name = VerbNetRole.objects.get(id=role_id).frameset.name
+            mail_message = 'To change VerbNetRole (id: {}) from frameset {}\n{}'.format(
+                role_id, frameset_name, mail_message)
+
+        mail_managers('Wrong role', mail_message)
+        return HttpResponseForbidden(message)
+
+
+
 @login_required
 @transaction.non_atomic_requests
 def update(request):
@@ -189,16 +217,16 @@ def update(request):
                     logger.info("{}: {} updated {} in Levin class {} from '{}' to '{}'".format(
                         when, request.user.username, field, levin_class, old_label, label))
                 elif object_type == 'role':
-                    try:
-                        ParsedRole(label)  # check if role is well-formed
-                        role = VerbNetRole.objects.get(id=post['vn_role_id'])
-                        old_label = role.name
-                        role.name = label
-                        role.save()
-                        logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'".format(
-                            when, request.user.username, post['frameset_id'], old_label, label))
-                    except:
-                        return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
+                    response = label_forbidden(label, role_id=post['vn_role_id'])
+                    if response is not None:
+                        return response
+
+                    role = VerbNetRole.objects.get(id=post['vn_role_id'])
+                    old_label = role.name
+                    role.name = label
+                    role.save()
+                    logger.info("{}: {} updated a role in subclass {} from '{}' to '{}'".format(
+                        when, request.user.username, post['frameset_id'], old_label, label))
                 else:
                     raise Exception("Unknown object type {}".format(object_type))
 
@@ -309,20 +337,19 @@ def add(request):
 
         elif post['type'] == 'role':
             label = post['label']
-            try:
-                ParsedRole(label)  # check if role is well-formed
+            response = label_forbidden(label, frameset_id=post['frameset_id'])
+            if response is not None:
+                return response
 
-                frameset_id = post['frameset_id']
-                frameset = VerbNetFrameSet.objects.get(id=frameset_id)
-                next_position = frameset.update_roles()
-                VerbNetRole(
-                    name=label,
-                    position=next_position,
-                    frameset=frameset).save()
-                logger.info("{}: {} added role {} in frameset {}".format(
-                    when, request.user.username, label, frameset_id))
-            except:
-                return HttpResponseForbidden('"{}" n\'est pas un rôle valide.'.format(label))
+            frameset_id = post['frameset_id']
+            frameset = VerbNetFrameSet.objects.get(id=frameset_id)
+            next_position = frameset.update_roles()
+            VerbNetRole(
+                name=label,
+                position=next_position,
+                frameset=frameset).save()
+            logger.info("{}: {} added role {} in frameset {}".format(
+                when, request.user.username, label, frameset_id))
 
         elif post['type'] == 'translation':
             verb = post['label']
