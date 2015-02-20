@@ -225,14 +225,24 @@ input.inedit[type='text'] { margin-bottom: 0 }
 }
 .duplicatetranslations ul {
     column-count: auto;
-    column-width: 12em;
-    column-gap: 20px;
+    column-width: 15em;
+    column-gap: 30px;
     -webkit-column-count: auto;
-    -webkit-column-width: 12em;
-    -webkit-column-gap: 20px;
+    -webkit-column-width: 15em;
+    -webkit-column-gap: 30px;
     -moz-column-count: auto;
     -moz-column-width: 12em;
-    -moz-column-gap: 20px;
+    -moz-column-gap: 30px;
+}
+
+.duplicatetranslations li {
+    display: inline-block;
+}
+
+.duplicatetranslations li:before {
+    content: "";
+    display: list-item;
+    position: absolute;
 }
 
 /* Member index */
@@ -265,6 +275,7 @@ input.inedit[type='text'] { margin-bottom: 0 }
 }
 
 .hierarchy_content {
+    column-width: 250px;
     -moz-column-width: 250px;
     -webkit-column-width: 250px;
     margin-bottom: 1em;
