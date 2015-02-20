@@ -32,8 +32,8 @@
     </div>
 </div>
 
-<div class="col-md-9">
     {% if not active_class %}
+    <div class="col-md-9">
         <h1>Verb∋Net</h1>
 
         <p>Verb∋Net (ou VerbeNet, en insistant sur le "e" à l'oral) est une traduction de <a href="http://verbs.colorado.edu/verb-index/">VerbNet</a> vers le français.</p>
@@ -50,7 +50,9 @@
             <li>Quentin Pradet, Laurence Danlos and Gaël de Chalendar. May 2014. <strong>Adapting VerbNet to French using existing resources</strong>. LREC 2014, Reykjavík, Iceland. <a href="http://quentin.pradet.me/articles/2014adapting/pradet2014adapting.bib">[bib]</a> <a href="http://quentin.pradet.me/articles/2014adapting/pradet2014adapting.pdf">[pdf]</a></li>
         </ul>
 
+    </div>
     {% else %}
+    <div class="col-md-9 levin_content {{active_class.translation_status }}">
         <h1 class="{{ active_class.translation_status }}">
             <span class="text">{{ active_class.number }}: {{ active_class.name }}</span>
             {% if user.is_authenticated and active_class.translation_status == 'INPROGRESS' %}
@@ -90,7 +92,8 @@
             {% endfor %}
         {% endblock content %}
 
-      {% endif %}
+    </div>
+    {% endif %}
 </div>
 
 </div>
