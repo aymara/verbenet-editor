@@ -38,6 +38,11 @@ class TestTokenizeSyntax(SimpleTestCase):
             list(tokenize_syntax('Agent V Theme <+de_Vinf>')),
             list(tokenize_syntax('Agent V Theme<+de_Vinf>')))
 
+    def test_spaced_restriction(self):
+        self.assertEqual(
+            list(tokenize_syntax('Agent V Theme <+Qu Pind>')),
+            ['Agent', 'V', 'Theme<+Qu Pind>'])
+
 
 class TestSeparatePhraseType(SimpleTestCase):
     def test_simple_phrase(self):

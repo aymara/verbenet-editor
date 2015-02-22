@@ -27,7 +27,7 @@ def tokenize_syntax(syntax):
         c = syntax[i]
         if c == ' ':
             if current_word:
-                if syntax[i+1] == '<':
+                if syntax[i+1] == '<':  # allow Theme<+de_Vinf> as well as a Theme <+de_Vinf>
                     i += 1
                     continue
                 else:
@@ -44,6 +44,11 @@ def tokenize_syntax(syntax):
                 yield set(syntax_part[1:-2].split(' '))
 
             i += len(syntax_part) - 1
+        elif c == '<':
+            while syntax[i] != '>':
+                current_word += syntax[i]
+                i += 1
+            current_word += syntax[i]
         else:
             current_word += c
 
@@ -72,18 +77,28 @@ def separate_syntax_part(syntax_part):
     if isinstance(syntax_part, set):
         return syntax_part, None
 
-    split = syntax_part.split('<')
-    if len(split) == 1:
-        return syntax_part, None
+    mode = 'ROLE'  # can also be RESTR, NEAR_END and END
+    role, restr = '', ''
 
-    if not split[1].endswith('>'):
-        raise WrongFrameException('Unknown modifier {}.'.format(syntax_part))
+    for c in syntax_part:
+        if c == '<':
+            mode = 'RESTR'
+        elif c == '>':
+            mode = 'NEAR_END'
 
-    role = split[0]
-    restr = '<{}'.format(split[1])
+        if mode == 'ROLE':
+            role += c
+        elif mode == 'RESTR':
+            restr += c
+        elif mode == 'NEAR_END':
+            restr += c
+            mode = 'END'
+        else:
+            assert mode == 'END'
+            raise WrongFrameException('Pas de caractères attendus après > dans {}'.format(syntax_part))
 
-    if not role:
-        return restr, None
+    if not restr:
+        return role, None
     else:
         return role, restr
 
