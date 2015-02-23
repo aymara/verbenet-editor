@@ -1,5 +1,6 @@
 import io
 import os
+import re
 import locale
 from xml.etree import ElementTree as ET
 
@@ -27,7 +28,7 @@ def tokenize_syntax(syntax):
         c = syntax[i]
         if c == ' ':
             if current_word:
-                if syntax[i+1] == '<':  # allow Theme<+de_Vinf> as well as a Theme <+de_Vinf>
+                if syntax[i+1] == '<':  # allow Theme<+de Vinf> as well as a Theme <+de Vinf>
                     i += 1
                     continue
                 else:
@@ -145,20 +146,36 @@ def merge_primary_and_syntax(primary, syntax, output):
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
+        elif restr is not None and ('V-inf' in restr or 'V0-inf' in restr or 'V1-inf' in restr or 'V2-inf' in restr):
+            restr_dict = re.match(r'<\+(?P<prep>\w+)?\s?(?P<vinf>V[012]-inf\s?W?)>', restr).groupdict()
+            next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
+
+            if restr_dict['prep'] is not None:
+                assert primary_parts[j] == restr_dict['prep']
+            assert next_phrase_type == 'Vinf'
+
+            parsed_frame.append({
+                'type': next_phrase_type, 'role': syntax_role,
+                'introduced_by': primary_parts[j], 'restr': restr_dict['vinf']})
+
+            i += 1
+            j += 2
+
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
         elif primary_parts[j] in ['que', 'de', 'comment', 'that']:
             primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
 
-            assert restr.startswith('<+{}_'.format(primary_word)) and restr.endswith('>')
+            assert restr.startswith('<+{}_'.format(primary_word))
+            assert restr.endswith('>')
             if next_primary_role is not None:
                 assert next_primary_role == syntax_role
 
             # Remove <+que and >
             specific_restr = restr[3+len(primary_word):-1]
 
-            assert specific_restr in ['comp', 'Psubj', 'Vinf', 'extract']
+            assert specific_restr in ['comp', 'Psubj', 'V-inf', 'V0-inf', 'V1-inf', 'V2-inf', 'extract']
 
             parsed_frame.append({
                 'type': next_phrase_type, 'role': syntax_role,
