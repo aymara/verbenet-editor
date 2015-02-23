@@ -7,7 +7,7 @@ from xml.etree import ElementTree as ET
 from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from role.parserole import ROLE_LIST
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF', 'S_ING', 'Pind', 'Vinf', 'Psubj']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING', 'Pind', 'Vinf', 'Psubj', 'P']
 
 class WrongFrameException(Exception):
     pass
@@ -139,6 +139,9 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
         elif syntax_parts[i] == 'V<+neutre>' and primary_parts[j] == 'V':
             parsed_frame.append({'type': 'V', 'restr': 'neutre'})
+            i, j = i+1, j+1
+        elif syntax_parts[i] == 'V<+reflexive>' and primary_parts[j] == 'V':
+            parsed_frame.append({'type': 'V', 'restr': 'reflexive'})
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
