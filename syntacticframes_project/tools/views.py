@@ -8,7 +8,7 @@ from distutils.version import LooseVersion
 
 from django.shortcuts import render
 
-from syntacticframes.models import VerbNetClass, VerbNetFrameSet, VerbNetFrame, VerbTranslation
+from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetFrame, VerbTranslation
 from export.export import merge_primary_and_syntax, WrongFrameException
 from parsecorrespondance.parse import UnknownErrorException
 from loadmapping.mappedverbs import translations_for_class
@@ -19,7 +19,9 @@ def errors(request):
     frames_ok, frames_total = 0, 0
 
     for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
-        if db_frame.removed or db_frame.frameset.removed:
+        if db_frame.frameset.removed:
+            continue
+        if db_frame.frameset.verbnet_class.levin_class.translation_status != LevinClass.STATUS_TRANSLATED:
             continue
 
         frames_total += 1
