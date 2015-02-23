@@ -74,14 +74,16 @@ def get_roles(roles_syntax):
             continue
         elif '-' in split and not split.startswith('Co-'):
             continue
-        elif split in ['Psubj', 'Pind', 'Vinf', 'Il', 'Pr', 'Qu', 'Que', 'Loc', 'Adv', 'Co']:
+        elif split in [
+            'Psubj', 'Pind', 'Vinf', 'Il', 'Pr', 'Qu', 'Que', 'Loc', 'Adv',
+            'Co', 'deVinf', 'Vant']:
             continue
         else:
             yield split
 
 
 def distributions(request):
-    role_dict, restriction_dict, preposition_dict = defaultdict(list), defaultdict(list), defaultdict(list)
+    role_dict, restriction_dict, preposition_dict, primary_dict = defaultdict(list), defaultdict(list), defaultdict(list), defaultdict(list)
 
     for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
         if db_frame.removed or db_frame.frameset.removed:
@@ -99,10 +101,19 @@ def distributions(request):
         for restr in get_restr(db_frame.roles_syntax):
             restriction_dict[restr].append(db_frame)
 
+        for primary_part in db_frame.syntax.split(' '):
+            if '.' in primary_part:
+                primary_part = primary_part.split('.')[0]
+            elif primary_part.split('-')[-1] in ['Middle', 'Moyen', 'Conative', 'Quote', 'Dative', 'Fulfilling']:
+                primary_part = primary_part.split('-')[0]
+
+            primary_dict[primary_part].append(db_frame)
+
     distribution_dict = OrderedDict([
         ('Restrictions', restriction_dict),
         ('Prépositions', preposition_dict),
-        ('Rôles', role_dict)
+        ('Rôles', role_dict),
+        ('Champ primaire (NP V NP)', primary_dict),
     ])
 
     for distribution in distribution_dict:
