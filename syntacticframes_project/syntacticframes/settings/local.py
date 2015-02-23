@@ -40,4 +40,8 @@ DATABASES = {
 INSTALLED_APPS += (
     'debug_toolbar',
 )
+
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL': '/public/js/jquery-2.1.3.min.js'
+}
 ########## END TOOLBAR CONFIGURATION
