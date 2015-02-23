@@ -85,13 +85,28 @@ h1.TRANSLATED > .text {
 h2 form { display: inline }
 h2 form input { width: 5em; font-size: 31.5px }
 
-/* Links to class names */
-h2[name], h3[name] {
+/* Links to class names, subclasses and frames */
+article[id] {
+  padding-top: 60px;
+  margin-top: -40px;
+}
+article[id] h2 {
+  margin-top: 0;
+}
+
+h3[id] {
   padding-top: 60px;
   margin-top: -60px;
 }
 
-h2[name] a {
+.frame_link {
+  position: absolute; /* remove from flow */
+  padding-top: 60px;
+  margin-top: -60px;
+}
+
+
+article[id] h2 a {
  text-decoration: none;
 }
 

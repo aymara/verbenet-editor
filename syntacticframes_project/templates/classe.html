@@ -3,7 +3,7 @@
 
         <article id="{{classe.name}}">
             {# Title: class name and LVF/LADL #}
-            <h2 class="classe" name="{{classe.name}}">
+            <h2 class="classe">
                 <a href="#{{ classe.name }}">{{ classe.name }}</a>
                 <a href="http://verbs.colorado.edu/verb-index/vn/{{classe.name}}.php" class="external"><span class="glyphicon glyphicon-share-alt"></span></a>
             </h2>
@@ -16,7 +16,7 @@
             {% recursetree classe.verbnetframeset_set.all %}
             <div class="subclass removed_{{node.removed}}" id="{{node.id}}">
                 {% if node.removed %}
-                    <h3 id="{{node.name}}" name="{{node.name}}">
+                    <h3 id="{{node.name}}">
                         Classe {{node.name}} cachée
                         {% if user.is_authenticated %}
                             <button class="btn btn-default show_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-repeat"></span> Montrer</button>
@@ -36,7 +36,7 @@
                         </ul>
                     {% endif %}
                 {% else %}
-                    <h3 id="{{node.name}}" name="{{node.name}}">Classe {{node.name}}
+                    <h3 id="{{node.name}}">Classe {{node.name}}
                         {% if user.is_authenticated %}
                             <button class="btn btn-default remove_subclass" data-frameset_id="{{node.name}}"><span class="glyphicon glyphicon-remove"></span> Cacher</button>
                         {% endif %}
@@ -158,10 +158,11 @@
                     {# Frames #}
                     {% for frame in node.verbnetframe_set.all %}
                         {% if not frame.removed %}
+                        <span class="frame_link"
+                            id="frame_{{frame.id}}"></span>
                             <div
                                 class="{% if not frame.from_verbnet %}created_frame {% endif %} frame"
-                                data-frameid="{{frame.id}}"
-                                id="frame_{{frame.id}}">
+                                data-frameid="{{frame.id}}">
                                 {% if user.is_authenticated %}
                                     <a class="remove_frame" href="#"><span class="right glyphicon glyphicon-remove"></span></a>
                                 {% endif %}
