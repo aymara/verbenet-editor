@@ -7,7 +7,7 @@ from xml.etree import ElementTree as ET
 from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from role.parserole import ROLE_LIST
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF', 'S_ING']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'S', 'S_INF', 'S_ING', 'Pind', 'Vinf', 'Psubj']
 
 class WrongFrameException(Exception):
     pass
