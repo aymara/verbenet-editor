@@ -36,5 +36,8 @@ class Migration(migrations.Migration):
             field=models.PositiveSmallIntegerField(default=0),
             preserve_default=False,
         ),
-        migrations.RunPython(set_position_value_for_levin_classes),
+        migrations.RunPython(
+            code=set_position_value_for_levin_classes,
+            # Nothing to reverse since this is about a new field
+            reverse_code=lambda apps, schema_editor: None),
     ]
