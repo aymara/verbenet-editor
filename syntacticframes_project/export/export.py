@@ -161,6 +161,22 @@ def merge_primary_and_syntax(primary, syntax, output):
             i += 1
             j += 2
 
+        elif restr is not None and '+Qu' in restr:
+            restr_dict = re.match(r'<\+Qu (?P<ptype>P[a-z]+)>', restr).groupdict()
+            next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
+
+            assert primary_parts[j] == 'Qu'
+            if next_primary_role is not None:
+                assert syntax_role == next_primary_role
+            assert next_phrase_type == restr_dict['ptype']
+
+            parsed_frame.append({
+                'type': next_phrase_type, 'role': syntax_role,
+                'introduced_by': 'Qu', 'restr': restr_dict['ptype']})
+
+            i += 1
+            j += 2
+
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
         elif primary_parts[j] in ['que', 'de', 'comment', 'that']:
             primary_word = primary_parts[j]
