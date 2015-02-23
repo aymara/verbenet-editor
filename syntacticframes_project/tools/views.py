@@ -86,7 +86,9 @@ def distributions(request):
     role_dict, restriction_dict, preposition_dict, primary_dict = defaultdict(list), defaultdict(list), defaultdict(list), defaultdict(list)
 
     for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
-        if db_frame.removed or db_frame.frameset.removed:
+        if db_frame.frameset.removed:
+            continue
+        if db_frame.frameset.verbnet_class.levin_class.translation_status != LevinClass.STATUS_TRANSLATED:
             continue
 
         for role in get_roles(db_frame.roles_syntax):
