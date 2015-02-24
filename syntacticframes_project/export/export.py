@@ -149,7 +149,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         elif restr is not None and ('V-inf' in restr or 'V0-inf' in restr or 'V1-inf' in restr or 'V2-inf' in restr):
-            restr_dict = re.match(r'<\+(?P<prep>\w+)?\s?(?P<vinf>V[012]-inf\s?W?)>', restr).groupdict()
+            restr_dict = re.match(r'<\+(?P<prep>\w+)?\s?(?P<vinf>V[012]?-inf\s?W?)>', restr).groupdict()
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
 
             if restr_dict['prep'] is not None:
