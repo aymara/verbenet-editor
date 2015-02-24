@@ -134,14 +134,13 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         # Verbs, can also be neutral
-        elif syntax_parts[i] == 'V' and primary_parts[j] == 'V':
-            parsed_frame.append({'type': 'V'})
-            i, j = i+1, j+1
-        elif syntax_parts[i] == 'V<+neutre>' and primary_parts[j] == 'V':
-            parsed_frame.append({'type': 'V', 'restr': 'neutre'})
-            i, j = i+1, j+1
-        elif syntax_parts[i] == 'V<+reflexive>' and primary_parts[j] == 'V':
-            parsed_frame.append({'type': 'V', 'restr': 'reflexive'})
+        elif syntax_role == 'V' and primary_parts[j] == 'V':
+            if restr is None:
+                parsed_frame.append({'type': 'V'})
+            elif restr in ['<+neutre>', '<+reflexive>', '<+moyen>']:
+                parsed_frame.append({'type': 'V', 'restr': restr[2:-1]})
+            else:
+                raise WrongFrameException('Restriction de verbe {} inconnue'.format(restr))
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
