@@ -185,7 +185,8 @@ def merge_primary_and_syntax(primary, syntax, output):
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
 
-            assert restr.startswith('<+{}_'.format(primary_word))
+
+            assert restr.startswith('<+{}'.format(primary_word))
             assert restr.endswith('>')
             if next_primary_role is not None:
                 assert next_primary_role == syntax_role
@@ -193,7 +194,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             # Remove <+que and >
             specific_restr = restr[3+len(primary_word):-1]
 
-            assert specific_restr in ['comp', 'Psubj', 'V-inf', 'V0-inf', 'V1-inf', 'V2-inf', 'extract']
+            assert specific_restr in ['comp', 'Psubj', 'V-inf', 'V0-inf', 'V1-inf', 'V2-inf', 'extract', 'P']
 
             parsed_frame.append({
                 'type': next_phrase_type, 'role': syntax_role,

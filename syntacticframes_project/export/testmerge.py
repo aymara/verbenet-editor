@@ -160,6 +160,13 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'V'},
              {'type': 'Psubj', 'role': 'Topic', 'introduced_by': 'Qu', 'restr': 'Psubj'}])
 
+    def test_comment_noextract(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V comment P', 'Experiencer V Stimulus <+comment P>', output=sys.stdout),
+            [{'type': 'NP', 'role': 'Experiencer'},
+             {'type': 'V'},
+             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
+
     def test_plural(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V', 'Patient <+plural> V', output=sys.stdout),
