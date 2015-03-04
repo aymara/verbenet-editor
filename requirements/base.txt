@@ -1,7 +1,11 @@
 Django>=1.7.1
---editable git+https://github.com/pquentin/django-mptt.git@0.6.x-noorder#egg=django_mptt
 psycopg2==2.5
 lxml>=3.4
 django-reversion==1.8.5
 pytz==2014.9
 django-pipeline>=1.4.3
+
+# /!\ we rely on the internal function
+# mptt.templatetags.mptt_tags.cache_tree_children in
+# syntacticframes.views.translations
+--editable git+https://github.com/pquentin/django-mptt.git@0.6.x-noorder#egg=django_mptt

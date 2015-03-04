@@ -294,13 +294,13 @@ input.inedit[type='text'] { margin-bottom: 0 }
     margin: 0;
 }
 
-.hierarchy_content {
+.columns, .hierarchy_content {
     column-width: 250px;
     -moz-column-width: 250px;
     -webkit-column-width: 250px;
     margin-bottom: 1em;
 }
-.hierarchy_content .levin_class {
+.hierarchy_content .levin_class, .columns .unit {
     display: inline-block;
     min-width: 250px;
     padding: 0 1em;

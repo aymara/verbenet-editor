@@ -38,4 +38,7 @@ urlpatterns = patterns('',
     # Search
     url(r'^search/$', views.search),
 
+    # Translation list
+    url(r'^translations/(?P<class_number>\d+)/$', views.translations),
+
 )

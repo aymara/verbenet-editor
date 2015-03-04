@@ -7,6 +7,8 @@ from xml.etree import ElementTree as ET
 from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from role.parserole import ROLE_LIST
 
+locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+
 PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING', 'Pind', 'Vinf', 'Psubj', 'P']
 
 class WrongFrameException(Exception):

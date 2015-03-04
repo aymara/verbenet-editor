@@ -1,3 +1,9 @@
+import locale
+from collections import defaultdict
+from distutils.version import LooseVersion
+import logging
+from time import gmtime, strftime
+
 from django.http import HttpResponse, HttpResponseForbidden
 from django.template import RequestContext, loader
 from django.shortcuts import redirect, render
@@ -10,16 +16,15 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib import messages
 from django.db import transaction
 
-from collections import defaultdict
-from distutils.version import LooseVersion
-import logging
-from time import gmtime, strftime
+from mptt.templatetags.mptt_tags import cache_tree_children
 
 from .models import (LevinClass, VerbNetClass, VerbTranslation,
                      VerbNetFrameSet, VerbNetFrame, VerbNetRole,
                      VerbNetMember)
 from role import parserole
 from parsecorrespondance.parse import ParseErrorException
+from loadmapping.mappedverbs import verb_dict, dicovalence_verbs
+
 
 logger = logging.getLogger('database')
 
@@ -464,3 +469,37 @@ def search(request):
     })
     context.update(csrf(request))
     return HttpResponse(template.render(context))
+
+def translations(request, class_number):
+    def shown_children(frameset):
+        if frameset.removed:
+            pass
+        else:
+            yield frameset
+            # it it doesn't work anymore, replace with frameset.children.all()
+            for child_frameset in frameset._cached_children:
+                yield from shown_children(child_frameset)
+
+    all_members, dicovalence_translations, other_translations = [], set(), set()
+    active_class = LevinClass.objects.prefetch_related(
+        'verbnetclass_set',
+        'verbnetclass_set__verbnetframeset_set',
+        'verbnetclass_set__verbnetframeset_set__verbnetmember_set').get(number=class_number)
+    for vn_class in active_class.verbnetclass_set.all():
+        # it it doesn't work anymore, replace with vn_class.verbnetframeset_set.get(parent=None)
+        root_frameset = cache_tree_children(vn_class.verbnetframeset_set.all())[0]
+        for frameset in shown_children(root_frameset):
+            all_members.extend([m.lemma for m in frameset.verbnetmember_set.all()])
+
+    for m in all_members:
+        for t in verb_dict.get(m, []):
+            if t in dicovalence_verbs:
+                dicovalence_translations.add(t)
+            else:
+                other_translations.add(t)
+
+    return render(request, 'translations.html', {
+        'active_class': active_class,
+        'dicovalence_translations': sorted(dicovalence_translations, key=locale.strxfrm),
+        'other_translations': sorted(other_translations, key=locale.strxfrm),
+    })

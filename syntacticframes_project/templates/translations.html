@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Traductions pour la classe {{active_class.number}} : {{active_class.name}}{% endblock %}
+
+{% block all %}
+
+<div class="container">
+
+    <h2>Traductions pour la classe 
+        <a href="/class/{{active_class.number}}">{{active_class.number}} :
+            {{active_class.name}}</a>
+    </h2>
+
+
+    <p>{{ dicovalence_translations|length }} verbes dans dicovalence :</p>
+    <ul class="columns">
+    {% for translation in dicovalence_translations %}
+        <li class="unit">
+            <a href="/search/?search={{ translation }}">{{ translation }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <p>{{ other_translations|length }} autres traductions : <span class="unknown">{{ other_translations|join:", " }}</span></p>
+
+</div>
+
+{% endblock all %}
+
+
