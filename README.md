@@ -16,15 +16,22 @@ Code and dependencies
 
 Make sure all dependencies are installed. That means Python 3 and
 development files, libxml2 and libxslt1 development files, PostgreSQL
-contrib modules and development files, and Node.js:
+contrib modules and development files, and Node.js.
+
+For Ubuntu:
 
     sudo apt-get install python3-dev libxslt1-dev libxml2-dev \
         postgresql-contrib postgresql-server-dev-all \
         libapache2-mod-wsgi-py3 npm
 
-Install Node.js dependencies:
+For OS X:
 
-    npm install less yuglify
+    brew install libxslt libxml2 postgresql npm
+    # Follow brew instruction for PostgreSQL
+
+Install Node.js dependencies globally:
+
+    sudo npm install -g less yuglify
 
 Then, get the code:
 
