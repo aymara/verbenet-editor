@@ -110,7 +110,7 @@ class FrenchMapping(object):
                             token_list.append(part[1:])
                             token_list.append(restriction_operator)
                         elif '=' in part:
-                            if ' ' in part:
+                            if ' =' in part or '= ' in part:
                                 raise SyntaxErrorException("Pas d'espace autour du égal", name)
 
                             column, value = part.split('=')

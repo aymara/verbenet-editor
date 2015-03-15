@@ -96,6 +96,12 @@ class TestLADLColumns(unittest.TestCase):
         self.assertEqual(
             parse.FrenchMapping._tokenize('LADL', '38R[Prép2=par]'),
             ['38R', '[', '=', 'Prép2', 'par', ']'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '15[Prép2=auprès de]'),
+            ['15', '[', '=',  'Prép2', 'auprès de', ']'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '15[Prép2=auprès de et +N0 V]'),
+            ['15', '[', '=',  'Prép2', 'auprès de', 'and' , '+', 'N0 V', ']'])
 
         self.assertEqual(
             parse.FrenchMapping._tokenize('LADL', '38R[Prép2=par et +N0 V]'),
