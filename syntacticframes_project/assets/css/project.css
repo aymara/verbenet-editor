@@ -245,14 +245,16 @@ input.inedit[type='text'] { margin-bottom: 0 }
 }
 .duplicatetranslations ul {
     column-count: auto;
-    column-width: 15em;
+    column-width: 12em;
     column-gap: 30px;
     -webkit-column-count: auto;
-    -webkit-column-width: 15em;
+    -webkit-column-width: 12em;
     -webkit-column-gap: 30px;
     -moz-column-count: auto;
     -moz-column-width: 12em;
     -moz-column-gap: 30px;
+    /* prevent webkit bugs were list marker are not in columns */
+    list-style-type: none;
 }
 
 .duplicatetranslations li {
