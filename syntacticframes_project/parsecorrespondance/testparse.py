@@ -117,6 +117,15 @@ class TestLADLColumns(unittest.TestCase):
             parse.FrenchMapping._tokenize('LADL', '38R[Prép2= par]'),
             parse.FrenchMapping._tokenize('LADL', '38R[Prép2 =par]'),
 
+    def test_operator_in_column_name(self):
+        # The only two cases containing an 'or'
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '9[+N2 =: si P ou si P]'),
+            ['9', '[', '+',  'N2 =: si P ou si P', ']'])
+        self.assertEqual(
+            parse.FrenchMapping._tokenize('LADL', '15[-N1 =: si P ou si P]'),
+            ['15', '[', '-',  'N1 =: si P ou si P', ']'])
+
     def test_infix(self):
         self.assertEqual(parse.FrenchMapping('LADL', '38LD[+A ou +B]').infix(), '38LD[+A ou +B]')
 

@@ -54,6 +54,7 @@ class FrenchMapping(object):
 
     @staticmethod
     def _tokenize(resource, name):
+
         token_list = []
         current_token = ''
         i = 0
@@ -90,18 +91,22 @@ class FrenchMapping(object):
                         bracket_stack_len -= 1
                     j += 1
 
-                # Cut the restriction in operands
-                if ' et ' in name[i+1:j] and ' ou ' in name[i+1:j]:
-                    raise SyntaxErrorException('Combinaison de "ou" et "et" dans la restriction {}', name[i+1:j])
-                elif ' et ' in name[i+1:j]:
-                    restriction_list = name[i+1:j].split(' et ')
-                    restriction_operator = 'et'
-                elif ' ou ' in name[i+1:j]:
-                    restriction_list = name[i+1:j].split(' ou ')
-                    restriction_operator = 'ou'
-                else:
+                if name[i+2:j] == 'N1 =: si P ou si P' or name[i+2:j] == 'N2 =: si P ou si P':
                     restriction_list = [name[i+1:j]]
                     restriction_operator = None
+                else:
+                    # Cut the restriction in operands
+                    if ' et ' in name[i+1:j] and ' ou ' in name[i+1:j]:
+                        raise SyntaxErrorException('Combinaison de "ou" et "et" dans la restriction {}', name[i+1:j])
+                    elif ' et ' in name[i+1:j]:
+                        restriction_list = name[i+1:j].split(' et ')
+                        restriction_operator = 'et'
+                    elif ' ou ' in name[i+1:j]:
+                        restriction_list = name[i+1:j].split(' ou ')
+                        restriction_operator = 'ou'
+                    else:
+                        restriction_list = [name[i+1:j]]
+                        restriction_operator = None
 
                 # Handle each operand
                 for part in restriction_list:
@@ -119,9 +124,7 @@ class FrenchMapping(object):
                             token_list.append(value)
                             token_list.append(restriction_operator)
                         else:
-                            # It's true that it could be an issue with =, but
-                            # mentioning that would make the error less clear
-                            raise SyntaxErrorException('+ ou - requis après un crochet', name)
+                            raise SyntaxErrorException('+ ou - requis après un crochet', name)  # It could be another issue (eg. with =)
                 token_list.pop()
 
                 token_list.append(name[j])  # ]
