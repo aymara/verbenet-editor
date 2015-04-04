@@ -70,8 +70,8 @@
 
 
         <p>Accès rapide :
-        {% for classe in verbnet_classes %}
-            <a href="#{{classe.name}}">{{classe.name}}</a> {% if not forloop.last %}&mdash;{% endif %}
+        {% for classe in shown_verbnet_classes %}
+                <a href="#{{classe.name}}">{{classe.name}}</a> {% if not forloop.last %}&mdash;{% endif %}
         {% endfor %}
         </p>
 

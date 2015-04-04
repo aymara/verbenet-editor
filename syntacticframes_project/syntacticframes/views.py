@@ -73,11 +73,17 @@ def classe(request, class_number):
         'verbnetframeset_set__verbnetframe_set',
     )
 
+    shown_verbnet_classes = []
+    for vn_class in verbnet_classes:
+        if not all([fs.removed for fs in vn_class.verbnetframeset_set.all()]):
+            shown_verbnet_classes.append(vn_class)
+
     template = loader.get_template('index.html')
     context = RequestContext(request, {
         'levin_classes': levin_classes,
         'active_class': active_class,
         'verbnet_classes': verbnet_classes,
+        'shown_verbnet_classes': shown_verbnet_classes,
         'duplicate_translations': sorted(find_duplicate_translations(active_class)),
         'all_framesets': levin_class_framesets(verbnet_classes),
     })
