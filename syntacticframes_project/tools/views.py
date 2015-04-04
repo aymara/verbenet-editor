@@ -186,6 +186,8 @@ def verbvalidationstatus(request):
     for frameset in VerbNetFrameSet.objects.select_related('verbnet_class', 'verbnet_class__levin_class').prefetch_related('verbtranslation_set').all():
         if frameset.removed:
             continue
+        if frameset.verbnet_class.levin_class.translation_status != LevinClass.STATUS_TRANSLATED:
+            continue
 
         translation_list = frameset.verbtranslation_set.all()
         manually_validated = [t for t in translation_list if t.validation_status != VerbTranslation.STATUS_INFERRED and t.category in ['ladl', 'lvf', 'both']]
