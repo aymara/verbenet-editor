@@ -83,7 +83,7 @@ def get_roles(roles_syntax):
 
 
 def distributions(request):
-    role_dict, restriction_dict, preposition_dict, primary_dict = defaultdict(list), defaultdict(list), defaultdict(list), defaultdict(list)
+    role_dict, restriction_dict, preposition_dict, primary_dict, syntactic_frames_dict = defaultdict(list), defaultdict(list), defaultdict(list), defaultdict(list), defaultdict(list)
 
     for db_frame in VerbNetFrame.objects.select_related('frameset', 'frameset__verbnet_class', 'frameset__verbnet_class__levin_class').filter(removed=False):
         if db_frame.frameset.removed:
@@ -96,6 +96,8 @@ def distributions(request):
 
         for prep in get_prep(db_frame.roles_syntax):
             preposition_dict[prep].append(db_frame)
+
+        syntactic_frames_dict[db_frame.roles_syntax].append(db_frame)
 
         prep_list = list(get_restr(db_frame.roles_syntax))
         if ('<' in db_frame.roles_syntax or '>' in db_frame.roles_syntax) and not prep_list:
@@ -116,6 +118,7 @@ def distributions(request):
         ('Prépositions', preposition_dict),
         ('Rôles', role_dict),
         ('Champ primaire (NP V NP)', primary_dict),
+        ('Syntaxe des frames', syntactic_frames_dict),
     ])
 
     for distribution in distribution_dict:
