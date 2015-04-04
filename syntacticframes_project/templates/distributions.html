@@ -13,9 +13,17 @@
     restrictions présentes dans les frames VerbNet. L'objectif est de
     pouvoir harmoniser plus facilement ces informations.</p>
 
+    <p>Distributions disponibles :</p>
+
+    <ul>
+        {% for name in distributions %}
+        <li><a href="#{{ name }}">{{ name }}</a></li>
+        {% endfor %}
+    </ul>
+
     {% for name, dist_dict in distributions.items %}
 
-    <h3>{{ name }}</h3>
+    <h3 id="{{ name }}">{{ name }}</h3>
 
     <ul>
     {% for restr, frame_list in dist_dict.items %}
