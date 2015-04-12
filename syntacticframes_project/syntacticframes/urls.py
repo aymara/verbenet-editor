@@ -6,7 +6,7 @@ admin.autodiscover()
 
 from syntacticframes import views
 
-urlpatterns = patterns('',
+urlpatterns = [
     # admin:
     url(r'^admin/', include(admin.site.urls)),
 
@@ -41,4 +41,4 @@ urlpatterns = patterns('',
     # Translation list
     url(r'^translations/(?P<class_number>\d+)/$', views.translations),
 
-)
+]

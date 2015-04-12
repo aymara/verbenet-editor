@@ -249,6 +249,9 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+
+    # unaccent
+    'django.contrib.postgres',
 )
 
 THIRD_PARTY_APPS = (
@@ -336,16 +339,3 @@ LOGGING = {
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
-
-from django.db.backends.postgresql_psycopg2.base import DatabaseOperations, DatabaseWrapper
-
-def lookup_cast(self, lookup_type):
-    if lookup_type in('icontains', 'istartswith'):
-        return "UPPER(unaccent(%s::text))"
-    else:
-        return super(DatabaseOperations, self).lookup_cast(lookup_type)
-
-# monkey-patches unaccent
-DatabaseOperations.lookup_cast = lookup_cast
-DatabaseWrapper.operators['icontains'] = 'LIKE UPPER(unaccent(%s))'
-DatabaseWrapper.operators['istartswith'] = 'LIKE UPPER(unaccent(%s))'

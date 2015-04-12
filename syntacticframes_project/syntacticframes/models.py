@@ -79,7 +79,7 @@ class VerbNetFrameSet(MPTTModel):
 
     # instead of relying on the primary key, storing a tree id lets us correct
     # issues with trees ordering.
-    tree_id = models.PositiveSmallIntegerField(null=False)
+    tree_position = models.PositiveSmallIntegerField(null=False)
 
     has_removed_frames = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
@@ -90,7 +90,7 @@ class VerbNetFrameSet(MPTTModel):
     lvf_string = models.TextField(blank=True)
 
     class Meta:
-        ordering = ['tree_id']
+        ordering = ['tree_position']
 
     def __str__(self):
         return 'VerbNetFrameSet: {}'.format(self.name)
