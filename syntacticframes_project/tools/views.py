@@ -66,7 +66,7 @@ def get_restr(roles_syntax):
 
 
 def get_roles(roles_syntax):
-    split_list = re.findall('[a-zA-Z-]+', roles_syntax)
+    split_list = re.findall('[a-zA-Z-_]+', roles_syntax)
     for split in split_list:
         if split == 'V':
             continue
