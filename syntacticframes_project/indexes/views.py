@@ -73,7 +73,7 @@ def members_letter(request, letter):
     for fs in VerbNetFrameSet.objects.prefetch_related(
             'verbnet_class', 'verbnet_class__levin_class',
             Prefetch('verbtranslation_set',
-                     queryset=VerbTranslation.objects.filter(verb__unaccent_startswith=letter),
+                     queryset=VerbTranslation.objects.filter(verb__startswith=letter),
                      to_attr='filtered_verbs')):
         if fs.removed:
             continue
