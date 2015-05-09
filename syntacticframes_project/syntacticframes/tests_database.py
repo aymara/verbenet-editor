@@ -17,11 +17,11 @@ class TestHideAndMove(TestCase):
 
         # A frameset and its child with verbs in both
         self.root_frameset = VerbNetFrameSet(verbnet_class=verbnet_class,
-                                             name='4', tree_position=1)
+                                             name='4')
         self.root_frameset.save()
         self.child_frameset = VerbNetFrameSet(verbnet_class=verbnet_class,
                                               parent=self.root_frameset,
-                                              name='4.1', tree_position=1)
+                                              name='4.1')
         self.child_frameset.save()
 
         VerbNetMember(frameset=self.root_frameset, lemma='member_root-1').save()
@@ -40,11 +40,11 @@ class TestHideAndMove(TestCase):
         second_verbnet_class = VerbNetClass(levin_class=levin_class, name='boring-5', position=1)
         second_verbnet_class.save()
         self.target_frameset = VerbNetFrameSet(verbnet_class=second_verbnet_class,
-                                               name='5', tree_position=1)
+                                               name='5')
         self.target_frameset.save()
         self.target_frameset_child = VerbNetFrameSet(verbnet_class=second_verbnet_class,
                                                      parent=self.target_frameset,
-                                                     name='5.1', tree_position=1)
+                                                     name='5.1')
         self.target_frameset_child.save()
         VerbNetMember(frameset=self.target_frameset, lemma='member_target-1').save()
         VerbNetMember(frameset=self.target_frameset_child, lemma='member_target_child-1').save()
@@ -149,19 +149,19 @@ class TestUpdateTranslations(TestCase):
 
         # A frameset and its child with verbs in both
         self.root_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
-                                             name='3', tree_position=1, lvf_string='L1a')
+                                             name='3',lvf_string='L1a')
         self.root_frameset.save()
         self.child_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
                                               parent=self.root_frameset,
-                                              name='3.1', tree_position=1)
+                                              name='3.1')
         self.child_frameset.save()
         self.grandchild1_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
                                                    parent=self.child_frameset,
-                                                   name='3.1.1', tree_position=1)
+                                                   name='3.1.1')
         self.grandchild1_frameset.save()
         self.grandchild2_frameset = VerbNetFrameSet(verbnet_class=self.verbnet_class,
                                                    parent=self.child_frameset,
-                                                   name='3.1.2', tree_position=1)
+                                                   name='3.1.2')
         self.grandchild2_frameset.save()
 
         VerbNetMember(frameset=self.root_frameset, lemma='live').save()
@@ -293,7 +293,7 @@ class TestAllValid(TestCase):
         levin_class.save()
         verbnet_class = VerbNetClass(levin_class=levin_class, name='imagine-4', position=1)
         verbnet_class.save()
-        self.frameset = VerbNetFrameSet(verbnet_class=verbnet_class, name='4', tree_position=1)
+        self.frameset = VerbNetFrameSet(verbnet_class=verbnet_class, name='4')
         self.frameset.save()
 
     def test_purple(self):

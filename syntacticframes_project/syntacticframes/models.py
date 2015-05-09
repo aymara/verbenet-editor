@@ -77,10 +77,6 @@ class VerbNetFrameSet(MPTTModel):
     verbnet_class = models.ForeignKey(VerbNetClass)
     name = models.CharField(max_length=100)
 
-    # instead of relying on the primary key, storing a tree id lets us correct
-    # issues with trees ordering.
-    tree_position = models.PositiveSmallIntegerField(null=False)
-
     has_removed_frames = models.BooleanField(default=False)
     removed = models.BooleanField(default=False)
 
@@ -89,8 +85,15 @@ class VerbNetFrameSet(MPTTModel):
     ladl_string = models.TextField(blank=True)
     lvf_string = models.TextField(blank=True)
 
-    class Meta:
-        ordering = ['tree_position']
+    class MPTTMeta:
+        # Using the name as a proxy for ordering in the tree is convenient, but
+        # not guaranteed to always be 100% correct. As long as we have less
+        # than 10 children, the name will work fine: '8' < '9'. If we have more
+        # than 10 children, then we'll start to see issues: '10' < '2'.
+        # Having more than 9 children already happen with VerbNet classes
+        # (fire-10.10, resign-10.11), but is unlikely with subclasses.
+        # Moreover, it's not that awful if the order is only 99% correct.
+        order_insertion_by = ['name']
 
     def __str__(self):
         return 'VerbNetFrameSet: {}'.format(self.name)
