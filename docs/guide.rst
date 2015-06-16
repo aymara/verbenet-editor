@@ -65,6 +65,49 @@ seconds des syntagmes. La distinction ne nous semblant pas pertinente,
 nous avons opté pour ADJ/ADV, ce qui ne signifie pas qu'on n'a jamais
 de syntagmes.
 
+Verbes
+``````
+
+Un verbe peut être prononminal (se V) ou non (V).
+
+Les verbes peuvent être restreints avec la notation
+``<+restriction>``. Trois restrictions sémantiques sont ainsi
+représentées :
+
+ * **NP se V ADV PP** - Theme se V<+middle> ADV {autour} Location - Ce
+   papier s'enroule facilement autour d'un bâton
+ * **NP se V** - Agent se V<+reflexive> - Luc s'est coupé
+ * **NP se V** - Location se V<+neutre> - Le ciel s'est dégagé
+
+Infinitives
+```````````
+
+Vinf éventuellement précédé d'une préposition
+
+Participes présent
+``````````````````
+Vant
+
+Propositions
+````````````
+une proposition : Qu Pind ou Qu Psubj éventuellement précédé de "à ce"
+ou de "de ce"
+
+Interrogatives indirectes
+`````````````````````````
+
+une interrogative indirecte : comment P, si P, combien P
+
+Mots
+````
+
+IL, LUI, ensemble
+
+LUI : lui est obligatoire ! (TODO site)
+
+
+
+
 Sous-structures et ordre des syntagmes
 ``````````````````````````````````````
 
@@ -86,18 +129,11 @@ mots en français) à ce sujet.
 Restrictions sémantiques
 ````````````````````````
 
-Les syntagmes et les verbes peuvent être restreints avec la notation
-``<+restriction>``. Pour les syntagmes, une seule restriction
+Tous comme les verbes, les syntagmes peuvent être restreints avec la
+notation ``<+restriction>``. Une seule restriction
 sémantique existe :
 
  * **NP V** - Agent<+plural> V - Marie et Susanne ont bavardé
-
-Pour les verbes, trois restrictions sémantiques :
-
- * **NP se V ADV PP** - Theme se V<+middle> ADV {autour} Location - Ce
-   papier s'enroule facilement autour d'un bâton
- * **NP se V** - Agent se V<+reflexive> - Luc s'est coupé
- * **NP se V** - Location se V<+neutre> - Le ciel s'est dégagé
 
 Toutes les autres restrictions sont syntaxiques.
 
@@ -105,11 +141,36 @@ Restrictions syntaxiques : infinitifs et propositions
 `````````````````````````````````````````````````````
 
 
-de Vinf -> 'faux de' pronomialise en :
+de Vinf -> 'faux de' se pronominalise en :
 
  en -> vrai de
  y -> vrai à
  ceci, cela -> faux à, faux de -> donc dans la restriction
+
+  - des restrictions syntaxiques :  lorsque le rôle thématique ne se
+    réalise pas comme un groupe nominal mais comme une infinitive, une
+    proposition ou une interrogative indirecte (et aussi en 30-1-1-1
+    NP Vinf ou NP Vant).  Je peux détailler.
+
+Correspondances
+```````````````
+
+Les correspondances entre champ primaire et champ syntaxique se font
+avec les règles suivantes :
+
+les restrictions sémantiques qui sont présentes dans un champ
+syntaxique disparaissent dans le champ primaire correspondant
+
+les rôles thématiques non suivies d'une restriction syntaxique dans
+le champ syntaxique correspondent dans le champ primaire à un  NP
+ou à  un PP si   précédé dans le champ syntaxique d'une préposition
+entre accolades  (voir Agent V Patient <-> NP V NP.patient   ou
+Agent V {à} Patient <-> NP V PP.patient)
+
+les restrictions syntaxiques apparaissent dans le champ primaire
+sous forme d'infinitive, de proposition ou d'interrogative indirecte
+:  je peux écrire un certain nombre de règles (qui expliquent aussi
+le coup du faux de ou faux à), si tu veux.
 
 
 
@@ -137,8 +198,6 @@ pas de rôle.
 ADV-Middle indique que la construction entière est une construction
 moyenne.
 
-
-LUI : lui est obligatoire ! (TODO site)
 
 
 Vinf -> V-inf partout pour plus de cohérence
