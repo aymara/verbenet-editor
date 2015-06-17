@@ -185,7 +185,7 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             role_plus_restr = syntax_parts[i]
 
-            rolerestr_regex = r'(?P<role>[\w-_]+)<\+(?P<prep>\w+)?\s?V(?P<emptysubjectrole>[\w-_]+)-inf>'
+            rolerestr_regex = r'(?P<role>[\-\w_]+)<\+(?P<prep>\w+)?\s?V(?P<emptysubjectrole>[\-\w_]+)-inf>'
             rolerestr_dict = re.match(rolerestr_regex, role_plus_restr).groupdict()
 
             if preposition_type is False:
