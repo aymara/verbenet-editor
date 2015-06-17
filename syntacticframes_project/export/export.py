@@ -110,6 +110,7 @@ def merge_primary_and_syntax(primary, syntax, output):
     print('{:<40} {}'.format(primary, syntax), file=output)
     primary_parts, syntax_parts = primary.split(), list(tokenize_syntax(syntax))
     parsed_frame = []
+    pronominal = False
 
     print(primary_parts, syntax_parts, file=output)
 
@@ -135,18 +136,26 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             i, j = i+1, j+1
 
+        elif syntax_role == 'se' and primary_parts[j] == 'se':
+            pronominal = True
+            i, j = i+1, j+1
+
         # Verbs, can also be neutral
         elif syntax_role == 'V' and primary_parts[j] == 'V':
-            if restr is None:
-                parsed_frame.append({'type': 'V'})
-            elif restr in ['<+middle>', '<+neutre>', '<+reflexive>', '<+reciproque>']:
-                parsed_frame.append({'type': 'V', 'restr': restr[2:-1]})
-            else:
+            parsed_verb = {'type': 'V'}
+            if pronominal is True:
+                parsed_verb['pronominal'] = True
+
+            if restr in ['<+middle>', '<+neutre>', '<+reflexive>', '<+reciproque>']:
+                parsed_verb['restr'] = restr[2:-1]
+            elif restr is not None:
                 raise WrongFrameException('Restriction de verbe {} inconnue'.format(restr))
+
+            parsed_frame.append(parsed_verb)
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
-        elif syntax_role in ['ADV', 'ADJ', 'se', 'LUI', 'IL'] and phrase_type == syntax_role:
+        elif syntax_role in ['ADV', 'ADJ', 'LUI', 'IL'] and phrase_type == syntax_role:
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
@@ -256,11 +265,11 @@ def xml_of_syntax(parsed_frame):
         elif frame_part['type'] == 'special':
             prep = ET.SubElement(syntax, 'PREP')
             prep.set('restr', frame_part['content'])
-        elif frame_part['type'] == 'se':
-            prep = ET.SubElement(syntax, 'SE')
 
         elif frame_part['type'] == 'V':
             v = ET.SubElement(syntax, 'VERB')
+            if frame_part.get('pronominal') is True:
+                v.set('pronominal', 'true')
 
         elif frame_part['type'] in ['ADV', 'ADJ']:
             adv = ET.SubElement(syntax, frame_part['type'])
