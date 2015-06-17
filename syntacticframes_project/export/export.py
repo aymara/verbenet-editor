@@ -146,7 +146,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
-        elif syntax_role in ['ADV', 'ADJ', 'se'] and phrase_type == syntax_role:
+        elif syntax_role in ['ADV', 'ADJ', 'se', 'LUI', 'IL'] and phrase_type == syntax_role:
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
