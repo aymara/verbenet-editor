@@ -139,7 +139,7 @@ def merge_primary_and_syntax(primary, syntax, output):
         elif syntax_role == 'V' and primary_parts[j] == 'V':
             if restr is None:
                 parsed_frame.append({'type': 'V'})
-            elif restr in ['<+neutre>', '<+reflexive>', '<+moyen>']:
+            elif restr in ['<+middle>', '<+neutre>', '<+reflexive>', '<+reciproque>']:
                 parsed_frame.append({'type': 'V', 'restr': restr[2:-1]})
             else:
                 raise WrongFrameException('Restriction de verbe {} inconnue'.format(restr))

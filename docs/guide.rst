@@ -76,8 +76,9 @@ représentées :
 
  * **NP se V ADV PP** - Theme se V<+middle> ADV {autour} Location - Ce
    papier s'enroule facilement autour d'un bâton
- * **NP se V** - Agent se V<+reflexive> - Luc s'est coupé
  * **NP se V** - Location se V<+neutre> - Le ciel s'est dégagé
+ * TODO <+reciproque>
+ * **NP se V** - Agent se V<+reflexive> - Luc s'est coupé
 
 Infinitives
 ```````````
