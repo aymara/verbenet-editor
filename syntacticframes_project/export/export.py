@@ -9,7 +9,7 @@ from role.parserole import ROLE_LIST
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING', 'Pind', 'Vinf', 'Psubj', 'P']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING', 'Pind', 'V-inf', 'Psubj', 'P']
 
 class WrongFrameException(Exception):
     pass
@@ -30,7 +30,7 @@ def tokenize_syntax(syntax):
         c = syntax[i]
         if c == ' ':
             if current_word:
-                if syntax[i+1] == '<':  # only allow Theme<+de Vinf>, not Theme <+de Vinf>
+                if syntax[i+1] == '<':  # only allow Theme<+de VAgent-inf>, not Theme <+de VAgent-inf>
                     raise WrongFrameException('Space between role and restriction forbidden')
                 else:
                     yield current_word
@@ -158,21 +158,6 @@ def merge_primary_and_syntax(primary, syntax, output):
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
-        elif restr is not None and ('V-inf' in restr or 'V0-inf' in restr or 'V1-inf' in restr or 'V2-inf' in restr):
-            restr_dict = re.match(r'<\+(?P<prep>\w+)?\s?(?P<vinf>V[012]?-inf\s?W?)>', restr).groupdict()
-            next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
-
-            if restr_dict['prep'] is not None:
-                assert primary_parts[j] == restr_dict['prep']
-            assert next_phrase_type == 'Vinf'
-
-            parsed_frame.append({
-                'type': next_phrase_type, 'role': syntax_role,
-                'introduced_by': primary_parts[j], 'restr': restr_dict['vinf']})
-
-            i += 1
-            j += 2
-
         elif restr is not None and '+Qu' in restr:
             restr_dict = re.match(r'<\+Qu (?P<ptype>P[a-z]+)>', restr).groupdict()
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
@@ -189,8 +174,35 @@ def merge_primary_and_syntax(primary, syntax, output):
             i += 1
             j += 2
 
+        elif primary_parts[j] in ['à', 'de', 'comment'] and primary_parts[j+1] == 'V-inf':
+            preposition = primary_parts[j]
+            preposition_type = False
+            if type(syntax_parts[i]) == set:
+                assert len(syntax_parts[i]) == 1
+                assert list(syntax_parts[i])[0] == preposition
+                preposition_type = True
+                i += 1
+
+            role_plus_restr = syntax_parts[i]
+
+            rolerestr_regex = r'(?P<role>[\w-_]+)<\+(?P<prep>\w+)?\s?V(?P<emptysubjectrole>[\w-_]+)-inf>'
+            rolerestr_dict = re.match(rolerestr_regex, role_plus_restr).groupdict()
+
+            if preposition_type is False:
+                assert rolerestr_dict['prep'] == preposition
+
+
+            parsed_frame.append({
+                'type': 'VINF',
+                'role': role_plus_restr,
+                'introduced_by': preposition,
+                'is_true_prep': preposition_type,
+                'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
+
+            i, j = i+1, j+2
+
         # Redundancy between NP V que S and Agent V Theme<+que_comp>
-        elif primary_parts[j] in ['que', 'de', 'comment', 'that']:
+        elif primary_parts[j] in ['que', 'comment', 'that']:
             primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
@@ -204,7 +216,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             # Remove <+que and >
             specific_restr = restr[3+len(primary_word):-1]
 
-            assert specific_restr in ['comp', 'Psubj', 'V-inf', 'V0-inf', 'V1-inf', 'V2-inf', 'extract', 'P']
+            assert specific_restr in ['comp', 'Psubj', 'extract', 'P']
 
             parsed_frame.append({
                 'type': next_phrase_type, 'role': syntax_role,
@@ -274,6 +286,12 @@ def xml_of_syntax(parsed_frame):
 
         elif frame_part['type'] in ['ADV', 'ADJ']:
             adv = ET.SubElement(syntax, frame_part['type'])
+        elif frame_part['type'] == 'VINF':
+            vinf = ET.SubElement(syntax, frame_part['type'])
+            vinf.set('value', vinf['role'])
+            vinf.set('is_true_prep', vinf['is_true_prep'])
+            vinf.set('emptysubjectrole', vinf['emptysubjectrole'])
+            vinf.set('introduced_by', vinf['introduced_by'])
         elif frame_part['type'] in ['S', 'S_INF', 'S_ING']:
             s = ET.SubElement(syntax, frame_part['type'])
             s.set('value', frame_part['role'])
