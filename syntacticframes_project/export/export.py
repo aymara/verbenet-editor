@@ -125,8 +125,8 @@ def merge_primary_and_syntax(primary, syntax, output):
 
         # Usual NP.Agent
         if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
-            if primary_role is not None:
-                assert syntax_role == primary_role
+            if primary_role is not None and syntax_role != primary_role:
+                raise WrongFrameException('Roles in primary and syntax don\'t match')
 
             parsed_frame.append({'type': phrase_type, 'role': syntax_role})
 
@@ -163,8 +163,8 @@ def merge_primary_and_syntax(primary, syntax, output):
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
 
             assert primary_parts[j] == 'Qu'
-            if next_primary_role is not None:
-                assert syntax_role == next_primary_role
+            if next_primary_role is not None and syntax_role != next_primary_role:
+                raise WrongFrameException('In Qu, roles in primary and syntax don\'t match')
             assert next_phrase_type == restr_dict['ptype']
 
             parsed_frame.append({
