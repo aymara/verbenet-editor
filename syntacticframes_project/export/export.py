@@ -30,9 +30,8 @@ def tokenize_syntax(syntax):
         c = syntax[i]
         if c == ' ':
             if current_word:
-                if syntax[i+1] == '<':  # allow Theme<+de Vinf> as well as a Theme <+de Vinf>
-                    i += 1
-                    continue
+                if syntax[i+1] == '<':  # only allow Theme<+de Vinf>, not Theme <+de Vinf>
+                    raise WrongFrameException('Space between role and restriction forbidden')
                 else:
                     yield current_word
             current_word = ''
@@ -235,6 +234,8 @@ def merge_primary_and_syntax(primary, syntax, output):
 
         print(parsed_frame, file=output)
 
+    if not (i == len(syntax_parts) and j == len(primary_parts)):
+        raise WrongFrameException('{}-{} {}-{}'.format(i, len(syntax_parts), j, len(primary_parts)))
     assert i == len(syntax_parts)
     assert j == len(primary_parts)
 
