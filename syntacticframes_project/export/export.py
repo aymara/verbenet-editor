@@ -146,7 +146,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
-        elif syntax_role in ['ADV', 'ADJ', 'se', 'CL-lui'] and phrase_type == syntax_role:
+        elif syntax_role in ['ADV', 'ADJ', 'se'] and phrase_type == syntax_role:
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
@@ -258,10 +258,6 @@ def xml_of_syntax(parsed_frame):
             prep.set('restr', frame_part['content'])
         elif frame_part['type'] == 'se':
             prep = ET.SubElement(syntax, 'SE')
-
-        # To be improved
-        elif frame_part['type'] == 'CL-lui':
-            prep = ET.SubElement(syntax, 'CLLUI')
 
         elif frame_part['type'] == 'V':
             v = ET.SubElement(syntax, 'VERB')
