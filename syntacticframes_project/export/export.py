@@ -209,8 +209,7 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             i, j = i+1, j+2
 
-        # Redundancy between NP V que S and Agent V Theme<+que_comp>
-        elif primary_parts[j] in ['que', 'comment', 'that']:
+        elif primary_parts[j] in ['si', 'comment']:
             primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
