@@ -158,18 +158,26 @@ def merge_primary_and_syntax(primary, syntax, output):
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
-        elif restr is not None and '+Qu' in restr:
+        elif restr is not None and ('+Qu Pind' in restr or '+Qu Psubj' in restr):
             restr_dict = re.match(r'<\+Qu (?P<ptype>P[a-z]+)>', restr).groupdict()
+
+            preposition = None
+            if primary_parts[j] == 'de' or primary_parts[j] == 'à':
+                preposition = primary_parts[j]
+                assert primary_parts[j+1] == 'ce'
+                j = j + 2
+
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
 
             assert primary_parts[j] == 'Qu'
             if next_primary_role is not None and syntax_role != next_primary_role:
                 raise WrongFrameException('In Qu, roles in primary and syntax don\'t match')
+
             assert next_phrase_type == restr_dict['ptype']
 
             parsed_frame.append({
                 'type': next_phrase_type, 'role': syntax_role,
-                'introduced_by': 'Qu', 'restr': restr_dict['ptype']})
+                'introduced_by': preposition, 'restr': restr_dict['ptype']})
 
             i += 1
             j += 2
