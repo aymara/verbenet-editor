@@ -182,7 +182,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             i += 1
             j += 2
 
-        elif primary_parts[j] in ['à', 'de', 'comment'] and primary_parts[j+1] == 'V-inf':
+        elif primary_parts[j] in ['de', 'à', 'comment', 'pour'] and primary_parts[j+1] == 'V-inf':
             preposition = primary_parts[j]
             preposition_type = False
             if type(syntax_parts[i]) == set:
@@ -209,7 +209,7 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             i, j = i+1, j+2
 
-        elif primary_parts[j] in ['si', 'comment']:
+        elif primary_parts[j] in ['si', 'comment', 'combien']:
             primary_word = primary_parts[j]
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
