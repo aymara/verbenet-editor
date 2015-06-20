@@ -254,7 +254,7 @@ def merge_primary_and_syntax(primary, syntax, output):
         print(parsed_frame, file=output)
 
     if not (i == len(syntax_parts) and j == len(primary_parts)):
-        raise WrongFrameException('{}-{} {}-{}'.format(i, len(syntax_parts), j, len(primary_parts)))
+        raise WrongFrameException('Match error')
     assert i == len(syntax_parts)
     assert j == len(primary_parts)
 
