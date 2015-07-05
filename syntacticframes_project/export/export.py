@@ -123,6 +123,15 @@ def merge_primary_and_syntax(primary, syntax, output):
         print('   |{}| |{}|'.format(syntax_role, restr), file=output)
         print('   |{}| |{}|'.format(phrase_type, primary_role), file=output)
 
+        np_vinf = False
+        if primary_parts[j] == 'NP':
+            final_role_stimulus = syntax_role == 'Stimulus' and i + 1 == len(syntax_parts)
+            np_vinf_syntax = j + 2 == len(primary_parts) and primary_parts[j+1] in ['V-inf', 'V-ant']
+            np_vinf = final_role_stimulus and np_vinf_syntax
+
+        if np_vinf:
+            raise WrongFrameException('np vinf')
+
         # Usual NP.Agent
         if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
             if primary_role is not None and syntax_role != primary_role:
