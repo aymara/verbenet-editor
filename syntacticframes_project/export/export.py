@@ -125,15 +125,23 @@ def merge_primary_and_syntax(primary, syntax, output):
 
         np_vinf = False
         if primary_parts[j] == 'NP':
-            final_role_stimulus = syntax_role == 'Stimulus' and i + 1 == len(syntax_parts)
+            final_role = i + 1 == len(syntax_parts)
             np_vinf_syntax = j + 2 == len(primary_parts) and primary_parts[j+1] in ['V-inf', 'V-ant']
-            np_vinf = final_role_stimulus and np_vinf_syntax
+            np_vinf = final_role and np_vinf_syntax
 
         if np_vinf:
-            raise WrongFrameException('np vinf')
+            # everything was asserted above, we only need to output the result
+            parsed_frame.append({
+                'type': 'VINF',
+                'role': syntax_role,
+                'is_npvinf': True,
+                'emptysubjectrole': None})
+
+            j += 2
+            i += 1
 
         # Usual NP.Agent
-        if syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
+        elif syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
             if primary_role is not None and syntax_role != primary_role:
                 raise WrongFrameException('Roles in primary and syntax don\'t match')
 
@@ -211,7 +219,7 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             parsed_frame.append({
                 'type': 'VINF',
-                'role': role_plus_restr,
+                'role': role_plus_restr,  # TODO why?
                 'introduced_by': preposition,
                 'is_true_prep': preposition_type,
                 'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
@@ -306,8 +314,11 @@ def xml_of_syntax(parsed_frame):
             vinf = ET.SubElement(syntax, frame_part['type'])
             vinf.set('value', vinf['role'])
             vinf.set('is_true_prep', vinf['is_true_prep'])
-            vinf.set('emptysubjectrole', vinf['emptysubjectrole'])
-            vinf.set('introduced_by', vinf['introduced_by'])
+            if 'np_vinf' in vinf:
+                vinf.set('np_vinf', '1')
+            else:
+                vinf.set('emptysubjectrole', vinf['emptysubjectrole'])
+                vinf.set('introduced_by', vinf['introduced_by'])
         elif frame_part['type'] in ['S', 'S_INF', 'S_ING']:
             s = ET.SubElement(syntax, frame_part['type'])
             s.set('value', frame_part['role'])
