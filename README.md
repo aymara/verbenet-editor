@@ -8,9 +8,6 @@ https://verbenet.inria.fr/
 Installation
 ============
 
-We're going to assume Ubuntu when showing instructions, but this
-should work anywhere, even though it was only tested on GNU/Linux.
-
 Code and dependencies
 --------------------
 
@@ -27,7 +24,7 @@ For Ubuntu:
 For OS X:
 
     brew install libxslt libxml2 postgresql npm
-    # Follow brew instruction for PostgreSQL
+    # Follow brew instructions for PostgreSQL
 
 Install Node.js dependencies globally:
 
