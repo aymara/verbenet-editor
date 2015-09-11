@@ -32,16 +32,8 @@ class TestTokenizeSyntax(SimpleTestCase):
 
     def test_restriction(self):
         self.assertEqual(
-            list(tokenize_syntax('Agent V Theme <+de_Vinf>')),
+            list(tokenize_syntax('Agent V Theme<+de_Vinf>')),
             ['Agent', 'V', 'Theme<+de_Vinf>'])
-        self.assertEqual(
-            list(tokenize_syntax('Agent V Theme <+de_Vinf>')),
-            list(tokenize_syntax('Agent V Theme<+de_Vinf>')))
-
-    def test_spaced_restriction(self):
-        self.assertEqual(
-            list(tokenize_syntax('Agent V Theme <+Qu Pind>')),
-            ['Agent', 'V', 'Theme<+Qu Pind>'])
 
 
 class TestSeparatePhraseType(SimpleTestCase):
@@ -155,21 +147,21 @@ class TestFullMerge(SimpleTestCase):
 
     def test_quep(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V Qu Psubj', 'Agent V Topic <+Qu Psubj>', output=sys.stdout),
+            merge_primary_and_syntax('NP V Qu Psubj', 'Agent V Topic<+Qu Psubj>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
              {'type': 'Psubj', 'role': 'Topic', 'introduced_by': 'Qu', 'restr': 'Psubj'}])
 
     def test_comment_noextract(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V comment P', 'Experiencer V Stimulus <+comment P>', output=sys.stdout),
+            merge_primary_and_syntax('NP V comment P', 'Experiencer V Stimulus<+comment P>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Experiencer'},
              {'type': 'V'},
              {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
 
     def test_plural(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V', 'Patient <+plural> V', output=sys.stdout),
+            merge_primary_and_syntax('NP V', 'Patient<+plural> V', output=sys.stdout),
             [{'type': 'NP', 'role': 'Patient', 'modifier': '+plural'},
              {'type': 'V'}])
 
