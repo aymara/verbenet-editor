@@ -42,6 +42,10 @@ requirements:
 Data
 ----
 
+Create the database:
+
+    createdb syntacticframes
+
 Run `./manage.py migrate` from `syntacticframes_projects`. This will
 set up initial data, but you will still need to import VerbNet or
 VerbeNet afterwards. This is not currently possible: for now, simply
@@ -50,10 +54,9 @@ ask a PostgreSQL dump.
 The result is a database named `syntacticframes`. Make sure the
 database supports the `UNACCENT` function:
 
-    sudo -u postgres psql syntacticframes
-
-    # CREATE EXTENSION UNACCENT;
-    # CREATE TEXT SEARCH CONFIGURATION fr ( COPY = french );
+    psql syntacticframes
+    syntacticframes=# CREATE EXTENSION UNACCENT;
+    syntacricframes=# CREATE TEXT SEARCH CONFIGURATION fr ( COPY = french );
 
 
 Running tests
@@ -64,6 +67,7 @@ create a database then remove it: the fixtures load the entire LVF
 data! To speed things up at the expense of possible bugs creeping in,
 you can create a database specifically for testing:
 
+    createdb _test_verbenet_db
     ./manage.py migrate --settings=syntacticframes.settings.migratedtestdb
 
 Tests now run fast:
