@@ -210,7 +210,6 @@ def merge_primary_and_syntax(primary, syntax, output):
                 i += 1
 
             role_plus_restr = syntax_parts[i]
-
             rolerestr_regex = r'(?P<role>[\-\w_]+)<\+(?P<prep>\w+)?\s?V(?P<emptysubjectrole>[\-\w_]+)-inf>'
             rolerestr_dict = re.match(rolerestr_regex, role_plus_restr).groupdict()
 
@@ -220,7 +219,7 @@ def merge_primary_and_syntax(primary, syntax, output):
 
             parsed_frame.append({
                 'type': 'VINF',
-                'role': role_plus_restr,  # TODO why?
+                'role': syntax_role,
                 'introduced_by': preposition,
                 'is_true_prep': preposition_type,
                 'emptysubjectrole': rolerestr_dict['emptysubjectrole']})

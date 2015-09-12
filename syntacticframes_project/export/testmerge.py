@@ -140,10 +140,10 @@ class TestFullMerge(SimpleTestCase):
 
     def test_vinf(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V de Vinf', 'Pivot V Theme<+de V0-inf>', output=sys.stdout),
+            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de VAgent-inf>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
-             {'type': 'Vinf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'V0-inf'}])
+             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Agent', 'introduced_by': 'de'}])
 
     # phrastique direct
     def test_quep(self):
