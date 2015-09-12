@@ -219,9 +219,3 @@ class TestExport(SimpleTestCase):
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
             '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><NP modifier="+plural" value="Patient"><SYNRESTRS /></NP></SYNTAX>')
-
-        new_syntax = merge_primary_and_syntax('NP V S', 'Agent V Patient<+plural>', output=sys.stdout)
-        xml = xml_of_syntax(new_syntax)
-        self.assertEqual(
-            ET.tostring(xml, encoding='unicode'),
-            '<SYNTAX><NP value="Agent"><SYNRESTRS /></NP><VERB /><S modifier="+plural" value="Patient" /></SYNTAX>')

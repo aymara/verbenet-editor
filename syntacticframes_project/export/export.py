@@ -9,7 +9,7 @@ from role.parserole import ROLE_LIST
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'S', 'S_INF', 'S_ING', 'Pind', 'V-inf', 'Psubj', 'P']
+PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'Pind', 'V-inf', 'Psubj', 'P']
 
 class WrongFrameException(Exception):
     pass
@@ -335,11 +335,6 @@ def xml_of_syntax(parsed_frame):
             else:
                 vinf.set('emptysubjectrole', vinf['emptysubjectrole'])
                 vinf.set('introduced_by', vinf['introduced_by'])
-        elif frame_part['type'] in ['S', 'S_INF', 'S_ING']:
-            s = ET.SubElement(syntax, frame_part['type'])
-            s.set('value', frame_part['role'])
-            if 'modifier' in frame_part:
-                s.set('modifier', frame_part['modifier'])
         else:
             raise WrongFrameException('Unhandled {} in {}.'.format(frame_part, parsed_frame))
 
