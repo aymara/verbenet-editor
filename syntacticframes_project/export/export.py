@@ -228,8 +228,7 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
         elif set(primary_parts[j]) & VINF_PREPS and primary_parts[j+1] == 'V-inf':
             preposition = primary_parts[j]
             preposition_type = False
-            if type(syntax_parts[i]) == set:
-                assert len(syntax_parts[i]) == 1
+            if isinstance(syntax_parts[i], set):  # préposition
                 assert syntax_parts[i] == preposition
                 preposition_type = True
                 i += 1

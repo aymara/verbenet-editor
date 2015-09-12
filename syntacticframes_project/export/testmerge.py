@@ -153,6 +153,13 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'V'},
              {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Agent', 'introduced_by': {'de'}}])
 
+    def test_twoprep_vinf(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V à/de V-inf', 'Pivot V {à/de} Theme<+VAgent-inf>', output=sys.stdout),
+            [{'type': 'NP', 'role': 'Pivot'},
+             {'type': 'V'},
+             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': True, 'emptysubjectrole': 'Agent', 'introduced_by': {'à', 'de'}}])
+
     def test_explicitprep_vinf(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V à V-inf', 'Pivot V {à} Theme<+VAgent-inf>', output=sys.stdout),
