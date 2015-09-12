@@ -145,12 +145,24 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'V'},
              {'type': 'Vinf', 'role': 'Theme', 'introduced_by': 'de', 'restr': 'V0-inf'}])
 
+    # phrastique direct
     def test_quep(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V Qu Psubj', 'Agent V Topic<+Qu Psubj>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'type': 'Psubj', 'role': 'Topic', 'introduced_by': 'Qu', 'restr': 'Psubj'}])
+             {'type': 'Psubj', 'role': 'Topic', 'introduced_by': None, 'restr': 'Psubj'}])
+
+    # phrastique indirect
+    def test_dece_quep(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V PP de ce Qu Pind', 'Agent V {avec} Co-Agent {de} Topic<+Qu Pind>', output=sys.stdout),
+            [{'type': 'NP', 'role': 'Agent'},
+             {'type': 'V'},
+             {'type': 'PREP', 'Value': {'avec'}},
+             {'type': 'PP', 'role': 'Co-Agent'},
+             {'type': 'PREP', 'Value': {'de'}},
+             {'type': 'Pind', 'role': 'Topic', 'introduced_by': 'de', 'restr': 'Pind'}])
 
     def test_comment_noextract(self):
         self.assertEqual(

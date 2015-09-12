@@ -190,6 +190,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             if next_primary_role is not None and syntax_role != next_primary_role:
                 raise WrongFrameException('In Qu, roles in primary and syntax don\'t match')
 
+            # redundant information, TODO put only in one place
             assert next_phrase_type == restr_dict['ptype']
 
             parsed_frame.append({
