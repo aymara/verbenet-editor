@@ -13,26 +13,28 @@
     Deux raisons possibles : soit il faut changer la
     frame, soit il faut changer l'analyse elle-même.
     {{ ratio }} des frames ont été traitées correctement
-    ({{frames_ok}} / {{frames_total}}). Le reste a donné
-    lieu à des erreurs : </p>
+    ({{frames_ok}} / {{frames_total}}).
+    {% if frames_ok == frames_total %}
+        Bravo !</p>
+    {% else %}
+        Le reste a donné lieu à des erreurs : </p>
 
-    <ul>
-    {% for issue, frame_list in issues.items %}
-        <li>{{ issue }} ({{frame_list|length}})</li>
         <ul>
-        {% for frame in frame_list %}
-            <li><a href="/class/{{frame.frameset.verbnet_class.levin_class.number}}/#frame_{{frame.id}}">#</a>
+        {% for issue, frame_list in issues.items %}
+            <li>{{ issue }} ({{frame_list|length}})</li>
             <ul>
-                <li>{{frame.syntax}}</li>
-                <li>{{frame.roles_syntax}}</li>
+            {% for frame in frame_list %}
+                <li><a href="/class/{{frame.frameset.verbnet_class.levin_class.number}}/#frame_{{frame.id}}">#</a>
+                <ul>
+                    <li>{{frame.syntax}}</li>
+                    <li>{{frame.roles_syntax}}</li>
+                </ul>
+                </li>
+            {% endfor %}
             </ul>
-            </li>
         {% endfor %}
         </ul>
-    {% endfor %}
-    </ul>
-
-
+    {% endif %}
 </div>
 
 {% endblock all %}
