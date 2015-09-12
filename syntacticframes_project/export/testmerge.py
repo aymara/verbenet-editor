@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 from django.test import SimpleTestCase
 
 from export.export import (
-    tokenize_syntax, separate_syntax_part,
-    separate_phrasetype,
+    tokenize_syntax, tokenize_primary,
+    separate_syntax_part, separate_phrasetype,
     merge_primary_and_syntax, xml_of_syntax,
     WrongFrameException)
 
@@ -21,10 +21,12 @@ class TestTokenizeSyntax(SimpleTestCase):
                          ['Agent', 'V', {'+loc'}, 'Location'])
         self.assertEqual(list(tokenize_syntax('Agent V {pour à de} Patient')),
                          ['Agent', 'V', {'pour', 'à', 'de'}, 'Patient'])
+        self.assertEqual(list(tokenize_syntax('Agent V {pour/à/de} Patient')),
+                         ['Agent', 'V', {'pour', 'à', 'de'}, 'Patient'])
 
         self.assertEqual(
-            list(tokenize_syntax('Agent V {à dans verbs} Location')),
-            ['Agent', 'V', {'à', 'dans', 'verbs'}, 'Location'])
+            list(tokenize_syntax('Agent V {à dans BAR} Location')),
+            ['Agent', 'V', {'à', 'dans', 'BAR'}, 'Location'])
         self.assertEqual(list(tokenize_syntax('Agent V {à} Location')), ['Agent', 'V', {'à'}, 'Location'])
         self.assertEqual(list(tokenize_syntax('Agent V {de} Location')), ['Agent', 'V', {'de'}, 'Location'])
 
@@ -35,6 +37,11 @@ class TestTokenizeSyntax(SimpleTestCase):
         self.assertEqual(
             list(tokenize_syntax('Agent V Theme<+de_Vinf>')),
             ['Agent', 'V', 'Theme<+de_Vinf>'])
+
+
+class TestTokenizePrimary(SimpleTestCase):
+    def test_simple_split(self):
+        self.assertEqual(tokenize_primary('NP V NP'), ['NP', 'V', 'NP'])
 
 
 class TestSeparatePhraseType(SimpleTestCase):

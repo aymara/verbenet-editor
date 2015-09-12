@@ -59,6 +59,11 @@ def tokenize_syntax(syntax):
     if current_word:
         yield current_word
 
+
+def tokenize_primary(primary):
+    return primary.split()
+
+
 def separate_phrasetype(primary_part):
     try:
         phrase_type, role = primary_part.split('.')
@@ -107,7 +112,8 @@ def separate_syntax_part(syntax_part):
 
 def merge_primary_and_syntax(primary, syntax, output):
     print('{:<40} {}'.format(primary, syntax), file=output)
-    primary_parts, syntax_parts = primary.split(), list(tokenize_syntax(syntax))
+    primary_parts = list(tokenize_primary(primary))
+    syntax_parts = list(tokenize_syntax(syntax))
     parsed_frame = []
     pronominal = False
 
