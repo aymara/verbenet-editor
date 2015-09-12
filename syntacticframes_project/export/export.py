@@ -296,6 +296,9 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             else:
                 print('set ', phrase_type, syntax_parts[i], file=output)
                 parsed_frame.append({'type': 'PREP', 'Value': syntax_parts[i]})
+
+                if len(primary_parts) > j+1 and isinstance(primary_parts[j], set) and isinstance(primary_parts[j+1], set) and primary_parts[j+1] & {'comment', 'si'}:
+                    j += 1
             i += 1
 
         # We should have handled everything

@@ -212,6 +212,15 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'V'},
              {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
 
+    def test_interrogative_prep(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V de comment P', 'Experiencer V {de} Stimulus<+comment P>'),
+            [{'type': 'NP', 'role': 'Experiencer'},
+             {'type': 'V'},
+             {'type': 'PREP', 'Value': {'de'}},
+             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
+
+
 class TestExport(SimpleTestCase):
     def test_simple_sentence(self):
         new_syntax = merge_primary_and_syntax('NP V NP', 'Agent V Patient', output=sys.stdout)
