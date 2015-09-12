@@ -210,8 +210,18 @@ def merge_primary_and_syntax(primary, syntax, output):
                 i += 1
 
             role_plus_restr = syntax_parts[i]
-            rolerestr_regex = r'(?P<role>[\-\w_]+)<\+(?P<prep>\w+)?\s?V(?P<emptysubjectrole>[\-\w_]+)-inf>'
-            rolerestr_dict = re.match(rolerestr_regex, role_plus_restr).groupdict()
+            rolerestr_regex = (
+                r'(?P<role>[\-\w_]+)'
+                '<\+(?P<prep>\w+)?'
+                '(?P<spaceafterprep>\s*)'
+                'V(?P<emptysubjectrole>[\-\w_]+)-inf>')
+            rolerestr_match = re.match(rolerestr_regex, role_plus_restr)
+            if not rolerestr_match:
+                raise WrongFrameException('Bad restriction {}'.format(role_plus_restr))
+
+            rolerestr_dict = rolerestr_match.groupdict()
+            if rolerestr_dict['prep'] and not rolerestr_dict['spaceafterprep']:
+                raise WrongFrameException('Missing space in {}'.format(role_plus_restr))
 
             if preposition_type is False:
                 assert rolerestr_dict['prep'] == preposition

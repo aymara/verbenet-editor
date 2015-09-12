@@ -6,7 +6,8 @@ from django.test import SimpleTestCase
 from export.export import (
     tokenize_syntax, separate_syntax_part,
     separate_phrasetype,
-    merge_primary_and_syntax, xml_of_syntax)
+    merge_primary_and_syntax, xml_of_syntax,
+    WrongFrameException)
 
 class TestTokenizeSyntax(SimpleTestCase):
     def test_simple(self):
@@ -144,6 +145,12 @@ class TestFullMerge(SimpleTestCase):
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Agent', 'introduced_by': 'de'}])
+
+    def test_bad_vinf(self):
+        with self.assertRaises(WrongFrameException):
+            merge_primary_and_syntax(
+                'NP V de V-inf', 'Pivot V Theme<+deVAgent-inf>',
+                output=sys.stdout)
 
     # phrastique direct
     def test_quep(self):
