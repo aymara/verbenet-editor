@@ -171,13 +171,6 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'PREP', 'Value': {'de'}},
              {'type': 'Pind', 'role': 'Topic', 'introduced_by': 'de', 'restr': 'Pind'}])
 
-    def test_comment_noextract(self):
-        self.assertEqual(
-            merge_primary_and_syntax('NP V comment P', 'Experiencer V Stimulus<+comment P>', output=sys.stdout),
-            [{'type': 'NP', 'role': 'Experiencer'},
-             {'type': 'V'},
-             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
-
     def test_plural(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V', 'Patient<+plural> V', output=sys.stdout),
@@ -186,10 +179,10 @@ class TestFullMerge(SimpleTestCase):
 
     def test_comment(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V comment S', 'Experiencer V Stimulus<+comment_extract>', output=sys.stdout),
+            merge_primary_and_syntax('NP V comment P', 'Experiencer V Stimulus<+comment P>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Experiencer'},
              {'type': 'V'},
-             {'type': 'S', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'extract'}])
+             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
 
 class TestExport(SimpleTestCase):
     def test_simple_sentence(self):
