@@ -323,6 +323,9 @@ def xml_of_syntax(parsed_frame):
             v = ET.SubElement(syntax, 'VERB')
             if frame_part.get('pronominal') is True:
                 v.set('pronominal', 'true')
+            if 'restr' in frame_part:
+                v.set('restr', frame_part['restr'])
+
 
         elif frame_part['type'] in ['ADV', 'ADJ']:
             adv = ET.SubElement(syntax, frame_part['type'])
