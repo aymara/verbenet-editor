@@ -1,6 +1,7 @@
 import io
 import os
 import re
+import sys
 import locale
 from xml.etree import ElementTree as ET
 
@@ -10,6 +11,7 @@ from role.parserole import ROLE_LIST
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'Pind', 'V-inf', 'Psubj', 'P']
+VINF_PREPS = {'de', 'à', 'comment', 'pour'}
 
 class WrongFrameException(Exception):
     pass
@@ -61,10 +63,23 @@ def tokenize_syntax(syntax):
 
 
 def tokenize_primary(primary):
-    return primary.split()
+    for primary_part in primary.split():
+        if primary_part in VINF_PREPS | {'ce', 'si', 'combien', 'comment'}:
+            yield {primary_part}
+        elif '/' in primary_part:
+            prep_set = set(primary_part.split('/'))
+            assert prep_set & VINF_PREPS is not None
+            yield prep_set
+        else:
+            yield primary_part
 
 
 def separate_phrasetype(primary_part):
+    # prep
+    if isinstance(primary_part, set):
+        return primary_part, None
+
+    # NP.Agent
     try:
         phrase_type, role = primary_part.split('.')
         if phrase_type in PHRASE_TYPE_LIST and role.title() in ROLE_LIST:
@@ -110,7 +125,7 @@ def separate_syntax_part(syntax_part):
         return role, restr
 
 
-def merge_primary_and_syntax(primary, syntax, output):
+def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
     print('{:<40} {}'.format(primary, syntax), file=output)
     primary_parts = list(tokenize_primary(primary))
     syntax_parts = list(tokenize_syntax(syntax))
@@ -184,10 +199,14 @@ def merge_primary_and_syntax(primary, syntax, output):
         elif restr is not None and ('+Qu Pind' in restr or '+Qu Psubj' in restr):
             restr_dict = re.match(r'<\+Qu (?P<ptype>P[a-z]+)>', restr).groupdict()
 
+            # Check len 1 set until we handle multiple prepositions in primary
+            if isinstance(primary_parts[j], set):
+                assert len(primary_parts[j]) == 1
+
             preposition = None
-            if primary_parts[j] == 'de' or primary_parts[j] == 'à':
-                preposition = primary_parts[j]
-                assert primary_parts[j+1] == 'ce'
+            if primary_parts[j] == {'de'} or primary_parts[j] == {'à'}:
+                preposition = next(iter(primary_parts[j]))
+                assert primary_parts[j+1] == {'ce'}
                 j = j + 2
 
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
@@ -196,7 +215,7 @@ def merge_primary_and_syntax(primary, syntax, output):
             if next_primary_role is not None and syntax_role != next_primary_role:
                 raise WrongFrameException('In Qu, roles in primary and syntax don\'t match')
 
-            # redundant information, TODO put only in one place
+            # redundant information, TODO put only in one place as with V-inf
             assert next_phrase_type == restr_dict['ptype']
 
             parsed_frame.append({
@@ -206,12 +225,12 @@ def merge_primary_and_syntax(primary, syntax, output):
             i += 1
             j += 2
 
-        elif primary_parts[j] in ['de', 'à', 'comment', 'pour'] and primary_parts[j+1] == 'V-inf':
+        elif set(primary_parts[j]) & VINF_PREPS and primary_parts[j+1] == 'V-inf':
             preposition = primary_parts[j]
             preposition_type = False
             if type(syntax_parts[i]) == set:
                 assert len(syntax_parts[i]) == 1
-                assert list(syntax_parts[i])[0] == preposition
+                assert syntax_parts[i] == preposition
                 preposition_type = True
                 i += 1
 
@@ -230,23 +249,23 @@ def merge_primary_and_syntax(primary, syntax, output):
                 raise WrongFrameException('Missing space in {}'.format(role_plus_restr))
 
             if preposition_type is False:
-                assert rolerestr_dict['prep'] == preposition
+                assert {rolerestr_dict['prep']} == preposition
 
 
             parsed_frame.append({
                 'type': 'VINF',
-                'role': syntax_role,
+                'role': rolerestr_dict['role'],
                 'introduced_by': preposition,
                 'is_true_prep': preposition_type,
                 'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
 
             i, j = i+1, j+2
 
-        elif primary_parts[j] in ['si', 'comment', 'combien']:
-            primary_word = primary_parts[j]
+        elif set(primary_parts[j]) & {'si', 'comment', 'combien'}:
+            assert len(primary_parts[j]) == 1
+            primary_word = next(iter(primary_parts[j]))
             # Ensure that que also appears in syntax
             next_phrase_type, next_primary_role = separate_phrasetype(primary_parts[j+1])
-
 
             assert restr.startswith('<+{}'.format(primary_word))
             assert restr.endswith('>')

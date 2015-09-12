@@ -41,7 +41,13 @@ class TestTokenizeSyntax(SimpleTestCase):
 
 class TestTokenizePrimary(SimpleTestCase):
     def test_simple_split(self):
-        self.assertEqual(tokenize_primary('NP V NP'), ['NP', 'V', 'NP'])
+        self.assertEqual(list(tokenize_primary('NP V NP')), ['NP', 'V', 'NP'])
+
+    def test_preposition(self):
+        self.assertEqual(list(tokenize_primary('NP V de V-inf')), ['NP', 'V', {'de'}, 'V-inf'])
+
+    def test_qu(self):
+        self.assertEqual(list(tokenize_primary('NP V Qu Psubj')), ['NP', 'V', 'Qu', 'Psubj'])
 
 
 class TestSeparatePhraseType(SimpleTestCase):
@@ -61,6 +67,7 @@ class TestSeparatePhraseType(SimpleTestCase):
     def test_something_else(self):
         self.assertEqual(separate_phrasetype('V'), ('V', None))
         self.assertEqual(separate_phrasetype('se'), ('se', None))
+        self.assertEqual(separate_phrasetype('Qu'), ('Qu', None))
         self.assertEqual(separate_phrasetype('abcd.ert'), ('abcd.ert', None))
 
 
@@ -144,7 +151,16 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de VAgent-inf>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
-             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Agent', 'introduced_by': 'de'}])
+             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Agent', 'introduced_by': {'de'}}])
+
+    def test_explicitprep_vinf(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V à V-inf', 'Pivot V {à} Theme<+VAgent-inf>', output=sys.stdout),
+            [{'type': 'NP', 'role': 'Pivot'},
+             {'type': 'V'},
+             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': True, 'emptysubjectrole': 'Agent', 'introduced_by': {'à'}}])
+
+
 
     def test_bad_vinf(self):
         with self.assertRaises(WrongFrameException):
@@ -170,6 +186,13 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'PP', 'role': 'Co-Agent'},
              {'type': 'PREP', 'Value': {'de'}},
              {'type': 'Pind', 'role': 'Topic', 'introduced_by': 'de', 'restr': 'Pind'}])
+
+    def test_sip(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V si P', 'Agent V Topic<+si P>'),
+            [{'type': 'NP', 'role': 'Agent'},
+             {'type': 'V'},
+             {'type': 'P', 'role': 'Topic', 'introduced_by': 'si', 'restr': 'P'}])
 
     def test_plural(self):
         self.assertEqual(
