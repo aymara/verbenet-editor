@@ -10,7 +10,8 @@ from role.parserole import ROLE_LIST
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
-PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'Pind', 'V-inf', 'Psubj', 'P']
+# no speficic treatment for those phrase types
+EASY_PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'V-inf']
 VINF_PREPS = {'de', 'à', 'comment', 'pour'}
 
 class WrongFrameException(Exception):
@@ -82,14 +83,14 @@ def separate_phrasetype(primary_part):
     # NP.Agent
     try:
         phrase_type, role = primary_part.split('.')
-        if phrase_type in PHRASE_TYPE_LIST and role.title() in ROLE_LIST:
+        if phrase_type in EASY_PHRASE_TYPE_LIST and role.title() in ROLE_LIST:
             return phrase_type, role.title()
     except ValueError:
         pass
 
     if primary_part.endswith('-Middle') or primary_part.endswith('-Moyen'):
         real_phrasetype = '-'.join(primary_part.split('-')[:-1])
-        assert real_phrasetype in PHRASE_TYPE_LIST
+        assert real_phrasetype in EASY_PHRASE_TYPE_LIST
         return real_phrasetype, None
 
     return primary_part, None
@@ -162,7 +163,7 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             i += 1
 
         # Usual NP.Agent
-        elif syntax_role in ROLE_LIST and phrase_type in PHRASE_TYPE_LIST:
+        elif syntax_role in ROLE_LIST and phrase_type in EASY_PHRASE_TYPE_LIST:
             if primary_role is not None and syntax_role != primary_role:
                 raise WrongFrameException('Roles in primary and syntax don\'t match')
 
