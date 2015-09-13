@@ -284,3 +284,19 @@ class TestExport(SimpleTestCase):
             '<PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP>'
             '<PIND introduced_by="de" value="Topic" />'
             '</SYNTAX>')
+
+    def test_vinf(self):
+        self.maxDiff = None
+        new_syntax = merge_primary_and_syntax(
+            'NP V PP.source de V-inf',
+            'Pivot V {pour/de la part de} Source Theme<+de VSource-inf>')
+        xml = xml_of_syntax(new_syntax)
+        self.assertEqual(
+            ET.tostring(xml, encoding='unicode'),
+            '<SYNTAX>'
+            '<NP value="Pivot"><SYNRESTRS /></NP>'
+            '<VERB />'
+            '<PREP><SELRESTRS><SELRESTR Value="de la part de;pour" /></SELRESTRS></PREP>'
+            '<NP value="Source"><SYNRESTRS /></NP>'
+            '<VINF emptysubjectrole="Source" introduced_by="de" is_true_prep="false" value="Theme" />'
+            '</SYNTAX>')

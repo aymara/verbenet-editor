@@ -344,13 +344,14 @@ def xml_of_syntax(parsed_frame):
             adv = ET.SubElement(syntax, frame_part['type'])
         elif frame_part['type'] == 'VINF':
             vinf = ET.SubElement(syntax, frame_part['type'])
-            vinf.set('value', vinf['role'])
-            vinf.set('is_true_prep', vinf['is_true_prep'])
-            if 'np_vinf' in vinf:
+            vinf.set('value', frame_part['role'])
+            vinf.set('is_true_prep', 'true' if frame_part['is_true_prep'] else 'false')
+            if 'np_vinf' in frame_part:
                 vinf.set('np_vinf', '1')
             else:
-                vinf.set('emptysubjectrole', vinf['emptysubjectrole'])
-                vinf.set('introduced_by', vinf['introduced_by'])
+                vinf.set('emptysubjectrole', frame_part['emptysubjectrole'])
+                joined_values = ';'.join(sorted(frame_part['introduced_by'], key=locale.strxfrm))
+                vinf.set('introduced_by', joined_values)
         elif frame_part['type'] in ['P', 'PIND', 'PSUBJ']:
             p = ET.SubElement(syntax, frame_part['type'])
             p.set('value', frame_part['role'])
