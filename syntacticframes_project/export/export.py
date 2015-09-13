@@ -334,20 +334,12 @@ def xml_of_syntax(parsed_frame):
                 selrestr.set('type', frame_part['type_'])
             joined_values = ';'.join(sorted(frame_part['Value'], key=locale.strxfrm))
             selrestr.set('Value', joined_values)
-
-        # Goal is to remove this block
-        elif frame_part['type'] == 'special':
-            prep = ET.SubElement(syntax, 'PREP')
-            prep.set('restr', frame_part['content'])
-
         elif frame_part['type'] == 'V':
             v = ET.SubElement(syntax, 'VERB')
             if frame_part.get('pronominal') is True:
                 v.set('pronominal', 'true')
             if 'restr' in frame_part:
                 v.set('restr', frame_part['restr'])
-
-
         elif frame_part['type'] in ['ADV', 'ADJ']:
             adv = ET.SubElement(syntax, frame_part['type'])
         elif frame_part['type'] == 'VINF':
