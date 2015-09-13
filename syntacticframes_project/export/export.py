@@ -11,8 +11,15 @@ from role.parserole import ROLE_LIST
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 
 # no speficic treatment for those phrase types
-EASY_PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP', 'V-inf']
+EASY_PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP']
 VINF_PREPS = {'de', 'à', 'comment', 'pour'}
+
+SIMPLE_VINF_REGEX = (
+    r'(?P<role>[\-\w_]+)'
+    '<\+(?P<spaceafterprep>\s*)V(?P<emptysubjectrole>[\-\w_]+)-inf>')
+PREP_VINF_REGEX = (
+    r'(?P<role>[\-\w_]+)'
+    '<\+(?P<prep>\w+)(?P<spaceafterprep>\s*)V(?P<emptysubjectrole>[\-\w_]+)-inf>')
 
 class WrongFrameException(Exception):
     pass
@@ -226,40 +233,60 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             i += 1
             j += 2
 
-        elif set(primary_parts[j]) & VINF_PREPS and primary_parts[j+1] == 'V-inf':
-            preposition = primary_parts[j]
-            preposition_type = False
-            if isinstance(syntax_parts[i], set):  # préposition
-                assert syntax_parts[i] == preposition
-                preposition_type = True
-                i += 1
-
+        elif primary_parts[j] == 'V-inf' and re.match(SIMPLE_VINF_REGEX, syntax_parts[i]):
             role_plus_restr = syntax_parts[i]
-            rolerestr_regex = (
-                r'(?P<role>[\-\w_]+)'
-                '<\+(?P<prep>\w+)?'
-                '(?P<spaceafterprep>\s*)'
-                'V(?P<emptysubjectrole>[\-\w_]+)-inf>')
-            rolerestr_match = re.match(rolerestr_regex, role_plus_restr)
+            rolerestr_match = re.match(SIMPLE_VINF_REGEX, role_plus_restr)
             if not rolerestr_match:
                 raise WrongFrameException('Bad restriction {}'.format(role_plus_restr))
-
             rolerestr_dict = rolerestr_match.groupdict()
-            if rolerestr_dict['prep'] and not rolerestr_dict['spaceafterprep']:
-                raise WrongFrameException('Missing space in {}'.format(role_plus_restr))
-
-            if preposition_type is False:
-                assert {rolerestr_dict['prep']} == preposition
-
 
             parsed_frame.append({
                 'type': 'VINF',
                 'role': rolerestr_dict['role'],
-                'introduced_by': preposition,
-                'is_true_prep': preposition_type,
                 'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
 
-            i, j = i+1, j+2
+            i, j = i+1, j+1
+
+        # direct V-inf
+        elif primary_parts[j] == 'V-inf':
+            role_plus_restr = syntax_parts[i]
+            rolerestr_match = re.match(PREP_VINF_REGEX, role_plus_restr)
+            if not rolerestr_match:
+                raise WrongFrameException('Bad restriction {}'.format(role_plus_restr))
+            rolerestr_dict = rolerestr_match.groupdict()
+
+            parsed_frame.append({
+                'type': 'VINF',
+                'role': rolerestr_dict['role'],
+                'introduced_by': {rolerestr_dict['prep']},
+                'is_true_prep': False,
+                'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
+
+            i, j = i+1, j+1
+
+        # indirect V-inf
+        elif set(primary_parts[j]) & VINF_PREPS and primary_parts[j+1] == 'V-inf':
+            preposition = primary_parts[j]
+
+            if i+1 > len(syntax_parts)-1 or re.match(PREP_VINF_REGEX, syntax_parts[i+1]):
+                raise WrongFrameException('V-inf can\'t be both direct and indirect.')
+            assert isinstance(syntax_parts[i], set)  # préposition
+            assert syntax_parts[i] == preposition
+
+            role_plus_restr = syntax_parts[i+1]
+            rolerestr_match = re.match(SIMPLE_VINF_REGEX, role_plus_restr)
+            if not rolerestr_match:
+                raise WrongFrameException('Bad restriction {}'.format(role_plus_restr))
+
+            rolerestr_dict = rolerestr_match.groupdict()
+            parsed_frame.append({
+                'type': 'VINF',
+                'role': rolerestr_dict['role'],
+                'introduced_by': preposition,
+                'is_true_prep': True,
+                'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
+
+            i, j = i+2, j+2
 
         elif set(primary_parts[j]) & {'si', 'comment', 'combien'}:
             assert len(primary_parts[j]) == 1
@@ -346,13 +373,16 @@ def xml_of_syntax(parsed_frame):
         elif frame_part['type'] == 'VINF':
             vinf = ET.SubElement(syntax, frame_part['type'])
             vinf.set('value', frame_part['role'])
-            vinf.set('is_true_prep', 'true' if frame_part['is_true_prep'] else 'false')
+            if 'is_true_prep' in frame_part:
+                vinf.set('is_true_prep', 'true' if frame_part['is_true_prep'] else 'false')
+
             if 'np_vinf' in frame_part:
                 vinf.set('np_vinf', '1')
             else:
                 vinf.set('emptysubjectrole', frame_part['emptysubjectrole'])
-                joined_values = ';'.join(sorted(frame_part['introduced_by'], key=locale.strxfrm))
-                vinf.set('introduced_by', joined_values)
+                if 'introduced_by' in frame_part:
+                    joined_values = ';'.join(sorted(frame_part['introduced_by'], key=locale.strxfrm))
+                    vinf.set('introduced_by', joined_values)
         elif frame_part['type'] in ['P', 'PIND', 'PSUBJ']:
             p = ET.SubElement(syntax, frame_part['type'])
             p.set('value', frame_part['role'])

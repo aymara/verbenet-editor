@@ -146,14 +146,21 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'NP', 'role': 'Theme'},
              {'type': 'ADJ'}])
 
-    def test_vinf(self):
+    def test_simple_vinf(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de VAgent-inf>'),
+            merge_primary_and_syntax('NP V V-inf', 'Pivot V Theme<+VTheme-inf>'),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
-             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Agent', 'introduced_by': {'de'}}])
+             {'type': 'VINF', 'role': 'Theme', 'emptysubjectrole': 'Theme'}])
 
-    def test_explicitprep_vinf(self):
+    def test_vinf_direct(self):
+        self.assertEqual(
+            merge_primary_and_syntax('NP V V-inf', 'Pivot V Theme<+de VTheme-inf>'),
+            [{'type': 'NP', 'role': 'Pivot'},
+             {'type': 'V'},
+             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Theme', 'introduced_by': {'de'}}])
+
+    def test_vinf_indirect(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V à V-inf', 'Pivot V {à} Theme<+VAgent-inf>'),
             [{'type': 'NP', 'role': 'Pivot'},
@@ -171,6 +178,11 @@ class TestFullMerge(SimpleTestCase):
         with self.assertRaises(WrongFrameException):
             merge_primary_and_syntax(
                 'NP V de V-inf', 'Pivot V Theme<+deVAgent-inf>',
+                output=sys.stdout)
+
+        with self.assertRaises(WrongFrameException):
+            merge_primary_and_syntax(
+                'NP V de V-inf', 'Pivot V Theme<+de VAgent-inf>',
                 output=sys.stdout)
 
     # phrastique direct
@@ -285,16 +297,39 @@ class TestExport(SimpleTestCase):
             '<PIND introduced_by="de" value="Topic" />'
             '</SYNTAX>')
 
-    def test_vinf(self):
-        self.maxDiff = None
-        new_syntax = merge_primary_and_syntax(
-            'NP V de V-inf',
-            'Pivot V Theme<+de VSource-inf>')
+    def test_simple_vinf(self):
+        new_syntax = merge_primary_and_syntax('NP V V-inf', 'Pivot V Theme<+VTheme-inf>')
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
             '<SYNTAX>'
             '<NP value="Pivot"><SYNRESTRS /></NP>'
             '<VERB />'
-            '<VINF emptysubjectrole="Source" introduced_by="de" is_true_prep="false" value="Theme" />'
+            '<VINF emptysubjectrole="Theme" value="Theme" />'
+            '</SYNTAX>')
+
+    def test_vinf_direct(self):
+        new_syntax = merge_primary_and_syntax(
+            'NP V V-inf',
+            'Pivot V Theme<+de VPivot-inf>')
+        xml = xml_of_syntax(new_syntax)
+        self.assertEqual(
+            ET.tostring(xml, encoding='unicode'),
+            '<SYNTAX>'
+            '<NP value="Pivot"><SYNRESTRS /></NP>'
+            '<VERB />'
+            '<VINF emptysubjectrole="Pivot" introduced_by="de" is_true_prep="false" value="Theme" />'
+            '</SYNTAX>')
+
+    def test_vinf_indirect(self):
+        new_syntax = merge_primary_and_syntax(
+            'NP V de V-inf',
+            'Pivot V {de} Theme<+VSource-inf>')
+        xml = xml_of_syntax(new_syntax)
+        self.assertEqual(
+            ET.tostring(xml, encoding='unicode'),
+            '<SYNTAX>'
+            '<NP value="Pivot"><SYNRESTRS /></NP>'
+            '<VERB />'
+            '<VINF emptysubjectrole="Source" introduced_by="de" is_true_prep="true" value="Theme" />'
             '</SYNTAX>')
