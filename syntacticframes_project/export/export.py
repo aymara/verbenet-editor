@@ -340,7 +340,7 @@ def xml_of_syntax(parsed_frame):
                 v.set('pronominal', 'true')
             if 'restr' in frame_part:
                 v.set('restr', frame_part['restr'])
-        elif frame_part['type'] in ['ADV', 'ADJ']:
+        elif frame_part['type'] in ['ADV', 'ADJ', 'LUI', 'IL']:
             adv = ET.SubElement(syntax, frame_part['type'])
         elif frame_part['type'] == 'VINF':
             vinf = ET.SubElement(syntax, frame_part['type'])
