@@ -351,6 +351,11 @@ def xml_of_syntax(parsed_frame):
             else:
                 vinf.set('emptysubjectrole', vinf['emptysubjectrole'])
                 vinf.set('introduced_by', vinf['introduced_by'])
+        elif frame_part['type'] in ['P', 'PIND', 'PSUBJ']:
+            p = ET.SubElement(syntax, frame_part['type'])
+            p.set('value', frame_part['role'])
+            if frame_part['introduced_by']:
+                p.set('introduced_by', frame_part['introduced_by'])
         else:
             raise WrongFrameException('Unhandled {} in {}.'.format(frame_part, parsed_frame))
 

@@ -256,3 +256,31 @@ class TestExport(SimpleTestCase):
         self.assertEqual(
             ET.tostring(xml, encoding='unicode'),
             '<SYNTAX><NP value="Patient"><SYNRESTRS /></NP><VERB pronominal="true" restr="middle" /><ADV /></SYNTAX>')
+
+    def test_p(self):
+        new_syntax = merge_primary_and_syntax('NP V Qu Psubj', 'Agent V Topic<+Qu Psubj>')
+        xml = xml_of_syntax(new_syntax)
+        print(new_syntax)
+        print(xml)
+        self.assertEqual(
+            ET.tostring(xml, encoding='unicode'),
+            '<SYNTAX>'
+            '<NP value="Agent"><SYNRESTRS /></NP>'
+            '<VERB />'
+            '<PSUBJ value="Topic" />'
+            '</SYNTAX>')
+
+    def test_dece_quep(self):
+        self.maxDiff = None
+        new_syntax = merge_primary_and_syntax('NP V PP de ce Qu Pind', 'Agent V {avec} Co-Agent {de} Topic<+Qu Pind>')
+        xml = xml_of_syntax(new_syntax)
+        self.assertEqual(
+            ET.tostring(xml, encoding='unicode'),
+            '<SYNTAX>'
+            '<NP value="Agent"><SYNRESTRS /></NP>'
+            '<VERB />'
+            '<PREP><SELRESTRS><SELRESTR Value="avec" /></SELRESTRS></PREP>'
+            '<NP value="Co-Agent"><SYNRESTRS /></NP>'
+            '<PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP>'
+            '<PIND introduced_by="de" value="Topic" />'
+            '</SYNTAX>')
