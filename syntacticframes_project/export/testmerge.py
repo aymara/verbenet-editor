@@ -179,7 +179,7 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V Qu Psubj', 'Agent V Topic<+Qu Psubj>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'type': 'Psubj', 'role': 'Topic', 'introduced_by': None, 'restr': 'Psubj'}])
+             {'type': 'PSUBJ', 'role': 'Topic', 'introduced_by': None}])
 
     # phrastique indirect
     def test_dece_quep(self):
@@ -190,14 +190,14 @@ class TestFullMerge(SimpleTestCase):
              {'type': 'PREP', 'Value': {'avec'}},
              {'type': 'PP', 'role': 'Co-Agent'},
              {'type': 'PREP', 'Value': {'de'}},
-             {'type': 'Pind', 'role': 'Topic', 'introduced_by': 'de', 'restr': 'Pind'}])
+             {'type': 'PIND', 'role': 'Topic', 'introduced_by': 'de'}])
 
     def test_sip(self):
         self.assertEqual(
             merge_primary_and_syntax('NP V si P', 'Agent V Topic<+si P>'),
             [{'type': 'NP', 'role': 'Agent'},
              {'type': 'V'},
-             {'type': 'P', 'role': 'Topic', 'introduced_by': 'si', 'restr': 'P'}])
+             {'type': 'P', 'role': 'Topic', 'introduced_by': 'si'}])
 
     def test_plural(self):
         self.assertEqual(
@@ -210,7 +210,7 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V comment P', 'Experiencer V Stimulus<+comment P>', output=sys.stdout),
             [{'type': 'NP', 'role': 'Experiencer'},
              {'type': 'V'},
-             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
+             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment'}])
 
     def test_interrogative_prep(self):
         self.assertEqual(
@@ -218,7 +218,7 @@ class TestFullMerge(SimpleTestCase):
             [{'type': 'NP', 'role': 'Experiencer'},
              {'type': 'V'},
              {'type': 'PREP', 'Value': {'de'}},
-             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment', 'restr': 'P'}])
+             {'type': 'P', 'role': 'Stimulus', 'introduced_by': 'comment'}])
 
 
 class TestExport(SimpleTestCase):

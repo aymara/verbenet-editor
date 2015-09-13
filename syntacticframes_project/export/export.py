@@ -215,12 +215,12 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             if next_primary_role is not None and syntax_role != next_primary_role:
                 raise WrongFrameException('In Qu, roles in primary and syntax don\'t match')
 
-            # redundant information, TODO put only in one place as with V-inf
-            assert next_phrase_type == restr_dict['ptype']
+            xml_type = {'P': 'P', 'Pind': 'PIND', 'Psubj': 'PSUBJ'}
 
             parsed_frame.append({
-                'type': next_phrase_type, 'role': syntax_role,
-                'introduced_by': preposition, 'restr': restr_dict['ptype']})
+                'type': xml_type[next_phrase_type],
+                'role': syntax_role,
+                'introduced_by': preposition})
 
             i += 1
             j += 2
@@ -273,12 +273,12 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
 
             # Remove <+que and >
             specific_restr = restr[3+len(primary_word):-1]
-
-            assert specific_restr in ['comp', 'Psubj', 'extract', 'P']
+            assert specific_restr in ['Pind', 'Psubj', 'P']
 
             parsed_frame.append({
-                'type': next_phrase_type, 'role': syntax_role,
-                'introduced_by': primary_word, 'restr': specific_restr})
+                'type': next_phrase_type,
+                'role': syntax_role,
+                'introduced_by': primary_word})
 
             j = j+2
             i = i+1
