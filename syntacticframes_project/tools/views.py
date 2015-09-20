@@ -117,8 +117,8 @@ def distributions(request):
         ('Restrictions', restriction_dict),
         ('Prépositions', preposition_dict),
         ('Rôles', role_dict),
-        ('Champ primaire (NP V NP)', primary_dict),
-        ('Syntaxe des frames', syntactic_frames_dict),
+        ('Champ surfacique', primary_dict),
+        ('Champ syntaxique', syntactic_frames_dict),
     ])
 
     for distribution in distribution_dict:
