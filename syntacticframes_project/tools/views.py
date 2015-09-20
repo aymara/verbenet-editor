@@ -75,8 +75,8 @@ def get_roles(roles_syntax):
         elif '-' in split and not split.startswith('Co-'):
             continue
         elif split in [
-            'Psubj', 'Pind', 'Vinf', 'Il', 'Pr', 'Qu', 'Que', 'Loc', 'Adv',
-            'Co', 'deVinf', 'Vant']:
+            'Psubj', 'Pind', 'Vinf', 'Il', 'Pr', 'Qu', 'Que', 'Loc', 'Adj',
+            'Adv', 'Co', 'deVinf', 'Vant']:
             continue
         else:
             yield split
