@@ -8,4 +8,4 @@ django-pipeline==1.4.7
 # /!\ we rely on the internal function
 # mptt.templatetags.mptt_tags.cache_tree_children in
 # syntacticframes.views.translations
---editable git+https://github.com/pquentin/django-mptt.git@0.7.x-no-order#egg=django_mptt
+--editable git://github.com/pquentin/django-mptt.git@0.7.x-no-order#egg=django_mptt

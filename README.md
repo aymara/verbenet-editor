@@ -34,14 +34,8 @@ Then, get the code:
 
     git clone --recursive https://github.com/aymara/verbenet-editor.git
 
-Create a Python 3 virtualenv, activate it, and install our modified
-django-mptt:
-
-    git clone https://github.com/pquentin/django-mptt
-    cd django-mptt
-    python setup.py install
-
-Finally, install the other requirements:
+Create a Python 3 virtualenv, activate it. It's important! Then,
+install the other requirements:
 
     pip install -r requirements/local.txt
 
