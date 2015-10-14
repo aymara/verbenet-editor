@@ -24,7 +24,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'syntacticframes',
-        'USER': 'quentin',
+        'USER': 'REPLACE_ME',
         'PASSWORD': 'test',
         'HOST': 'localhost',
         'PORT': '',
