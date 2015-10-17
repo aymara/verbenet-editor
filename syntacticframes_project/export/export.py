@@ -470,6 +470,7 @@ def export_subclass(db_frameset, classname=None):
         try:
             parsed_frame = merge_primary_and_syntax(db_frame.syntax, db_frame.roles_syntax, output)
             syntax = xml_of_syntax(parsed_frame)
+            ET.tostring(syntax)
             frame.remove(frame.find('SYNTAX'))
             frame.append(syntax)
             handled_frames += 1
