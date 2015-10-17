@@ -155,7 +155,7 @@ class TestFullMerge(SimpleTestCase):
 
     def test_vinf_direct(self):
         self.assertEqual(
-            merge_primary_and_syntax('NP V V-inf', 'Pivot V Theme<+de VTheme-inf>'),
+            merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de VTheme-inf>'),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
              {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Theme', 'introduced_by': {'de'}}])
@@ -165,24 +165,31 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V à V-inf', 'Pivot V {à} Theme<+VAgent-inf>'),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
-             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': True, 'emptysubjectrole': 'Agent', 'introduced_by': {'à'}}])
+             {'Value': {'à'}, 'type': 'PREP'},
+             {'type': 'VINF', 'role': 'Theme', 'emptysubjectrole': 'Agent'}])
 
-    def test_twoprep_vinf(self):
+    def test_twoprep_vinf_indirect(self):
+        """Test indirect V-inf with two prepositions
+
+        Not really interesting because there is no code that is specific to
+        this test case. Indeed, indirect V-inf is just prep + V-inf. But two
+        prepositions in a direct V-inf is not currently supported"""
         self.assertEqual(
             merge_primary_and_syntax('NP V à/de V-inf', 'Pivot V {à/de} Theme<+VAgent-inf>'),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
-             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': True, 'emptysubjectrole': 'Agent', 'introduced_by': {'à', 'de'}}])
+             {'Value': {'à', 'de'}, 'type': 'PREP'},
+             {'type': 'VINF', 'role': 'Theme', 'emptysubjectrole': 'Agent'}])
 
     def test_bad_vinf(self):
         with self.assertRaises(WrongFrameException):
             merge_primary_and_syntax(
-                'NP V de V-inf', 'Pivot V Theme<+deVAgent-inf>',
+                'NP V V-inf', 'Pivot V Theme<+deVAgent-inf>',
                 output=sys.stdout)
 
         with self.assertRaises(WrongFrameException):
             merge_primary_and_syntax(
-                'NP V de V-inf', 'Pivot V Theme<+de VAgent-inf>',
+                'NP V V-inf', 'Pivot V {de} Theme<+VAgent-inf>',
                 output=sys.stdout)
 
     # phrastique direct
@@ -310,7 +317,7 @@ class TestExport(SimpleTestCase):
 
     def test_vinf_direct(self):
         new_syntax = merge_primary_and_syntax(
-            'NP V V-inf',
+            'NP V de V-inf',
             'Pivot V Theme<+de VPivot-inf>')
         xml = xml_of_syntax(new_syntax)
         self.assertEqual(
@@ -331,5 +338,6 @@ class TestExport(SimpleTestCase):
             '<SYNTAX>'
             '<NP value="Pivot"><SYNRESTRS /></NP>'
             '<VERB />'
-            '<VINF emptysubjectrole="Source" introduced_by="de" is_true_prep="true" value="Theme" />'
+            '<PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP>'
+            '<VINF emptysubjectrole="Source" value="Theme" />'
             '</SYNTAX>')

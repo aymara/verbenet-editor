@@ -134,6 +134,13 @@ def separate_syntax_part(syntax_part):
         return role, restr
 
 
+def matches_regex(regex, string):
+    try:
+        return re.match(regex, string)
+    except TypeError:
+        return False
+
+
 def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
     print('{:<40} {}'.format(primary, syntax), file=output)
     primary_parts = list(tokenize_primary(primary))
@@ -234,7 +241,8 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             i += 1
             j += 2
 
-        elif primary_parts[j] == 'V-inf' and re.match(SIMPLE_VINF_REGEX, syntax_parts[i]):
+        # simple V-inf (NP V V-inf)
+        elif primary_parts[j] == 'V-inf' and matches_regex(SIMPLE_VINF_REGEX, syntax_parts[i]):
             role_plus_restr = syntax_parts[i]
             rolerestr_match = re.match(SIMPLE_VINF_REGEX, role_plus_restr)
             if not rolerestr_match:
@@ -249,7 +257,7 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             i, j = i+1, j+1
 
         # direct V-inf
-        elif primary_parts[j] == 'V-inf':
+        elif matches_regex(PREP_VINF_REGEX, syntax_parts[i]):
             role_plus_restr = syntax_parts[i]
             rolerestr_match = re.match(PREP_VINF_REGEX, role_plus_restr)
             if not rolerestr_match:
@@ -263,31 +271,7 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
                 'is_true_prep': False,
                 'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
 
-            i, j = i+1, j+1
-
-        # indirect V-inf
-        elif set(primary_parts[j]) & VINF_PREPS and primary_parts[j+1] == 'V-inf':
-            preposition = primary_parts[j]
-
-            if i+1 > len(syntax_parts)-1 or re.match(PREP_VINF_REGEX, syntax_parts[i+1]):
-                raise WrongFrameException('V-inf can\'t be both direct and indirect.')
-            assert isinstance(syntax_parts[i], set)  # préposition
-            assert syntax_parts[i] == preposition
-
-            role_plus_restr = syntax_parts[i+1]
-            rolerestr_match = re.match(SIMPLE_VINF_REGEX, role_plus_restr)
-            if not rolerestr_match:
-                raise WrongFrameException('Bad restriction {}'.format(role_plus_restr))
-
-            rolerestr_dict = rolerestr_match.groupdict()
-            parsed_frame.append({
-                'type': 'VINF',
-                'role': rolerestr_dict['role'],
-                'introduced_by': preposition,
-                'is_true_prep': True,
-                'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
-
-            i, j = i+2, j+2
+            i, j = i+1, j+2
 
         elif set(primary_parts[j]) & {'si', 'comment', 'combien'}:
             assert len(primary_parts[j]) == 1
@@ -328,6 +312,10 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
 
                 if len(primary_parts) > j+1 and isinstance(primary_parts[j], set) and isinstance(primary_parts[j+1], set) and primary_parts[j+1] & {'comment', 'si'}:
                     j += 1
+                elif primary_parts[j] == syntax_parts[i] and primary_parts[j+1] == 'V-inf':
+                    j += 1
+                elif primary_parts[j] == 'V-inf':
+                    raise WrongFrameException('Invalid V-inf')
             i += 1
 
         # We should have handled everything
