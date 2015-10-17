@@ -268,7 +268,6 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
                 'type': 'VINF',
                 'role': rolerestr_dict['role'],
                 'introduced_by': {rolerestr_dict['prep']},
-                'is_true_prep': False,
                 'emptysubjectrole': rolerestr_dict['emptysubjectrole']})
 
             i, j = i+1, j+2
@@ -362,9 +361,6 @@ def xml_of_syntax(parsed_frame):
         elif frame_part['type'] == 'VINF':
             vinf = ET.SubElement(syntax, frame_part['type'])
             vinf.set('value', frame_part['role'])
-            if 'is_true_prep' in frame_part:
-                vinf.set('is_true_prep', 'true' if frame_part['is_true_prep'] else 'false')
-
             if 'np_vinf' in frame_part:
                 vinf.set('np_vinf', '1')
             else:

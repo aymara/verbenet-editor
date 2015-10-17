@@ -158,7 +158,7 @@ class TestFullMerge(SimpleTestCase):
             merge_primary_and_syntax('NP V de V-inf', 'Pivot V Theme<+de VTheme-inf>'),
             [{'type': 'NP', 'role': 'Pivot'},
              {'type': 'V'},
-             {'type': 'VINF', 'role': 'Theme', 'is_true_prep': False, 'emptysubjectrole': 'Theme', 'introduced_by': {'de'}}])
+             {'type': 'VINF', 'role': 'Theme', 'emptysubjectrole': 'Theme', 'introduced_by': {'de'}}])
 
     def test_vinf_indirect(self):
         self.assertEqual(
@@ -325,7 +325,7 @@ class TestExport(SimpleTestCase):
             '<SYNTAX>'
             '<NP value="Pivot"><SYNRESTRS /></NP>'
             '<VERB />'
-            '<VINF emptysubjectrole="Pivot" introduced_by="de" is_true_prep="false" value="Theme" />'
+            '<VINF emptysubjectrole="Pivot" introduced_by="de" value="Theme" />'
             '</SYNTAX>')
 
     def test_vinf_indirect(self):
