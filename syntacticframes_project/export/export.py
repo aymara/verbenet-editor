@@ -379,7 +379,8 @@ def xml_of_syntax(parsed_frame):
             if 'np_vinf' in frame_part:
                 vinf.set('np_vinf', '1')
             else:
-                vinf.set('emptysubjectrole', frame_part['emptysubjectrole'])
+                if frame_part['emptysubjectrole']:
+                    vinf.set('emptysubjectrole', frame_part['emptysubjectrole'])
                 if 'introduced_by' in frame_part:
                     joined_values = ';'.join(sorted(frame_part['introduced_by'], key=locale.strxfrm))
                     vinf.set('introduced_by', joined_values)
