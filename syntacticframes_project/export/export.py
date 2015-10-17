@@ -13,6 +13,7 @@ locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
 # no speficic treatment for those phrase types
 EASY_PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP']
 VINF_PREPS = {'de', 'à', 'comment', 'pour'}
+WORDS_PRIMARY_AND_SYNTAX = ['ADV', 'ADJ', 'LUI', 'IL', 'ensemble']
 
 SIMPLE_VINF_REGEX = (
     r'(?P<role>[\-\w_]+)'
@@ -200,7 +201,7 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
             i, j = i+1, j+1
 
         # Various words appear both in primary and syntax
-        elif syntax_role in ['ADV', 'ADJ', 'LUI', 'IL', 'ensemble'] and phrase_type == syntax_role:
+        elif syntax_role in WORDS_PRIMARY_AND_SYNTAX and phrase_type == syntax_role:
             parsed_frame.append({'type': phrase_type})
             i, j = i+1, j+1
 
@@ -368,7 +369,7 @@ def xml_of_syntax(parsed_frame):
                 v.set('pronominal', 'true')
             if 'restr' in frame_part:
                 v.set('restr', frame_part['restr'])
-        elif frame_part['type'] in ['ADV', 'ADJ', 'LUI', 'IL']:
+        elif frame_part['type'] in WORDS_PRIMARY_AND_SYNTAX:
             adv = ET.SubElement(syntax, frame_part['type'])
         elif frame_part['type'] == 'VINF':
             vinf = ET.SubElement(syntax, frame_part['type'])
