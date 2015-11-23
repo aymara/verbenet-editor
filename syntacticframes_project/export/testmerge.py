@@ -3,11 +3,12 @@ import xml.etree.ElementTree as ET
 
 from django.test import SimpleTestCase
 
+from syntacticframes.models import VerbNetFrameSet
 from export.export import (
     tokenize_syntax, tokenize_primary,
     separate_syntax_part, separate_phrasetype,
     merge_primary_and_syntax, xml_of_syntax,
-    WrongFrameException)
+    export_subclass, WrongFrameException)
 
 class TestTokenizeSyntax(SimpleTestCase):
     def test_simple(self):
@@ -341,3 +342,24 @@ class TestExport(SimpleTestCase):
             '<PREP><SELRESTRS><SELRESTR Value="de" /></SELRESTRS></PREP>'
             '<VINF emptysubjectrole="Source" value="Theme" />'
             '</SYNTAX>')
+
+class TestExportVNClass(SimpleTestCase):
+    def test_lvf_ladl(self):
+        frameset = VerbNetFrameSet(
+            name='10.3', paragon='nettoyer', comment='plutôt vider ?',
+            ladl_string='37E et 38LS', lvf_string='N3d')
+        xml_vnclass = export_subclass(frameset)
+        assert ET.tostring(xml_vnclass).decode('UTF-8') == (
+            u'<VNSUBCLASS ID="10.3" '
+            'ladl="37E et 38LS" lvf="N3d">'
+            '<MEMBERS /><THEMROLES /><FRAMES />'
+            '</VNSUBCLASS>')
+
+        # Clear ladl/lvf and ensure they are empty in the XML
+        frameset.ladl_string = ''
+        frameset.lvf_string = None
+        xml_vnclass = export_subclass(frameset)
+        assert ET.tostring(xml_vnclass).decode('UTF-8') == (
+            u'<VNSUBCLASS ID="10.3">'
+            '<MEMBERS /><THEMROLES /><FRAMES />'
+            '</VNSUBCLASS>')
