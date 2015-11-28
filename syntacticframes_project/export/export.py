@@ -424,9 +424,9 @@ def export_subclass(db_frameset, classname=None):
 
     # LADL/LVF
     if db_frameset.ladl_string:
-       xml_vnclass.attrib['ladl'] = db_frameset.ladl_string
+       xml_vnclass.set('ladl', db_frameset.ladl_string)
     if db_frameset.lvf_string:
-       xml_vnclass.attrib['lvf'] =  db_frameset.lvf_string
+       xml_vnclass.set('lvf', db_frameset.lvf_string)
 
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
