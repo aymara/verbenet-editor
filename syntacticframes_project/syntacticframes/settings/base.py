@@ -295,6 +295,10 @@ LOGGING = {
         }
     },
     'handlers': {
+	'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -320,6 +324,10 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
+        },
+	'django.security.DisallowedHost': {
+            'handlers': ['null'],
+            'propagate': False,
         },
         'database': {
             'handlers': ['logfile'], 'level': 'INFO', 'propagate': 'FALSE'
