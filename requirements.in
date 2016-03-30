@@ -1,9 +1,9 @@
-Django==1.8
-psycopg2==2.6
-lxml==3.4.2
-django-reversion==1.8.6
-pytz==2015.2
-django-pipeline==1.4.7
+Django<1.9
+psycopg2
+lxml
+django-reversion
+pytz
+django-pipeline
 
 # /!\ we rely on the internal function
 # mptt.templatetags.mptt_tags.cache_tree_children in
