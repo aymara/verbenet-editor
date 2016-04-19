@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 
-import reversion
+from reversion.admin import VersionAdmin
 
 from .models import LevinClass, VerbNetClass, VerbNetFrameSet, VerbNetMember, \
     VerbNetFrame, VerbNetRole, VerbTranslation
@@ -32,7 +32,7 @@ class VerbNetMemberInline(InlineEditLinkMixin, admin.TabularInline):
 admin.site.register(LevinClass)
 
 
-class VerbNetClassAdmin(reversion.VersionAdmin):
+class VerbNetClassAdmin(VersionAdmin):
     readonly_fields = ("levin_class", "name", "show_url",)
     search_fields = ("name",)
 
@@ -48,34 +48,34 @@ class VerbNetClassAdmin(reversion.VersionAdmin):
 admin.site.register(VerbNetClass, VerbNetClassAdmin)
 
 
-class VerbNetFrameSetAdmin(reversion.VersionAdmin):
+class VerbNetFrameSetAdmin(VersionAdmin):
     search_fields = ('name',)
     inlines = [VerbNetMemberInline]
 
 admin.site.register(VerbNetFrameSet, VerbNetFrameSetAdmin)
 
 
-class VerbNetMemberAdmin(reversion.VersionAdmin):
+class VerbNetMemberAdmin(VersionAdmin):
     search_fields = ("lemma",)
     pass
 
 admin.site.register(VerbNetMember, VerbNetMemberAdmin)
 
 
-class VerbNetFrameAdmin(reversion.VersionAdmin):
+class VerbNetFrameAdmin(VersionAdmin):
     search_fields = ('syntax', 'example',)
 
 admin.site.register(VerbNetFrame, VerbNetFrameAdmin)
 
 
-class VerbNetRoleAdmin(reversion.VersionAdmin):
+class VerbNetRoleAdmin(VersionAdmin):
     search_fields = ("name",)
     pass
 
 admin.site.register(VerbNetRole, VerbNetRoleAdmin)
 
 
-class VerbTranslationAdmin(reversion.VersionAdmin):
+class VerbTranslationAdmin(VersionAdmin):
     search_fields = ("verb",)
     pass
 
