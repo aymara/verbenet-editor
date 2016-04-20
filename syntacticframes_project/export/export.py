@@ -9,6 +9,18 @@ from syntacticframes.models import LevinClass, VerbNetFrameSet, VerbTranslation
 from role.parserole import ROLE_LIST
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+try:
+    # Let's try with the OS locale
+    assert sorted(['z', 'é'], key=locale.strxfrm) == ['é', 'z']
+    sort_key = locale.strxfrm
+except AssertionError:
+    import icu
+    collator = icu.Collator.createInstance(icu.Locale.getFrance())
+    assert sorted(['z', 'é'], key=collator.getSortKey) == ['é', 'z']
+    sort_key = collator.getSortKey
+except:
+    raise EnvironmentError("Sorting is broken: can't use the system locale nor ICU")
+
 
 # no speficic treatment for those phrase types
 EASY_PHRASE_TYPE_LIST = ['NP', 'PP', 'ADJ', 'ADV', 'ADVP']
@@ -348,7 +360,7 @@ def xml_of_syntax(parsed_frame):
             selrestr = ET.SubElement(selrestr_list, 'SELRESTR')
             if 'type_' in frame_part:
                 selrestr.set('type', frame_part['type_'])
-            joined_values = ';'.join(sorted(frame_part['Value'], key=locale.strxfrm))
+            joined_values = ';'.join(sorted(frame_part['Value'], key=sort_key))
             selrestr.set('Value', joined_values)
         elif frame_part['type'] == 'V':
             v = ET.SubElement(syntax, 'VERB')
@@ -367,7 +379,7 @@ def xml_of_syntax(parsed_frame):
                 if frame_part['emptysubjectrole']:
                     vinf.set('emptysubjectrole', frame_part['emptysubjectrole'])
                 if 'introduced_by' in frame_part:
-                    joined_values = ';'.join(sorted(frame_part['introduced_by'], key=locale.strxfrm))
+                    joined_values = ';'.join(sorted(frame_part['introduced_by'], key=sort_key))
                     vinf.set('introduced_by', joined_values)
         elif frame_part['type'] in ['P', 'PIND', 'PSUBJ']:
             p = ET.SubElement(syntax, frame_part['type'])
@@ -430,8 +442,11 @@ def export_subclass(db_frameset, classname=None):
 
     # Members
     xml_members = ET.SubElement(xml_vnclass, 'MEMBERS')
-    for db_translation in VerbTranslation.all_valid(db_frameset.verbtranslation_set.all()):
-        ET.SubElement(xml_members, 'MEMBER', {'name': db_translation.verb})
+    db_translation_list = VerbTranslation.all_valid(db_frameset.verbtranslation_set.all())
+    member_list = sorted(
+        [db_translation.verb for db_translation in db_translation_list], key=sort_key)
+    for member in member_list:
+        ET.SubElement(xml_members, 'MEMBER', {'name': member})
 
     # Roles
     xml_role_list = ET.SubElement(xml_vnclass, 'THEMROLES')

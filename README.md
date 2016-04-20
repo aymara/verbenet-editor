@@ -74,6 +74,24 @@ Tests now run fast:
 
     ./manage.py test --settings=syntacticframes.settings.migratedtestdb
 
+
+Exporting to XML
+================
+
+I try to regularly export data to https://github.com/aymara/verbenet.
+This is done using `./manage.py export_verbnet`.
+
+At least on OS X El Capitan and FreeBSD, the collation table for
+French does not exist, which means "étendre" will be after "zozoter",
+which is not what we want. To fix this, you can install pyicu which
+will be picked up by the export code. If you're using homebrew, then
+you can simply do:
+
+    brew install icu4c
+    CFLAGS=-I$(brew --prefix icu4c)/include LDFLAGS=-L$(brew --prefix icu4c)/lib pip install pyicu
+
+and re-run the export code.
+
 Acknowledgements
 ================
 
