@@ -64,8 +64,9 @@ Running tests
 
 `./manage.py test` should work, even though it will take some time to
 create a database then remove it: the fixtures load the entire LVF
-data! To speed things up at the expense of possible bugs creeping in,
-you can create a database specifically for testing:
+data! This takes about 30 seconds on my laptop. To speed things up at
+the expense of possible bugs creeping in, you can create a database
+specifically for testing:
 
     createdb _test_verbenet_db
     ./manage.py migrate --settings=syntacticframes.settings.migratedtestdb
