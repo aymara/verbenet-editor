@@ -460,7 +460,7 @@ def export_subclass(db_frameset, classname=None):
     xml_frames = ET.SubElement(xml_vnclass, 'FRAMES')
     for db_frame in db_frameset.verbnetframe_set.filter(removed=False):
         frame = ET.SubElement(xml_frames, 'FRAME')
-        ET.SubElement(frame, 'DESCRIPTION', primary=db_frame.syntax)
+        ET.SubElement(frame, 'DESCRIPTION', primary=db_frame.syntax, syntax=db_frame.roles_syntax)
 
         # Example
         examples = ET.SubElement(frame, 'EXAMPLES')
