@@ -80,7 +80,13 @@ Exporting to XML
 ================
 
 I try to regularly export data to https://github.com/aymara/verbenet.
-This is done using `./manage.py export_verbnet`.
+This is done using `./manage.py export_verbnet`. To reformat the XML
+nicely, I use the following shell command:
+
+    for i in `ls *.xml`
+        do XMLLINT_INDENT='     ' xmllint --format --encode UTF-8 $i > $i.form
+        mv $i.form $i
+    done
 
 At least on OS X El Capitan and FreeBSD, the collation table for
 French does not exist, which means "étendre" will be after "zozoter",
