@@ -426,13 +426,14 @@ def role_selrestr(selrestr_split):
     return operand_list[0]
 
 
-def export_subclass(db_frameset, classname=None):
+def export_subclass(db_frameset, classname):
     global handled_frames, total_frames
 
-    if classname is not None:
-        xml_vnclass = ET.Element('VNCLASS', {'ID': classname})
-    else:
-        xml_vnclass = ET.Element('VNSUBCLASS', {'ID': db_frameset.name})
+    element_name = 'VNCLASS' if db_frameset.parent is None else 'VNSUBCLASS'
+    class_word_name = classname.split('-')[0]
+    assert re.match('^[-0-9.]+$', '-'.join(classname.split('-')[1:]))
+    element_id = '-'.join([class_word_name, db_frameset.name])
+    xml_vnclass = ET.Element(element_name, {'ID': element_id})
 
     # LADL/LVF
     if db_frameset.ladl_string:
@@ -496,7 +497,7 @@ def export_subclass(db_frameset, classname=None):
         xml_subclass_list = ET.SubElement(xml_vnclass, 'SUBCLASSES')
 
     for db_childfs in db_frameset.children.filter(removed=False):
-        xml_subclass = export_subclass(db_childfs)
+        xml_subclass = export_subclass(db_childfs, classname=classname)
         xml_subclass_list.append(xml_subclass)
 
     return xml_vnclass

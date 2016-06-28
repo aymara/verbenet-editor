@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 
 from django.test import SimpleTestCase
 
-from syntacticframes.models import VerbNetFrameSet
+from syntacticframes.models import LevinClass, VerbNetClass, VerbNetFrameSet
 from export.export import (
     tokenize_syntax, tokenize_primary,
     separate_syntax_part, separate_phrasetype,
@@ -345,21 +345,39 @@ class TestExport(SimpleTestCase):
 
 class TestExportVNClass(SimpleTestCase):
     def test_lvf_ladl(self):
-        frameset = VerbNetFrameSet(
+        levin_class = LevinClass(number=10, name='Removing')
+        levin_class.save()
+        vn_class = VerbNetClass(
+            levin_class=levin_class, name='clear-10.3', position=1)
+        vn_class.save()
+        root_frameset = VerbNetFrameSet(
+            verbnet_class=vn_class,
             name='10.3', paragon='nettoyer', comment='plutôt vider ?',
             ladl_string='37E et 38LS', lvf_string='N3d')
-        xml_vnclass = export_subclass(frameset)
+        root_frameset.save()
+        child_frameset = VerbNetFrameSet(
+            verbnet_class=vn_class, parent=root_frameset,
+            name='10.3-1', paragon='nettoyer', comment='plutôt vider ?')
+        child_frameset.save()
+        xml_vnclass = export_subclass(root_frameset, vn_class.name)
         assert ET.tostring(xml_vnclass).decode('UTF-8') == (
-            u'<VNSUBCLASS ID="10.3" '
-            'ladl="37E et 38LS" lvf="N3d">'
+            u'<VNCLASS ID="clear-10.3" ladl="37E et 38LS" lvf="N3d">'
             '<MEMBERS /><THEMROLES /><FRAMES />'
-            '</VNSUBCLASS>')
+            '<SUBCLASSES>'
+            '<VNSUBCLASS ID="clear-10.3-1">'
+            '<MEMBERS /><THEMROLES /><FRAMES /></VNSUBCLASS>'
+            '</SUBCLASSES>'
+            '</VNCLASS>')
 
         # Clear ladl/lvf and ensure they are empty in the XML
-        frameset.ladl_string = ''
-        frameset.lvf_string = None
-        xml_vnclass = export_subclass(frameset)
+        root_frameset.ladl_string = ''
+        root_frameset.lvf_string = None
+        xml_vnclass = export_subclass(root_frameset, 'clear-10.3')
         assert ET.tostring(xml_vnclass).decode('UTF-8') == (
-            u'<VNSUBCLASS ID="10.3">'
+            u'<VNCLASS ID="clear-10.3">'
             '<MEMBERS /><THEMROLES /><FRAMES />'
-            '</VNSUBCLASS>')
+            '<SUBCLASSES>'
+            '<VNSUBCLASS ID="clear-10.3-1">'
+            '<MEMBERS /><THEMROLES /><FRAMES /></VNSUBCLASS>'
+            '</SUBCLASSES>'
+            '</VNCLASS>')
