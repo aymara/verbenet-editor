@@ -118,16 +118,20 @@ def separate_phrasetype(primary_part):
 
 def separate_syntax_part(syntax_part):
     if isinstance(syntax_part, set):
-        return syntax_part, None
+        return syntax_part, None, None
 
-    mode = 'ROLE'  # can also be RESTR, NEAR_END and END
-    role, restr = '', ''
+    mode = 'ROLE'  # can also be RESTR, POSSATTR, NEAR_END and END
+    role, restr, possattr = '', '', ''
 
     for c in syntax_part:
         if c == '<':
+            assert mode in ['ROLE', 'POSSATTR']
             mode = 'RESTR'
         elif c == '>':
             mode = 'NEAR_END'
+        elif c == '.':
+            mode = 'POSSATTR'
+            continue
 
         if mode == 'ROLE':
             role += c
@@ -136,14 +140,19 @@ def separate_syntax_part(syntax_part):
         elif mode == 'NEAR_END':
             restr += c
             mode = 'END'
+        elif mode == 'POSSATTR':
+            possattr += c
         else:
             assert mode == 'END'
             raise WrongFrameException('Pas de caractères attendus après > dans {}'.format(syntax_part))
 
     if not restr:
-        return role, None
-    else:
-        return role, restr
+        restr = None
+
+    if not possattr:
+        possattr = None
+
+    return role, restr, possattr
 
 
 def matches_regex(regex, string):
@@ -166,7 +175,7 @@ def merge_primary_and_syntax(primary, syntax, output=sys.stdout):
     while i < len(syntax_parts) and j < len(primary_parts):
         print(i, j, syntax_parts[i], primary_parts[j], file=output)
 
-        syntax_role, restr = separate_syntax_part(syntax_parts[i])
+        syntax_role, restr, possattr = separate_syntax_part(syntax_parts[i])
         phrase_type, primary_role = separate_phrasetype(primary_parts[j])
 
         print('   |{}| |{}|'.format(syntax_role, restr), file=output)

@@ -40,6 +40,15 @@ class TestTokenizeSyntax(SimpleTestCase):
             ['Agent', 'V', 'Theme<+de_Vinf>'])
 
 
+    def test_restructurations(self):
+        self.assertEqual(
+            list(tokenize_syntax('Theme.poss V Co-Theme.poss {en} Theme.prop')),
+            ['Theme.poss', 'V', 'Co-Theme.poss', {'en'}, 'Theme.prop'])
+        self.assertEqual(
+            list(tokenize_syntax('Agent LUI<+Theme.poss> V Theme.prop')),
+            ['Agent', 'LUI<+Theme.poss>', 'V', 'Theme.prop'])
+
+
 class TestTokenizePrimary(SimpleTestCase):
     def test_simple_split(self):
         self.assertEqual(list(tokenize_primary('NP V NP')), ['NP', 'V', 'NP'])
@@ -74,15 +83,18 @@ class TestSeparatePhraseType(SimpleTestCase):
 
 class TestSeparateSyntax(SimpleTestCase):
     def test_no_role(self):
-        self.assertEqual(separate_syntax_part('NP'), ('NP', None))
-        self.assertEqual(separate_syntax_part('V'), ('V', None))
-        self.assertEqual(separate_syntax_part('V<+neutre>'), ('V', '<+neutre>'))
+        self.assertEqual(separate_syntax_part('NP'), ('NP', None, None))
+        self.assertEqual(separate_syntax_part('V'), ('V', None, None))
+        self.assertEqual(separate_syntax_part('V<+neutre>'), ('V', '<+neutre>', None))
 
     def test_simple_role(self):
-        self.assertEqual(separate_syntax_part('Agent'), ('Agent', None))
+        self.assertEqual(separate_syntax_part('Agent'), ('Agent', None, None))
 
     def test_modified_role(self):
-        self.assertEqual(separate_syntax_part('Instrument<+Plural>'), ('Instrument', '<+Plural>'))
+        self.assertEqual(separate_syntax_part('Instrument<+Plural>'), ('Instrument', '<+Plural>', None))
+
+    def test_restructured_role(self):
+        self.assertEqual(separate_syntax_part('Theme.poss'), ('Theme', None, 'poss'))
 
 
 class TestFullMerge(SimpleTestCase):
